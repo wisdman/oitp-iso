@@ -1,0 +1,34 @@
+:host {
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+
+  width: 100%;
+  height: 100%;
+}
+
+.chart {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.path {
+  fill: var(--fill-color, var(--color-primar-light, #f00));
+  stroke: var(--color, var(--color-primar, #f00));
+  stroke-width: 2;
+
+  stroke-dasharray: 250;
+  stroke-dashoffset: 0;
+  animation: linear-chart-progress 1s ease-out forwards;
+}
+
+@keyframes linear-chart-progress {
+  0% {
+    stroke-dashoffset: 250;
+    fill: transparent;
+  }
+  50% {
+    fill: transparent;
+  }
+}

@@ -1,0 +1,15 @@
+### macOS ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+### Windows ###
+Desktop.ini
+ehthumbs.db
+Thumbs.db
+
+### Build artifacts ###
+artifacts
+
+### Dependencies ###
+node_modules

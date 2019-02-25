@@ -1,0 +1,53 @@
+:root {
+  --color-background: rgb(250, 250, 250);
+  --color-text: rgba(0, 0, 0, 0.87);
+
+  --color-white: rgb(255, 255, 255);
+  --color-dark: rgb(36, 41, 46);
+
+  --color-hover: rgba(0, 0, 0, 0.1);
+  --transition-hover: 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+  --color-disabled: rgba(0, 0, 0, 0.26);
+  --color-disabled-light: rgba(0, 0, 0, 0.12);
+
+  --color-gray: rgb(224, 224, 224);
+  --color-gray-light: rgba(0, 0, 0, 0.23);
+
+  --color-primar: rgb(63, 81, 181);
+  --color-primar-light: rgba(63, 81, 181, 0.6);
+
+  --color-second: rgb(3, 169, 244);
+  --color-second-light: rgba(3, 169, 244, 0.6);
+
+  --color-success: rgb(45, 169, 79);
+  --color-success-light: rgba(45, 169, 79, 0.6);
+
+  --color-warning: rgb(255, 136, 0);
+  --color-warning-light: rgba(255, 160, 0, 0.6);
+
+  --color-error: rgb(237, 63, 44);
+  --color-error-light: rgba(237, 63, 44, 0.6);
+
+  --background-gradient: linear-gradient(-45deg, var(--color-primar) 0%, var(--color-primar) 36%, var(--color-second) 100%);
+
+  --shadow-header:
+    0px 1px 8px 0px rgba(80,80,80, 0.2),
+    0px 3px 4px 0px rgba(80,80,80, 0.14),
+    0px 3px 3px -2px rgba(80,80,80, 0.12);
+
+  --shadow-sidebar:
+    0px 8px 10px -5px rgba(80,80,80, 0.2),
+    0px 16px 24px 2px rgba(80,80,80, 0.14),
+    0px 6px 30px 5px rgba(80,80,80, 0.12);
+
+  --shadow-card:
+    0px 1px 5px 0px rgba(80,80,80, 0.2),
+    0px 2px 2px 0px rgba(80,80,80, 0.14),
+    0px 3px 1px -2px rgba(80,80,80, 0.12);
+
+  --shadow-message:
+    0px 3px 5px -1px rgba(80,80,80, 0.2),
+    0px 6px 10px 0px rgba(80,80,80, 0.14),
+    0px 1px 18px 0px rgba(80,80,80, 0.12);
+}

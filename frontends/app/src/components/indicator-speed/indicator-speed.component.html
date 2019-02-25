@@ -1,0 +1,8 @@
+<div class="wrapper" *ngIf="user | async as user">
+  <div class="chart">
+    <linear-chart [value]="user.speed" [min]="20"></linear-chart>
+  </div>
+
+  <p class="value">{{ user.speed | slice:-1 }}%</p>
+  <h3 class="h3">Скорость мышления</h3>
+</div>

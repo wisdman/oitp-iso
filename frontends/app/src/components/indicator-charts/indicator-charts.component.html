@@ -1,0 +1,14 @@
+<div class="charts" *ngIf="user | async as user">
+  <div class="wrapper">
+    <circular-chart class="chart chart--memory" [value]="user.memory"></circular-chart>
+    <h3 class="h3">Память</h3>
+  </div>
+  <div class="wrapper">
+    <circular-chart class="chart chart--knowledge" [value]="user.knowledge"></circular-chart>
+    <h3 class="h3">Эрудиция</h3>
+  </div>
+  <div class="wrapper">
+    <circular-chart class="chart chart--intelligence" [value]="user.intelligence"></circular-chart>
+    <h3 class="h3">Интеллект</h3>
+  </div>
+</div>
