@@ -255,6 +255,7 @@ export default {
     },
     minimizer: [
       new TerserWebpackPlugin({
+        parallel: true,
         terserOptions: {
           ecma: 8,
           output: {
@@ -278,6 +279,9 @@ export default {
   devServer: {
     clientLogLevel: "warning",
     compress: isProduction,
+    contentBase: [
+      PATH("./icons"),
+    ],
     disableHostCheck: true,
     historyApiFallback: true,
     hot: !isProduction,

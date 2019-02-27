@@ -61,6 +61,6 @@ export const ROUTES: Routes =
   path: "register",
   component: RegisterLayoutComponent,
 },{
-  path: "training",
+  path: "training/:type",
   component: TrainingLayoutComponent,
 }]

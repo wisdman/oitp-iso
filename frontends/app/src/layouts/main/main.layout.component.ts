@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   ElementRef,
-  HostListener,
   NgZone,
   OnDestroy,
   OnInit,
@@ -49,13 +48,20 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   @ViewChild("sidebarNode") sidebarRef?: ElementRef<HTMLDivElement>
 
-  @HostListener("document:click", ["$event.target"])
-  onDocumentClick(target: Node) {
+  onSidebarClick({clientX, target}: {clientX: number, target: Node}) {
     if (!this.isSidebarActive) {
       return
     }
 
-    if (this.sidebarRef && this.sidebarRef.nativeElement && this.sidebarRef.nativeElement.contains(target)) {
+    if (!this.sidebarRef || !this.sidebarRef.nativeElement) {
+      return
+    }
+
+    if (this.sidebarRef.nativeElement !== target) {
+      return
+    }
+
+    if (clientX <= this.sidebarRef.nativeElement.offsetWidth) {
       return
     }
 

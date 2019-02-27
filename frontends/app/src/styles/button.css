@@ -1,0 +1,50 @@
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0 auto;
+  margin-top: 16px;
+  padding: 0 1em;
+
+  height: 48px;
+
+  background-color: var(--color-second);
+  color: #fff;
+  border: 0 none;
+  border-radius: 8px;
+
+  box-shadow: var(--shadow-button);
+
+  font-size: 16px;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.button::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: var(--transition-hover);
+  transition-property: background-color;
+}
+
+.button:hover::before {
+  background-color: var(--color-hover);
+}
+
+.button span {
+  position: relative;
+}

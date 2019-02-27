@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, LOCALE_ID, NgModule } from "@angular/core"
+import { APP_INITIALIZER, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core"
 import { BrowserModule } from "@angular/platform-browser"
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
@@ -16,7 +16,6 @@ import {
 import {
   CardChargerComponent,
   CardEverydayComponent,
-  СardRecommendationsComponent,
   HeaderNotificationsComponent,
   HeaderUserComponent,
   IndicatorBrainComponent,
@@ -24,6 +23,7 @@ import {
   IndicatorSpeedComponent,
   LogComponent,
   SidebarUserComponent,
+  СardRecommendationsComponent,
 } from "./components"
 
 import {
@@ -40,6 +40,10 @@ import {
 } from "./layouts"
 
 import {
+  IconsTableTrainerComponent,
+} from "./trainers"
+
+import {
   DaysPipe,
   TimerPipe,
 } from "./pipes"
@@ -51,6 +55,7 @@ import {
   NotificationServiceFactory,
 
   LogService,
+  TrainingService,
   UserService,
 } from "./services"
 
@@ -71,7 +76,6 @@ import { ROUTES } from "./app.routing"
 
     CardChargerComponent,
     CardEverydayComponent,
-    СardRecommendationsComponent,
     HeaderNotificationsComponent,
     HeaderUserComponent,
     IndicatorBrainComponent,
@@ -79,6 +83,7 @@ import { ROUTES } from "./app.routing"
     IndicatorSpeedComponent,
     LogComponent,
     SidebarUserComponent,
+    СardRecommendationsComponent,
 
     ClubLayoutComponent,
     DashboardLayoutComponent,
@@ -90,6 +95,8 @@ import { ROUTES } from "./app.routing"
     RegisterLayoutComponent,
     SupportLayoutComponent,
     TrainingLayoutComponent,
+
+    IconsTableTrainerComponent,
 
     DaysPipe,
     TimerPipe,
@@ -112,6 +119,7 @@ import { ROUTES } from "./app.routing"
     LogoutGuardService,
 
     LogService,
+    TrainingService,
     UserService,
 
     // Notification services
@@ -134,6 +142,10 @@ import { ROUTES } from "./app.routing"
       provide: LOCALE_ID,
       useValue: "ru"
     }
+  ],
+
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
 })
 export class AppModule {}
