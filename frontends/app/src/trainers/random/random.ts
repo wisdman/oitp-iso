@@ -15,7 +15,7 @@ function RANDOM_EVERYDAY(): Observable<TTrainingConfig> {
     getIconsTableRandomConfig()
   ]
 
-  const result = Promise.resolve(trainersConfig)
+  const result = Promise.all(trainersConfig)
   return from(result)
 }
 
@@ -25,7 +25,7 @@ function RANDOM_ONCE(): Observable<TTrainingConfig> {
     getIconsTableRandomConfig()
   ]
 
-  const result = Promise.resolve(trainersConfig)
+  const result = Promise.all(trainersConfig)
   return from(result)
 }
 

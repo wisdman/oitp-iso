@@ -4,7 +4,7 @@ import {
   IResult,
   IImage,
   IСell,
-} from "../common/interfaces"
+} from "../"
 
 export type IIconsTable = "icons-table"
 export type IIconsTableCell = IСell<IImage>
