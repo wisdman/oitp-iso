@@ -1,22 +1,26 @@
 
 import {
-  IConfig,
-  IResult,
   IImage,
+  ITrainerConfig,
+  ITrainerResult,
   IСell,
-} from "../"
+} from "../interfaces"
 
-export type IIconsTable = "icons-table"
+export type IIconsTableTrainer = "icons-table"
 export type IIconsTableCell = IСell<IImage>
 
-export interface IIconsTableConfig extends IConfig<IIconsTable> {
+export interface IIconsTableTrainerConfig extends ITrainerConfig {
+  id: IIconsTableTrainer
+
   mode: "show" | "fill"
-  width: number
-  height: number
+
+  columns: number
+  rows: number
+
   items: Array<IImage>
   matrix: Array<IIconsTableCell>
 }
 
-export interface IIconsTableResult extends IResult<IIconsTable> {
-  config: IIconsTableConfig
+export interface IIconsTableTrainerResult extends ITrainerResult {
+  config: IIconsTableTrainerConfig
 }

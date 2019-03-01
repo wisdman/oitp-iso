@@ -2,24 +2,22 @@ import {
   Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  ElementRef,
-  OnInit,
   OnDestroy,
-  ViewChild,
+  OnInit,
 } from "@angular/core"
 
 import { ActivatedRoute } from "@angular/router"
 
-import { Subscription, timer, interval } from "rxjs"
-import { takeUntil } from "rxjs/operators"
-
-import {
-  TTrainingConfig,
-} from "../../trainers"
+import { Subscription } from "rxjs"
+import { map } from "rxjs/operators"
 
 import {
   TrainingService
 } from "../../services"
+
+import {
+  ITrainerResults
+} from "../../trainers"
 
 @Component({
   selector: "training-layout",
@@ -29,120 +27,59 @@ import {
 })
 export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
-  @ViewChild("fieldNode") fieldRef?: ElementRef<SVGPathElement>
-  @ViewChild("progressNode") progressRef?: ElementRef<SVGPathElement>
-
-  config?: TTrainingConfig
-
   constructor(
     private _cdr: ChangeDetectorRef,
-    private _trainingService: TrainingService,
     private _route: ActivatedRoute,
+    private _trainingService: TrainingService,
   ) {}
 
-  step: "start" | "progress" | "finish" = "start"
+  isLoading = this._trainingService
+                  .state
+                  .pipe(map(state => state === "loading" || state === "uploading"))
 
-  lapTimer: number = 0
-  private _lapTimerSubscriber?: Subscription
+  globalTimer = this._trainingService.globalTimer
+  config = this._trainingService.config
 
-  private _lapTimerStop() {
-    if (this._lapTimerSubscriber !== undefined) {
-      this._lapTimerSubscriber.unsubscribe()
-      this._lapTimerSubscriber = undefined
-    }
-    this.lapTimer = 0
-    this._cdr.detectChanges()
-  }
+  lapLimit: number = 0
 
-  private _lapProgressStart(limit: number = 0) {
-    this._lapTimerStop()
-    if (limit > 0) {
-      const tik = interval(1000).pipe(takeUntil(timer(limit * 1000)))
-      this.lapTimer = limit
-      this._cdr.markForCheck()
-      this._lapTimerSubscriber = tik.subscribe(
-                                  () => {},
-                                  error => console.error(error),
-                                  () => {
-                                    this._lapTimerStop()
-                                    this.onLapTimeout()
-                                  }
-                                )
+  onResult(result: ITrainerResults) {
+    if (result.isFinish) {
+      this._trainingService.step()
     }
   }
 
-
-  globalTimer: number = 0
-  private _globalTimerSubscriber?: Subscription
-
-  private _globalTimerStop() {
-    if (this._globalTimerSubscriber !== undefined) {
-      this._globalTimerSubscriber.unsubscribe()
-      this._globalTimerSubscriber = undefined
-    }
-    this.globalTimer = 0
-    this._cdr.markForCheck()
-  }
-
-  private _globalTimerStart(limit: number = 0) {
-    this._globalTimerStop()
-    if (limit > 0) {
-      const tik = interval(1000).pipe(takeUntil(timer(limit * 1000)))
-      this.globalTimer = limit
-      this._cdr.markForCheck()
-      this._globalTimerSubscriber = tik.subscribe(
-                                      () => {
-                                        this.globalTimer--
-                                        this._cdr.markForCheck()
-                                      },
-                                      error => console.error(error),
-                                      () => {
-                                        this._globalTimerStop()
-                                        this.onGlobalTimeout()
-                                      }
-                                    )
-    }
-  }
-
-
-  private _resetState() {
-    this.config = undefined
-    this.step = "start"
-    this._lapTimerStop()
-    this._globalTimerStop()
-  }
-
-
-  onGlobalTimeout() {
-    this.step = "finish"
-  }
-
-  onLapTimeout() {
-    this._lapProgressStart(10)
-  }
-
-  onStartClick() {
-    this.step = "progress"
-    this._globalTimerStart(1800)
-    this._lapProgressStart(10)
-  }
-
-  private _routeParamsSubscriber?: Subscription
+  private _lapTimerSubscriber: Subscription
+  private _routeParamsSubscriber: Subscription
 
   ngOnInit() {
-    this._routeParamsSubscriber = this._route.params.subscribe(params => {
-      this._resetState()
-      this._trainingService
-          .getTraining(params.type)
-          .subscribe(config => this.config = config)
-    })
+    this._lapTimerSubscriber = this._trainingService
+                                   .lapLimit
+                                   .subscribe(lapLimit => {
+                                     if (lapLimit > 0) {
+                                       this.lapLimit = 0
+                                       this._cdr.detectChanges()
+                                     }
+
+                                     this.lapLimit = lapLimit
+                                     this._cdr.detectChanges()
+                                   })
+
+    this._routeParamsSubscriber = this._route
+                                      .params
+                                      .subscribe(params => {
+                                        this._trainingService
+                                            .initTraining(params.type)
+                                      })
   }
 
   ngOnDestroy() {
-    if (this._routeParamsSubscriber) {
-      this._routeParamsSubscriber.unsubscribe()
-    }
-    this._lapTimerStop()
-    this._globalTimerStop()
+    this._lapTimerSubscriber.unsubscribe()
+    this._routeParamsSubscriber.unsubscribe()
+
+    this._trainingService.resetTraining()
   }
 }
+
+
+
+

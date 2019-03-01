@@ -1,0 +1,89 @@
+:host {
+  --gap: 4px;
+  --margin: 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 100%;
+
+  position: relative;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.p {
+  display: block;
+  margin: 0;
+  margin-top: 10px;
+
+  padding-left: 8px;
+  padding-right: 8px;
+
+  font-size: 16px;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.items {
+  flex-shrink: 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.items div {
+  width: 80px;
+  height: 80px;
+
+  margin: 8px;
+
+  display: block;
+  position: relative;
+
+  border-radius: 4px;
+  background-color: #eee4da;
+  color: #776e65;
+  border: 1px solid var(--color-gray-light);
+}
+
+.items span {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+
+  text-transform: uppercase;
+}
+
+.comb {
+  display: block;
+  margin-bottom: 48px;
+
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}

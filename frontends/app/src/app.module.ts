@@ -40,7 +40,15 @@ import {
 } from "./layouts"
 
 import {
+  ArticleTrainerComponent,
+  ColorsColumnsTrainerComponent,
+  FirstLettersTrainerComponent,
   IconsTableTrainerComponent,
+  MessageTrainerComponent,
+  NumberTableTrainerComponent,
+  QuestionTrainerComponent,
+  ResultsTrainerComponent,
+  WordsColumnsTrainerComponent,
 } from "./trainers"
 
 import {
@@ -96,7 +104,15 @@ import { ROUTES } from "./app.routing"
     SupportLayoutComponent,
     TrainingLayoutComponent,
 
+    ArticleTrainerComponent,
+    ColorsColumnsTrainerComponent,
+    FirstLettersTrainerComponent,
     IconsTableTrainerComponent,
+    MessageTrainerComponent,
+    NumberTableTrainerComponent,
+    QuestionTrainerComponent,
+    ResultsTrainerComponent,
+    WordsColumnsTrainerComponent,
 
     DaysPipe,
     TimerPipe,

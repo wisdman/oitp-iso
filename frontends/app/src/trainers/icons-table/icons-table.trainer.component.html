@@ -1,10 +1,15 @@
-<div class="field">
+<div class="field" *ngIf="config" (click)="onClick()">
+
   <div class="matrix">
-
+    <div *ngFor="let cell of config.matrix">
+      <img *ngIf="cell.value.data" [src]="getDataUrl(cell.value.data)">
+    </div>
   </div>
 
-  <div class="items">
-
+  <div class="items" *ngIf="mode">
+    <div *ngFor="let item of config.items">
+      <img *ngIf="item.data" [src]="getDataUrl(item.data)">
+    </div>
   </div>
+
 </div>
-

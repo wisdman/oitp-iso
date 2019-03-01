@@ -280,7 +280,7 @@ export default {
     clientLogLevel: "warning",
     compress: isProduction,
     contentBase: [
-      PATH("./icons"),
+      PATH("./data"),
     ],
     disableHostCheck: true,
     historyApiFallback: true,

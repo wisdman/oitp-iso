@@ -1,0 +1,7 @@
+<div class="article" *ngIf="config">
+  <h1 class="h1">{{config.header}}</h1>
+  <div class="body" [innerHtml]="body"></div>
+  <button class="button" (click)="onClick()">
+    <span>{{config.button}}</span>
+  </button>
+</div>

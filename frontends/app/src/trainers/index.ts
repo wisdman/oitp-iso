@@ -1,2 +1,11 @@
-export * from "./common/interfaces"
+export * from "./interfaces"
+
+export * from "./article"
+export * from "./colors-columns"
+export * from "./first-letters"
 export * from "./icons-table"
+export * from "./message"
+export * from "./number-table"
+export * from "./question"
+export * from "./results"
+export * from "./words-columns"

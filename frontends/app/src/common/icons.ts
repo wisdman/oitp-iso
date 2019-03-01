@@ -1,27 +1,27 @@
 
 import {
   IImage
-} from "../"
+} from "../trainers"
 
 import {
   NewValueArray
-} from "../common/functions"
+} from "./functions"
 
 const ICONS_FLAT_COUNT = 1140
 const ICONS_ROUND_COUNT = 0
 
 export const ICONS = {
-  "flat": NewValueArray(ICONS_FLAT_COUNT, id => ({ id } as IImage)),
-  "round": NewValueArray(ICONS_ROUND_COUNT, id => ({ id } as IImage)),
+  "flat": NewValueArray(ICONS_FLAT_COUNT, id => ({ id: id + 1 } as IImage)),
+  "round": NewValueArray(ICONS_ROUND_COUNT, id => ({ id: id + 1 } as IImage)),
 }
 
 export function fetchIcons(arr: Array<IImage>) {
   return Promise.all(
     arr.map(image =>
-            fetch(`/flat-min/${image.id}.svg`)
+            fetch(`/icons/flat-min/${image.id}.svg`)
             .then(response => response.text())
             .then(text => {
-              image.data =  text
+              image.data = "data:image/svg+xml;base64," + window.btoa(text)
               return image
             })
           )

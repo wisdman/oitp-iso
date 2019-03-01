@@ -1,0 +1,10 @@
+<div class="field" *ngIf="config">
+  <div class="color">{{ currentColor.title }}</div>
+  <div
+    *ngFor="let rgb of config.columns"
+    #columnNode
+    class="column"
+    [ngStyle]="{'background-color': rgb}"
+    (click)="onClick(rgb, columnNode)"
+  ></div>
+</div>

@@ -1,0 +1,13 @@
+<div class="field" *ngIf="config" (click)="onClick()">
+
+  <p *ngIf="config.mode==='show'" class="p">{{ config.sentence }}</p>
+
+  <div class="comb">{{ comb }}</div>
+
+  <div *ngIf="config.mode==='fill'" class="items">
+    <div *ngFor="let item of letters" (click)="onLetterClick(item)">
+      <span>{{ item }}</span>
+    </div>
+  </div>
+
+</div>

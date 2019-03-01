@@ -6,13 +6,12 @@ export function RandomInt(min: number = 0, max?: number) {
     max = min
     min = 0
   }
-  return Math.floor(Math.random() * (max - min)) + min
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 export function RandomBoolean() {
   return RandomInt(0, 1) === 1
 }
-
 
 
 // ======= Array functions ======
