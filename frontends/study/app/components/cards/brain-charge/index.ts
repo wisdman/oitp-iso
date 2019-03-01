@@ -1,0 +1,1 @@
+export * from "./brain-charge.card.component"

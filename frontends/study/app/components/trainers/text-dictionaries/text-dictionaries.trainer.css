@@ -1,0 +1,19 @@
+:host {
+
+}
+
+.field {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.field h3 {
+  flex: 0 0 100%;
+  margin: 0;
+  margin-top: 16px;
+  padding: 0;
+}
+
+.field a {
+  margin: 8px;
+}

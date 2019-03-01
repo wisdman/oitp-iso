@@ -1,0 +1,21 @@
+{
+  "name": "oitp-isov-portal",
+  "version": "0.1.0",
+  "private": true,
+  "browserslist": [
+    "last 1 Chrome versions",
+    "last 1 Edge versions",
+    "last 1 Firefox versions",
+    "last 1 iOS versions",
+    "last 1 Safari versions"
+  ],
+  "dependencies": {
+    "@angular/core": "^7.2.2"
+  },
+  "devDependencies": {
+    "@angular/cli": "^7.2.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

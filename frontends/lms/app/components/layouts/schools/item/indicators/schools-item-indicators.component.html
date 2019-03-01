@@ -1,0 +1,44 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Динамика прироста учащихся</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <canvas baseChart
+            [chartType]="chartType"
+            [options]="chartOptions"
+            [labels]="chartLabels"
+            [legend]="chartLegend"
+            [data]="chartData1"
+            ></canvas>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Средний уровень учеников</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <canvas baseChart
+            [chartType]="chartPolarArea"
+            [options]="chartOptions"
+            [labels]="chartPolarLabels"
+            [legend]="chartLegend"
+            [data]="chartPolarData"
+            ></canvas>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Выручка</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <canvas baseChart
+            [chartType]="chartBatType"
+            [options]="chartOptions"
+            [labels]="chartLabels"
+            [legend]="chartLegend"
+            [data]="chartData2"
+            ></canvas>
+  </mat-card-content>
+</mat-card>

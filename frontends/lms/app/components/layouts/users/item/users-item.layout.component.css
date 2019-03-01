@@ -1,0 +1,134 @@
+:host {
+  display: block;
+  padding: 16px;
+  position: relative;
+}
+
+:host::before {
+  display: block;
+  content: "";
+
+  background-color: #272725;
+  background-image: url("/img/pattern.jpg");
+  background-position: 50%;
+  background-repeat: repeat-x;
+
+  position: absolute;
+  width: 200vw;
+  left: -50%;
+  height: 357px;
+  top: 0%;
+  z-index: -1;
+}
+
+.h1 {
+  color: #fff;
+}
+
+.wrapper {
+  background-color: #fff;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.user {
+  display: grid;
+  grid-template-columns: 150px auto min-content;
+  grid-template-rows: min-content auto min-content;
+  grid-template-areas: "avatar h2         info"
+                       "avatar indicators info"
+                       "avatar controls   info";
+  gap: 16px;
+  padding: 32px;
+
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.user-avatar {
+  grid-area: avatar;
+  width: 150px;
+  height: 150px;
+  align-self: center;
+  border-radius: 50%;
+}
+
+.user-h2 {
+  grid-area: h2;
+  margin-left: 16px;
+}
+
+.user-indicators {
+  grid-area: indicators;
+  align-self: center;
+
+  display: flex;
+}
+
+.user-controls {
+  grid-area: controls;
+  display: flex;
+}
+
+.user-controls button:first-of-type {
+  margin-left: -16px;
+}
+
+.user-info {
+  grid-area: info;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding-left: 16px;
+  gap: 16px;
+
+  border-left: 1px solid #e0e0e0;
+  white-space: nowrap;
+}
+
+.user-info-label {
+  font-weight: 700;
+}
+
+.user-info-social {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  display: flex;
+}
+
+.user-info-social a {
+  color: rgba(0, 0, 0, .31);
+  cursor: default;
+  margin-right: 16px;
+}
+
+.indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 32px;
+}
+
+.indicator-value {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.indicator-icon {
+  font-size: 24px;
+  height: 24px;
+  width: 24px;
+  font-weight: 700;
+  margin-left: 2px;
+  vertical-align: bottom;
+  opacity: .7;
+}
+
+.indicator-name {
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: uppercase;
+  margin-top: 3px;
+  color: rgba(0,0,0,.38);
+  text-align: center;
+}

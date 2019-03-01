@@ -1,0 +1,6 @@
+<div *ngFor="let m of MATRIXS" class="field" [ngStyle]="{'grid-template-columns':'repeat('+m.n+',50px)'}">
+  <div *ngFor="let j of m.matrix">
+    <span *ngIf="!icons || !j.icon">{{ j.v }}</span>
+    <img *ngIf="icons && j.icon" [src]="j.icon">
+  </div>
+</div>

@@ -1,0 +1,194 @@
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Основная информация</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="main-info">
+        <mat-form-field class="full-width span-4">
+          <input matInput placeholder="Фамилия" value="Пользователь" required>
+        </mat-form-field>
+        <mat-form-field class="full-width span-2">
+          <input matInput placeholder="Имя" value="Bot" required>
+        </mat-form-field>
+        <mat-form-field class="full-width span-2">
+          <input matInput placeholder="Отчество" value="#">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Пол" required>
+            <mat-option value="male">Мужской</mat-option>
+            <mat-option value="female">Женский</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput [matDatepicker]="picker" placeholder="Дата рождения">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Семейное положение">
+            <mat-option value="true">Женат / Замужем</mat-option>
+            <mat-option value="false">Холост / Не замужем</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Дети">
+            <mat-option value="1">1</mat-option>
+            <mat-option value="2">2</mat-option>
+            <mat-option value="3">3</mat-option>
+            <mat-option value="4">4</mat-option>
+            <mat-option value="5">5</mat-option>
+            <mat-option value="6">6</mat-option>
+            <mat-option value="7">7</mat-option>
+            <mat-option value="8">8</mat-option>
+            <mat-option value="9">9</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Контактная информация</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="contacts-info">
+        <mat-form-field class="full-width">
+          <input matInput placeholder="Телефон" value="+71234567800" required>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput placeholder="E-mail" value="bot0@chitai.ru" required>
+        </mat-form-field>
+        <mat-form-field class="full-width span-2">
+          <input matInput placeholder="Адресс" value="Екатеринбург, Опалихинская 13/б, 295" required>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Образование</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="education-info">
+        <div *ngFor="let e of education; let i = index">
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Тип" [(ngModel)]="e.type" [ngModelOptions]="{standalone: true}" required>
+              <mat-option value="school">Школа</mat-option>
+              <mat-option value="college">Колледж</mat-option>
+              <mat-option value="university">ВУЗ</mat-option>
+              <mat-option value="сourses">Дополнительное</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput [matDatepicker]="picker" placeholder="Дата окончания" [(ngModel)]="e.date" [ngModelOptions]="{standalone: true}">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Город" [(ngModel)]="e.city" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+          <mat-form-field class="full-width span-3">
+            <input matInput placeholder="Наименование / Номер" [(ngModel)]="e.name" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+          <mat-form-field class="full-width span-3">
+            <input matInput placeholder="Специализация" [(ngModel)]="e.title" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="addEducation()">
+        <mat-icon>add</mat-icon>
+        <span>Добавить</span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Карьера</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="career-info">
+        <div *ngFor="let c of career; let i = index">
+
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Тип работы" [(ngModel)]="c.business" [ngModelOptions]="{standalone: true}" required>
+              <mat-option value="true">Собственник бизнеса</mat-option>
+              <mat-option value="false">Наемный сотрудник</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Город" [(ngModel)]="c.city" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+
+          <mat-form-field class="full-width span-2">
+            <input matInput placeholder="Наименование организации" [(ngModel)]="c.title" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+
+          <mat-form-field class="full-width span-2">
+            <input matInput placeholder="Сфера дефтельности" [(ngModel)]="c.scope" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+
+          <mat-form-field class="full-width span-2" *ngIf="!c.business">
+            <input matInput placeholder="Должность" [(ngModel)]="c.position" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+
+          <mat-form-field class="full-width span-2">
+            <input matInput placeholder="Число подчиненных" type="number" maxlength="7" [(ngModel)]="c.subordinates" [ngModelOptions]="{standalone: true}" required>
+          </mat-form-field>
+
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="addCareer()">
+        <mat-icon>add</mat-icon>
+        <span>Добавить</span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- <mat-card>
+    <mat-card-header>
+      <mat-card-title>Спорт</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+
+      </form>
+    </mat-card-content>
+  </mat-card> -->
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Хобби</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <mat-form-field class="full-width">
+          <mat-chip-list #chipList>
+            <mat-chip *ngFor="let h of hobby" [selectable]="true" [removable]="true" (removed)="removeHobby(h)">
+              {{h}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Хобби..."
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   [matChipInputAddOnBlur]="true"
+                   (matChipInputTokenEnd)="addHobby($event)">
+          </mat-chip-list>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+
+

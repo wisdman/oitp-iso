@@ -1,0 +1,18 @@
+
+<h2>Тольковый словарь</h2>
+<p>ABBYY Lingvo "Большой Толковый Словарь Русского Языка"</p>
+<p>API is active</p>
+<p>276342</p>
+
+<h2>Синонимы</h2>
+<p>ABBYY Lingvo</p>
+<p>API is active</p>
+<p>76108</p>
+
+<h2>Паронимы</h2>
+<div *ngFor="let p of PARONIMS" class="field">
+  <h3>{{p.l}}</h3>
+  <a *ngFor="let i of p.arr" href="{{ i.href }}" target="_blank">{{ i.title }}</a>
+</div>
+
+

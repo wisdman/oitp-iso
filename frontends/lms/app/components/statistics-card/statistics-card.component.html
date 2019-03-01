@@ -1,0 +1,7 @@
+<div class="value">{{ value }}</div>
+<mat-icon class="icon">{{ icon }}</mat-icon>
+<div class="title">{{ title }}</div>
+<div class="trend">
+  <span class="trend-value">{{ trend | number:"1.0-3" }}%</span>
+  <mat-icon class="trend-icon">{{ trend < 0 ? "trending_down" : "trending_up" }}</mat-icon>
+</div>

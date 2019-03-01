@@ -1,0 +1,8 @@
+<p>ALL: {{COLORS.length}}</p>
+
+<table>
+  <tr *ngFor="let c of COLORS">
+    <td [style.backgroundColor]="c.color">{{ c.color }}</td>
+    <td>{{ c.name }}</td>
+  </tr>
+</table>

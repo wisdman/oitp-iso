@@ -1,0 +1,14 @@
+<h1>text-tables</h1>
+
+<p>ABBYY Lingvo</p>
+<p>API is active</p>
+<p>653985 сущ.</p>
+
+<br>
+<br>
+<br>
+<h2>Города</h2>
+<div *ngFor="let p of CITY" class="field">
+  <h3>{{p.l}}</h3>
+  <p *ngFor="let w of p.arr">{{ w }}</p>
+</div>

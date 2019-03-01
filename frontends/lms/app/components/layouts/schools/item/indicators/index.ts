@@ -1,0 +1,1 @@
+export * from "./schools-item-indicators.component"

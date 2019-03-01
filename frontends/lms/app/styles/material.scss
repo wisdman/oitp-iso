@@ -1,0 +1,20 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$app-primary: mat-palette($mat-blue-grey, 700);
+$app-accent:  mat-palette($mat-blue, 500);
+$app-warn:    mat-palette($mat-red, 500);
+
+$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+@include angular-material-theme($app-theme);
+
+$global-color-primary: mat-color($app-primary);
+$global-color-accent: mat-color($app-accent);
+$global-color-warn: mat-color($app-warn);
+
+html {
+	--color-primary: #{$global-color-primary};
+	--color-accent: #{$global-color-accent};
+	--color-warn: #{$global-color-warn};
+}

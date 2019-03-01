@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  padding: 16px;
+  position: relative;
+}
+
+:host::before {
+  display: block;
+  content: "";
+
+  background-color: #272725;
+  background-image: url("/img/pattern.jpg");
+  background-position: 50%;
+  background-repeat: repeat-x;
+
+  position: absolute;
+  width: 200vw;
+  left: -50%;
+  height: 288px;
+  top: 0%;
+  z-index: -1;
+}
+
+.h1 {
+  color: #fff;
+}
+
+.wrapper {
+  background-color: #fff;
+  overflow: hidden;
+  margin-top: 16px;
+}
+
+.school {
+  display: block;
+  padding: 32px;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.school-info {
+  display: grid;
+  grid-template-rows: min-content min-content;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-flow: column;
+  gap: 32px;
+  row-gap: 8px;
+}
+
+.school-info-label {
+  font-weight: 700;
+}

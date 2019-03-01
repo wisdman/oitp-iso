@@ -1,0 +1,1 @@
+export * from "./training.root-layout.component"

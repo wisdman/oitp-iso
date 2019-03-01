@@ -1,0 +1,19 @@
+
+.button {
+  display: block;
+
+  background-color: var(--color-second);
+  border: 0 none;
+  color: #fff;
+
+  border-radius: 4px;
+
+  height: 40px;
+  padding: 0 1em;
+
+  font-size: 16px;
+  line-height: 1;
+
+  text-transform: uppercase;
+  cursor: pointer;
+}

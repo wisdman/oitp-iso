@@ -1,0 +1,63 @@
+<main class="main">
+  <router-outlet></router-outlet>
+</main>
+
+<header class="header mat-elevation-z5">
+  <button mat-icon-button class="header-button" (click)="asideShown=true">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <a routerLink="/" class="logo">
+    <svg viewBox="0 0 600 300"><path d="M0 117h26l59 51 63-51h22v136h-26V151l-60 52-57-51v101H0V117zM431 117h150c13 1 20 7 19 19v28c0 11-8 17-20 18 13 0 20 7 20 19v29c0 15-9 22-26 22H431V117zm26 24v28h111c4 0 7-3 7-7v-14c0-4-3-6-7-7H457zm0 53v33h111c4-1 7-2 7-5v-22c-1-3-3-5-7-6H457zM216 253V117h25v136h-25zM288 253V117h26v136h-26zM0 274h600v26H0v-26zM25 64L300 0l275 63s25 5 25 18v14H0V80c0-11 25-16 25-16zM359 253V117h26v136h-26z"></path></svg>
+  </a>
+</header>
+
+<div class="backdrop" [class.backdrop--shown]="asideShown" (click)="asideShown=false"></div>
+
+<aside class="aside mat-elevation-z7" [class.aside--shown]="asideShown">
+
+  <div class="aside-header">
+    <a routerLink="/" class="logo">
+      <svg viewBox="0 0 600 300"><path d="M0 117h26l59 51 63-51h22v136h-26V151l-60 52-57-51v101H0V117zM431 117h150c13 1 20 7 19 19v28c0 11-8 17-20 18 13 0 20 7 20 19v29c0 15-9 22-26 22H431V117zm26 24v28h111c4 0 7-3 7-7v-14c0-4-3-6-7-7H457zm0 53v33h111c4-1 7-2 7-5v-22c-1-3-3-5-7-6H457zM216 253V117h25v136h-25zM288 253V117h26v136h-26zM0 274h600v26H0v-26zM25 64L300 0l275 63s25 5 25 18v14H0V80c0-11 25-16 25-16zM359 253V117h26v136h-26z"></path></svg>
+    </a>
+  </div>
+
+  <nav class="nav">
+    <a routerLink="/" class="mat-body nav-item">
+      <span>Dashboard</span>
+      <mat-icon>dashboard</mat-icon>
+    </a>
+    <a routerLink="/users" class="mat-body nav-item">
+      <span>Пользователи</span>
+      <mat-icon>people</mat-icon>
+    </a>
+    <a routerLink="/schools" class="mat-body nav-item">
+      <span>Школы</span>
+      <mat-icon>business</mat-icon>
+    </a>
+    <a routerLink="/money" class="mat-body nav-item">
+      <span>Финансы</span>
+      <mat-icon>attach_money</mat-icon>
+    </a>
+    <a routerLink="/notices" class="mat-body nav-item">
+      <span>Объявления</span>
+      <mat-icon>warning</mat-icon>
+    </a>
+    <a routerLink="/publications" class="mat-body nav-item">
+      <span>Публикации</span>
+      <mat-icon>filter_none</mat-icon>
+    </a>
+    <!-- <a routerLink="/trainers" class="mat-body nav-item">
+      <span>Тренажеры</span>
+      <mat-icon>category</mat-icon>
+    </a> -->
+    <!-- <a routerLink="/settings" class="mat-body nav-item">
+      <span>Настройки</span>
+      <mat-icon>settings</mat-icon>
+    </a> -->
+  </nav>
+  <div class="aside-footer mat-small">{{appFullName}}</div>
+</aside>
+
+
+

@@ -1,0 +1,11 @@
+:host {
+  height: 100%;
+  position: relative;
+
+  --size: 64px;
+
+  display: block;
+  padding-top: var(--size);
+}
+
+

@@ -1,0 +1,41 @@
+:host {
+  user-select: none;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.h3 {
+  margin: 0;
+  padding: 0;
+  margin-top: 24px;
+
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.brain {
+  order: -1;
+  width: 130px;
+  height: 130px;
+
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.bark {
+  fill: none;
+  stroke: var(--color-gray-light);
+  stroke-width: 1px;
+}
+
+.bark-active {
+  fill: var(--color-second);
+  stroke: var(--color-second);
+}
