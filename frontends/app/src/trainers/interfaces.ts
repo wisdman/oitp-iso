@@ -5,6 +5,7 @@ import { IArticleTrainer, IArticleTrainerConfig, IArticleTrainerResult } from ".
 import { IColorsColumnsTrainer, IColorsColumnsTrainerConfig, IColorsColumnsTrainerResult } from "./colors-columns"
 import { IFirstLettersTrainer, IFirstLettersTrainerConfig, IFirstLettersTrainerResult } from "./first-letters"
 import { IIconsTableTrainer, IIconsTableTrainerConfig, IIconsTableTrainerResult } from "./icons-table"
+import { IImageConstructorTrainer, IImageConstructorTrainerConfig, IImageConstructorTrainerResult } from "./image-constructor"
 import { IMessageTrainer, IMessageTrainerConfig, IMessageTrainerResult } from "./message"
 import { INumberTableTrainer, INumberTableTrainerConfig, INumberTableTrainerResult } from "./number-table"
 import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
@@ -15,6 +16,7 @@ export type ITrainer = IArticleTrainer
                      | IColorsColumnsTrainer
                      | IFirstLettersTrainer
                      | IIconsTableTrainer
+                     | IImageConstructorTrainer
                      | IMessageTrainer
                      | INumberTableTrainer
                      | IQuestionTrainer
@@ -25,6 +27,7 @@ export type ITrainerConfigs = IArticleTrainerConfig
                             | IColorsColumnsTrainerConfig
                             | IFirstLettersTrainerConfig
                             | IIconsTableTrainerConfig
+                            | IImageConstructorTrainerConfig
                             | IMessageTrainerConfig
                             | INumberTableTrainerConfig
                             | IQuestionTrainerConfig
@@ -35,6 +38,7 @@ export type ITrainerResults = IArticleTrainerResult
                             | IColorsColumnsTrainerResult
                             | IFirstLettersTrainerResult
                             | IIconsTableTrainerResult
+                            | IImageConstructorTrainerResult
                             | IMessageTrainerResult
                             | INumberTableTrainerResult
                             | IQuestionTrainerResult

@@ -34,6 +34,7 @@ export class FirstLettersTrainerComponent implements OnInit, OnChanges {
 
   letters: Array<string> = []
   comb: string = ""
+  mode: "show" | "fill"
 
   @Input()
   config: IFirstLettersTrainerConfig = {
@@ -74,14 +75,14 @@ export class FirstLettersTrainerComponent implements OnInit, OnChanges {
   }
 
   onClick() {
-    if (this.config.mode === 'show') {
+    if (this.mode === 'show') {
       this.letters = this.config
                           .sentence
                           .split(" ")
                           .map(word => word.charAt(0))
                           .filter(letter => /^[А-Яа-яЁё]$/i.test(letter))
 
-      this.config.mode = 'fill'
+      this.mode = 'fill'
       return
     }
   }
@@ -93,6 +94,7 @@ export class FirstLettersTrainerComponent implements OnInit, OnChanges {
 
     this.comb = ""
     this.letters = []
+    this.mode = "show"
 
     this._updateResult({
       isFinish: false,

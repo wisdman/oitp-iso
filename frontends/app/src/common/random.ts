@@ -3,6 +3,10 @@ import {
   ITrainerConfigs,
 } from "../trainers"
 
+import {
+  ShuffleArray
+} from "./functions"
+
 import { getArticleConfig } from "./article.config"
 import { getColorsColumnsConfig } from "./colors-columns.config"
 import { getFirstLettersConfig } from "./first-letters.config"
@@ -26,7 +30,7 @@ async function RANDOM_EVERYDAY() {
     article,
     questions,
 
-    [
+    ShuffleArray([[
       await getMessageConfig({
         header: "Сопостовление цветов",
         text: "Сопоставте цвета",
@@ -46,19 +50,7 @@ async function RANDOM_EVERYDAY() {
       await getFirstLettersConfig(),
       await getFirstLettersConfig(),
       await getFirstLettersConfig(),
-    ],
-
-    [
-      await getMessageConfig({
-        header: "Таблицы с изображениями",
-        text: "Востановите таблицу по памяти",
-        button: "Начать",
-      }),
-      await getIconsTableConfig(),
-      await getIconsTableConfig(),
-      await getIconsTableConfig(),
-      await getIconsTableConfig(),
-      await getIconsTableConfig(),
+      await getFirstLettersConfig(),
     ],
 
     [
@@ -67,6 +59,8 @@ async function RANDOM_EVERYDAY() {
         text: "Отмечайте числа в порядке возрастания.",
         button: "Начать",
       }),
+      await getNumberTableConfig(),
+      await getNumberTableConfig(),
       await getNumberTableConfig(),
       await getNumberTableConfig(),
       await getNumberTableConfig(),
@@ -81,12 +75,23 @@ async function RANDOM_EVERYDAY() {
       await getWordsColumnsConfig(),
       await getWordsColumnsConfig(),
       await getWordsColumnsConfig(),
+    ]]).flat(),
+
+    [
+      await getMessageConfig({
+        header: "Таблицы с изображениями",
+        text: "Востановите таблицу по памяти",
+        button: "Начать",
+      }),
+      await getIconsTableConfig(),
+      await getIconsTableConfig(),
+      await getIconsTableConfig(),
+      await getIconsTableConfig(),
+      await getIconsTableConfig(),
     ],
 
     await getResultsConfig(),
   ]
-
-  console.dir(trainers)
 
   return trainers.flat()
 }
@@ -100,6 +105,7 @@ async function RANDOM_ONCE() {
       button: "Начать тренировку",
     }),
     await getFirstLettersConfig(),
+    await getResultsConfig(),
   ]
 
   return trainers

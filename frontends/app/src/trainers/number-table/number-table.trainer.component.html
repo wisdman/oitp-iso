@@ -1,4 +1,4 @@
-<div class="field" *ngIf="config" (click)="onClick()">
+<div class="field" *ngIf="config">
   <div class="matrix">
     <div *ngFor="let item of config.matrix" [class.success]="item.success" (click)="onClick(item)">
       <span>{{ item.value }}</span>

@@ -1,9 +1,0 @@
-<p class="question" [innerHTML]="config.html"></p>
-<div class="answers">
-  <button
-    *ngFor="let answer of config.answers"
-    type="button" class="button answer"
-    [innerHTML]="answer.html"
-    (click)="onClick(answer)">
-  </button>
-</div>

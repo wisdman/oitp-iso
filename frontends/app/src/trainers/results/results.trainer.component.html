@@ -1,6 +1,8 @@
 <div class="message" *ngIf="config" class="message">
   <h1 class="h1">{{ config.header }}</h1>
-  <div class="result"></div>
+  <div class="wrapper">
+    <circular-chart class="chart" [value]="config.result"></circular-chart>
+  </div>
   <button class="button" routerLink="/">
     <span>Вернуться в кабинет</span>
   </button>

@@ -1,5 +1,5 @@
 <div class="field" *ngIf="config">
-  <div class="color">{{ currentColor.title }}</div>
+  <div class="color" *ngIf="currentColor">{{ currentColor.title }}</div>
   <div
     *ngFor="let rgb of config.columns"
     #columnNode

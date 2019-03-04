@@ -50,6 +50,12 @@
       (result)="onResult($event)"
     ></trainer-question>
 
+    <trainer-results
+      *ngIf="config.id === 'results'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-results>
+
     <trainer-words-columns
       *ngIf="config.id === 'words-columns'"
       [config]="config"

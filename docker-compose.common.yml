@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+
+  sql:
+    restart: unless-stopped
+    build: ./sql
+    image: wisdman/oitp-isov-sql
+    volumes:
+      - data-volume:/var/lib/postgresql/data
+    env_file:
+      - ./.environment
+    networks:
+      default:
+
+  nginx:
+    restart: unless-stopped
+    build: ./nginx
+    image: wisdman/oitp-isov-nginx
+    networks:
+      default:
+
+volumes:
+  data-volume:

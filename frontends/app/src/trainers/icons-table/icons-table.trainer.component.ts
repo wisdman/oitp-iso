@@ -32,6 +32,8 @@ export class IconsTableTrainerComponent implements OnInit, OnChanges {
     private _el: ElementRef<HTMLElement>
   ){}
 
+  mode: "show" | "fill" = "show"
+
   @Input()
   config: IIconsTableTrainerConfig = {
     id: "icons-table",
@@ -63,9 +65,13 @@ export class IconsTableTrainerComponent implements OnInit, OnChanges {
   }
 
   onClick() {
-    this._updateResult({
-      isFinish: true,
-    })
+    if (this.mode === 'show') {
+      this.mode = 'fill'
+    } else {
+      this._updateResult({
+        isFinish: true,
+      })
+    }
   }
 
   ngOnInit() {

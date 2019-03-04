@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="items" *ngIf="mode">
+  <div class="items" *ngIf="mode==='fill'">
     <div *ngFor="let item of config.items">
       <img *ngIf="item.data" [src]="getDataUrl(item.data)">
     </div>
