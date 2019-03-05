@@ -186,12 +186,15 @@ export default {
 
     new CopyWebpackPlugin([{
       from: PATH("./favicon"),
-      ignore: [".*"]
+      ignore: [".*"],
     },{
       from: PATH("./manifest.json"),
       transform(content) {
         return JSON.stringify(JSON.parse(content))
       },
+    },{
+      from: PATH("./data"),
+      ignore: [".*"],
     }]),
 
   ].concat(isProduction ? [
