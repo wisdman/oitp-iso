@@ -24,5 +24,5 @@ CREATE TRIGGER trainers__prevent_change_id__trigger
   EXECUTE PROCEDURE prevent_change_id();
 
   -- Scann indexes
-CREATE INDEX trainers__idx__fkey_owner ON trainers USING btree ("owner");
-CREATE INDEX trainers__idx__expires    ON trainers USING btree ("expires");
+CREATE INDEX trainers__idx__enabled ON trainers USING btree("enabled");
+CREATE INDEX trainers__idx__deleted ON trainers USING btree("deleted");

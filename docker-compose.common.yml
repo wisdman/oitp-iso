@@ -13,6 +13,24 @@ services:
     networks:
       default:
 
+  # api-auth:
+  #   restart: unless-stopped
+  #   build:
+  #     context: ./api
+  #     dockerfile: auth.Dockerfile
+  #   image: wisdman/oitp-isov-api-auth
+  #   env_file:
+  #     - ./.environment
+  #   networks:
+  #     default:
+
+  app:
+    restart: unless-stopped
+    build: ./frontends/app
+    image: wisdman/oitp-isov-frontend-app
+    networks:
+      default:
+
   nginx:
     restart: unless-stopped
     build: ./nginx

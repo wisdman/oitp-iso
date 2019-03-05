@@ -1,5 +1,3 @@
-# wisdman/oitp-isov-app
-
 FROM node:alpine
 MAINTAINER Wisdman <wisdman@ajaw.it>
 

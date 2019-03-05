@@ -11,7 +11,7 @@ RUN set -ex \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY conf.d /etc/nginx/conf.d
-COPY conf.d /etc/nginx/ssl
+COPY ssl /etc/nginx/ssl
 
 EXPOSE 80 443
 STOPSIGNAL SIGTERM

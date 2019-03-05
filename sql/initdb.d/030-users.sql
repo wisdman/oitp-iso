@@ -15,7 +15,7 @@ CREATE TABLE users (
   "id"          uuid          NOT NULL DEFAULT uuid_generate_v1(),
   "enabled"     boolean       NOT NULL DEFAULT TRUE,
   "deleted"     boolean       NOT NULL DEFAULT FALSE,
-  "roles"       users__role[] NOT NULL DEFAULT '{user}'::roles[],
+  "roles"       users__role[] NOT NULL DEFAULT '{user}'::users__role[],
 
   "email"       varchar(256)  NOT NULL,
   "phone"       varchar(15)   DEFAULT NULL,
