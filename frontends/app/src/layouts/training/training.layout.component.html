@@ -26,11 +26,11 @@
       (result)="onResult($event)"
     ></trainer-first-letters>
 
-    <trainer-icons-table
-      *ngIf="config.id === 'icons-table'"
+    <trainer-image-table
+      *ngIf="config.id === 'image-table'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-icons-table>
+    ></trainer-image-table>
 
     <trainer-message
       *ngIf="config.id === 'message'"
@@ -55,6 +55,12 @@
       [config]="config"
       (result)="onResult($event)"
     ></trainer-results>
+
+    <trainer-shape-field
+      *ngIf="config.id === 'shape-field'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-shape-field>
 
     <trainer-words-columns
       *ngIf="config.id === 'words-columns'"

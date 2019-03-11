@@ -1,4 +1,4 @@
-import { UUID } from "../uuid"
+import { UUID } from "./uuid"
 
 import {
   IResultsTrainerConfig
@@ -7,7 +7,7 @@ import {
 
 export async function getResultsConfig(): Promise<IResultsTrainerConfig> {
   return {
-    uid: new UUID(1),
+    uid: new UUID(1).toString(),
     id: "results",
     header: "Тренировка завершена",
     result: Math.floor(Math.random()*50)+20,

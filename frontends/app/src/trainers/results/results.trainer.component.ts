@@ -9,8 +9,6 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
-import { UUID } from "../../uuid"
-
 import {
   IResultsTrainerConfig,
   IResultsTrainerResult,
@@ -24,14 +22,7 @@ import {
 })
 export class ResultsTrainerComponent implements OnInit, OnChanges {
   @Input()
-  config: IResultsTrainerConfig = {
-    id: "results",
-    uid: new UUID(),
-    header: "",
-    result: 0,
-    text: [],
-    button: "",
-  }
+  config!: IResultsTrainerConfig
 
   result:  IResultsTrainerResult = {
     id: "results",

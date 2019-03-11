@@ -10,8 +10,6 @@ import {
   ElementRef,
 } from "@angular/core"
 
-import { UUID } from "../../uuid"
-
 import {
   IColorsColumnsTrainerConfig,
   IColorsColumnsTrainerResult,
@@ -36,15 +34,10 @@ export class ColorsColumnsTrainerComponent implements OnInit, OnChanges {
   }
 
   @Input()
-  config: IColorsColumnsTrainerConfig = {
-    id: "colors-columns",
-    uid: new UUID(),
-    columns: [],
-    colors: [],
-  }
+  config!: IColorsColumnsTrainerConfig
 
   result: IColorsColumnsTrainerResult = {
-    id: "icons-table",
+    id: "colors-columns",
     config: this.config,
     success: 0,
     error: 0,

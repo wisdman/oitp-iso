@@ -1,4 +1,4 @@
-import { UUID } from "../uuid"
+import { UUID } from "./uuid"
 
 import {
   IMessageTrainerConfig
@@ -15,10 +15,10 @@ export async function getMessageConfig({
   button: string
 }): Promise<IMessageTrainerConfig> {
   return {
-    uid: new UUID(1),
+    uid: new UUID(1).toString(),
     id: "message",
     header,
-    text: text.split(/[\n\r]+/),
+    body: text.split(/[\n\r]+/).map(t => `<p>${t}</p>`).join(""),
     button,
     timeLimit: 0,
   }

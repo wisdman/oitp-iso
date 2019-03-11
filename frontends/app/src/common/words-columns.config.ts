@@ -4,7 +4,7 @@ import {
   // NewValueArray,
 } from "./functions"
 
-import { UUID } from "../uuid"
+import { UUID } from "./uuid"
 
 
 import {
@@ -29,7 +29,7 @@ export async function getWordsColumnsConfig(): Promise<IWordsColumnsTrainerConfi
   words = ShuffleArray(words)
 
   return {
-    uid: new UUID(1),
+    uid: new UUID(1).toString(),
     id: "words-columns",
     words,
     columns,

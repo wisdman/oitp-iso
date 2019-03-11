@@ -10,11 +10,12 @@ import {
 import { getArticleConfig } from "./article.config"
 import { getColorsColumnsConfig } from "./colors-columns.config"
 import { getFirstLettersConfig } from "./first-letters.config"
-import { getIconsTableConfig } from "./icons-table.config"
+import { getImageTableConfig } from "./image-table.config"
 import { getMessageConfig } from "./message.config"
 import { getNumberTableConfig } from "./number-table.config"
 import { getResultsConfig } from "./result.config"
 import { getWordsColumnsConfig } from "./words-columns.config"
+import { getImageConstructorConfig } from "./shape-field.config"
 
 async function RANDOM_EVERYDAY() {
 
@@ -30,14 +31,36 @@ async function RANDOM_EVERYDAY() {
     article,
     questions,
 
+    [
+      await getMessageConfig({
+        header: "Конструктор изображений",
+        text: "Востановите изображение по памяти",
+        button: "Начать",
+      }),
+      ...(await getImageConstructorConfig()),
+      ...(await getImageConstructorConfig()),
+      ...(await getImageConstructorConfig()),
+    ],
+
+    [
+      await getMessageConfig({
+        header: "Таблицы с изображениями",
+        text: "Востановите таблицу по памяти",
+        button: "Начать",
+      }),
+      ...(await getImageTableConfig()),
+      ...(await getImageTableConfig()),
+      ...(await getImageTableConfig()),
+      ...(await getImageTableConfig()),
+      ...(await getImageTableConfig()),
+    ],
+
     ShuffleArray([[
       await getMessageConfig({
         header: "Сопостовление цветов",
         text: "Сопоставте цвета",
         button: "Начать",
       }),
-      await getColorsColumnsConfig(),
-      await getColorsColumnsConfig(),
       await getColorsColumnsConfig(),
     ],
 
@@ -77,19 +100,6 @@ async function RANDOM_EVERYDAY() {
       await getWordsColumnsConfig(),
     ]]).flat(),
 
-    [
-      await getMessageConfig({
-        header: "Таблицы с изображениями",
-        text: "Востановите таблицу по памяти",
-        button: "Начать",
-      }),
-      await getIconsTableConfig(),
-      await getIconsTableConfig(),
-      await getIconsTableConfig(),
-      await getIconsTableConfig(),
-      await getIconsTableConfig(),
-    ],
-
     await getResultsConfig(),
   ]
 
@@ -104,7 +114,7 @@ async function RANDOM_ONCE() {
       text: "Пройдите тренажер подобранный специально для вас.",
       button: "Начать тренировку",
     }),
-    await getFirstLettersConfig(),
+    ...(await getImageTableConfig(true)),
     await getResultsConfig(),
   ]
 

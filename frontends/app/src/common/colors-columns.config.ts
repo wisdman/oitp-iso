@@ -3,7 +3,7 @@ import {
   ShuffleArray,
 } from "./functions"
 
-import { UUID } from "../uuid"
+import { UUID } from "./uuid"
 
 
 import {
@@ -24,7 +24,7 @@ export async function getColorsColumnsConfig(): Promise<IColorsColumnsTrainerCon
   colors = colors.slice(0,-1)
 
   return {
-    uid: new UUID(1),
+    uid: new UUID(1).toString(),
     id: "colors-columns",
     colors,
     columns,

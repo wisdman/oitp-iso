@@ -1,44 +1,38 @@
 
-import { UUID } from "../uuid"
-
-import { IArticleTrainer, IArticleTrainerConfig, IArticleTrainerResult } from "./article"
 import { IColorsColumnsTrainer, IColorsColumnsTrainerConfig, IColorsColumnsTrainerResult } from "./colors-columns"
 import { IFirstLettersTrainer, IFirstLettersTrainerConfig, IFirstLettersTrainerResult } from "./first-letters"
-import { IIconsTableTrainer, IIconsTableTrainerConfig, IIconsTableTrainerResult } from "./icons-table"
-import { IImageConstructorTrainer, IImageConstructorTrainerConfig, IImageConstructorTrainerResult } from "./image-constructor"
+import { IImageTableTrainer, IImageTableTrainerConfig, IImageTableTrainerResult } from "./image-table"
+import { IShapeFieldTrainer, IShapeFieldTrainerConfig, IShapeFieldTrainerResult } from "./shape-field"
 import { IMessageTrainer, IMessageTrainerConfig, IMessageTrainerResult } from "./message"
 import { INumberTableTrainer, INumberTableTrainerConfig, INumberTableTrainerResult } from "./number-table"
 import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
 import { IResultsTrainer, IResultsTrainerConfig, IResultsTrainerResult } from "./results"
 import { IWordsColumnsTrainer, IWordsColumnsTrainerConfig, IWordsColumnsTrainerResult } from "./words-columns"
 
-export type ITrainer = IArticleTrainer
-                     | IColorsColumnsTrainer
+export type ITrainer = IColorsColumnsTrainer
                      | IFirstLettersTrainer
-                     | IIconsTableTrainer
-                     | IImageConstructorTrainer
+                     | IImageTableTrainer
+                     | IShapeFieldTrainer
                      | IMessageTrainer
                      | INumberTableTrainer
                      | IQuestionTrainer
                      | IResultsTrainer
                      | IWordsColumnsTrainer
 
-export type ITrainerConfigs = IArticleTrainerConfig
-                            | IColorsColumnsTrainerConfig
+export type ITrainerConfigs = IColorsColumnsTrainerConfig
                             | IFirstLettersTrainerConfig
-                            | IIconsTableTrainerConfig
-                            | IImageConstructorTrainerConfig
+                            | IImageTableTrainerConfig
+                            | IShapeFieldTrainerConfig
                             | IMessageTrainerConfig
                             | INumberTableTrainerConfig
                             | IQuestionTrainerConfig
                             | IResultsTrainerConfig
                             | IWordsColumnsTrainerConfig
 
-export type ITrainerResults = IArticleTrainerResult
-                            | IColorsColumnsTrainerResult
+export type ITrainerResults = IColorsColumnsTrainerResult
                             | IFirstLettersTrainerResult
-                            | IIconsTableTrainerResult
-                            | IImageConstructorTrainerResult
+                            | IImageTableTrainerResult
+                            | IShapeFieldTrainerResult
                             | IMessageTrainerResult
                             | INumberTableTrainerResult
                             | IQuestionTrainerResult
@@ -47,7 +41,7 @@ export type ITrainerResults = IArticleTrainerResult
 
 export interface ITrainerConfig {
   id: ITrainer
-  uid: UUID
+  uid: string
   timeLimit?: number
 }
 
@@ -67,9 +61,22 @@ export interface ITrainerResult {
 
 // === Common ressources ===
 
+export type IShapeType = "polygon" | "ellipse"
+
+export interface IShape {
+  id: number
+
+  type: IShapeType
+  data: Array<Array<number>>
+
+  fill: string
+  stroke: string
+}
+
 export interface IImage {
   id: number
-  data?: string
+  data: string
+
   background?: string
 }
 

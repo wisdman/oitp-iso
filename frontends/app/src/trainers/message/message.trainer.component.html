@@ -1,7 +1,4 @@
-<div class="message" *ngIf="config" class="message">
-  <h1 class="h1">{{config.header}}</h1>
-  <p *ngFor="let p of config.text" class="p">{{p}}</p>
-  <button class="button" (click)="onClick()">
-    <span>{{config.button}}</span>
-  </button>
-</div>
+<content-box [header]="config.header" [body]="config.body" (click)="onClick()"></content-box>
+<button class="button" (click)="onClick()">
+  <span>{{config.button}}</span>
+</button>

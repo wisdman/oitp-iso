@@ -48,8 +48,8 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  private _lapTimerSubscriber: Subscription
-  private _routeParamsSubscriber: Subscription
+  private _lapTimerSubscriber!: Subscription
+  private _routeParamsSubscriber!: Subscription
 
   ngOnInit() {
     this._lapTimerSubscriber = this._trainingService

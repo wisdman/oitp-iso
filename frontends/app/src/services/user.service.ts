@@ -32,16 +32,16 @@ export class UserService {
 
   constructor() {
     this.updateUser({
-      name: "Дмитрий Поляков",
-      premium: 101,
+      name: "Test User",
+      premium: 90,
 
-      charge: 72,
+      charge: 50,
 
       intelligence: 50,
-      knowledge: 61,
-      memory: 32,
+      knowledge: 50,
+      memory: 50,
 
-      speed: [54, 57, 68, 42, 81]
+      speed: [50, 50, 50, 50, 50]
     })
   }
 

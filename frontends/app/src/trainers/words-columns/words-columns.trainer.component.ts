@@ -10,8 +10,6 @@ import {
   ElementRef,
 } from "@angular/core"
 
-import { UUID } from "../../uuid"
-
 import {
   IWordsColumnsTrainerConfig,
   IWordsColumnsTrainerResult,
@@ -36,16 +34,10 @@ export class WordsColumnsTrainerComponent implements OnInit, OnChanges {
   }
 
   @Input()
-  config: IWordsColumnsTrainerConfig = {
-    id: "words-columns",
-    uid: new UUID(),
-
-    columns: [],
-    words: [],
-  }
+  config!: IWordsColumnsTrainerConfig
 
   result: IWordsColumnsTrainerResult = {
-    id: "icons-table",
+    id: "words-columns",
     config: this.config,
     success: 0,
     error: 0,

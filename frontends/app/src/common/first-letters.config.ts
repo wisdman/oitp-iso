@@ -2,7 +2,7 @@ import {
   ShuffleArray,
 } from "./functions"
 
-import { UUID } from "../uuid"
+import { UUID } from "./uuid"
 
 
 import {
@@ -15,7 +15,7 @@ export async function getFirstLettersConfig(): Promise<IFirstLettersTrainerConfi
   const sentence = ShuffleArray(DATA.split(/[\n\r]+/))[0]
 
   return {
-    uid: new UUID(1),
+    uid: new UUID(1).toString(),
     id: "first-letters",
     mode: "show",
     sentence

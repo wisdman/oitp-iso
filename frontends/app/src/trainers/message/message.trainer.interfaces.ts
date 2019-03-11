@@ -9,7 +9,7 @@ export type IMessageTrainer = "message"
 export interface IMessageTrainerConfig extends ITrainerConfig {
   id: IMessageTrainer
   header: string
-  text: Array<string>
+  body: string
   button: string
 }
 

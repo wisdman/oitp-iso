@@ -2,17 +2,17 @@ import {
   ShuffleArray,
 } from "./functions"
 
-import { UUID } from "../uuid"
+import { UUID } from "./uuid"
 
 
 import {
-  IArticleTrainerConfig,
+  IMessageTrainerConfig,
   IQuestionTrainerTextAnswer,
   IQuestionTrainerConfig,
 } from "../trainers"
 
 export async function getArticleConfig(): Promise<{
-  article: IArticleTrainerConfig,
+  article: IMessageTrainerConfig,
   questions: Array<IQuestionTrainerConfig>
 }> {
   const DATA = await fetch(`/articles.txt`).then(response => response.text())
@@ -34,12 +34,12 @@ export async function getArticleConfig(): Promise<{
                                    .map(data => data as IQuestionTrainerTextAnswer)
                        }
                    })
-                   .map( question => ({...question, id: "question", uid: new UUID(1)}) as IQuestionTrainerConfig )
+                   .map( question => ({...question, id: "question", uid: new UUID(1).toString()}) as IQuestionTrainerConfig )
 
   return {
     article: {
-      uid: new UUID(1),
-      id: "article",
+      uid: new UUID(1).toString(),
+      id: "message",
       header: "",
       body: body.split(/\s*[\r\n]+\s*/).map(str => `<p>${str}</p>`).join(""),
       button: "Продолжить",

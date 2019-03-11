@@ -20,7 +20,6 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "strictPropertyInitialization": false,
 
     "skipLibCheck": true,
     "lib": ["DOM", "ES2018", "ESNext"],

@@ -16,6 +16,7 @@ import {
 import {
   CardChargerComponent,
   CardEverydayComponent,
+  ContentBoxComponent,
   HeaderNotificationsComponent,
   HeaderUserComponent,
   IndicatorBrainComponent,
@@ -40,15 +41,14 @@ import {
 } from "./layouts"
 
 import {
-  ArticleTrainerComponent,
   ColorsColumnsTrainerComponent,
   FirstLettersTrainerComponent,
-  IconsTableTrainerComponent,
-  ImageConstructorTrainerComponent,
+  ImageTableTrainerComponent,
   MessageTrainerComponent,
   NumberTableTrainerComponent,
   QuestionTrainerComponent,
   ResultsTrainerComponent,
+  ShapeFieldTrainerComponent,
   WordsColumnsTrainerComponent,
 } from "./trainers"
 
@@ -85,6 +85,7 @@ import { ROUTES } from "./app.routing"
 
     CardChargerComponent,
     CardEverydayComponent,
+    ContentBoxComponent,
     HeaderNotificationsComponent,
     HeaderUserComponent,
     IndicatorBrainComponent,
@@ -105,15 +106,14 @@ import { ROUTES } from "./app.routing"
     SupportLayoutComponent,
     TrainingLayoutComponent,
 
-    ArticleTrainerComponent,
     ColorsColumnsTrainerComponent,
     FirstLettersTrainerComponent,
-    IconsTableTrainerComponent,
-    ImageConstructorTrainerComponent,
+    ImageTableTrainerComponent,
     MessageTrainerComponent,
     NumberTableTrainerComponent,
     QuestionTrainerComponent,
     ResultsTrainerComponent,
+    ShapeFieldTrainerComponent,
     WordsColumnsTrainerComponent,
 
     DaysPipe,

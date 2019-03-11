@@ -1,0 +1,24 @@
+<div class="field" *ngIf="config">
+
+  <div class="matrix">
+    <div
+      *ngFor="let item of matrix; let i = index"
+      (dragstart)="dragMatrixStart($event, item.userImage)"
+      (dragover)="allowDrop($event)"
+      (drop)="drop($event, item)"
+    >
+      <img *ngIf="!config.isGameMode && item.image" [src]="dataUrl(item.image)">
+      <img *ngIf="config.isGameMode && item.userImage" [src]="dataUrl(item.userImage)">
+    </div>
+  </div>
+
+  <div class="items" *ngIf="config.isGameMode">
+    <div
+      *ngFor="let image of config.items; let i = index"
+      (dragstart)="dragItemsStart($event, i)"
+    >
+      <img [src]="dataUrl(image)">
+    </div>
+  </div>
+
+</div>

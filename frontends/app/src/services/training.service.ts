@@ -7,12 +7,14 @@ import {
   Subscription,
   timer,
   zip,
+  // race,
 } from "rxjs"
 
 import {
   map,
   switchMap,
   takeUntil,
+  // timeout,
 } from "rxjs/operators"
 
 import {
@@ -54,6 +56,18 @@ export class TrainingService {
                   .pipe(
                     map(config => config && config.timeLimit || 0)
                   )
+
+  // lapTimer = this.config
+  //                 .pipe(
+  //                   map(config => {
+  //                     console.log(config)
+  //                     return config && config.timeLimit || 0
+  //                   }),
+  //                   // switchMap( limit => {
+  //                   //   console.log(limit)
+  //                   //   return limit > 0 ? from([1]).pipe(timeout(limit * 1000)) : from([0])
+  //                   // })
+  //                 ).subscribe((v) => console.log("tik", v))
 
   initTraining(type: "everyday" | "once") {
     this._globalTimerStart(30*60)

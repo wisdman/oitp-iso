@@ -12,8 +12,6 @@ import {
 
 import { DomSanitizer } from "@angular/platform-browser"
 
-import { UUID } from "../../uuid"
-
 import {
   IFirstLettersTrainerConfig,
   IFirstLettersTrainerResult,
@@ -34,18 +32,13 @@ export class FirstLettersTrainerComponent implements OnInit, OnChanges {
 
   letters: Array<string> = []
   comb: string = ""
-  mode: "show" | "fill"
+  mode: "show" | "fill" = "show"
 
   @Input()
-  config: IFirstLettersTrainerConfig = {
-    id: "first-letters",
-    uid: new UUID(),
-    mode: "show",
-    sentence: "",
-  }
+  config!: IFirstLettersTrainerConfig
 
   result: IFirstLettersTrainerResult = {
-    id: "icons-table",
+    id: "first-letters",
     config: this.config
   }
 

@@ -11,8 +11,6 @@ import {
 
 import { DomSanitizer } from "@angular/platform-browser"
 
-import { UUID } from "../../uuid"
-
 import {
   IQuestionTrainerConfig,
   IQuestionTrainerResult,
@@ -30,12 +28,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
   ){}
 
   @Input()
-  config: IQuestionTrainerConfig = {
-    id: "question",
-    uid: new UUID(),
-    body: "",
-    answers: [],
-  }
+  config!: IQuestionTrainerConfig
 
   result: IQuestionTrainerResult = {
     id: "question",

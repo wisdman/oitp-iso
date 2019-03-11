@@ -10,35 +10,6 @@
   min-height: 100%;
 
   position: relative;
-
-}
-
-.message {
-  display: block;
-  width: 100%;
-  max-width: 666px;
-}
-
-.h1 {
-  display: block;
-  margin: 0;
-  padding-left: 8px;
-  padding-right: 8px;
-
-  font-size: 24px;
-  line-height: 1.3;
-  text-align: center;
-}
-
-.p {
-  display: block;
-  margin: 0;
-  margin-top: 10px;
-
-  padding-left: 8px;
-  padding-right: 8px;
-
-  font-size: 16px;
-  line-height: 1.35;
-  text-align: left;
+  overflow: hidden;
+  overflow-y: auto;
 }

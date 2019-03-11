@@ -10,8 +10,6 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
-import { UUID } from "../../uuid"
-
 import {
   INumberTableTrainerConfig,
   INumberTableTrainerResult,
@@ -31,16 +29,7 @@ export class NumberTableTrainerComponent implements OnInit, OnChanges {
   ){}
 
   @Input()
-  config: INumberTableTrainerConfig = {
-    id: "number-table",
-    uid: new UUID(),
-
-    columns: 0,
-    rows: 0,
-    last: 0,
-
-    matrix: [],
-  }
+  config!: INumberTableTrainerConfig
 
   result: INumberTableTrainerResult = {
     id: "number-table",

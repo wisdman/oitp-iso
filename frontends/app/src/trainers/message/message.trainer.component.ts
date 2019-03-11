@@ -9,8 +9,6 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
-import { UUID } from "../../uuid"
-
 import {
   IMessageTrainerConfig,
   IMessageTrainerResult,
@@ -24,13 +22,7 @@ import {
 })
 export class MessageTrainerComponent implements OnInit, OnChanges {
   @Input()
-  config: IMessageTrainerConfig = {
-    id: "message",
-    uid: new UUID(),
-    header: "",
-    text: [],
-    button: "",
-  }
+  config!: IMessageTrainerConfig
 
   result: IMessageTrainerResult = {
     id: "message",
