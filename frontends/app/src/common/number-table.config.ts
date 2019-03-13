@@ -1,6 +1,6 @@
-import {
-  RandomInt,
-} from "./functions"
+// import {
+//   RandomInt,
+// } from "./functions"
 
 import { UUID } from "./uuid"
 
@@ -8,9 +8,9 @@ import {
   INumberTableTrainerConfig
 } from "../trainers"
 
-export async function getNumberTableConfig(): Promise<INumberTableTrainerConfig> {
-  const columns = RandomInt(3, 5)
-  const rows = RandomInt(Math.max(2, columns - 1), Math.min(5, columns + 1))
+export async function getNumberTableConfig(size: number = 5): Promise<INumberTableTrainerConfig> {
+  const columns = size
+  const rows = size
 
   const max = columns * rows
   const matrix = Array.from(Array(max), (_, i) =>({ value: ++i })).sort(() => Math.random() - 0.5)

@@ -19,6 +19,7 @@ export interface IImageTableTrainerConfig extends ITrainerConfig {
   matrix: Array<number>
 
   isGameMode: boolean
+  scale: boolean
 }
 
 export interface IImageTableTrainerResult extends ITrainerResult {

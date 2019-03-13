@@ -115,12 +115,14 @@ export async function getImageTableConfig(shapes: boolean = false, i: number = 5
       ...config,
       id: "image-table",
       isGameMode: false,
-      timeLimit: 100,
+      timeLimit: 10,
+      scale: !shapes
     },{
       ...config,
       id: "image-table",
       isGameMode: true,
-      timeLimit: 3,
+      timeLimit: 60,
+      scale: !shapes
     }])
   }
 

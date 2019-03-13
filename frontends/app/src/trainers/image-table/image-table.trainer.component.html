@@ -7,8 +7,8 @@
       (dragover)="allowDrop($event)"
       (drop)="drop($event, item)"
     >
-      <img *ngIf="!config.isGameMode && item.image" [src]="dataUrl(item.image)">
-      <img *ngIf="config.isGameMode && item.userImage" [src]="dataUrl(item.userImage)">
+      <img *ngIf="!config.isGameMode && item.image" [src]="dataUrl(item.image)" [class.scale]="config.scale">
+      <img *ngIf="config.isGameMode && item.userImage" [src]="dataUrl(item.userImage)" [class.scale]="config.scale">
     </div>
   </div>
 
@@ -17,7 +17,7 @@
       *ngFor="let image of config.items; let i = index"
       (dragstart)="dragItemsStart($event, i)"
     >
-      <img [src]="dataUrl(image)">
+      <img [src]="dataUrl(image)" [class.scale]="config.scale">
     </div>
   </div>
 
