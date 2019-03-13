@@ -3,23 +3,24 @@ import {
   ITrainerConfigs,
 } from "../trainers"
 
-import {
-  ShuffleArray
-} from "./functions"
+// import {
+  // ShuffleArray
+// } from "./functions"
 
-import { getArticleConfig } from "./article.config"
-import { getColorsColumnsConfig } from "./colors-columns.config"
-import { getFirstLettersConfig } from "./first-letters.config"
+// import { getArticleConfig } from "./article.config"
+// import { getColorsColumnsConfig } from "./colors-columns.config"
+// import { getFirstLettersConfig } from "./first-letters.config"
 import { getImageTableConfig } from "./image-table.config"
 import { getMessageConfig } from "./message.config"
 import { getNumberTableConfig } from "./number-table.config"
 import { getResultsConfig } from "./result.config"
-import { getWordsColumnsConfig } from "./words-columns.config"
-import { getImageConstructorConfig } from "./shape-field.config"
+// import { getWordsColumnsConfig } from "./words-columns.config"
+// import { getImageConstructorConfig } from "./shape-field.config"
+import { getTezirovanieConfig } from "./tezirovanie.config"
 
 async function RANDOM_EVERYDAY() {
 
-  const {article, questions} = await getArticleConfig()
+  // const {article, questions} = await getArticleConfig()
 
   const trainers = [
     await getMessageConfig({
@@ -28,52 +29,26 @@ async function RANDOM_EVERYDAY() {
       button: "Начать тренировку",
     }),
 
-    article,
-    questions,
+    await getTezirovanieConfig(),
+
+    // article,
+    // questions,
 
     [
-      await getMessageConfig({
-        header: "Конструктор изображений",
-        text: "Востановите изображение по памяти",
-        button: "Начать",
-      }),
-      ...(await getImageConstructorConfig()),
-      ...(await getImageConstructorConfig()),
-      ...(await getImageConstructorConfig()),
-    ],
-
-    [
-      await getMessageConfig({
+      {...await getMessageConfig({
         header: "Таблицы с изображениями",
         text: "Востановите таблицу по памяти",
         button: "Начать",
-      }),
-      ...(await getImageTableConfig()),
-      ...(await getImageTableConfig()),
-      ...(await getImageTableConfig()),
-      ...(await getImageTableConfig()),
-      ...(await getImageTableConfig()),
-    ],
+      }), globalTimeLimit: 30 * 60},
+      ...(await getImageTableConfig(true, 2, 3)),
+      ...(await getImageTableConfig(true, 3, 10)),
+      ...(await getImageTableConfig(true, 4, 10)),
+      ...(await getImageTableConfig(true, 5, 10)),
 
-    ShuffleArray([[
-      await getMessageConfig({
-        header: "Сопостовление цветов",
-        text: "Сопоставте цвета",
-        button: "Начать",
-      }),
-      await getColorsColumnsConfig(),
-    ],
-
-    [
-      await getMessageConfig({
-        header: "Точность",
-        text: "Прочите выражение, интонационно оформив, расставив логические ударения. Воспроизвести по памяти, записывая первую букву каждого слова.",
-        button: "Начать",
-      }),
-      await getFirstLettersConfig(),
-      await getFirstLettersConfig(),
-      await getFirstLettersConfig(),
-      await getFirstLettersConfig(),
+      ...(await getImageTableConfig(false, 2, 3)),
+      ...(await getImageTableConfig(false, 3, 10)),
+      ...(await getImageTableConfig(false, 4, 10)),
+      ...(await getImageTableConfig(false, 5, 10)),
     ],
 
     [
@@ -89,16 +64,48 @@ async function RANDOM_EVERYDAY() {
       await getNumberTableConfig(),
     ],
 
-    [
-      await getMessageConfig({
-        header: "Слова по группа",
-        text: "Отсортируйте слова по группам",
-        button: "Начать",
-      }),
-      await getWordsColumnsConfig(),
-      await getWordsColumnsConfig(),
-      await getWordsColumnsConfig(),
-    ]]).flat(),
+    // [
+    //   await getMessageConfig({
+    //     header: "Конструктор изображений",
+    //     text: "Востановите изображение по памяти",
+    //     button: "Начать",
+    //   }),
+    //   ...(await getImageConstructorConfig()),
+    //   ...(await getImageConstructorConfig()),
+    //   ...(await getImageConstructorConfig()),
+    // ],
+
+    // [
+    //   await getMessageConfig({
+    //     header: "Сопостовление цветов",
+    //     text: "Сопоставте цвета",
+    //     button: "Начать",
+    //   }),
+    //   await getColorsColumnsConfig(),
+    // ],
+
+    // [
+    //   await getMessageConfig({
+    //     header: "Точность",
+    //     text: "Прочите выражение, интонационно оформив, расставив логические ударения. Воспроизвести по памяти, записывая первую букву каждого слова.",
+    //     button: "Начать",
+    //   }),
+    //   await getFirstLettersConfig(),
+    //   await getFirstLettersConfig(),
+    //   await getFirstLettersConfig(),
+    //   await getFirstLettersConfig(),
+    // ],
+
+    // [
+    //   await getMessageConfig({
+    //     header: "Слова по группа",
+    //     text: "Отсортируйте слова по группам",
+    //     button: "Начать",
+    //   }),
+    //   await getWordsColumnsConfig(),
+    //   await getWordsColumnsConfig(),
+    //   await getWordsColumnsConfig(),
+    // ],
 
     await getResultsConfig(),
   ]
@@ -114,7 +121,7 @@ async function RANDOM_ONCE() {
       text: "Пройдите тренажер подобранный специально для вас.",
       button: "Начать тренировку",
     }),
-    ...(await getImageTableConfig(true)),
+    ...(await getImageTableConfig()),
     await getResultsConfig(),
   ]
 

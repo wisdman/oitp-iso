@@ -2,6 +2,7 @@ import {
   Component,
   ChangeDetectionStrategy,
   Input,
+  // HostListener,
 } from "@angular/core"
 
 import { DomSanitizer } from "@angular/platform-browser"
@@ -21,9 +22,17 @@ export class ContentBoxComponent {
   header!: string
 
   @Input()
+  selection!: boolean
+
+  @Input()
   body!: string
 
   get content() {
     return this._sanitizer.bypassSecurityTrustHtml(this.body)
   }
+
+  // @HostListener("document:selectionchange", [])
+  // onSelect() {
+  //   console.log("select")
+  // }
 }

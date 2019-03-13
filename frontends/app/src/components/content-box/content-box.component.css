@@ -21,3 +21,11 @@
   display: block;
   width: 100%;
 }
+
+.selection {
+  user-select: text;
+}
+
+.selection::selection {
+  background: yellow;
+}

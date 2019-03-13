@@ -21,6 +21,7 @@ export async function getNumberTableConfig(): Promise<INumberTableTrainerConfig>
     columns,
     rows,
     last: max,
-    matrix
+    matrix,
+    timeLimit: 30,
   }
 }

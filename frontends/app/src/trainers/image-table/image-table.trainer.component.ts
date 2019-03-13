@@ -104,7 +104,8 @@ export class ImageTableTrainerComponent implements OnInit, OnChanges {
     const success = this.matrix
                         .reduce( (success, item) => item.image === item.userImage ? ++success : success, 0)
     const error = this.matrix.length - success
-     this._updateResult({ success, error, isFinish: error === 0 })
+    const isDone = this.matrix.every(item => item.userImage !== undefined)
+    this._updateResult({ success, error, isFinish: error === 0 || isDone })
   }
 
   dragItemsStart(event: DragEvent, id?: number) {

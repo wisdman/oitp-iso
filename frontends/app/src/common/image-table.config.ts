@@ -14,6 +14,10 @@ import {
   PALETTE
 } from "./colors"
 
+import {
+  getMatrix
+} from "./matrix"
+
 import { Poligon, Ellipse, Shape } from "./shape"
 
 import {
@@ -23,9 +27,10 @@ import {
 const TYPES = ["triangle", "square", "parallelogram", "polygon", "ellipse"]
 
 
-function getShapesImages() {
+function getShapesImages(j: number) {
+  const pallette = ShuffleArray(PALETTE).slice(0,j)
   const items: Array<Shape> = ShuffleArray(TYPES)
-                .slice(0, 3)
+                .slice(0, j)
                 .map((type, i) => {
                   switch (type) {
                     case "triangle":
@@ -35,7 +40,7 @@ function getShapesImages() {
                         width: 50,
                         side: ShuffleArray(["left","center","right"])[0] as ("left" | "center" | "right"),
                         rotate: ShuffleArray([0, 90, 180, 270])[0] as (0 | 90 | 180 | 270),
-                        fill: ShuffleArray(PALETTE)[0],
+                        fill: pallette[i],
                       })
                       break
 
@@ -44,7 +49,7 @@ function getShapesImages() {
                         id: i,
                         type: "square",
                         width: 50,
-                        fill: ShuffleArray(PALETTE)[0],
+                        fill: pallette[i],
                       })
 
                     case "parallelogram":
@@ -53,7 +58,7 @@ function getShapesImages() {
                         type: "parallelogram",
                         width: 50,
                         offset: 20,
-                        fill: ShuffleArray(PALETTE)[0],
+                        fill: pallette[i],
                       })
 
                     case "polygon":
@@ -62,7 +67,7 @@ function getShapesImages() {
                         type: "polygon",
                         width: 50,
                         vertex: RandomInt(5, 8),
-                        fill: ShuffleArray(PALETTE)[0],
+                        fill: pallette[i],
                       })
 
                     case "ellipse":
@@ -72,7 +77,7 @@ function getShapesImages() {
                         type: "ellipse",
                         rx,
                         ry: rx === 15 ? 25 : ShuffleArray([15, 25])[0],
-                        fill: ShuffleArray(PALETTE)[0],
+                        fill: pallette[i],
                       })
                   }
 
@@ -80,7 +85,7 @@ function getShapesImages() {
                         id: i,
                         type: "square",
                         width: 50,
-                        fill: ShuffleArray(PALETTE)[0],
+                        fill: pallette[i],
                       })
                 })
 
@@ -89,32 +94,35 @@ function getShapesImages() {
 
 
 
-export async function getImageTableConfig(shapes: boolean = false): Promise<IImageTableTrainerConfig[]> {
-  const columns = RandomInt(2, 5)
-  const rows = RandomInt(Math.max(2, columns - 1), Math.min(5, columns + 1))
+export async function getImageTableConfig(shapes: boolean = false, i: number = 5, count: number = 1): Promise<IImageTableTrainerConfig[]> {
 
-  const iconsCount = RandomInt(2, Math.min(3, columns * rows))
+  const matrixList = ShuffleArray(getMatrix(i))
+  const patterns = matrixList.slice(0, Math.min(count, matrixList.length))
 
-  const items = shapes ? getShapesImages() : (await fetchIcons(ShuffleArray(ICONS["flat"]).slice(0, iconsCount)))
+  let result: Array<IImageTableTrainerConfig> = []
 
-  const matrix = Array.from(Array(columns * rows), () => RandomInt(0, items.length - 1))
-
-  const config = {
-    uid: new UUID(1).toString(),
-    columns,
-    rows,
-    items,
-    matrix,
+  for ( let matrix of patterns ) {
+     const max = Math.max(...matrix)
+     const items = shapes ? getShapesImages(max) : (await fetchIcons(ShuffleArray(ICONS["flat"]).slice(0, max)))
+     const config = {
+      uid: new UUID(1).toString(),
+      columns: i,
+      rows: i,
+      items,
+      matrix: matrix.map(id => shapes ? id-1 : id === 0 ? 0 : id-1)
+    }
+    result = result.concat([{
+      ...config,
+      id: "image-table",
+      isGameMode: false,
+      timeLimit: 100,
+    },{
+      ...config,
+      id: "image-table",
+      isGameMode: true,
+      timeLimit: 3,
+    }])
   }
 
-  return [{
-    ...config,
-    id: "image-table",
-    isGameMode: false,
-    timeLimit: 30,
-  },{
-    ...config,
-    id: "image-table",
-    isGameMode: true,
-  }]
+  return result
 }

@@ -7,7 +7,7 @@ import {
   NewValueArray
 } from "./functions"
 
-const ICONS_FLAT_COUNT = 1140
+const ICONS_FLAT_COUNT = 188
 const ICONS_ROUND_COUNT = 0
 
 export const ICONS = {
@@ -18,7 +18,7 @@ export const ICONS = {
 export function fetchIcons(arr: Array<IImage>) {
   return Promise.all(
     arr.map(image =>
-            fetch(`/icons/flat-min/${image.id}.svg`)
+            fetch(`/icons/vll/${image.id}.svg`)
             .then(response => response.text())
             .then(text => {
               image.data = "data:image/svg+xml;base64," + window.btoa(text)

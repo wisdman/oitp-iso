@@ -2,11 +2,12 @@
 import { IColorsColumnsTrainer, IColorsColumnsTrainerConfig, IColorsColumnsTrainerResult } from "./colors-columns"
 import { IFirstLettersTrainer, IFirstLettersTrainerConfig, IFirstLettersTrainerResult } from "./first-letters"
 import { IImageTableTrainer, IImageTableTrainerConfig, IImageTableTrainerResult } from "./image-table"
-import { IShapeFieldTrainer, IShapeFieldTrainerConfig, IShapeFieldTrainerResult } from "./shape-field"
 import { IMessageTrainer, IMessageTrainerConfig, IMessageTrainerResult } from "./message"
 import { INumberTableTrainer, INumberTableTrainerConfig, INumberTableTrainerResult } from "./number-table"
 import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
 import { IResultsTrainer, IResultsTrainerConfig, IResultsTrainerResult } from "./results"
+import { IShapeFieldTrainer, IShapeFieldTrainerConfig, IShapeFieldTrainerResult } from "./shape-field"
+import { ITezirovanieTrainer, ITezirovanieTrainerConfig, ITezirovanieTrainerResult } from "./tezirovanie"
 import { IWordsColumnsTrainer, IWordsColumnsTrainerConfig, IWordsColumnsTrainerResult } from "./words-columns"
 
 export type ITrainer = IColorsColumnsTrainer
@@ -17,6 +18,7 @@ export type ITrainer = IColorsColumnsTrainer
                      | INumberTableTrainer
                      | IQuestionTrainer
                      | IResultsTrainer
+                     | ITezirovanieTrainer
                      | IWordsColumnsTrainer
 
 export type ITrainerConfigs = IColorsColumnsTrainerConfig
@@ -27,6 +29,7 @@ export type ITrainerConfigs = IColorsColumnsTrainerConfig
                             | INumberTableTrainerConfig
                             | IQuestionTrainerConfig
                             | IResultsTrainerConfig
+                            | ITezirovanieTrainerConfig
                             | IWordsColumnsTrainerConfig
 
 export type ITrainerResults = IColorsColumnsTrainerResult
@@ -37,12 +40,15 @@ export type ITrainerResults = IColorsColumnsTrainerResult
                             | INumberTableTrainerResult
                             | IQuestionTrainerResult
                             | IResultsTrainerResult
+                            | ITezirovanieTrainerResult
                             | IWordsColumnsTrainerResult
 
 export interface ITrainerConfig {
   id: ITrainer
   uid: string
   timeLimit?: number
+
+  globalTimeLimit?: number
 }
 
 export interface ITrainerResult {

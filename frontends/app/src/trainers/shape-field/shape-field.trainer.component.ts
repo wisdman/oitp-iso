@@ -99,6 +99,8 @@ export class ShapeFieldTrainerComponent implements OnInit, OnChanges {
                         .filter((v:IShapeFieldItem | undefined): v is IShapeFieldItem => v !== undefined)
     }
 
+    setTimeout(() => this._updateResult({ isFinish: true }), 30000)
+
     this._updateResult({
       isFinish: false,
       success: 0,

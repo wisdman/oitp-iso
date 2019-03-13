@@ -22,6 +22,7 @@ import {
   IndicatorBrainComponent,
   IndicatorChartsComponent,
   IndicatorSpeedComponent,
+  LapTimerComponent,
   LogComponent,
   SidebarUserComponent,
   СardRecommendationsComponent,
@@ -50,6 +51,7 @@ import {
   ResultsTrainerComponent,
   ShapeFieldTrainerComponent,
   WordsColumnsTrainerComponent,
+  TezirovanieTrainerComponent,
 } from "./trainers"
 
 import {
@@ -91,6 +93,7 @@ import { ROUTES } from "./app.routing"
     IndicatorBrainComponent,
     IndicatorChartsComponent,
     IndicatorSpeedComponent,
+    LapTimerComponent,
     LogComponent,
     SidebarUserComponent,
     СardRecommendationsComponent,
@@ -115,6 +118,7 @@ import { ROUTES } from "./app.routing"
     ResultsTrainerComponent,
     ShapeFieldTrainerComponent,
     WordsColumnsTrainerComponent,
+    TezirovanieTrainerComponent,
 
     DaysPipe,
     TimerPipe,
