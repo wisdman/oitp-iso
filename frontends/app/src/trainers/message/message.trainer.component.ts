@@ -9,6 +9,8 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
+import { DomSanitizer } from "@angular/platform-browser"
+
 import {
   IMessageTrainerConfig,
   IMessageTrainerResult,
@@ -21,12 +23,22 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MessageTrainerComponent implements OnInit, OnChanges {
+  constructor(
+    private _sanitizer: DomSanitizer,
+  ){}
+
+  get content() {
+    const header = this.config.header ? `<h1>${this.config.header}</h1>` : ""
+    const body = this.config.body || ""
+    return this._sanitizer.bypassSecurityTrustHtml(header + body)
+  }
+
   @Input()
   config!: IMessageTrainerConfig
 
   result: IMessageTrainerResult = {
     id: "message",
-    config: this.config
+    config: this.config,
   }
 
   @Output("result")
@@ -38,15 +50,11 @@ export class MessageTrainerComponent implements OnInit, OnChanges {
   }
 
   onClick() {
-    this._updateResult({
-      isFinish: true,
-    })
+    this._updateResult({ isFinish: true })
   }
 
   ngOnInit() {
-    this._updateResult({
-      isFinish: false,
-    })
+    this._updateResult({})
   }
 
   ngOnChanges(sc: SimpleChanges ) {

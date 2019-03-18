@@ -1,0 +1,8 @@
+<div class="field" [style]="matrixStyle">
+  <h1 class="word">{{ currentItem.title }}</h1>
+  <button
+    *ngFor="let group of groups"
+    class="group"
+    (click)="onClick(group)"
+  >{{ group }}</button>
+</div>

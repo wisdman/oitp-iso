@@ -1,25 +1,16 @@
 
 import {
-  IImage,
   ITrainerConfig,
   ITrainerResult,
-  IСell,
 } from "../interfaces"
 
 export type IImageTableTrainer = "image-table"
-export type IImageTableCell = IСell<IImage>
 
 export interface IImageTableTrainerConfig extends ITrainerConfig {
   id: IImageTableTrainer
 
-  columns: number
-  rows: number
-
-  items: Array<IImage>
+  items: Array<string>
   matrix: Array<number>
-
-  isGameMode: boolean
-  scale: boolean
 }
 
 export interface IImageTableTrainerResult extends ITrainerResult {

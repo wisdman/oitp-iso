@@ -29,15 +29,15 @@
   flex-shrink: 0;
 
   display: grid;
-  grid-template-columns: repeat(var(--columns, 5), min-content);
-  grid-template-rows: repeat(var(--rows, 5), min-content);
+  grid-template-columns: repeat(var(--side, 5), min-content);
+  grid-template-rows: repeat(var(--side, 5), min-content);
 
   gap: var(--gap);
   padding: var(--gap);
 }
 
 .matrix div {
-  width: calc( ( 100vmin - var(--margin) * 2 - var(--gap) * ( var(--max) + 1 ) ) / var(--max) );
+  width: calc( ( 100vmin - var(--margin) * 2 - var(--gap) * ( var(--side) + 1 ) ) / var(--side) );
   max-width: 100px;
   padding-top: 100%;
 

@@ -27,6 +27,12 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
     private _sanitizer: DomSanitizer,
   ){}
 
+  get content() {
+    const header = this.config.header ? `<h1>${this.config.header}</h1>` : ""
+    const body = this.config.body || ""
+    return this._sanitizer.bypassSecurityTrustHtml(header + body)
+  }
+
   @Input()
   config!: IQuestionTrainerConfig
 
@@ -37,10 +43,6 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
 
   @Output("result")
   resultValueChange = new EventEmitter<IQuestionTrainerResult>()
-
-  get body() {
-    return this._sanitizer.bypassSecurityTrustHtml(this.config.body)
-  }
 
   private _updateResult(result: Partial<IQuestionTrainerResult>) {
     this.result = {...this.result, config: this.config, ...result}

@@ -1,7 +1,6 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -10,11 +9,19 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
+import { DomSanitizer } from "@angular/platform-browser"
+
 import {
   INumberTableTrainerConfig,
   INumberTableTrainerResult,
-  INumberTableTrainerItem,
 } from "./number-table.trainer.interfaces"
+
+interface IItem {
+  value: number,
+  background: string,
+  success?: boolean,
+  error?: boolean,
+}
 
 @Component({
   selector: "trainer-number-table",
@@ -24,9 +31,7 @@ import {
 })
 export class NumberTableTrainerComponent implements OnInit, OnChanges {
 
-  constructor(
-    private _el: ElementRef<HTMLElement>
-  ){}
+  constructor(private _sanitizer: DomSanitizer){}
 
   @Input()
   config!: INumberTableTrainerConfig
@@ -36,7 +41,7 @@ export class NumberTableTrainerComponent implements OnInit, OnChanges {
     config: this.config,
     success: 0,
     error: 0,
-    step: 0,
+    current: 0,
   }
 
   @Output("result")
@@ -47,11 +52,18 @@ export class NumberTableTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  onClick(item: INumberTableTrainerItem) {
-    if (item.value === (this.result.step + 1)) {
+  matrix: Array<IItem> = []
+
+  get matrixStyle() {
+    const side = Math.sqrt(this.matrix.length)
+    return this._sanitizer.bypassSecurityTrustStyle(`--side: ${side}`)
+  }
+
+  onClick(item: IItem) {
+    if (item.value === (this.result.current + 1)) {
       this._updateResult({
-        step: this.result.step + 1,
-        success: this.result.success + 1
+        current: this.result.current + 1,
+        success: this.result.success + 1,
       })
       item.success = true
     } else {
@@ -62,21 +74,18 @@ export class NumberTableTrainerComponent implements OnInit, OnChanges {
       setTimeout(() => item.error = false, 1000)
     }
 
-    if (this.result.step >= this.config.last) {
+    if (this.result.current >= this.config.last) {
       this._updateResult({ isFinish: true })
     }
   }
 
   ngOnInit() {
-    this._el.nativeElement.style.setProperty("--columns", `${this.config.columns}`)
-    this._el.nativeElement.style.setProperty("--rows", `${this.config.rows}`)
-    this._el.nativeElement.style.setProperty("--max", `${Math.max(this.config.columns, this.config.rows)}`)
-
+    this.matrix = this.config.matrix.map(item => ({...item}))
     this._updateResult({
       isFinish: false,
       success: 0,
       error: 0,
-      step: 0,
+      current: 0,
     })
   }
 

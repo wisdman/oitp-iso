@@ -1,7 +1,6 @@
 export * from "./card-charger"
 export * from "./card-everyday"
 export * from "./card-recommendations"
-export * from "./content-box"
 export * from "./header-notifications"
 export * from "./header-user"
 export * from "./indicator-brain"

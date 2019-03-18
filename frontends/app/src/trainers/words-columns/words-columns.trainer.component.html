@@ -1,4 +1,0 @@
-<div class="field" *ngIf="config">
-  <div class="word" *ngIf="currentWord">{{ currentWord.word }}</div>
-  <div *ngFor="let column of config.columns" #columnNode class="column"  (click)="onClick(column.id, columnNode)">{{ column.title }}</div>
-</div>

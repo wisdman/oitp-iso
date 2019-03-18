@@ -16,8 +16,8 @@ import {
 } from "rxjs/operators"
 
 import {
-  RANDOM_CONFIG
-} from "../common/random"
+  GET_MOCK_CONFIG
+} from "../config-mock"
 
 @Injectable({ providedIn: "root" })
 export class TrainingService {
@@ -33,7 +33,7 @@ export class TrainingService {
   private _trainingSubject = new Subject<"everyday" | "once" | undefined>()
   config = this._trainingSubject
                 .pipe(
-                  switchMap(type => type && from(RANDOM_CONFIG(type)) || of(undefined)),
+                  switchMap(type => type && from(GET_MOCK_CONFIG(type)) || of(undefined)),
                   switchMap(value => value && from(value) || of(undefined)),
                   zip(
                     this._lapTimerSubject

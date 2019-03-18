@@ -1,28 +1,28 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
-  HostListener,
 } from "@angular/core"
 
 import { DomSanitizer } from "@angular/platform-browser"
-
-import {
-  IImage,
-} from "../interfaces"
 
 import {
   IImageTableTrainerConfig,
   IImageTableTrainerResult,
 } from "./image-table.trainer.interfaces"
 
-interface IImageTableItem {
+interface IImage {
+  id: number,
+  data: string
+}
+
+interface IItem {
   image?: IImage
   userImage?: IImage
 }
@@ -35,19 +35,14 @@ interface IImageTableItem {
 })
 export class ImageTableTrainerComponent implements OnInit, OnChanges {
 
-  constructor(
-    private _sanitizer: DomSanitizer,
-    private _el: ElementRef<HTMLElement>
-  ){}
-
-  matrix!: Array<IImageTableItem>
+  constructor(private _sanitizer: DomSanitizer){}
 
   @Input()
   config!: IImageTableTrainerConfig
 
   result: IImageTableTrainerResult = {
     id: "image-table",
-    config: this.config
+    config: this.config,
   }
 
   @Output("result")
@@ -58,26 +53,26 @@ export class ImageTableTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
+  items: Array<IImage> = []
+  matrix: Array<IItem> = []
+
   dataUrl(image: IImage) {
     return this._sanitizer.bypassSecurityTrustUrl(image.data)
   }
 
+  get matrixStyle() {
+    const side = Math.sqrt(this.matrix.length)
+    return this._sanitizer.bypassSecurityTrustStyle(`--side: ${side}`)
+  }
+
   ngOnInit() {
-    const columns = this.config.columns
-    const rows = this.config.rows
-    const items = this.config.items.length
+    this.items = this.config.items
+                            .map((data, id) => ({ id, data }))
 
-    const max = Math.max(columns + 1, rows + 1, items)
+    this.matrix = this.config.matrix
+                             .map((id) => id < 0 ? {} : { image: this.items[id] })
 
-    this._el.nativeElement.style.setProperty("--columns", `${columns}`)
-    this._el.nativeElement.style.setProperty("--rows", `${rows}`)
-    this._el.nativeElement.style.setProperty("--items", `${items}`)
-    this._el.nativeElement.style.setProperty("--max", `${max}`)
 
-    this.matrix = this
-                  .config
-                  .matrix
-                  .map((id) => id < 0 ? {} : { image: this.config.items[id] })
 
     this._updateResult({
       isFinish: false,
@@ -100,7 +95,7 @@ export class ImageTableTrainerComponent implements OnInit, OnChanges {
     this._updateResult({ isFinish: true })
   }
 
-  private check() {
+  private _check() {
     const success = this.matrix
                         .reduce( (success, item) => item.image === item.userImage ? ++success : success, 0)
     const error = this.matrix.length - success
@@ -129,7 +124,7 @@ export class ImageTableTrainerComponent implements OnInit, OnChanges {
       return
     }
 
-    const id = this.config.items.indexOf(userImage)
+    const id = this.items.indexOf(userImage)
 
     if (id < 0) {
       return
@@ -145,7 +140,7 @@ export class ImageTableTrainerComponent implements OnInit, OnChanges {
     event.preventDefault()
   }
 
-  drop(event: DragEvent, item:IImageTableItem) {
+  drop(event: DragEvent, item:IItem) {
     if (!this.config.isGameMode) {
       return
     }
@@ -156,7 +151,7 @@ export class ImageTableTrainerComponent implements OnInit, OnChanges {
       return
     }
 
-    item.userImage = this.config.items[id]
-    this.check()
+    item.userImage = this.items[id]
+    this._check()
   }
 }

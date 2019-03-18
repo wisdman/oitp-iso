@@ -6,29 +6,22 @@ import {
 
 export type INumberTableTrainer = "number-table"
 
-export type INumberTableTrainerItem = {
+export interface INumberTableTrainerItem {
   value: number
-  color?: string
-  success?: boolean
-  error?: boolean
+  background: string
 }
-
-export type INumberTableTrainerMatrix = Array<INumberTableTrainerItem>
 
 export interface INumberTableTrainerConfig extends ITrainerConfig {
   id: INumberTableTrainer
 
-  columns: number
-  rows: number
+  matrix: Array<INumberTableTrainerItem>
   last: number
-
-  matrix: INumberTableTrainerMatrix
 }
 
 export interface INumberTableTrainerResult extends ITrainerResult {
+  id: INumberTableTrainer
   config: INumberTableTrainerConfig
-
-  success: number
-  error: number
-  step: number
+  current: number,
+  success: number,
+  error: number,
 }

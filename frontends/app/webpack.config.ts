@@ -282,9 +282,9 @@ export default {
   devServer: {
     clientLogLevel: "warning",
     compress: isProduction,
-    contentBase: [
-      PATH("./data"),
-    ],
+    // contentBase: [
+    //   PATH("./data"),
+    // ],
     disableHostCheck: true,
     historyApiFallback: true,
     hot: !isProduction,

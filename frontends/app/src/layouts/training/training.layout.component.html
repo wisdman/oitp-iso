@@ -8,23 +8,53 @@
   </div>
 
   <div *ngIf="config" class="game">
-    <trainer-article
-      *ngIf="config.id === 'article'"
+    <trainer-message
+      *ngIf="config.id === 'message'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-article>
+    ></trainer-message>
 
-    <trainer-colors-columns
-      *ngIf="config.id === 'colors-columns'"
+    <trainer-result
+      *ngIf="config.id === 'result'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-colors-columns>
+    ></trainer-result>
 
-    <trainer-first-letters
-      *ngIf="config.id === 'first-letters'"
+    <trainer-colors-classification
+      *ngIf="config.id === 'colors-classification'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-first-letters>
+    ></trainer-colors-classification>
+
+    <trainer-image-canvas
+      *ngIf="config.id === 'image-canvas'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-image-canvas>
+
+    <trainer-image-classification
+      *ngIf="config.id === 'image-classification'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-image-classification>
+
+    <trainer-image-differences
+      *ngIf="config.id === 'image-differences'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-image-differences>
+
+    <trainer-image-field
+      *ngIf="config.id === 'image-field'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-image-field>
+
+    <trainer-image-sequence
+      *ngIf="config.id === 'image-sequence'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-image-sequence>
 
     <trainer-image-table
       *ngIf="config.id === 'image-table'"
@@ -32,11 +62,29 @@
       (result)="onResult($event)"
     ></trainer-image-table>
 
-    <trainer-message
-      *ngIf="config.id === 'message'"
+    <trainer-number-exclusion
+      *ngIf="config.id === 'number-exclusion'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-message>
+    ></trainer-number-exclusion>
+
+    <trainer-number-expression
+      *ngIf="config.id === 'number-expression'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-number-expression>
+
+    <trainer-number-series
+      *ngIf="config.id === 'number-series'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-number-series>
+
+    <trainer-number-shape
+      *ngIf="config.id === 'number-shape'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-number-shape>
 
     <trainer-number-table
       *ngIf="config.id === 'number-table'"
@@ -50,29 +98,41 @@
       (result)="onResult($event)"
     ></trainer-question>
 
-    <trainer-results
-      *ngIf="config.id === 'results'"
+    <trainer-text-letters
+      *ngIf="config.id === 'text-letters'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-results>
+    ></trainer-text-letters>
 
-    <trainer-shape-field
-      *ngIf="config.id === 'shape-field'"
+    <trainer-text-tezirovanie
+      *ngIf="config.id === 'text-tezirovanie'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-shape-field>
+    ></trainer-text-tezirovanie>
 
-    <trainer-tezirovanie
-      *ngIf="config.id === 'tezirovanie'"
+    <trainer-words-classification
+      *ngIf="config.id === 'words-classification'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-tezirovanie>
+    ></trainer-words-classification>
 
-    <trainer-words-columns
-      *ngIf="config.id === 'words-columns'"
+    <trainer-words-exclusion
+      *ngIf="config.id === 'words-exclusion'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-words-columns>
+    ></trainer-words-exclusion>
+
+    <trainer-words-pairs
+      *ngIf="config.id === 'words-pairs'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-words-pairs>
+
+    <trainer-words-shape
+      *ngIf="config.id === 'words-shape'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-words-shape>
   </div>
 
   <lap-timer *ngIf="config" [limit]="config.timeLimit"></lap-timer>

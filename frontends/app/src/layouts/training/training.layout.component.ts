@@ -47,7 +47,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this._trainingSubscriber = this._trainingService.config.subscribe((config) => {
       this.config = config
-      // console.log(this.config)
+      console.log(this.config)
       this._cdr.markForCheck()
     })
 

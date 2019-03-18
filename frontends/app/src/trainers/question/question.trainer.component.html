@@ -1,8 +1,7 @@
-<div class="question" *ngIf="config">
-  <div class="body" [innerHtml]="body"></div>
-  <div class="answers">
-    <button *ngFor="let answer of config.answers" class="button" (click)="onClick(answer)">
-      <span>{{ answer.data }}</span>
-    </button>
-  </div>
+<article class="article" [innerHtml]="content"></article>
+<div class="buttons">
+  <button *ngFor="let item of config.items" class="button" (click)="onClick(item)">
+    <span>{{ item.data }}</span>
+  </button>
 </div>
+
