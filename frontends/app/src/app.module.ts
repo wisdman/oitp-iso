@@ -4,6 +4,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { RouterModule } from "@angular/router"
 
+import { DragDropModule } from "@angular/cdk/drag-drop"
+
 import {
   RootLayoutComponent,
 } from "./app.root"
@@ -41,27 +43,19 @@ import {
 } from "./layouts"
 
 import {
-  ImageCanvasTrainerComponent,
-  ImageClassificationTrainerComponent,
+  ClassificationTrainerComponent,
+  ImageCarpetTrainerComponent,
   ImageDifferencesTrainerComponent,
   ImageFieldTrainerComponent,
-  ImageSequenceTrainerComponent,
-  ImageTableTrainerComponent,
-  MessageTrainerComponent,
-  NumberExclusionTrainerComponent,
-  NumberExpressionTrainerComponent,
-  NumberSeriesTrainerComponent,
-  NumberShapeTrainerComponent,
-  NumberTableTrainerComponent,
+  MatrixFillingTrainerComponent,
+  MatrixSequenceTrainerComponent,
   QuestionTrainerComponent,
   ResultTrainerComponent,
+  TablePipeTrainerComponent,
   TextLettersTrainerComponent,
+  TextPairsTrainerComponent,
+  TextSortTrainerComponent,
   TextTezirovanieTrainerComponent,
-  WordsClassificationTrainerComponent,
-  WordsExclusionTrainerComponent,
-  WordsPairsTrainerComponent,
-  WordsShapeTrainerComponent,
-  СolorsСlassificationTrainerComponent,
 } from "./trainers"
 
 import {
@@ -84,8 +78,8 @@ import {
   ErrorInterceptor
 } from "./interceptors"
 
-
 import { ROUTES } from "./app.routing"
+import { HAMMER } from "./hammer.config"
 
 @NgModule({
   bootstrap: [ RootLayoutComponent ],
@@ -118,27 +112,21 @@ import { ROUTES } from "./app.routing"
     SupportLayoutComponent,
     TrainingLayoutComponent,
 
-    ImageCanvasTrainerComponent,
-    ImageClassificationTrainerComponent,
+    TablePipeTrainerComponent,
+
+    ClassificationTrainerComponent,
+    ImageCarpetTrainerComponent,
     ImageDifferencesTrainerComponent,
     ImageFieldTrainerComponent,
-    ImageSequenceTrainerComponent,
-    ImageTableTrainerComponent,
-    MessageTrainerComponent,
-    NumberExclusionTrainerComponent,
-    NumberExpressionTrainerComponent,
-    NumberSeriesTrainerComponent,
-    NumberShapeTrainerComponent,
-    NumberTableTrainerComponent,
+    MatrixFillingTrainerComponent,
+    MatrixSequenceTrainerComponent,
     QuestionTrainerComponent,
     ResultTrainerComponent,
+    TablePipeTrainerComponent,
     TextLettersTrainerComponent,
+    TextPairsTrainerComponent,
+    TextSortTrainerComponent,
     TextTezirovanieTrainerComponent,
-    WordsClassificationTrainerComponent,
-    WordsExclusionTrainerComponent,
-    WordsPairsTrainerComponent,
-    WordsShapeTrainerComponent,
-    СolorsСlassificationTrainerComponent,
 
     DaysPipe,
     TimerPipe,
@@ -155,6 +143,8 @@ import { ROUTES } from "./app.routing"
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+
+    DragDropModule,
   ],
 
   providers: [
@@ -180,10 +170,14 @@ import { ROUTES } from "./app.routing"
       multi: true
     },
 
+    // Locale config
     {
       provide: LOCALE_ID,
       useValue: "ru"
-    }
+    },
+
+    // HammerJS config
+    HAMMER,
   ],
 
   schemas: [

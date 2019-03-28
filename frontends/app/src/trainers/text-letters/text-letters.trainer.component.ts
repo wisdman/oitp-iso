@@ -24,22 +24,14 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextLettersTrainerComponent implements OnInit, OnChanges {
-
-  constructor(
-    private _sanitizer: DomSanitizer,
-    private _el: ElementRef<HTMLElement>
-  ){}
-
-  letters: Array<string> = []
-  comb: string = ""
-  mode: "show" | "fill" = "show"
-
   @Input()
   config!: ITextLettersTrainerConfig
 
   result: ITextLettersTrainerResult = {
     id: "text-letters",
-    config: this.config
+    config: this.config,
+    success: 0,
+    error: 0,
   }
 
   @Output("result")
@@ -49,6 +41,31 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges {
     this.result = {...this.result, config: this.config, ...result}
     this.resultValueChange.emit(this.result)
   }
+
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
+  }
+
+  ngOnInit() {
+    this._init()
+    this._updateResult({
+      isFinish: false,
+      success: 0,
+      error: 0,
+    })
+  }
+
+
+  constructor(
+    private _sanitizer: DomSanitizer,
+    private _el: ElementRef<HTMLElement>
+  ){}
+
+  letters: Array<string> = []
+  comb: string = ""
+  mode: "show" | "fill" = "show"
 
   getDataUrl(value: string) {
     return this._sanitizer.bypassSecurityTrustUrl(value)
@@ -68,7 +85,7 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges {
   }
 
   onClick() {
-    if (this.mode === 'show') {
+    if (this.config.mode === 'show') {
       this.letters = this.config
                           .sentence
                           .split(" ")
@@ -81,7 +98,7 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {
+  private _init() {
     const columns = this.letters.length
 
     this._el.nativeElement.style.setProperty("--columns", `${columns}`)
@@ -89,17 +106,5 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges {
     this.comb = ""
     this.letters = []
     this.mode = "show"
-
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-  }
-
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
   }
 }

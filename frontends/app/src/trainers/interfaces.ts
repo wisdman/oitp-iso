@@ -1,91 +1,60 @@
 
-import { IСolorsСlassificationTrainer, IСolorsСlassificationTrainerConfig, IСolorsСlassificationTrainerResult } from "./colors-classification"
-import { IImageCanvasTrainer, IImageCanvasTrainerConfig, IImageCanvasTrainerResult } from "./image-canvas"
-import { IImageClassificationTrainer, IImageClassificationTrainerConfig, IImageClassificationTrainerResult } from "./image-classification"
+import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } from "./table-pipe"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
 import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
-import { IImageSequenceTrainer, IImageSequenceTrainerConfig, IImageSequenceTrainerResult } from "./image-sequence"
-import { IImageTableTrainer, IImageTableTrainerConfig, IImageTableTrainerResult } from "./image-table"
-import { IMessageTrainer, IMessageTrainerConfig, IMessageTrainerResult } from "./message"
-import { INumberExclusionTrainer, INumberExclusionTrainerConfig, INumberExclusionTrainerResult } from "./number-exclusion"
-import { INumberExpressionTrainer, INumberExpressionTrainerConfig, INumberExpressionTrainerResult } from "./number-expression"
-import { INumberSeriesTrainer, INumberSeriesTrainerConfig, INumberSeriesTrainerResult } from "./number-series"
-import { INumberShapeTrainer, INumberShapeTrainerConfig, INumberShapeTrainerResult } from "./number-shape"
-import { INumberTableTrainer, INumberTableTrainerConfig, INumberTableTrainerResult } from "./number-table"
 import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
-import { IResultTrainer, IResultTrainerConfig, IResultTrainerResult } from "./result"
-import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
+import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
+import { ITextPairsTrainer, ITextPairsTrainerConfig, ITextPairsTrainerResult } from "./text-pairs"
 import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
-import { IWordsClassificationTrainer, IWordsClassificationTrainerConfig, IWordsClassificationTrainerResult } from "./words-classification"
-import { IWordsExclusionTrainer, IWordsExclusionTrainerConfig, IWordsExclusionTrainerResult } from "./words-exclusion"
-import { IWordsPairsTrainer, IWordsPairsTrainerConfig, IWordsPairsTrainerResult } from "./words-pairs"
-import { IWordsShapeTrainer, IWordsShapeTrainerConfig, IWordsShapeTrainerResult } from "./words-shape"
+import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
+import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
+import { IClassificationTrainer, IClassificationTrainerConfig, IClassificationTrainerResult } from "./classification"
+import { IResultTrainer, IResultTrainerConfig, IResultTrainerResult } from "./result"
+import { ITextSortTrainer, ITextSortTrainerConfig, ITextSortTrainerResult } from "./text-sort"
+import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
 
-export type ITrainer = IСolorsСlassificationTrainer
-                     | IImageCanvasTrainer
-                     | IImageClassificationTrainer
+export type ITrainer = IClassificationTrainer
+                     | IImageCarpetTrainer
                      | IImageDifferencesTrainer
                      | IImageFieldTrainer
-                     | IImageSequenceTrainer
-                     | IImageTableTrainer
-                     | IMessageTrainer
-                     | INumberExclusionTrainer
-                     | INumberExpressionTrainer
-                     | INumberSeriesTrainer
-                     | INumberShapeTrainer
-                     | INumberTableTrainer
+                     | IMatrixFillingTrainer
+                     | IMatrixSequenceTrainer
                      | IQuestionTrainer
                      | IResultTrainer
+                     | ITablePipeTrainer
                      | ITextLettersTrainer
+                     | ITextPairsTrainer
+                     | ITextSortTrainer
                      | ITextTezirovanieTrainer
-                     | IWordsClassificationTrainer
-                     | IWordsExclusionTrainer
-                     | IWordsPairsTrainer
-                     | IWordsShapeTrainer
 
-export type ITrainerConfigs = IСolorsСlassificationTrainerConfig
-                            | IImageCanvasTrainerConfig
-                            | IImageClassificationTrainerConfig
+
+export type ITrainerConfigs = IClassificationTrainerConfig
+                            | IImageCarpetTrainerConfig
                             | IImageDifferencesTrainerConfig
                             | IImageFieldTrainerConfig
-                            | IImageSequenceTrainerConfig
-                            | IImageTableTrainerConfig
-                            | IMessageTrainerConfig
-                            | INumberExclusionTrainerConfig
-                            | INumberExpressionTrainerConfig
-                            | INumberSeriesTrainerConfig
-                            | INumberShapeTrainerConfig
-                            | INumberTableTrainerConfig
+                            | IMatrixFillingTrainerConfig
+                            | IMatrixSequenceTrainerConfig
                             | IQuestionTrainerConfig
                             | IResultTrainerConfig
+                            | ITablePipeTrainerConfig
                             | ITextLettersTrainerConfig
+                            | ITextPairsTrainerConfig
+                            | ITextSortTrainerConfig
                             | ITextTezirovanieTrainerConfig
-                            | IWordsClassificationTrainerConfig
-                            | IWordsExclusionTrainerConfig
-                            | IWordsPairsTrainerConfig
-                            | IWordsShapeTrainerConfig
 
-export type ITrainerResults = IСolorsСlassificationTrainerResult
-                            | IImageCanvasTrainerResult
-                            | IImageClassificationTrainerResult
+export type ITrainerResults = IClassificationTrainerResult
+                            | IImageCarpetTrainerResult
                             | IImageDifferencesTrainerResult
                             | IImageFieldTrainerResult
-                            | IImageSequenceTrainerResult
-                            | IImageTableTrainerResult
-                            | IMessageTrainerResult
-                            | INumberExclusionTrainerResult
-                            | INumberExpressionTrainerResult
-                            | INumberSeriesTrainerResult
-                            | INumberShapeTrainerResult
-                            | INumberTableTrainerResult
+                            | IMatrixFillingTrainerResult
+                            | IMatrixSequenceTrainerResult
                             | IQuestionTrainerResult
                             | IResultTrainerResult
+                            | ITablePipeTrainerResult
                             | ITextLettersTrainerResult
+                            | ITextPairsTrainerResult
+                            | ITextSortTrainerResult
                             | ITextTezirovanieTrainerResult
-                            | IWordsClassificationTrainerResult
-                            | IWordsExclusionTrainerResult
-                            | IWordsPairsTrainerResult
-                            | IWordsShapeTrainerResult
 
 export interface ITrainerConfig {
   id: ITrainer
@@ -108,4 +77,9 @@ export interface ITrainerResult {
 
   success?: number
   error?: number
+}
+
+export interface IGameFieldSize {
+  width: number
+  height: number
 }

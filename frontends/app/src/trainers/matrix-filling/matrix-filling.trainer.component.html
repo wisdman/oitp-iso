@@ -1,0 +1,20 @@
+<div class="matrix" [style]="matrixStyle">
+  <div
+    *ngFor="let item of matrix"
+    (dragstart)="dragMatrixStart($event, item.userItem)"
+    (dragover)="allowDrop($event)"
+    (drop)="drop($event, item)"
+  >
+    <img *ngIf="this.config.mode === 'show' && item.item" [src]="sanitizeUrl(item.item)">
+    <img *ngIf="this.config.mode === 'play' && item.userItem" [src]="sanitizeUrl(item.userItem)">
+  </div>
+</div>
+
+<div class="items" *ngIf="this.config.mode === 'play'" [style]="matrixStyle">
+  <div
+    *ngFor="let item of this.config.items; let i = index"
+    (dragstart)="dragItemsStart($event, i)"
+  >
+    <img [src]="sanitizeUrl(item)">
+  </div>
+</div>

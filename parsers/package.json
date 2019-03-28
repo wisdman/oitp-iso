@@ -1,0 +1,24 @@
+{
+  "name": "parsers",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "svgexport": "svgexport"
+  },
+  "author": "Wisdman <wisdman@ajaw.it> (https://github.com/wisdman/)",
+  "license": "MIT",
+  "dependencies": {
+    "blink-diff": "^1.0.13",
+    "cheerio": "^1.0.0-rc.2",
+    "get-pixels": "^3.3.2",
+    "looks-same": "^7.1.1",
+    "pixelmatch": "^4.0.2",
+    "pngjs": "^3.4.0",
+    "rembrandt": "^0.1.3",
+    "sharp": "^0.22.0",
+    "svgexport": "^0.3.2",
+    "svgo": "^1.2.0"
+  }
+}

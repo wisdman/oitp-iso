@@ -1,9 +1,0 @@
-<h1 *ngIf="currentItem" class="current">{{ currentItem.title }}</h1>
-<div class="colors">
-  <button
-    *ngFor="let rgb of colors"
-    class="colors__item"
-    [ngStyle]="{'background-color': rgb}"
-    (click)="onClick(rgb)"
-  ></button>
-</div>

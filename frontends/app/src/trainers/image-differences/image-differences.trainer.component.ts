@@ -15,6 +15,8 @@ import {
   IImageDifferencesTrainerResult,
 } from "./image-differences.trainer.interfaces"
 
+import { DomSanitizer } from "@angular/platform-browser"
+
 @Component({
   selector: "trainer-image-differences",
   templateUrl: "./image-differences.trainer.component.html",
@@ -28,7 +30,9 @@ export class ImageDifferencesTrainerComponent implements OnInit, OnChanges {
 
   result: IImageDifferencesTrainerResult = {
     id: "image-differences",
-    config: this.config
+    config: this.config,
+    success: 0,
+    error: 0,
   }
 
   @Output("result")
@@ -39,6 +43,12 @@ export class ImageDifferencesTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
+  }
+
   ngOnInit() {
     this._updateResult({
       isFinish: false,
@@ -47,10 +57,10 @@ export class ImageDifferencesTrainerComponent implements OnInit, OnChanges {
     })
   }
 
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
+  constructor(private _sanitizer: DomSanitizer){}
+
+  get image() {
+    return this._sanitizer.bypassSecurityTrustUrl(this.config.image)
   }
 
   @HostListener("click", ["$event"])

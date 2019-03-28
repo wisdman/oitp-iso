@@ -23,22 +23,14 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextTezirovanieTrainerComponent implements OnInit, OnChanges {
-  constructor(
-    private _sanitizer: DomSanitizer,
-  ){}
-
-  get content() {
-    const header = this.config.header ? `<h1>${this.config.header}</h1>` : ""
-    const body = this.config.body || ""
-    return this._sanitizer.bypassSecurityTrustHtml(header + body)
-  }
-
   @Input()
   config!: ITextTezirovanieTrainerConfig
 
   result: ITextTezirovanieTrainerResult = {
     id: "text-tezirovanie",
-    config: this.config
+    config: this.config,
+    success: 0,
+    error: 0,
   }
 
   @Output("result")
@@ -49,22 +41,43 @@ export class TextTezirovanieTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  onClick() {
-    this._updateResult({
-      isFinish: true,
-    })
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
   }
 
   ngOnInit() {
     // console.log(this.config)
     this._updateResult({
       isFinish: false,
+      success: 0,
+      error: 0,
     })
   }
 
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
+  constructor(
+    private _sanitizer: DomSanitizer,
+  ){}
+
+  get body() {
+    return this._sanitizer.bypassSecurityTrustHtml(this.config.body)
   }
+
+  onClick() {
+    this._updateResult({
+      isFinish: true,
+    })
+  }
+
+
+
+
+
+
+
+
+
+
+
 }

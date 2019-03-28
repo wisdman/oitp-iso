@@ -1,0 +1,10 @@
+<div cdkDropList class="box" (cdkDropListDropped)="drop($event)">
+  <div class="item" *ngFor="let item of config.items" cdkDrag>{{item}}</div>
+</div>
+<button
+  *ngIf="config.mode === 'play'"
+  class="button"
+  (click)="onButtonClick()"
+>
+  <span>Продолжить</span>
+</button>

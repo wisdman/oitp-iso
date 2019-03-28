@@ -11,12 +11,7 @@
 
   padding: 12px;
 
-  background-color: var(--color-background);
-  background-image: var(--background-svg), linear-gradient(-45deg, var(--color-primar-light) 0%, var(--color-primar-light) 36%, var(--color-second-light) 100%);
-  background-size: 101% auto, 101% 50vh;
-  background-position: center calc(50vh - 10vw), center top;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: rgba(255, 255, 255, 0.24);
 
   overflow: hidden;
   position: relative;
@@ -38,7 +33,7 @@
   height: 100%;
   max-width: 960px;
 
-  border-radius: 8px;
+  border-radius: 9px;
 
   background-color: var(--color-background);
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);

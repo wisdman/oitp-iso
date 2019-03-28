@@ -1,0 +1,5 @@
+<ng-container *ngFor="let item of config.pairs">
+  <div class="item left" (click)="onClick($event)" [style.order]="random()">{{ item[0] }}</div>
+  <div class="item right" (click)="onClick($event)" [style.order]="random()">{{ item[1] }}</div>
+  <div class="center"></div>
+</ng-container>

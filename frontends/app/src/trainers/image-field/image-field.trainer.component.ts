@@ -17,18 +17,14 @@ import {
   IImageFieldTrainerResult,
 } from "./image-field.trainer.interfaces"
 
+import {
+  IGameFieldSize
+} from "../interfaces"
+
 interface IItem {
-  image: string
+  image: string,
   dx: number,
   dy: number,
-}
-
-function RandomInt(min: number = 0, max?: number) {
-  if (max === undefined) {
-    max = min
-    min = 0
-  }
-  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 @Component({
@@ -38,11 +34,11 @@ function RandomInt(min: number = 0, max?: number) {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageFieldTrainerComponent implements OnInit, OnChanges {
-
-  constructor(private _sanitizer: DomSanitizer){}
-
   @Input()
   config!: IImageFieldTrainerConfig
+
+  @Input()
+  size!: IGameFieldSize
 
   result: IImageFieldTrainerResult = {
     id: "image-field",
@@ -57,31 +53,51 @@ export class ImageFieldTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  items: Array<IItem> = []
-
-  dataUrl(item: IItem) {
-    return this._sanitizer.bypassSecurityTrustUrl(item.image)
-  }
-
-  ngOnInit() {
-    this.items = this.config.items
-                            .map((image,i) => ({
-                              image,
-                              dx: RandomInt(0, 200) + i*120,
-                              dy: RandomInt(0, 100)+ i*120,
-                            }))
-
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-  }
-
   ngOnChanges(sc: SimpleChanges ) {
     if (sc.config !== undefined && !sc.config.firstChange) {
       this.ngOnInit()
     }
+  }
+
+  ngOnInit() {
+    this._init()
+    this._updateResult({
+      isFinish: false,
+    })
+  }
+
+  constructor(private _sanitizer: DomSanitizer){}
+
+  items!: Array<IItem>
+
+  private _init() {
+    const vertex = this.config.items.length
+    const angle = 360 / vertex
+    const radius = Math.min(this.size.width, this.size.height) / 4
+
+    const theta = Math.floor(Math.random() * 100)
+
+    const deltas = Array.from(Array(vertex), (_, i) => ({ theta: theta + (Math.PI * angle * i) / 180, r: radius }))
+                        .map(({ r, theta }) => [
+                          r * Math.cos(theta),
+                          r * Math.sin(theta),
+                        ])
+
+    this.items = this.config
+                     .items
+                     .map((image, i) => {
+                       const [dx, dy] = deltas[i]
+                       const item: IItem = {
+                         image,
+                         dx, dy,
+                       }
+                       return item
+                     })
+
+  }
+
+  sanitize(item: IItem) {
+    return this._sanitizer.bypassSecurityTrustUrl(item.image)
   }
 
   @HostListener("click", ["$event"])

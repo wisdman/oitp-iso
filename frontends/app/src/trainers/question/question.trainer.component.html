@@ -1,7 +1,25 @@
-<article class="article" [innerHtml]="content"></article>
-<div class="buttons">
-  <button *ngFor="let item of config.items" class="button" (click)="onClick(item)">
-    <span>{{ item.data }}</span>
-  </button>
+<article class="article" [innerHtml]="body"></article>
+
+<div
+  *ngIf="config.items"
+  class="answers"
+>
+  <div
+    *ngFor="let item of config.items"
+    class="answer"
+    (click)="onAnswerClick(item)"
+    [class.image] = "item.type === 'image'"
+    [class.selected] = "item.isSelected"
+  >
+    <img *ngIf="item.type === 'image'" [src]="sanitizeURL(item.data)">
+    <span *ngIf="item.type === 'text'">{{ item.data }}</span>
+  </div>
 </div>
 
+<button
+  *ngIf="config.button"
+  class="button"
+  (click)="onButtonClick()"
+>
+  <span>{{ config.button }}</span>
+</button>

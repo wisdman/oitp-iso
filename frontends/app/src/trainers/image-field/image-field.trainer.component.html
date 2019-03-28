@@ -1,1 +1,10 @@
-<img *ngFor="let item of items" class="img" [src]="dataUrl(item)" [style.left.px]="item.dx" [style.top.px]="item.dy">
+<div
+  *ngFor="let item of items"
+  class="image-wrapper"
+  [style.transform]="'translate('+item.dx+'px,'+item.dy+'px)'"
+>
+  <img
+    class="image"
+    [src]="sanitize(item)"
+  >
+</div>

@@ -32,14 +32,9 @@ body {
   color: var(--color-text);
 
   background-color: var(--color-background);
-  background-image: var(--background-svg), var(--background-gradient);
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 32"><path d="M320 32H0V8s23 16 63 16S143 0 200 0s120 16 120 16v16z" fill="%23fafafa"/></svg>'), var(--background-gradient);
   background-size: 101% auto, 101% 50vh;
   background-position: center calc(50vh - 10vw), center top;
   background-repeat: no-repeat;
   background-attachment: fixed;
-}
-
-*, *::before, *::after {
-  box-sizing: inherit;
-  outline: none;
 }

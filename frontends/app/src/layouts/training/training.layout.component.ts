@@ -1,9 +1,11 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ElementRef,
   OnDestroy,
   OnInit,
-  ChangeDetectorRef,
+  HostListener,
 } from "@angular/core"
 
 import { ActivatedRoute } from "@angular/router"
@@ -15,7 +17,8 @@ import {
 
 import {
   ITrainerConfigs,
-  ITrainerResults
+  ITrainerResults,
+  IGameFieldSize,
 } from "../../trainers"
 
 @Component({
@@ -30,7 +33,22 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute,
     private _trainingService: TrainingService,
     private _cdr: ChangeDetectorRef,
+    private _el: ElementRef
   ) {}
+
+  size!: IGameFieldSize
+
+  private _updateSize() {
+    if (this._el.nativeElement) {
+      const { width, height } = this._el.nativeElement.getBoundingClientRect()
+      this.size = {...this.size, width, height}
+    }
+  }
+
+  @HostListener("window:resize")
+  onResize() {
+    this._updateSize()
+  }
 
   globalTimer = this._trainingService.globalTimer
   config?: ITrainerConfigs
@@ -45,11 +63,15 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   private _routeParamsSubscriber!: Subscription
 
   ngOnInit() {
-    this._trainingSubscriber = this._trainingService.config.subscribe((config) => {
-      this.config = config
-      console.log(this.config)
-      this._cdr.markForCheck()
-    })
+    this._updateSize()
+
+    this._trainingSubscriber = this._trainingService
+                                    .config
+                                    .subscribe((config) => {
+                                      this.config = config
+                                      console.log(this.config)
+                                      this._cdr.markForCheck()
+                                    })
 
 
     this._routeParamsSubscriber = this._route

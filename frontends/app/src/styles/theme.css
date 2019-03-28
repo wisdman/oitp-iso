@@ -32,7 +32,6 @@
   --color-error-light: rgba(237, 63, 44, 0.7);
 
   --background-gradient: linear-gradient(-45deg, var(--color-primar) 0%, var(--color-primar) 36%, var(--color-second) 100%);
-  --background-svg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 32"><path d="M320 32H0V8s23 16 63 16S143 0 200 0s120 16 120 16v16z" fill="%23fafafa"/></svg>');
 
   --shadow-header:
     0px 1px 8px 0px rgba(80,80,80, 0.2),

@@ -37,17 +37,17 @@ export class ResultTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  onClick() {
-    this._updateResult({ isFinish: true })
-  }
-
-  ngOnInit() {
-    this._updateResult({})
-  }
-
   ngOnChanges(sc: SimpleChanges ) {
     if (sc.config !== undefined && !sc.config.firstChange) {
       this.ngOnInit()
     }
+  }
+
+  ngOnInit() {
+    this._updateResult({ isFinish: false })
+  }
+
+  onClick() {
+    this._updateResult({ isFinish: true })
   }
 }

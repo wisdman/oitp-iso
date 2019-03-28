@@ -14,5 +14,4 @@ export interface IResultTrainerConfig extends ITrainerConfig {
 export interface IResultTrainerResult extends ITrainerResult {
   id: IResultTrainer
   config: IResultTrainerConfig
-  isFinish?: true
 }

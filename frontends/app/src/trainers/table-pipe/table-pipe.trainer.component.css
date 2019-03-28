@@ -1,0 +1,129 @@
+:host {
+  --item-background-color: #eee4da;
+  --item-border-color: #bbada0;
+  --item-current-border-color: #0273d4;
+
+  width: 100%;
+  max-width: 572px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 50px);
+  grid-template-rows: min-content repeat(auto-fit, 50px);
+  justify-content: center;
+  align-content: center;
+
+  gap: 8px;
+
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 650px) {
+  :host {
+    max-width: 340px;
+  }
+}
+
+@media (max-width: 400px) {
+  :host {
+    max-width: 282px;
+  }
+}
+
+/* :host::before {
+  content: "";
+  display: block;
+  grid-row-start: 2;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  background-image: linear-gradient(
+                      transparent 0%,
+                      transparent calc(100 / 58 * 24%),
+                      #f00 calc(100 / 58 * 24%),
+                      #f00 calc(100 / 58 * 26%),
+                      transparent calc(100 / 58 * 26%),
+                      transparent 100%),
+                    linear-gradient(
+                      transparent 0%,
+                      transparent 25%,
+                      #f00 25%,
+                      #f00 75%,
+                      transparent 75%,
+                      transparent 100%);
+  background-size: 100% 58px, 2px 108px;
+  background-position: 0 top, 100px top;
+  background-repeat: repeat-y;
+}
+ */
+
+
+
+/* Rules area */
+
+.rules {
+  justify-self: center;
+  grid-column-start: 1;
+  grid-column-end: -1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  padding-bottom: 24px;
+}
+
+.rule {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 18px;
+}
+
+.rule + .rule {
+  margin-top: 8px;
+}
+
+.rule-image {
+  width: 24px;
+  height: 24px;
+}
+
+.rule span {
+  margin-top: -2px;
+}
+
+
+/* Items */
+
+.item {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  width: 50px;
+  height: 50px;
+
+  border-radius: 4px;
+  background-color: var(--item-background-color);
+  background-size: 100%;
+  background-repeat: no-repeat;
+
+  border: 2px solid var(--item-border-color);
+
+  opacity: .2;
+  transition: opacity 250ms;
+}
+
+.current {
+  border-color: var(--item-current-border-color);
+}
+
+.current,
+.current ~ .item {
+  opacity: 1;
+}
+

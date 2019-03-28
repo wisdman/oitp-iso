@@ -19,12 +19,6 @@ import {
   rotate,
 } from "./functions"
 
-import {
-  IImageCanvasTrainerShapeType,
-  IImageCanvasTrainerShape,
-} from "../../trainers"
-
-
 interface IPointConfig extends IGetPointConfig {
   type: "point"
 }
@@ -61,7 +55,7 @@ interface IShapeConfig {
   rotate?: number
 }
 
-export abstract class Shape implements IImageCanvasTrainerShape{
+export abstract class Shape {
   fill: string
   stroke: string
   rotate: number
@@ -74,7 +68,7 @@ export abstract class Shape implements IImageCanvasTrainerShape{
   shape: string = ""
 
   id: number
-  type!: IImageCanvasTrainerShapeType
+  type!: "polygon" | "ellipse"
   data!: Array<Array<number>>
 
   get value() {

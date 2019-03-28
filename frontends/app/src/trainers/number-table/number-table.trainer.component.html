@@ -1,7 +1,0 @@
-<div class="field" *ngIf="config">
-  <div class="matrix" [style]="matrixStyle">
-    <div *ngFor="let item of config.matrix" [class.success]="item.success" (click)="onClick(item)">
-      <span>{{ item.value }}</span>
-    </div>
-  </div>
-</div>
