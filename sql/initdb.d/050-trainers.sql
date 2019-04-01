@@ -3,7 +3,7 @@ SET lock_timeout = 0;
 SET search_path = public;
 
 CREATE TYPE trainers__id AS ENUM (
-  'numbers',
+  'matrix-filling',
   'palette'
 );
 

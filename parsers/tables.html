@@ -7,16 +7,16 @@
   <style type="text/css">
     body {
       font-family: "Open Sans", "Helvetica Neue", sans-serif;
-      user-select: none;
+      /* user-select: none; */
     }
 
     .matrix {
       box-sizing: border-box;
-      margin-right: 32px;
-      margin-bottom: 32px;
+      /* margin-right: 32px; */
+      /* margin-bottom: 32px; */
 
       flex-shrink: 0;
-      display: inline-grid;
+      /* display: inline-grid; */
       grid-template-columns: repeat(var(--size), 50px);
       grid-template-rows: repeat(calc(var(--size) + 1), 50px);
 
@@ -119,32 +119,36 @@
     const size = Math.sqrt(DATAX[0].length)
     const XxX = `${size}x${size}`
 
-    h1Node = document.createElement("h1")
-    h1Node.innerHTML = `${XxX}`
-    document.body.appendChild(h1Node)
+    // h1Node = document.createElement("h1")
+    // h1Node.innerHTML = `${XxX}`
+    // document.body.appendChild(h1Node)
 
     for (let [index, matrix] of DATAX.entries()) {
       const matrixNode = document.createElement("div")
       matrixNode.classList.add("matrix")
-      matrixNode.style.setProperty("--size", Math.sqrt(matrix.length))
+      // matrixNode.style.setProperty("--size", Math.sqrt(matrix.length))
 
-      hNode = document.createElement("h2")
-      hNode.innerHTML = `${XxX} №${index+1}`
-      matrixNode.appendChild(hNode)
+      // hNode = document.createElement("h2")
+      // hNode.innerHTML = `${XxX} №${index+1}`
+      // matrixNode.appendChild(hNode)
 
-      for (let item of matrix) {
-        const itemNode = document.createElement("div")
-        const char = CHAR[item]
-        const colorId = CHAR.indexOf(char)
-        itemNode.innerHTML = `<span>${char}</span>`
-        itemNode.style.color = colorId >= 0 && colorId < COLORS.length ? COLORS[colorId] : "#111111"
-        itemNode.addEventListener("click", event => {
-          event.preventDefault()
-          document.querySelectorAll(".matrix div").forEach(node => node.removeAttribute("current"))
-          itemNode.setAttribute("current","")
-        })
-        matrixNode.appendChild(itemNode)
-      }
+      // for (let item of matrix) {
+      //   const itemNode = document.createElement("div")
+      //   const char = CHAR[item]
+      //   const colorId = CHAR.indexOf(char)
+      //   itemNode.innerHTML = `<span>${char}</span>`
+      //   itemNode.style.color = colorId >= 0 && colorId < COLORS.length ? COLORS[colorId] : "#111111"
+      //   itemNode.addEventListener("click", event => {
+      //     event.preventDefault()
+      //     document.querySelectorAll(".matrix div").forEach(node => node.removeAttribute("current"))
+      //     itemNode.setAttribute("current","")
+      //   })
+      //   matrixNode.appendChild(itemNode)
+      // }
+      //
+
+      matrixNode.innerHTML = "INSERT INTO trainers_data_patterns(data) VALUES ('{" + matrix.join(",") + "}'::smallint[]);"
+
       document.body.appendChild(matrixNode)
     }
   }
@@ -191,7 +195,7 @@
       document.body.appendChild(a)
       a.click()
     })
-    document.body.appendChild(saveButton)
+    // document.body.appendChild(saveButton)
   </script>
 </body>
 </html>

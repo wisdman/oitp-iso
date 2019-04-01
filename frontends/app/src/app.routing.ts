@@ -5,6 +5,7 @@ import {
   DashboardLayoutComponent,
   LoginLayoutComponent,
   MainLayoutComponent,
+  PatternsLayoutComponent,
   PaymentLayoutComponent,
   ProfileLayoutComponent,
   PublicationsLayoutComponent,
@@ -63,4 +64,7 @@ export const ROUTES: Routes =
 },{
   path: "training/:type",
   component: TrainingLayoutComponent,
+},{
+  path: "patterns",
+  component: PatternsLayoutComponent,
 }]

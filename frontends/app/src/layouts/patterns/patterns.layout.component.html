@@ -1,0 +1,21 @@
+<div
+  *ngFor="let matrix of data; let i = index"
+  class="matrix"
+  [attr.id]="matrix.id"
+  [attr.style]="getSize(matrix.data)"
+>
+  <h2 class="matrix-h2">№{{i+1}}</h2>
+  <div
+    *ngFor="let item of matrix.data; let j = index"
+    class="matrix-item"
+    (click)="onClick(matrix, j)"
+    [style.color]="getColor(item)"
+    [class.current]="isCurrent(matrix, j)"
+  >
+    <span>{{getChar(item)}}</span>
+  </div>
+</div>
+<button
+  class="button save"
+  (click)="onSaveClick()"
+>Сохранить</button>

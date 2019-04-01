@@ -34,6 +34,7 @@ import {
   DashboardLayoutComponent,
   LoginLayoutComponent,
   MainLayoutComponent,
+  PatternsLayoutComponent,
   PaymentLayoutComponent,
   ProfileLayoutComponent,
   PublicationsLayoutComponent,
@@ -61,6 +62,7 @@ import {
 import {
   DaysPipe,
   TimerPipe,
+  SafeStylePipe,
 } from "./pipes"
 
 import {
@@ -105,6 +107,7 @@ import { HAMMER } from "./hammer.config"
     DashboardLayoutComponent,
     LoginLayoutComponent,
     MainLayoutComponent,
+    PatternsLayoutComponent,
     PaymentLayoutComponent,
     ProfileLayoutComponent,
     PublicationsLayoutComponent,
@@ -130,6 +133,7 @@ import { HAMMER } from "./hammer.config"
 
     DaysPipe,
     TimerPipe,
+    SafeStylePipe,
   ],
 
   entryComponents: [

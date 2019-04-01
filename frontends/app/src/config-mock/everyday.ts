@@ -33,6 +33,8 @@ import {
 
 export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
 
+  // TODO: Картинки, фразы
+
   return [
     await getMessageTrainerConfig({
       header: "Полная тренировка",
@@ -63,7 +65,7 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
       button: "Начать",
     }),
 
-    await getTextExcessTrainerConfig(), // Вычеркивание
+    // TODO: Перетаскивание слов в группы (без названия групп)
 
 
     // === 3.Зрительная память ===
@@ -125,6 +127,7 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
     await getTextPairsTrainerConfig({ type: "paronyms", itemsCount: 5 }), // Паронимы
 
     // //TODO: Круговые схемы
+    await getTextExcessTrainerConfig(), // Вычеркивание, Найди признак, из почты
 
 
     // === 5.Пространство, логика ===
@@ -140,14 +143,14 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
 
     // === 5.Арифметико-практическое мышление ===
 
-    await getMessageTrainerConfig({
-      header: "Арифметико-практическое мышление",
-      text: "Графа №14",
-      button: "Начать",
-    }),
+    // await getMessageTrainerConfig({
+    //   header: "Арифметико-практическое мышление",
+    //   text: "Графа №14",
+    //   button: "Начать",
+    // }),
 
-    await getMathQTrainerConfig(), //TODO: Арифметико-практическое мышление (разобрать учебник)
-    await getMathQTrainerConfig(), //TODO: Арифметико-практическое мышление (разобрать учебник)
+    // await getMathQTrainerConfig(), //TODO: Арифметико-практическое мышление (разобрать учебник)
+    // await getMathQTrainerConfig(), //TODO: Арифметико-практическое мышление (разобрать учебник)
 
 
     // === 6.Текст. Виды чтения ===
@@ -168,6 +171,9 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
       text: "Графа №17",
       button: "Начать",
     }),
+
+    await getMathQTrainerConfig(), //TODO: Арифметико-практическое мышление (разобрать учебник)
+    await getMathQTrainerConfig(), //TODO: Арифметико-практическое мышление (разобрать учебник)
 
     ...await getMatrixFillingFiguresTrainerConfigs({ side: 3 }), // Таблицы фигуры (паттерны)
     ...await getMatrixFillingFiguresTrainerConfigs({ side: 4 }), // Таблицы фигуры (паттерны)
@@ -235,7 +241,7 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
       button: "Начать",
     }),
 
-    ...await getTextSortTrainerConfig(), // Сортировка списка (столбики)
+    ...await getTextSortTrainerConfig(), // Сортировка списка (столбики)  TODO!!!!! Проверить
 
 
     // === 10.Гармонизация. Картины ===
@@ -303,8 +309,8 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
       button: "Начать",
     }),
 
-    await getMatrixSequenceNumbersTrainerConfigs({ side: 3 }), // Шульте ИНДУКТИВНОСТЬ
-    await getMatrixSequenceNumbersTrainerConfigs({ side: 4 }), // Шульте ИНДУКТИВНОСТЬ
+    await getMatrixSequenceNumbersTrainerConfigs({ side: 3 }), // Шульте !ИНДУКТИВНОСТЬ
+    await getMatrixSequenceNumbersTrainerConfigs({ side: 4 }), // Шульте !ИНДУКТИВНОСТЬ
     await getMatrixSequenceRandomNumbersTrainerConfigs({ side: 3 }), // Шульте случайные
     await getMatrixSequenceRandomNumbersTrainerConfigs({ side: 4 }), // Шульте случайные
     await getMatrixSequenceRandomNumbersTrainerConfigs({ side: 5, colors: true }), // Шульте случайные цветные
