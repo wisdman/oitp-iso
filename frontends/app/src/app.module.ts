@@ -18,6 +18,7 @@ import {
 import {
   CardChargerComponent,
   CardEverydayComponent,
+  CardRecommendationsComponent,
   HeaderNotificationsComponent,
   HeaderUserComponent,
   IndicatorBrainComponent,
@@ -26,7 +27,7 @@ import {
   LapTimerComponent,
   LogComponent,
   SidebarUserComponent,
-  СardRecommendationsComponent,
+  SocialBbuttonsComponent,
 } from "./components"
 
 import {
@@ -38,7 +39,6 @@ import {
   PaymentLayoutComponent,
   ProfileLayoutComponent,
   PublicationsLayoutComponent,
-  RegisterLayoutComponent,
   SupportLayoutComponent,
   TrainingLayoutComponent,
 } from "./layouts"
@@ -93,6 +93,7 @@ import { HAMMER } from "./hammer.config"
 
     CardChargerComponent,
     CardEverydayComponent,
+    CardRecommendationsComponent,
     HeaderNotificationsComponent,
     HeaderUserComponent,
     IndicatorBrainComponent,
@@ -101,7 +102,7 @@ import { HAMMER } from "./hammer.config"
     LapTimerComponent,
     LogComponent,
     SidebarUserComponent,
-    СardRecommendationsComponent,
+    SocialBbuttonsComponent,
 
     ClubLayoutComponent,
     DashboardLayoutComponent,
@@ -111,7 +112,6 @@ import { HAMMER } from "./hammer.config"
     PaymentLayoutComponent,
     ProfileLayoutComponent,
     PublicationsLayoutComponent,
-    RegisterLayoutComponent,
     SupportLayoutComponent,
     TrainingLayoutComponent,
 

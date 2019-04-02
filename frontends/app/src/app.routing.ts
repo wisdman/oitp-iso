@@ -9,7 +9,6 @@ import {
   PaymentLayoutComponent,
   ProfileLayoutComponent,
   PublicationsLayoutComponent,
-  RegisterLayoutComponent,
   SupportLayoutComponent,
   TrainingLayoutComponent,
 } from "./layouts"
@@ -54,13 +53,15 @@ export const ROUTES: Routes =
 },{
   path: "login",
   component: LoginLayoutComponent,
+  data: { isSingIn: true },
 },{
   path: "logout",
   canActivate: [ LogoutGuardService ],
   component: LoginLayoutComponent,
+  data: { isSingIn: true },
 },{
   path: "register",
-  component: RegisterLayoutComponent,
+  component: LoginLayoutComponent,
 },{
   path: "training/:type",
   component: TrainingLayoutComponent,

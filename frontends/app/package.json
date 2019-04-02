@@ -36,7 +36,7 @@
     "@types/hammerjs": "^2.0.36",
     "@types/html-webpack-plugin": "^3.2.0",
     "@types/mini-css-extract-plugin": "^0.2.0",
-    "@types/node": "^11.12.2",
+    "@types/node": "^11.13.0",
     "@types/terser-webpack-plugin": "^1.2.0",
     "@types/webpack": "^4.4.26",
     "autoprefixer": "^9.4.10",
@@ -65,8 +65,6 @@
     "clean": "rm -rf ./artifacts/*",
     "build": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack --config ./webpack.config.ts",
     "start": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack-dev-server --config ./webpack.config.ts",
-    "icons": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node icons/sprite.ts ./icons/flat-min ./icons/flat-min.svg",
-    "icons:serve": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node data/icons/sprite.ts ./data/icons/vll",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
