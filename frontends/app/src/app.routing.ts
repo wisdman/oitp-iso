@@ -20,7 +20,6 @@ import {
 export const ROUTES: Routes =
 [{
   path: "",
-  canActivate: [ LogoutGuardService ],
   component: MainLayoutComponent,
   children: [{
     path: "",
@@ -65,7 +64,6 @@ export const ROUTES: Routes =
   component: LoginLayoutComponent,
 },{
   path: "training/:type",
-  canActivate: [ LogoutGuardService ],
   component: TrainingLayoutComponent,
 },{
   path: "patterns",

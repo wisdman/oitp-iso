@@ -17,10 +17,10 @@
   --color-primar: rgb(63, 81, 181);
   --color-primar-light: rgba(63, 81, 181, 0.7);
 
+  --color-middle: rgb(33,125,213);
+
   --color-second: rgb(3, 169, 244);
   --color-second-light: rgba(3, 169, 244, 0.7);
-
-  --color-middle: rgb(33,125,213);
 
   --color-success: rgb(45, 169, 79);
   --color-success-light: rgba(45, 169, 79, 0.7);
