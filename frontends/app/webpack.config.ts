@@ -90,10 +90,32 @@ export default {
       test: /\.css$/i,
       exclude: [
         PATH("./src/styles"),
+        PATH("./src/directives"),
         PATH("./node_modules"),
       ],
       use: [{
         loader: "raw-loader",
+      },{
+        loader: "postcss-loader",
+        options: {
+          ident: "main",
+          plugins: postCSSPlugins
+        }
+      }]
+    },{
+      // === Directives styles ===
+      test: /\.css$/i,
+      include: [
+        PATH("./src/directives"),
+      ],
+      use: [{
+        loader: "style-loader",
+      },{
+        loader: "css-loader",
+        options: {
+          modules: true,
+          importLoaders: 1,
+        },
       },{
         loader: "postcss-loader",
         options: {
@@ -282,9 +304,6 @@ export default {
   devServer: {
     clientLogLevel: "warning",
     compress: isProduction,
-    // contentBase: [
-    //   PATH("./data"),
-    // ],
     disableHostCheck: true,
     historyApiFallback: true,
     hot: !isProduction,

@@ -53,12 +53,12 @@ export const ROUTES: Routes =
 },{
   path: "login",
   component: LoginLayoutComponent,
-  data: { isSingIn: true },
+  data: { signIn: true },
 },{
   path: "logout",
   canActivate: [ LogoutGuardService ],
   component: LoginLayoutComponent,
-  data: { isSingIn: true },
+  data: { signIn: true },
 },{
   path: "register",
   component: LoginLayoutComponent,

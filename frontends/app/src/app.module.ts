@@ -31,6 +31,10 @@ import {
 } from "./components"
 
 import {
+  ButtonDirective,
+} from "./directives"
+
+import {
   ClubLayoutComponent,
   DashboardLayoutComponent,
   LoginLayoutComponent,
@@ -103,6 +107,8 @@ import { HAMMER } from "./hammer.config"
     LogComponent,
     SidebarUserComponent,
     SocialBbuttonsComponent,
+
+    ButtonDirective,
 
     ClubLayoutComponent,
     DashboardLayoutComponent,

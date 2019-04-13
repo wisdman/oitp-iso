@@ -1,23 +1,54 @@
 package db
 
 import (
-  "github.com/jackc/pgx"
+	"context"
+	"log"
+	"net/http"
+
+	"github.com/jackc/pgx"
 )
 
-type DB struct {
-  pgx.ConnPool
+var db *pgx.ConnPool
+
+var ErrNoRows = pgx.ErrNoRows
+
+type ctxDB int
+
+const ctxDBKey ctxDB = 0
+
+func init() {
+	config, err := pgx.ParseEnvLibpq()
+	if err != nil {
+		log.Fatalf("Unable to parse environment: %v\n", err)
+	}
+
+	db, err = pgx.NewConnPool(pgx.ConnPoolConfig{ConnConfig: config})
+	if err != nil {
+		log.Fatalf("Unable to connect to database: %v\n", err)
+	}
 }
 
-func New() (*DB, error) {
-  config, err := ParseEnvConfig()
-  if err != nil {
-    return nil, err
-  }
+func Middleware(next http.Handler) http.Handler {
+	fn := func(w http.ResponseWriter, r *http.Request) {
 
-  db, err := pgx.NewConnPool(*config)
-  if err != nil {
-    return nil, err
-  }
+		conn, err := db.Acquire()
+		if err != nil {
+			log.Printf("DB Acquire error: %v\n", err)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		}
+		defer db.Release(conn)
 
-  return &DB{*db}, nil
+		ctx := r.Context()
+		ctx = context.WithValue(ctx, ctxDBKey, conn)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	}
+	return http.HandlerFunc(fn)
+}
+
+func Conn(r *http.Request) *pgx.Conn {
+	if conn, ok := r.Context().Value(ctxDBKey).(*pgx.Conn); ok {
+		return conn
+	}
+
+	return nil
 }

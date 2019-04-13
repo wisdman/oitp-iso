@@ -1,0 +1,46 @@
+/* 1 */
+.count-objects--blue,.count-objects__item--blue {
+  background: #2ec8ff
+}
+
+.count-objects--red,.count-objects__item--red {
+  background: #fa5f02
+}
+
+.count-objects--green,.count-objects__item--green {
+  background: #2cbe50
+}
+
+.count-objects--yellow,.count-objects__item--yellow {
+  background: #fdd11b
+}
+
+.count-objects--gray,.count-objects__item--gray {
+  background: #eceded
+}
+
+
+/* 2 */
+.number-one-numbers--pink,.number-one-numbers__item--pink {
+  background: #fc73b0
+}
+
+.number-one-numbers--orange,.number-one-numbers__item--orange {
+  background: #f28e37
+}
+
+.number-one-numbers--purple,.number-one-numbers__item--purple {
+  background: #8e3dcb
+}
+
+.number-one-numbers--blue,.number-one-numbers__item--blue {
+  background: #4db8ec
+}
+
+.number-one-numbers--yellow,.number-one-numbers__item--yellow {
+  background: #fdc10a
+}
+
+.number-one-numbers--green,.number-one-numbers__item--green {
+  background: #94c94d
+}

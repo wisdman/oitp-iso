@@ -5,29 +5,50 @@ services:
   sql:
     restart: unless-stopped
     build: ./sql
-    image: wisdman/oitp-isov-sql
+    image: oitp-isov/sql
     volumes:
       - data-volume:/var/lib/postgresql/data
-    env_file:
-      - ./.environment
+    secrets:
+      - secret-sql
+    environment:
+      - POSTGRES_DB=oitp
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-sql
     networks:
       default:
 
-  api-patterns:
+  api-auth:
     restart: unless-stopped
     build:
       context: ./api
       args:
-        - APP_NAME=patterns
-    image: wisdman/oitp-isov-api-patterns
-    env_file:
-      - ./.environment
-    depends_on:
-      - sql
-    links:
-      - sql
+        - APP_NAME=auth
+    image: oitp-isov/auth
+    secrets:
+      - secret-api
+    environment:
+      - PGHOST=sql
+      - PGSSLMODE=disable
+      - PGDATABASE=oitp
+      - PGUSER=api
     networks:
       default:
+
+  # api-patterns:
+  #   restart: unless-stopped
+  #   build:
+  #     context: ./api
+  #     args:
+  #       - APP_NAME=patterns
+  #   image: oitp-isov/patterns
+  #   env_file:
+  #     - ./.environment
+  #   depends_on:
+  #     - sql
+  #   links:
+  #     - sql
+  #   networks:
+  #     default:
 
   # api-auth:
   #   restart: unless-stopped
@@ -43,22 +64,28 @@ services:
   app:
     restart: unless-stopped
     build: ./frontends/app
-    image: wisdman/oitp-isov-frontend-app
+    image: oitp-isov/frontend-app
     networks:
       default:
 
   nginx:
     restart: unless-stopped
     build: ./nginx
-    image: wisdman/oitp-isov-nginx
+    image: oitp-isov/nginx
     depends_on:
-      - api-patterns
+      - api-auth
       - app
     links:
-      - api-patterns
+      - api-auth
       - app
     networks:
       default:
 
 volumes:
   data-volume:
+
+secrets:
+  secret-sql:
+    file: ./secret-sql.env
+  secret-api:
+    file: ./secret-api.env

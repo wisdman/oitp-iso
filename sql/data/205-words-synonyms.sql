@@ -1,6 +1,6 @@
 SET search_path = "$user";
 
-INSERT INTO private.trainers_data_words_synonyms("words") VALUES
+INSERT INTO private.trainers_data_words_synonyms("synonyms") VALUES
  (ARRAY['абсолютный','совершенный','идеальный','образцовый']),
  (ARRAY['абсурд','нелепость']),
  (ARRAY['авария','крушение']),

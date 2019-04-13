@@ -27,7 +27,6 @@ node_modules
 !**/artifacts/.gitkeep
 
 ### Runtime environment ###
-.environment
 *.env
 *.lock
 *.pid

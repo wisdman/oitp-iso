@@ -1,7 +1,16 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from "@angular/core"
-import { ActivatedRoute } from "@angular/router"
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  OnDestroy,
+  OnInit,
+} from "@angular/core"
+import { FormBuilder, Validators } from "@angular/forms"
+import { ActivatedRoute, Router, NavigationStart } from "@angular/router"
 
 import { Subscription } from "rxjs"
+import { filter, map } from "rxjs/operators"
+// import { UserService } from "../../services"
 
 @Component({
   selector: "login-layout",
@@ -10,23 +19,71 @@ import { Subscription } from "rxjs"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginLayoutComponent implements OnInit, OnDestroy {
-  constructor(private _route: ActivatedRoute) {}
+  constructor(
+    private _cdr: ChangeDetectorRef,
+    private _fb: FormBuilder,
+    private _route: ActivatedRoute,
+    private _router: Router,
+    // private _userService: UserService,
+  ) {}
 
-  isSingIn: boolean = true
+  isSignInForm: boolean = true
+  isPasswordRecovery: boolean = false
+
+  loginForm = this._fb.group({
+    email: ['', Validators.required],
+    password: [''],
+  })
+
+  private _updatePasswordRequired() {
+    const passwordControl = this.loginForm.get("password")
+    if (!passwordControl) {
+      return
+    }
+
+    if (this.isSignInForm) {
+      passwordControl.setValidators(Validators.required)
+      return
+    }
+
+    passwordControl.clearValidators()
+  }
 
   private _routeSubscriber!: Subscription
+  private _stateSubscriber!: Subscription
 
   ngOnInit() {
-    this._routeSubscriber = this._route.data.subscribe(({isSingIn}) => this.isSingIn = isSingIn)
+    this._routeSubscriber = this._route.data
+                                .subscribe(({signIn}) => {
+                                  this.isSignInForm = !!signIn
+                                  this._updatePasswordRequired()
+                                  this._cdr.markForCheck()
+                                })
+
+    this._stateSubscriber = this._router.events.pipe(
+      filter(event => event instanceof NavigationStart),
+      map(() => this._router.getCurrentNavigation()),
+      filter(<T>(value?: T | null): value is T => value !== null && value !== undefined),
+      map(navigation => navigation.extras.state && navigation.extras.state.passwordRecovery && true || false),
+    ).subscribe( passwordRecovery => {
+      console.dir(passwordRecovery)
+      this.isPasswordRecovery = passwordRecovery
+      this._updatePasswordRequired()
+      this._cdr.markForCheck()
+    })
   }
 
   ngOnDestroy() {
     this._routeSubscriber.unsubscribe()
+    this._stateSubscriber.unsubscribe()
+  }
+
+  onSubmit(event: Event) {
+    event.preventDefault()
+    this._router.navigateByUrl("/")
   }
 
   onSocialAction(type: any) {
     console.log(type)
   }
-
-
 }

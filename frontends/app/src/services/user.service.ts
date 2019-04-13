@@ -1,5 +1,10 @@
 import { Injectable } from "@angular/core"
-import { BehaviorSubject } from "rxjs"
+
+import { BehaviorSubject, from } from "rxjs"
+
+import {
+  API_AUTH,
+} from "../app.config"
 
 type IUser = Partial<{
   id: number
@@ -20,6 +25,21 @@ type IUser = Partial<{
 @Injectable({ providedIn: "root" })
 export class UserService {
 
+  constructor() {
+    this.updateUser({
+      name: "Дмитрий Поляков",
+      premium: 90,
+
+      charge: 83,
+
+      intelligence: 82,
+      knowledge: 76,
+      memory: 80,
+
+      speed: [65, 67, 72, 62, 81]
+    })
+  }
+
   private userSource = new BehaviorSubject<IUser | undefined>(undefined)
 
   get user() {
@@ -30,19 +50,41 @@ export class UserService {
     this.userSource.next({ ...this.userSource.getValue(), ...data })
   }
 
-  constructor() {
-    this.updateUser({
-      name: "Test User",
-      premium: 90,
+  login({
+    email,
+    password,
+  }:{
+    email: string,
+    password: string,
+  }) {
+    const request = fetch(API_AUTH, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({email, password})
+    }).then(r => r.status === 200)
 
-      charge: 50,
-
-      intelligence: 50,
-      knowledge: 50,
-      memory: 50,
-
-      speed: [50, 50, 50, 50, 50]
-    })
+    return from(request)
   }
 
+  register({
+    email,
+    reset = false
+  }:{
+    email: string,
+    reset: boolean
+  }) {
+    const request = fetch(API_AUTH, {
+      method: "PUT",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({email, reset})
+    }).then(r => r.status === 200)
+
+    return from(request)
+  }
 }

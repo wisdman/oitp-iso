@@ -1,6 +1,12 @@
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET search_path = public;
+SET search_path = "$user";
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA pg_catalog;
 CREATE EXTENSION IF NOT EXISTS "pgcrypto"  WITH SCHEMA pg_catalog;
+
+CREATE SCHEMA IF NOT EXISTS private;
+CREATE SCHEMA IF NOT EXISTS public;
+
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+
+CREATE ROLE "api" WITH NOINHERIT NOLOGIN PASSWORD NULL;
+ALTER ROLE "api" SET search_path = "$user";

@@ -53,8 +53,8 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
       timeLimit: 0
     },
 
-    await getTablePipeLettersTrainerConfig({ type: "letters", length: 30, itemsCount: 3 }), //  Длинная таблица
-    await getTablePipeLettersTrainerConfig({ type: "numbers", length: 30, itemsCount: 3 }), //  Длинная таблица
+    await getTablePipeLettersTrainerConfig({ type: "letters", length: 30, itemsCount: 3 }), //  Длинная таблица +
+    await getTablePipeLettersTrainerConfig({ type: "numbers", length: 30, itemsCount: 3 }), //  Длинная таблица +
 
 
     // === 2.Вариативность и гибкость мышления ===
@@ -112,19 +112,19 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
       header: "Синонимы",
       button: "Начать",
     }),
-    await getTextPairsTrainerConfig({ type: "synonyms", itemsCount: 5 }), // Синонимы
+    await getTextPairsTrainerConfig({ type: "synonyms", itemsCount: 5 }), // Синонимы +
 
     await getMessageTrainerConfig({
       header: "Антонимы",
       button: "Начать",
     }),
-    await getTextPairsTrainerConfig({ type: "antonyms", itemsCount: 5 }), // Антонимы
+    await getTextPairsTrainerConfig({ type: "antonyms", itemsCount: 5 }), // Антонимы +
 
     await getMessageTrainerConfig({
       header: "Паронимы",
       button: "Начать",
     }),
-    await getTextPairsTrainerConfig({ type: "paronyms", itemsCount: 5 }), // Паронимы
+    await getTextPairsTrainerConfig({ type: "paronyms", itemsCount: 5 }), // Паронимы +
 
     // //TODO: Круговые схемы
     await getTextExcessTrainerConfig(), // Вычеркивание, Найди признак, из почты
@@ -218,8 +218,8 @@ export async function EVERYDAY_TRAINERS(): Promise<Array<ITrainerConfigs>> {
       button: "Начать",
     }),
 
-    await getClassificationWordsTrainerConfig({ groupCount: 3, itemsCount: 5}), // Словарь по группам
-    await getClassificationColorsTrainerConfig(), // Цвета
+    await getClassificationWordsTrainerConfig({ groupCount: 3, itemsCount: 5}), // Словарь по группам +
+    await getClassificationColorsTrainerConfig(), // Цвета +
 
 
     // === 9.Мнемотехника. Таблицы ===

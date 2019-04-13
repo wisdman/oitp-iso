@@ -1,4 +1,4 @@
-<form class="form">
+<form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit($event)">
   <a class="logo" routerLink="/">
     <svg class="svg-image" width="82" height="40" viewBox="0 0 82 40" aria-hidden="true">
       <path d="M0 14h4l8 9.5 8-9.5h4v19h-4V19.5L13 28s-.5.5-1 .5-1-.5-1-.5l-7-8.5V33H0V14zm61 0h18c2 0 3 1 3 3v3.5c0 2-1 3-3 3 2 0 3 1 3 3V30c0 2-1 3-3 3H61V14zm4 4v3.5h12c.5 0 1-.5 1-1V19c0-.5-.5-1-1-1H65zm0 7.5V29h12c.5 0 1-.5 1-1v-1.5c0-.5-.5-1-1-1H65zM30 33V14h4v19h-4zm10 0V14h4v19h-4zM0 36h82v4H0v-4zM3.5 6.5L42 0l36 6.5s4 .5 4 2V11H0V8.5c0-1.5 3.5-2 3.5-2zM50 33V14h4v19h-4z"></path>
@@ -6,23 +6,29 @@
     <span class="visually-hidden">Международная школа Васильевой</span>
   </a>
   <fieldset class="fieldset">
-    <legend class="legend" *ngIf="isSingIn">Вход в кабинет</legend>
-    <legend class="legend" *ngIf="!isSingIn">Регистрация</legend>
+    <legend class="legend" *ngIf="isSignInForm">Вход в кабинет</legend>
+    <legend class="legend" *ngIf="!isSignInForm && !isPasswordRecovery">Регистрация</legend>
+    <legend class="legend" *ngIf="!isSignInForm && isPasswordRecovery">Востановление пароля</legend>
 
     <div class="input">
-      <input id="login" type="text" name="login" required>
-      <label for="login">E-mail или Телефон</label>
+      <input id="email" type="text" formControlName="email" required>
+      <label for="email">E-mail</label>
     </div>
 
-    <div class="input" *ngIf="isSingIn">
-      <input id="password" type="password" name="password" required>
+    <div class="input" *ngIf="isSignInForm">
+      <input id="password" type="password" formControlName="password">
       <label for="password">Пароль</label>
     </div>
 
-    <button type="submit" class="button">
-      <span *ngIf="isSingIn">Войти</span>
-      <span *ngIf="!isSingIn">Зарегистрироваться</span>
+    <button type="submit" class="submit" [disabled]="!loginForm.valid">
+      <span *ngIf="isSignInForm">Войти</span>
+      <span *ngIf="!isSignInForm && !isPasswordRecovery">Зарегистрироваться, {{isPasswordRecovery}}</span>
+      <span *ngIf="!isSignInForm && isPasswordRecovery">Сбросить пароль, {{isPasswordRecovery}}</span>
     </button>
+
+    <p class="reset-password" *ngIf="isSignInForm">
+      <a routerLink="/register" [state]="{ passwordRecovery: true }">Востановить пароль</a>
+    </p>
   </fieldset>
 
   <fieldset class="fieldset fieldset--social">
@@ -35,6 +41,6 @@
   </fieldset>
 </form>
 <div class="switch">
-  <p *ngIf="isSingIn">Ещё нет аккаунта? <a routerLink="/register">Зарегистрируйтесь</a></p>
-  <p *ngIf="!isSingIn">Уже зарегистрированы? <a routerLink="/login">Войдите</a></p>
+  <p *ngIf="isSignInForm">Ещё нет аккаунта? <a routerLink="/register">Зарегистрируйтесь</a></p>
+  <p *ngIf="!isSignInForm">Уже зарегистрированы? <a routerLink="/login">Войдите</a></p>
 </div>
