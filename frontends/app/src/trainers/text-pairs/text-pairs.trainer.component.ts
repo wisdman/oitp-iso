@@ -69,7 +69,7 @@ export class TextPairsTrainerComponent implements OnInit, OnChanges {
   items!: Array<ITextPairsItem>
 
   ngOnInit() {
-    [this.svgWidth, this.svgHeight, this.items] = this._InitTextPairsTrainerLayout(this._initItems(this.config.pairs))
+    [this.svgWidth, this.svgHeight, this.items] = this._InitTextPairsTrainerLayout(this._initItems(this.config.items))
     this._updateResult({
       isFinish: false,
       success: 0,
@@ -207,7 +207,7 @@ export class TextPairsTrainerComponent implements OnInit, OnChanges {
   private _check(forceFinish: boolean = false) {
     this._updateResult({
       success: this.pairs.reduce((sum, [A, B]) => A.companion === B ? ++sum : sum, 0),
-      isFinish: forceFinish || this.pairs.length === this.config.pairs.length
+      isFinish: forceFinish || this.pairs.length === this.config.items.length
     })
   }
 }

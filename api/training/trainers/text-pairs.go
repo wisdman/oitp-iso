@@ -11,6 +11,7 @@ type TextPairsConfig struct {
 	UID       string     `json:"uid"`
 	TimeLimit int        `json:"timeLimit"`
 	Items     [][]string `json:"items"`
+	Title     string     `json:"title"`
 }
 
 type TextPairsParameters struct {
@@ -40,6 +41,7 @@ func TextPairsAntonyms(
 		ID:        "text-pairs",
 		UID:       uid.String(),
 		TimeLimit: parameters.TimeLimit,
+		Title:     "Отметьте антонимы",
 	}
 
 	rows, err := sql.Query(`
@@ -108,6 +110,7 @@ func TextPairsSynonyms(
 		ID:        "text-pairs",
 		UID:       uid.String(),
 		TimeLimit: parameters.TimeLimit,
+		Title:     "Отметьте синонимы",
 	}
 
 	rows, err := sql.Query(`

@@ -23,7 +23,7 @@ export interface ITextPairsItem {
 export interface ITextPairsTrainerConfig extends ITrainerConfig {
   id: ITextPairsTrainer
   mode: "show" | "play"
-  pairs: Array<[string, string]>
+  items: Array<[string, string]>
 }
 
 export interface ITextPairsTrainerResult extends ITrainerResult {
