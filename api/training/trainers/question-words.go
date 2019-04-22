@@ -119,7 +119,7 @@ func QuestionCloseWords(
 		config := &QuestionConfig{
 			ID:        "question",
 			UID:       uid.String(),
-			Body:      question,
+			Body:      question + "<p>это</p>",
 			TimeLimit: parameters.TimeLimit,
 
 			Type:   "text",

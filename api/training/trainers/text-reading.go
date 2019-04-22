@@ -64,6 +64,10 @@ func TextReading(
 	}
 
 	configs = append(configs, config)
-	configs = append(configs, questions)
+
+	for q := range questions {
+		configs = append(configs, q)
+	}
+
 	return configs, nil
 }

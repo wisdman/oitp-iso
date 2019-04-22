@@ -59,6 +59,7 @@ import {
   TablePipeTrainerComponent,
   TextLettersTrainerComponent,
   TextPairsTrainerComponent,
+  TextReadingTrainerComponent,
   TextSortTrainerComponent,
   TextTezirovanieTrainerComponent,
 } from "./trainers"
@@ -134,6 +135,7 @@ import { HAMMER } from "./hammer.config"
     TablePipeTrainerComponent,
     TextLettersTrainerComponent,
     TextPairsTrainerComponent,
+    TextReadingTrainerComponent,
     TextSortTrainerComponent,
     TextTezirovanieTrainerComponent,
 

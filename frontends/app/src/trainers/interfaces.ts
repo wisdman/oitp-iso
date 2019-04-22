@@ -12,6 +12,7 @@ import { IClassificationTrainer, IClassificationTrainerConfig, IClassificationTr
 import { IResultTrainer, IResultTrainerConfig, IResultTrainerResult } from "./result"
 import { ITextSortTrainer, ITextSortTrainerConfig, ITextSortTrainerResult } from "./text-sort"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
+import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResult } from "./text-reading"
 
 export type ITrainer = IClassificationTrainer
                      | IImageCarpetTrainer
@@ -24,6 +25,7 @@ export type ITrainer = IClassificationTrainer
                      | ITablePipeTrainer
                      | ITextLettersTrainer
                      | ITextPairsTrainer
+                     | ITextReadingTrainer
                      | ITextSortTrainer
                      | ITextTezirovanieTrainer
 
@@ -39,6 +41,7 @@ export type ITrainerConfigs = IClassificationTrainerConfig
                             | ITablePipeTrainerConfig
                             | ITextLettersTrainerConfig
                             | ITextPairsTrainerConfig
+                            | ITextReadingTrainerConfig
                             | ITextSortTrainerConfig
                             | ITextTezirovanieTrainerConfig
 
@@ -53,6 +56,7 @@ export type ITrainerResults = IClassificationTrainerResult
                             | ITablePipeTrainerResult
                             | ITextLettersTrainerResult
                             | ITextPairsTrainerResult
+                            | ITextReadingTrainerResult
                             | ITextSortTrainerResult
                             | ITextTezirovanieTrainerResult
 

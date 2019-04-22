@@ -86,6 +86,13 @@
       (result)="onResult($event)"
     ></trainer-text-pairs>
 
+    <trainer-text-reading
+      *ngIf="config.id === 'text-reading'"
+      [config]="config"
+      [size]="size"
+      (result)="onResult($event)"
+    ></trainer-text-reading>
+
     <trainer-text-sort
       *ngIf="config.id === 'text-sort'"
       [config]="config"

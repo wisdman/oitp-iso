@@ -88,16 +88,16 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	}
 	training.Trainers = append(training.Trainers, value...)
 
-	// Вербальный интеллект: Антонимы
-	if value, err = trainers.TextPairsAntonyms(sql, 0); err != nil {
+	// Вербальный интеллект: Выделить из группы (лишнее)
+	if value, err = trainers.QuestionWasteWords(sql, 0, 3); err != nil {
 		service.Fatal(w, err)
 		sql.Rollback()
 		return
 	}
 	training.Trainers = append(training.Trainers, value...)
 
-	// Вербальный интеллект: Выделить из группы (лишнее)
-	if value, err = trainers.QuestionWasteWords(sql, 0, 3); err != nil {
+	// Вербальный интеллект: Антонимы
+	if value, err = trainers.TextPairsAntonyms(sql, 0); err != nil {
 		service.Fatal(w, err)
 		sql.Rollback()
 		return
