@@ -54,6 +54,8 @@ func TextReading(
 		return nil, err
 	}
 
+	configs = append(configs, config)
+
 	for i, max := 0, len(questions); i < max; i++ {
 		uid, err := uuid.NewUUID()
 		if err != nil {
@@ -61,12 +63,8 @@ func TextReading(
 		}
 		questions[i].ID = "question"
 		questions[i].UID = uid.String()
-	}
 
-	configs = append(configs, config)
-
-	for q := range questions {
-		configs = append(configs, q)
+		configs = append(configs, questions[i])
 	}
 
 	return configs, nil

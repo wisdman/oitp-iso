@@ -88,8 +88,8 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	}
 	training.Trainers = append(training.Trainers, value...)
 
-	// Вербальный интеллект: Выделить из группы (лишнее)
-	if value, err = trainers.QuestionWasteWords(sql, 0, 3); err != nil {
+	// Вербальный интеллект: Выделить из группы (похожее)
+	if value, err = trainers.QuestionCloseWords(sql, 0, 3); err != nil {
 		service.Fatal(w, err)
 		sql.Rollback()
 		return
@@ -104,8 +104,8 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	}
 	training.Trainers = append(training.Trainers, value...)
 
-	// Вербальный интеллект: Выделить из группы (похожее)
-	if value, err = trainers.QuestionCloseWords(sql, 0, 3); err != nil {
+	// Вербальный интеллект: Выделить из группы (лишнее)
+	if value, err = trainers.QuestionWasteWords(sql, 0, 3); err != nil {
 		service.Fatal(w, err)
 		sql.Rollback()
 		return

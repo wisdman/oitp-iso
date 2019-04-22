@@ -17,6 +17,8 @@ type ClassificationConfig struct {
 	UID       string `json:"uid"`
 	TimeLimit int    `json:"timeLimit"`
 
+	Type string `json:"type"`
+
 	Items []*ClassificationItem `json:"items"`
 }
 
@@ -46,9 +48,10 @@ func ClassificationColors(
 	}
 
 	config := &ClassificationConfig{
-		ID:        "classification-colors",
+		ID:        "classification",
 		UID:       uid.String(),
 		TimeLimit: parameters.TimeLimit,
+		Type:      "color",
 	}
 
 	rows, err := sql.Query(`
@@ -107,9 +110,10 @@ func ClassificationWords(
 	}
 
 	config := &ClassificationConfig{
-		ID:        "classification-words",
+		ID:        "classification",
 		UID:       uid.String(),
 		TimeLimit: parameters.TimeLimit,
+		Type:      "text",
 	}
 
 	rows, err := sql.Query(`
