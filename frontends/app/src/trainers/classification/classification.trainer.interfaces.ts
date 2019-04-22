@@ -15,6 +15,7 @@ export interface IClassificationTrainerConfig extends ITrainerConfig {
   id: IClassificationTrainer
   type: "image" | "text" | "color"
   items: Array<IClassificationTrainerItem>
+  itemTimeout: number
 }
 
 export interface IClassificationTrainerResult extends ITrainerResult {
@@ -22,6 +23,4 @@ export interface IClassificationTrainerResult extends ITrainerResult {
   config: IClassificationTrainerConfig
 
   success: number
-  error: number
-  current: number
 }

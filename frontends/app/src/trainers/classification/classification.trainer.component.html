@@ -1,12 +1,14 @@
-<div class="field" [style]="matrixStyle">
-  <h1 class="word">
-    <span *ngIf="config.type !== 'image'">{{ currentItem.data }}</span>
-    <img *ngIf="config.type === 'image'" [src]="currentItem.data">
-  </h1>
-  <button
-    *ngFor="let group of groups"
-    class="group"
-    (click)="onClick(group)"
-    [style.background-color]="config.type === 'color' && group || 'transparent'"
-  >{{ config.type !== 'color' && group || "" }}</button>
+<h1 class="data" *ngIf="currentItem">
+  <span #dataText class="data-text animate" *ngIf="config.type !== 'image'">{{ currentItem.data }}</span>
+  <img class="data-image" *ngIf="config.type === 'image'" [src]="currentItem.data">
+</h1>
+
+<div
+  *ngFor="let group of groups"
+  class="group"
+  [class.text] = "config.text === 'text'"
+  (click)="onClick(group)"
+  [style.background-color]="config.type === 'color' && group || 'transparent'"
+>
+  {{ config.type !== 'color' && group || "" }}
 </div>

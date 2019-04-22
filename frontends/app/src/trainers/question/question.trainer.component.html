@@ -1,24 +1,51 @@
 <article class="article" [innerHtml]="body"></article>
 
-<div
-  *ngIf="config.items"
-  class="answers"
+<svg
+  *ngIf="palette"
+  class="palette"
+  [attr.viewBox]="paletteViewBox"
+  [attr.width]="paletteWidth"
+  [attr.height]="paletteHeight"
 >
-  <div
-    *ngFor="let item of config.items"
-    class="answer"
+  <g
+    *ngFor="let item of palette"
+    class="palette-item"
+    [class.selected]="item.isSelected"
     (click)="onAnswerClick(item)"
-    [class.image] = "item.type === 'image'"
-    [class.selected] = "item.isSelected"
   >
-    <img *ngIf="item.type === 'image'" [src]="sanitizeURL(item.data)">
-    <span *ngIf="item.type === 'text'">{{ item.data }}</span>
-  </div>
-</div>
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <image
+      *ngIf="item.type === 'image'"
+      class="image"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      [attr.width]="shapeWidth"
+      [attr.height]="shapeHeight"
+      [attr.xlink:href]="item.data"
+      preserveAspectRatio="xMinYMin slice"
+    ></image>
+    <text
+      *ngIf="item.type === 'text'"
+      class="text"
+      text-anchor="middle"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}</text>
+  </g>
+</svg>
 
 <button
   *ngIf="config.button"
-  class="button"
+  class="button button--main"
   (click)="onButtonClick()"
 >
   <span>{{ config.button }}</span>

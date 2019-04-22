@@ -5,15 +5,18 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
 
-const CookieKey = "session"
+type API struct {
+	db *db.DB
+}
 
 func main() {
-	s := service.New()
-	s.Use(db.Middleware)
+	db := db.New()
+	api := &API{db}
+	srv := service.New()
 
-	s.Get("/", Auth)
-	s.Post("/", Login)
-	s.Delete("/", Logout)
+	srv.GET("/", api.Auth)
+	srv.POST("/", api.Login)
+	srv.DELETE("/", api.Logout)
 
-	s.ListenAndServe()
+	srv.ListenAndServe()
 }

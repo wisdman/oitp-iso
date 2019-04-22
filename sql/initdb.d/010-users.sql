@@ -19,7 +19,9 @@ CREATE TABLE private.users (
 
   "name"        text          NOT NULL DEFAULT '',
   "image"       oid           DEFAULT NULL,
-  "birthday"    timestamp without time zone NOT NULL,
+  -- "birthday"    date          NOT NULL,
+
+  "regTS" timestamp without time zone NOT NULL DEFAULT timezone('UTC', now()),
 
   CONSTRAINT users__idx__pkey PRIMARY KEY ("id"),
 

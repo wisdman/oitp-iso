@@ -23,43 +23,68 @@ services:
       context: ./api
       args:
         - APP_NAME=auth
-    image: oitp-isov/auth
+    image: oitp-isov/api-auth
     secrets:
       - secret-api
     environment:
+      - PGAPPNAME=auth
       - PGHOST=sql
       - PGSSLMODE=disable
       - PGDATABASE=oitp
       - PGUSER=api
+      - PGPASSWORD=API-P@Ssw0rd
+    depends_on:
+      - sql
+    links:
+      - sql
     networks:
       default:
 
-  # api-patterns:
-  #   restart: unless-stopped
-  #   build:
-  #     context: ./api
-  #     args:
-  #       - APP_NAME=patterns
-  #   image: oitp-isov/patterns
-  #   env_file:
-  #     - ./.environment
-  #   depends_on:
-  #     - sql
-  #   links:
-  #     - sql
-  #   networks:
-  #     default:
+  api-user:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_NAME=user
+    image: oitp-isov/api-user
+    secrets:
+      - secret-api
+    environment:
+      - PGAPPNAME=user
+      - PGHOST=sql
+      - PGSSLMODE=disable
+      - PGDATABASE=oitp
+      - PGUSER=api
+      - PGPASSWORD=API-P@Ssw0rd
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
 
-  # api-auth:
-  #   restart: unless-stopped
-  #   build:
-  #     context: ./api
-  #     dockerfile: auth.Dockerfile
-  #   image: wisdman/oitp-isov-api-auth
-  #   env_file:
-  #     - ./.environment
-  #   networks:
-  #     default:
+  api-training:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_NAME=training
+    image: oitp-isov/api-training
+    secrets:
+      - secret-api
+    environment:
+      - PGAPPNAME=training
+      - PGHOST=sql
+      - PGSSLMODE=disable
+      - PGDATABASE=oitp
+      - PGUSER=api
+      - PGPASSWORD=API-P@Ssw0rd
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
 
   app:
     restart: unless-stopped
@@ -74,9 +99,11 @@ services:
     image: oitp-isov/nginx
     depends_on:
       - api-auth
+      - api-training
       - app
     links:
       - api-auth
+      - api-training
       - app
     networks:
       default:

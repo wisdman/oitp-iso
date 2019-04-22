@@ -1,54 +1,44 @@
 package db
 
 import (
-	"context"
 	"log"
-	"net/http"
 
 	"github.com/jackc/pgx"
 )
 
-var db *pgx.ConnPool
+type DB struct {
+	pool *pgx.ConnPool
+}
 
-var ErrNoRows = pgx.ErrNoRows
-
-type ctxDB int
-
-const ctxDBKey ctxDB = 0
-
-func init() {
+func New() *DB {
 	config, err := pgx.ParseEnvLibpq()
 	if err != nil {
-		log.Fatalf("Unable to parse environment: %v\n", err)
+		log.Fatalln(err)
 	}
 
-	db, err = pgx.NewConnPool(pgx.ConnPoolConfig{ConnConfig: config})
+	config.Logger = &DBLogger{}
+	// config.LogLevel = pgx.LogLevelError
+	config.LogLevel = pgx.LogLevelInfo
+
+	pool, err := pgx.NewConnPool(pgx.ConnPoolConfig{ConnConfig: config})
 	if err != nil {
-		log.Fatalf("Unable to connect to database: %v\n", err)
+		log.Fatalln(err)
 	}
+
+	return &DB{pool}
 }
 
-func Middleware(next http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-
-		conn, err := db.Acquire()
-		if err != nil {
-			log.Printf("DB Acquire error: %v\n", err)
-			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		}
-		defer db.Release(conn)
-
-		ctx := r.Context()
-		ctx = context.WithValue(ctx, ctxDBKey, conn)
-		next.ServeHTTP(w, r.WithContext(ctx))
-	}
-	return http.HandlerFunc(fn)
-}
-
-func Conn(r *http.Request) *pgx.Conn {
-	if conn, ok := r.Context().Value(ctxDBKey).(*pgx.Conn); ok {
-		return conn
+func (db *DB) Acquire() (*Transaction, error) {
+	conn, err := db.pool.Acquire()
+	if err != nil {
+		return nil, err
 	}
 
-	return nil
+	tx, err := conn.Begin()
+	if err != nil {
+		db.pool.Release(conn)
+		return nil, err
+	}
+
+	return &Transaction{db, conn, tx}, nil
 }

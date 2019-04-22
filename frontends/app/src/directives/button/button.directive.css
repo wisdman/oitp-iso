@@ -8,63 +8,22 @@
 
   height: 48px;
 
-  color: var(--color-white);
-  background-color: var(--color-second);
+  color: inherit;
   border: 0 none;
   border-radius: 4px;
 
-  background-image: linear-gradient(45deg, var(--color-second), var(--color-middle));
-  background-size: 100% 100%;
+  --bg-color-start: transparent;
+  --bg-color-end: transparent;
+
+  background-color: var(--bg-color-start);
+  background-image:
+    linear-gradient(var(--color-hover), var(--color-hover)),
+    linear-gradient(90deg, var(--bg-color-start), var(--bg-color-end));
+  background-size: 0% 0%, 100%;
   background-position: center;
   background-repeat: no-repeat;
 
-  transition-duration: 150ms;
-  transition-timing-function: ease;
-  transition-property: background-size, background-image;
-
-  font-size: 16px;
-  text-transform: uppercase;
-  text-decoration: none;
-
-  cursor: pointer;
-  user-select: none;
-  position: relative;
-  overflow: hidden;
-}
-
-.button:hover {
-  background-size: 100% 100%;
-}
-
-
-
-
-/* .button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  margin: 0 auto;
-  margin-top: 16px;
-  padding: 0 1em;
-
-  height: 48px;
-
-  background-color: var(--color-second);
-  color: var(--color-white);
-  border: 0 none;
-  border-radius: 8px;
-
-  background-image: linear-gradient(45deg, var(--color-second), var(--color-middle));
-
-  background-image: linear-gradient(var(--color-hover), var(--color-hover)),
-                    linear-gradient(var(--color-hover), var(--color-hover));
-  background-size: 100% 100%;
-  background-position: left, right;
-  background-repeat: no-repeat;
-
-
-  transition-duration: 150ms;
+  transition-duration: 100ms;
   transition-timing-function: ease;
   transition-property: background-size;
 
@@ -79,11 +38,18 @@
 }
 
 .button:hover {
-  background-size: 50% 100%;
+  background-size: 100% 100%, 100%;
 }
 
-.button span {
-  position: relative;
+.button--main {
+  color: var(--color-white);
+  --bg-color-start: var(--color-second);
+  --bg-color-end: var(--color-middle);
 }
- */
+
+.button[disabled] {
+  background-image: none;
+  background-color: var(--color-disabled);
+  cursor: default;
+}
 

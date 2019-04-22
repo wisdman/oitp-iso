@@ -1,16 +1,27 @@
 package main
 
 import (
-	// "log"
+	"encoding/json"
 	"net/http"
-
-	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/lib/service"
+	// "github.com/wisdman/oitp-isov/api/lib/service"
+	// "github.com/wisdman/oitp-isov/api/training/trainers"
 )
 
-func Get(w http.ResponseWriter, r *http.Request) {
-	user := service.GetUserID(r)
-	sql := db.Conn(r)
+func (api *API) GetUser(w http.ResponseWriter, r *http.Request) {
+	user := &User{
+		Name: "Лидия Васильева",
 
-	service.ResponseText(w, user)
+		Premium: 30,
+
+		Charge:       50,
+		Intelligence: 50,
+		Knowledge:    50,
+		Memory:       50,
+
+		Speed: []uint{50, 50, 50, 50},
+	}
+
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(user)
 }

@@ -1,4 +1,8 @@
 :host {
+  --item-background-color: rgb(238, 228, 218, .80);
+  --item-border-color: rgb(187, 173, 160, .87);
+  --item-hover-border-color: #0273d4;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,47 +17,47 @@
 
 }
 
-.answers {
-  display: flex;
-  flex-wrap: wrap;
+.button {
   margin-top: 16px;
 }
 
-.answer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 50px;
-  padding-left: .5em;
-  padding-right: .5em;
-
-  margin: 8px;
-
-  font-size: 16px;
-  font-weight: 500;
-
-  border-radius: 4px;
-  background-color: #eee4da;
-  color: #776e65;
-}
-
-.answer.image {
+.palette {
   display: block;
-  position: relative;
-  width: 100px;
-  height: 100px;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+
+  margin-top: 16px;
 }
 
-.answer.selected {
-  background-color: var(--color-success);
+.palette-item {
+  cursor: pointer;
 }
 
-.answer img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 100px;
-  height: 100px;
-  transform: scale(1.5) translate(-33.3%, -33.3%);
+.path {
+  stroke: var(--item-border-color);
+  stroke-width: 1;
+  fill: none;
+}
+
+.fill-path {
+  stroke: none;
+  stroke-width: 0;
+  fill: var(--item-background-color);
+}
+
+.selected .fill-path {
+  fill: rgb(44, 190, 80, .7);
+}
+
+.image {
+
+}
+
+.text {
+  font-family: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--item-text-color);
 }

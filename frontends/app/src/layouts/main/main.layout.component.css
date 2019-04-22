@@ -233,44 +233,15 @@
 /* ======= Sidebar toggle button ======= */
 
 .sidebar-toggle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   width: 40px;
   height: 40px;
-
   padding: 0;
 
-  border: 0 none;
   border-radius: 50%;
-
-  background-color: transparent;
-  color: inherit;
-
-  cursor: pointer;
-  position: relative;
-}
-
-.sidebar-toggle::before {
-  content: "";
-  display: block;
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: transparent;
-  transition: var(--transition-hover);
-  transition-property: background-color;
-}
-
-.sidebar-toggle:hover::before {
-  background-color: var(--color-hover);
 }
 
 .sidebar-toggle--bg {
+  color: var(--color-text);
   background-color: var(--color-background);
   box-shadow: 0 2px 32px -8px rgba(0,0,0,.87);
 }

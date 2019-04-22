@@ -18,6 +18,7 @@ export interface IQuestionTrainerConfig extends ITrainerConfig {
   id: IQuestionTrainer
   body: string
 
+  type?: "image" | "text"
   items?: Array<IQuestionTrainerAnswer>
   multiple?: boolean
 

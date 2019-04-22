@@ -8,7 +8,7 @@
   --color-hover: rgba(0, 0, 0, 0.07);
   --transition-hover: 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
-  --color-disabled: rgba(0, 0, 0, 0.26);
+  --color-disabled: rgba(0, 0, 0, 0.16);
   --color-disabled-light: rgba(0, 0, 0, 0.12);
 
   --color-gray: rgb(224, 224, 224);

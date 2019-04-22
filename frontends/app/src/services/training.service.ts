@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core"
+import { HttpClient } from  "@angular/common/http"
 
 import {
   from,
@@ -16,11 +17,17 @@ import {
 } from "rxjs/operators"
 
 import {
-  GET_MOCK_CONFIG
-} from "../config-mock"
+  API_TRAINING_EVERYDAY,
+} from "../app.config"
+
+import {
+  ITraining
+} from "../trainers"
 
 @Injectable({ providedIn: "root" })
 export class TrainingService {
+
+  constructor(private _httpClient:HttpClient) {}
 
   private _globalTimerSubject = new Subject<number>()
   globalTimer = this._globalTimerSubject
@@ -33,8 +40,8 @@ export class TrainingService {
   private _trainingSubject = new Subject<"everyday" | "once" | undefined>()
   config = this._trainingSubject
                 .pipe(
-                  switchMap(type => type && from(GET_MOCK_CONFIG(type)) || of(undefined)),
-                  switchMap(value => value && from(value) || of(undefined)),
+                  switchMap(type => type && this._httpClient.get<ITraining>(API_TRAINING_EVERYDAY) || of(undefined)),
+                  switchMap(value => value && from(value.trainers) || of(undefined)),
                   zip(
                     this._lapTimerSubject
                         .pipe(

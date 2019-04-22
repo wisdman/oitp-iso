@@ -7,46 +7,76 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
-
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
 )
 
 type Service struct {
-	chi.Router
-	Server *http.Server
+	router *Router
+	server *http.Server
 }
 
-func New() *Service {
+var addr string
 
-	service := &Service{Router: chi.NewRouter()}
-
-	service.Use(middleware.GetHead)
-	service.Use(middleware.StripSlashes)
-	service.Use(middleware.RequestID)
-	service.Use(SessionMiddleware)
-	service.Use(middleware.Logger)
-	service.Use(middleware.Recoverer)
-	service.Use(middleware.Timeout(10 * time.Second))
-
-	addr := ":" + os.Getenv("PORT")
+func init() {
+	addr = ":" + os.Getenv("PORT")
 	if addr == ":" {
 		addr = ":80"
 	}
+}
 
-	service.Server = &http.Server{Addr: addr, Handler: service}
-
+func New() *Service {
+	service := &Service{router: NewRouter()}
+	service.server = &http.Server{Addr: addr, Handler: service.router}
 	return service
 }
 
+// Shortcut for service.router.Handle(method, path, handle)
+func (service *Service) Handle(method, path string, handle http.HandlerFunc) {
+	service.router.Handle(method, path, handle)
+}
+
+// GET is a shortcut for service.router.Handle("GET", path, handle)
+func (service *Service) GET(path string, handle http.HandlerFunc) {
+	service.router.Handle("GET", path, handle)
+}
+
+// HEAD is a shortcut for service.router.Handle("HEAD", path, handle)
+func (service *Service) HEAD(path string, handle http.HandlerFunc) {
+	service.router.Handle("HEAD", path, handle)
+}
+
+// OPTIONS is a shortcut for service.router.Handle("OPTIONS", path, handle)
+func (service *Service) OPTIONS(path string, handle http.HandlerFunc) {
+	service.router.Handle("OPTIONS", path, handle)
+}
+
+// POST is a shortcut for service.router.Handle("POST", path, handle)
+func (service *Service) POST(path string, handle http.HandlerFunc) {
+	service.router.Handle("POST", path, handle)
+}
+
+// PUT is a shortcut for service.router.Handle("PUT", path, handle)
+func (service *Service) PUT(path string, handle http.HandlerFunc) {
+	service.router.Handle("PUT", path, handle)
+}
+
+// PATCH is a shortcut for service.router.Handle("PATCH", path, handle)
+func (service *Service) PATCH(path string, handle http.HandlerFunc) {
+	service.router.Handle("PATCH", path, handle)
+}
+
+// DELETE is a shortcut for service.router.Handle("DELETE", path, handle)
+func (service *Service) DELETE(path string, handle http.HandlerFunc) {
+	service.router.Handle("DELETE", path, handle)
+}
+
+// Start service
 func (service *Service) ListenAndServe() {
 	go func() {
-		log.Printf("Service listening on http://0.0.0.0%s\n", service.Server.Addr)
+		log.Printf("Service listening on http://0.0.0.0%s\n", service.server.Addr)
 
-		err := service.Server.ListenAndServe()
+		err := service.server.ListenAndServe()
 		if err != http.ErrServerClosed {
-			log.Fatalf("Service start error: %v\n", err)
+			log.Printf("Service init error: %v\n", err)
 		}
 	}()
 
@@ -54,9 +84,9 @@ func (service *Service) ListenAndServe() {
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 	<-stop
 
-	err := service.Server.Shutdown(context.Background())
+	err := service.server.Shutdown(context.Background())
 	if err != nil {
-		log.Fatalf("Service stop error: %v\n", err)
+		log.Printf("Service shutdown error: %v\n", err)
 	}
 
 	log.Println("Service stopped")

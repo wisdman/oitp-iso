@@ -22,7 +22,7 @@ export class IndicatorBrainComponent implements OnInit, OnDestroy {
   @ViewChild("brainNode") brainRef?: ElementRef<HTMLDivElement>
 
   constructor(private _userService: UserService) {}
-  public user = this._userService.user
+  public user = this._userService.getUser()
 
   private _userSubscription?: Subscription
 

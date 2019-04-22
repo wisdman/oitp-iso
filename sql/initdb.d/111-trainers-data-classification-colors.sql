@@ -13,3 +13,13 @@ CREATE TABLE private.trainers_data_classification_colors (
   CONSTRAINT trainers_data_classification_colors__check__color CHECK ("color" ~ '^[0-9a-f]{6}$')
 ) WITH (OIDS = FALSE);
 
+CREATE VIEW public.trainers_data_classification_colors AS
+  SELECT
+    t."id" as "id",
+    t."enabled" as "enabled",
+    t."title" as "title",
+    t."color" as "color"
+  FROM private.trainers_data_classification_colors t
+  WHERE NOT t."deleted";
+
+GRANT SELECT ON public.trainers_data_classification_colors TO api;

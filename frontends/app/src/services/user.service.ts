@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core"
+import { HttpClient } from  "@angular/common/http"
 
-import { BehaviorSubject, from } from "rxjs"
+import { from } from "rxjs"
 
 import {
   API_AUTH,
+  API_USER,
 } from "../app.config"
 
 type IUser = Partial<{
@@ -25,29 +27,10 @@ type IUser = Partial<{
 @Injectable({ providedIn: "root" })
 export class UserService {
 
-  constructor() {
-    this.updateUser({
-      name: "Дмитрий Поляков",
-      premium: 90,
+  constructor(private _httpClient:HttpClient) {}
 
-      charge: 83,
-
-      intelligence: 82,
-      knowledge: 76,
-      memory: 80,
-
-      speed: [65, 67, 72, 62, 81]
-    })
-  }
-
-  private userSource = new BehaviorSubject<IUser | undefined>(undefined)
-
-  get user() {
-    return this.userSource.asObservable()
-  }
-
-  private updateUser(data: IUser) {
-    this.userSource.next({ ...this.userSource.getValue(), ...data })
+  getUser() {
+    return this._httpClient.get<IUser>(API_USER)
   }
 
   login({
@@ -66,6 +49,11 @@ export class UserService {
       body: JSON.stringify({email, password})
     }).then(r => r.status === 200)
 
+    return from(request)
+  }
+
+  logout(){
+    const request = fetch(API_AUTH, { method: "DELETE" })
     return from(request)
   }
 

@@ -18,3 +18,81 @@
     <img [src]="sanitizeUrl(item)">
   </div>
 </div>
+
+<!-- <svg
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+>
+  <g
+    *ngFor="let item of matrix"
+    class="matrix-item"
+    (dragstart)="dragMatrixStart($event, item.userItem)"
+    (dragover)="allowDrop($event)"
+    (drop)="drop($event, item)"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <image
+      *ngIf="this.config.mode === 'show' && item.item"
+      class="image"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      [attr.width]="shapeWidth"
+      [attr.height]="shapeHeight"
+      [attr.xlink:href]="item.item.shape"
+      preserveAspectRatio="xMinYMin slice"
+    ></image>
+    <image
+      *ngIf="this.config.mode === 'play' && item.userItem"
+      class="image"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      [attr.width]="shapeWidth"
+      [attr.height]="shapeHeight"
+      [attr.xlink:href]="item.userItem.shape"
+      preserveAspectRatio="xMinYMin slice"
+    ></image>
+  </g>
+</svg>
+<svg
+  *ngIf="this.config.mode === 'play'"
+  class="palette"
+  [attr.viewBox]="paletteViewBox"
+  [attr.width]="paletteWidth"
+  [attr.height]="paletteHeight"
+>
+  <g
+    #thisNode
+    *ngFor="let item of palette; let i = index"
+    class="palette-item"
+    (mousedown)="dragItemsStart(thisNode, i)"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <image
+      *ngIf="item.shape"
+      class="image"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      [attr.width]="shapeWidth"
+      [attr.height]="shapeHeight"
+      [attr.xlink:href]="item.shape"
+      preserveAspectRatio="xMinYMin slice"
+    ></image>
+  </g>
+</svg>
+ -->

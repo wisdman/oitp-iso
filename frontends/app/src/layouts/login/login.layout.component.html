@@ -15,15 +15,20 @@
       <label for="email">E-mail</label>
     </div>
 
+    <div class="input" *ngIf="!isSignInForm && !isPasswordRecovery">
+      <input id="name" type="text" formControlName="name">
+      <label for="name">Имя Фамилия</label>
+    </div>
+
     <div class="input" *ngIf="isSignInForm">
-      <input id="password" type="password" formControlName="password">
+      <input id="password" type="password" formControlName="password" required>
       <label for="password">Пароль</label>
     </div>
 
-    <button type="submit" class="submit" [disabled]="!loginForm.valid">
+    <button type="submit" class="submit button--main" [disabled]="!loginForm.valid">
       <span *ngIf="isSignInForm">Войти</span>
-      <span *ngIf="!isSignInForm && !isPasswordRecovery">Зарегистрироваться, {{isPasswordRecovery}}</span>
-      <span *ngIf="!isSignInForm && isPasswordRecovery">Сбросить пароль, {{isPasswordRecovery}}</span>
+      <span *ngIf="!isSignInForm && !isPasswordRecovery">Зарегистрироваться</span>
+      <span *ngIf="!isSignInForm && isPasswordRecovery">Сбросить пароль</span>
     </button>
 
     <p class="reset-password" *ngIf="isSignInForm">

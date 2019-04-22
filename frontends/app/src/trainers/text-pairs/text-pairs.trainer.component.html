@@ -1,5 +1,32 @@
-<ng-container *ngFor="let item of config.pairs">
-  <div class="item left" (click)="onClick($event)" [style.order]="random()">{{ item[0] }}</div>
-  <div class="item right" (click)="onClick($event)" [style.order]="random()">{{ item[1] }}</div>
-  <div class="center"></div>
-</ng-container>
+<h1 *ngIf="config.title" class="h1">{{config.title}}</h1>
+<svg
+  class="svg"
+  [attr.viewBox]="viewBox"
+  [attr.width]="svgWidth"
+  [attr.height]="svgHeight"
+>
+  <g
+    *ngFor="let item of items"
+    class="item"
+    [class.selected]="isSelected(item)"
+    [class.disabled]="item.disabled"
+    (click)="onClick(item)"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      class="text"
+      text-anchor="middle"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.text }}</text>
+  </g>
+</svg>

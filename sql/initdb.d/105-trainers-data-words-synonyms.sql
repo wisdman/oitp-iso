@@ -9,3 +9,13 @@ CREATE TABLE private.trainers_data_words_synonyms (
 
   CONSTRAINT trainers_data_words_synonyms__idx__pkey PRIMARY KEY ("id")
 ) WITH (OIDS = FALSE);
+
+CREATE VIEW public.trainers_data_words_synonyms AS
+  SELECT
+    t."id" as "id",
+    t."enabled" as "enabled",
+    t."synonyms" as "synonyms"
+  FROM private.trainers_data_words_synonyms t
+  WHERE NOT t."deleted";
+
+GRANT SELECT ON public.trainers_data_words_synonyms TO api;

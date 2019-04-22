@@ -5,10 +5,16 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
 
+type API struct {
+	db *db.DB
+}
+
 func main() {
-	s := service.New()
-	s.Use(db.Middleware)
-	s.Use(service.UserIDMiddleware)
-	s.Get("/", Get)
-	s.ListenAndServe()
+	db := db.New()
+	api := &API{db}
+	srv := service.New()
+
+	srv.GET("/", api.GetUser)
+
+	srv.ListenAndServe()
 }

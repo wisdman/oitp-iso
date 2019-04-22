@@ -1,20 +1,26 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
+  OnDestroy,
 } from "@angular/core"
 
-import { DomSanitizer } from "@angular/platform-browser"
+import { Subscription, timer } from "rxjs"
+import { take } from "rxjs/operators"
 
 import {
   IClassificationTrainerConfig,
   IClassificationTrainerResult,
 } from "./classification.trainer.interfaces"
+
+const DEFAULT_ITEM_TIMEOUT = 5
 
 @Component({
   selector: "trainer-classification",
@@ -22,17 +28,14 @@ import {
   styleUrls: [ "./classification.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClassificationTrainerComponent implements OnInit, OnChanges {
+export class ClassificationTrainerComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   config!: IClassificationTrainerConfig
 
   result: IClassificationTrainerResult = {
     id: "classification",
     config: this.config,
-
     success: 0,
-    error: 0,
-    current: 0,
   }
 
   @Output("result")
@@ -49,51 +52,55 @@ export class ClassificationTrainerComponent implements OnInit, OnChanges {
     }
   }
 
+  private _itemTimer!: Subscription
+
   ngOnInit() {
-    this._init()
+    this.groups = [...new Set(this.config.items.map(({group}) => group))]
+    this.current = 0
+
+    const itemTimeout = this.config.itemTimeout || DEFAULT_ITEM_TIMEOUT
+
+    this._el.nativeElement.style.setProperty("--columns", String(this.groups.length))
+    this._el.nativeElement.style.setProperty("--animation-duration", `${itemTimeout}s`)
+
+    this._itemTimer = timer(itemTimeout * 1000, itemTimeout  * 1000)
+                      .pipe(take(this.config.items.length))
+                      .subscribe(() => this.onClick())
+
     this._updateResult({
       isFinish: false,
       success: 0,
-      error: 0,
-      current: 0,
     })
   }
 
-  constructor(private _sanitizer: DomSanitizer){}
+  ngOnDestroy() {
+    this._itemTimer.unsubscribe()
+  }
+
+  constructor(private _el: ElementRef){}
+
+  @ViewChild("dataText") dataTextRef!: ElementRef<HTMLSpanElement>
+
+  private _resetAnimation() {
+    const element = this.dataTextRef.nativeElement
+    element.classList.remove("animate")
+    void element.offsetWidth
+    element.classList.add("animate")
+  }
 
   groups: Array<string> = []
-
-  get matrixStyle() {
-    const columns = this.groups.length
-    return this._sanitizer.bypassSecurityTrustStyle(`--columns: ${columns}`)
-  }
-
-  private _init() {
-    this.groups = [...new Set(this.config.items.map(({group}) => group))]
-  }
+  current: number = 0
 
   get currentItem() {
-    return this.config.items[this.result.current]
+    return this.config.items[this.current]
   }
 
-  private _select(group: string) {
-    if (this.currentItem.group === group) {
-      this._updateResult({
-        success: this.result.success + 1,
-        current: this.result.current + 1,
-        isFinish: this.result.current + 1 >= this.config.items.length,
-      })
-    } else {
-      this._updateResult({
-        error: this.result.error + 1,
-        current: this.result.current + 1,
-        isFinish: this.result.current + 1 >= this.config.items.length,
-      })
-    }
-  }
-
-  onClick(group: string) {
-    console.log(group)
-    this._select(group)
+  onClick(group: string = "") {
+    this._updateResult({
+      success: this.result.success + (this.currentItem.group === group ? 1 : 0),
+      isFinish: this.current >= this.config.items.length - 1,
+    })
+    this.current++
+    this._resetAnimation()
   }
 }

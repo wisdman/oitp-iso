@@ -1,5 +1,6 @@
 <img
   *ngIf="config.image"
   class="image"
+  [class.anim]="config.mode === 'play'"
   [src]="image"
 >

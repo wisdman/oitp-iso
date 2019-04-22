@@ -10,7 +10,7 @@ import { ActivatedRoute, Router, NavigationStart } from "@angular/router"
 
 import { Subscription } from "rxjs"
 import { filter, map } from "rxjs/operators"
-// import { UserService } from "../../services"
+import { UserService } from "../../services"
 
 @Component({
   selector: "login-layout",
@@ -24,7 +24,7 @@ export class LoginLayoutComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder,
     private _route: ActivatedRoute,
     private _router: Router,
-    // private _userService: UserService,
+    private _userService: UserService,
   ) {}
 
   isSignInForm: boolean = true
@@ -32,6 +32,7 @@ export class LoginLayoutComponent implements OnInit, OnDestroy {
 
   loginForm = this._fb.group({
     email: ['', Validators.required],
+    name: [''],
     password: [''],
   })
 
@@ -80,7 +81,8 @@ export class LoginLayoutComponent implements OnInit, OnDestroy {
 
   onSubmit(event: Event) {
     event.preventDefault()
-    this._router.navigateByUrl("/")
+    this._userService.login(this.loginForm.value)
+                     .subscribe(result => result && this._router.navigate(["/"]))
   }
 
   onSocialAction(type: any) {

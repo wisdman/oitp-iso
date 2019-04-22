@@ -10,5 +10,5 @@ import { UserService } from "../../services"
 })
 export class IndicatorSpeedComponent {
   constructor(private _userService: UserService) {}
-  public user = this._userService.user
+  public user = this._userService.getUser()
 }

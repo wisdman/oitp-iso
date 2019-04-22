@@ -214,9 +214,6 @@ export default {
       transform(content) {
         return JSON.stringify(JSON.parse(content))
       },
-    },{
-      from: PATH("./data"),
-      ignore: [".*"],
     }]),
 
   ].concat(isProduction ? [
@@ -309,6 +306,17 @@ export default {
     hot: !isProduction,
     progress: true,
     stats: "minimal",
+
+    proxy: {
+      "/api/training": {
+        target: "http://localhost",
+        pathRewrite: { "^/api/training" : "" }
+      },
+      "/api/auth": {
+        target: "http://localhost",
+        pathRewrite: { "^/api/auth" : "" }
+      }
+    }
   }
 
 } as Configuration

@@ -1,9 +1,8 @@
 SET search_path = "$user";
 
 CREATE TYPE public.trainers_data_texts__type AS ENUM (
-  'accuracy',   -- Точность
   'expression', -- Выражения и цытаты
-  'story',      -- Рассказ
+  'reading',    -- Рассказ и вопросы
   'tezirovanie' -- Тезирование
 );
 
@@ -37,3 +36,31 @@ CREATE TABLE private.trainers_data_texts_questions (
     ON UPDATE CASCADE
     ON DELETE CASCADE
 ) WITH (OIDS = FALSE);
+
+
+CREATE VIEW public.trainers_data_texts AS
+  SELECT
+    t."id" as "id",
+    t."enabled" as "enabled",
+
+    t."type" as "type",
+    t."data" as "data",
+
+    COALESCE(
+      json_agg(
+        json_build_object(
+          'type', q."type",
+          'body', q.body,
+          'items', q.items
+        )
+      ) FILTER (WHERE q."id" IS NOT NULL),
+      '[]'
+    ) AS "questions"
+
+  FROM private.trainers_data_texts t
+  LEFT JOIN private.trainers_data_texts_questions r ON r."text_id" = t."id"
+  LEFT JOIN private.trainers_data_questions q ON r."question_id" = q."id"
+  WHERE NOT t."deleted"
+  GROUP BY t."id";
+
+GRANT SELECT ON public.trainers_data_texts TO api;

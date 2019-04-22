@@ -60,6 +60,8 @@ export interface ITrainerConfig {
   id: ITrainer
   uid: string
 
+  title?: string
+
   timeLimit?: number
   isGameMode?: boolean
 
@@ -82,4 +84,13 @@ export interface ITrainerResult {
 export interface IGameFieldSize {
   width: number
   height: number
+}
+
+export interface ITraining {
+  id: string
+  title: string
+  description: string
+  timeLimit: string
+
+  trainers: Array<ITrainerConfigs>
 }

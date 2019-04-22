@@ -15,3 +15,15 @@ CREATE TABLE private.trainers_data_patterns (
 
   CONSTRAINT trainers_data_patterns__idx__pkey PRIMARY KEY ("id")
 ) WITH (OIDS = FALSE);
+
+CREATE VIEW public.trainers_data_patterns AS
+  SELECT
+    t."id" as "id",
+    t."enabled" as "enabled",
+
+    t."type" as "type",
+    t."data" as "data"
+  FROM private.trainers_data_patterns t
+  WHERE NOT t."deleted";
+
+GRANT SELECT ON public.trainers_data_patterns TO api;
