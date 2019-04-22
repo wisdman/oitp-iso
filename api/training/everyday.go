@@ -45,12 +45,12 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	training.Trainers = append(training.Trainers, value...)
 
 	// === Разминка - Буквы
-	if value, err = trainers.TablePipeAlphabetRU(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.TablePipeAlphabetRU(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// === Разминка - Цифры
 	if value, err = trainers.TablePipeNumbers(sql, 0); err != nil {
