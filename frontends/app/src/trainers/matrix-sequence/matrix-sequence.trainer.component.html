@@ -1,6 +1,6 @@
 <div class="field" *ngIf="config">
   <div class="matrix" [style]="matrixStyle">
-    <div *ngFor="let item of config.matrix" [class.success]="item.isSuccess" [style.color]="item.color" (click)="onClick(item)">
+    <div *ngFor="let item of matrix" [class.success]="item.isSuccess" [style.color]="item.color" (click)="onClick(item)">
       <span>{{ item.value }}</span>
     </div>
   </div>

@@ -78,7 +78,13 @@ export class MatrixSequenceTrainerComponent implements OnInit, OnChanges {
   }
 
   private _init() {
-    this.matrix = this.config.matrix.map(item => ({...item}))
+    this.matrix = this.config.matrix.map(value => ({
+      value,
+      color: "#776e65",
+      background: "#ffffff",
+    }))
+
+    console.log(this.matrix)
   }
 
   onClick(item: IMatrixSequenceTrainerItem) {

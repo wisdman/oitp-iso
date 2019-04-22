@@ -7,7 +7,6 @@ import {
 export type IQuestionTrainer = "question"
 
 export interface IQuestionTrainerAnswer {
-  type: "image" | "text"
   data: string
   correct?: boolean
 

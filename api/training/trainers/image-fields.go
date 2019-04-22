@@ -80,7 +80,7 @@ func ImageFields(
 				}
 
 				config = &ImageFieldsConfig{
-					ID:        "image-fields",
+					ID:        "image-field",
 					UID:       uid.String(),
 					TimeLimit: parameters.TimeLimit,
 				}

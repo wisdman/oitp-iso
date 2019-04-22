@@ -17,7 +17,7 @@ export interface IMatrixSequenceTrainerItem {
 export interface IMatrixSequenceTrainerConfig extends ITrainerConfig {
   id: IMatrixSequenceTrainer
 
-  matrix: Array<IMatrixSequenceTrainerItem>
+  matrix: Array<number>
 
   showErrors?: boolean
   showSucess?: boolean

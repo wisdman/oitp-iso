@@ -22,7 +22,7 @@
       [attr.d]="item.path"
     ></path>
     <image
-      *ngIf="item.type === 'image'"
+      *ngIf="config.type === 'image'"
       class="image"
       [attr.x]="item.x"
       [attr.y]="item.y"
@@ -32,7 +32,7 @@
       preserveAspectRatio="xMinYMin slice"
     ></image>
     <text
-      *ngIf="item.type === 'text'"
+      *ngIf="config.type === 'text'"
       class="text"
       text-anchor="middle"
       [attr.x]="item.x"
