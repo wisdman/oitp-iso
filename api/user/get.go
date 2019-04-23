@@ -9,7 +9,7 @@ import (
 
 func (api *API) GetUser(w http.ResponseWriter, r *http.Request) {
 	user := &User{
-		Name: "Лидия Васильева",
+		Name: "Undefined Undefined",
 
 		Premium: 30,
 
