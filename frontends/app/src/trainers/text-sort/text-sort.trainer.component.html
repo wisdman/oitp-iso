@@ -1,6 +1,10 @@
-<div cdkDropList class="box" (cdkDropListDropped)="drop($event)">
-  <div class="item" *ngFor="let item of config.items" cdkDrag>{{item}}</div>
+<h1 *ngIf="config.mode === 'show'" class="h1">Запомните следующие слова</h1>
+<h1 *ngIf="config.mode === 'play'" class="h1">Востановите слова по памяти</h1>
+
+<div class="box">
+<input *ngFor="let item of config.items" class="item" type="text" [value]="item">
 </div>
+
 <button
   *ngIf="config.mode === 'play'"
   class="button"

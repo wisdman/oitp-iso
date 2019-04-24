@@ -77,6 +77,14 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	}
 	training.Trainers = append(training.Trainers, value...)
 
+	// Relax
+	if value, err = trainers.Relax(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
 	// Вербальный интеллект: Синонимы
 	if value, err = trainers.TextPairsSynonyms(sql, 0); err != nil {
 		service.Fatal(w, err)
@@ -117,6 +125,14 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	}
 	training.Trainers = append(training.Trainers, value...)
 
+	// Relax
+	if value, err = trainers.Relax(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
 	// Таблицы с картинками. Фигуры. Картинки. Буквы. Смесь
 	if value, err = trainers.MatrixFillingIcons(sql, 0, 2); err != nil {
 		service.Fatal(w, err)
@@ -139,7 +155,29 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	}
 	training.Trainers = append(training.Trainers, value...)
 
+	// Поиск отличий
+	if value, err = trainers.ImageDifferences(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
+	// Relax
+	if value, err = trainers.Relax(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
 	// Арифметико-практическое мышление. Серии
+	if value, err = trainers.QuestionMathSeries(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
 	if value, err = trainers.QuestionMathSeries(sql, 0); err != nil {
 		service.Fatal(w, err)
 		sql.Rollback()
@@ -148,6 +186,12 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	training.Trainers = append(training.Trainers, value...)
 
 	// Арифметико-практическое мышление. Среднее число
+	if value, err = trainers.QuestionMathMiddle(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
 	if value, err = trainers.QuestionMathMiddle(sql, 0); err != nil {
 		service.Fatal(w, err)
 		sql.Rollback()
@@ -171,6 +215,14 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	}
 	training.Trainers = append(training.Trainers, value...)
 
+	// Relax
+	if value, err = trainers.Relax(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
 	// Афоризмы. Первые буквы слов
 	if value, err = trainers.TextLetters(sql, 0, 5); err != nil {
 		service.Fatal(w, err)
@@ -187,13 +239,49 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	}
 	training.Trainers = append(training.Trainers, value...)
 
-	// Мнемотехника. Столбики. Сортировка
-	// if value, err = trainers.TextSort(sql, 0); err != nil {
-	// 	service.Fatal(w, err)
-	// 	sql.Rollback()
-	// 	return
-	// }
-	// training.Trainers = append(training.Trainers, value...)
+	// Relax
+	if value, err = trainers.Relax(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
+	//  Пространство, логика (разобрать учебник). Лишняя фигура
+	if value, err = trainers.QuestionLogicsWaste(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+	if value, err = trainers.QuestionLogicsWaste(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+	if value, err = trainers.QuestionLogicsWaste(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
+	// Мнемотехника. Столбики. Сортировка/Ввод
+	if value, err = trainers.TextSort(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
+	// Relax
+	if value, err = trainers.Relax(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
 
 	// Запомнить и выбрать пары
 	if value, err = trainers.TextPairsSpecific(sql, 0); err != nil {
@@ -221,7 +309,6 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 
 	// TODO: Коврики (Фигуры, Символы, Геометрия)
 	// TODO: Поиск отличий
-	// TODO: Пространство, логика (разобрать учебник)
 
 	// Отобразить результаты
 	if value, err = trainers.Result(); err != nil {

@@ -9,6 +9,7 @@ import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovani
 import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
 import { IClassificationTrainer, IClassificationTrainerConfig, IClassificationTrainerResult } from "./classification"
+import { IRelaxTrainer, IRelaxTrainerConfig, IRelaxTrainerResult } from "./relax"
 import { IResultTrainer, IResultTrainerConfig, IResultTrainerResult } from "./result"
 import { ITextSortTrainer, ITextSortTrainerConfig, ITextSortTrainerResult } from "./text-sort"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
@@ -21,6 +22,7 @@ export type ITrainer = IClassificationTrainer
                      | IMatrixFillingTrainer
                      | IMatrixSequenceTrainer
                      | IQuestionTrainer
+                     | IRelaxTrainer
                      | IResultTrainer
                      | ITablePipeTrainer
                      | ITextLettersTrainer
@@ -37,6 +39,7 @@ export type ITrainerConfigs = IClassificationTrainerConfig
                             | IMatrixFillingTrainerConfig
                             | IMatrixSequenceTrainerConfig
                             | IQuestionTrainerConfig
+                            | IRelaxTrainerConfig
                             | IResultTrainerConfig
                             | ITablePipeTrainerConfig
                             | ITextLettersTrainerConfig
@@ -52,6 +55,7 @@ export type ITrainerResults = IClassificationTrainerResult
                             | IMatrixFillingTrainerResult
                             | IMatrixSequenceTrainerResult
                             | IQuestionTrainerResult
+                            | IRelaxTrainerResult
                             | IResultTrainerResult
                             | ITablePipeTrainerResult
                             | ITextLettersTrainerResult

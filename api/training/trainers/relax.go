@@ -7,31 +7,30 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/uuid"
 )
 
-type ResultConfig struct {
+type RelaxConfig struct {
 	ID        string `json:"id"`
 	UID       string `json:"uid"`
 	TimeLimit int    `json:"timeLimit"`
 
-	Result int `json:"result"`
+	Image int `json:"image"`
 }
 
-func newResultConfig(result int) *ResultConfig {
-	return &ResultConfig{
-		ID:        "result",
+func newRelaxConfig(img int) *RelaxConfig {
+	return &RelaxConfig{
+		ID:        "relax",
 		UID:       uuid.UUID(),
-		TimeLimit: 0,
-
-		Result: result,
+		TimeLimit: 10,
+		Image:     img,
 	}
 }
 
-func Result() (
+func Relax() (
 	configs []interface{},
 	err error,
 ) {
 	rand.Seed(time.Now().UnixNano())
-	result := 70 + rand.Intn(17)
-	config := newResultConfig(result)
+	img := rand.Intn(41)
+	config := newRelaxConfig(img)
 	configs = append(configs, config)
 	return
 }

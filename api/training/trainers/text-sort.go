@@ -11,6 +11,7 @@ type TextSortConfig struct {
 	UID       string `json:"uid"`
 	TimeLimit int    `json:"timeLimit"`
 
+	Mode  string   `json:"mode"`
 	Items []string `json:"items"`
 }
 
@@ -41,6 +42,7 @@ func TextSort(
 		ID:        "text-sort",
 		UID:       uid.String(),
 		TimeLimit: parameters.TimeLimit,
+		Mode:      "show",
 	}
 
 	if err := sql.QueryRow(`
@@ -58,6 +60,20 @@ func TextSort(
 		return nil, err
 	}
 
+	uid, err = uuid.NewUUID()
+	if err != nil {
+		return nil, err
+	}
+
+	configB := &TextSortConfig{
+		ID:        "text-sort",
+		UID:       uid.String(),
+		TimeLimit: 60,
+		Items:     make([]string, len(config.Items)),
+		Mode:      "play",
+	}
+
 	configs = append(configs, config)
+	configs = append(configs, configB)
 	return configs, nil
 }

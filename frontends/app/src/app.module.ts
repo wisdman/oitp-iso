@@ -3,10 +3,6 @@ import { BrowserModule } from "@angular/platform-browser"
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { RouterModule } from "@angular/router"
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
-
-
-import { DragDropModule } from "@angular/cdk/drag-drop"
 
 import {
   RootLayoutComponent,
@@ -57,6 +53,7 @@ import {
   MatrixFillingTrainerComponent,
   MatrixSequenceTrainerComponent,
   QuestionTrainerComponent,
+  RelaxTrainerComponent,
   ResultTrainerComponent,
   TablePipeTrainerComponent,
   TextLettersTrainerComponent,
@@ -133,6 +130,7 @@ import { HAMMER } from "./hammer.config"
     MatrixFillingTrainerComponent,
     MatrixSequenceTrainerComponent,
     QuestionTrainerComponent,
+    RelaxTrainerComponent,
     ResultTrainerComponent,
     TablePipeTrainerComponent,
     TextLettersTrainerComponent,
@@ -157,9 +155,6 @@ import { HAMMER } from "./hammer.config"
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-
-    BrowserAnimationsModule,
-    DragDropModule,
   ],
 
   providers: [

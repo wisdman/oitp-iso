@@ -61,6 +61,14 @@ func (api *API) Everyday2(w http.ResponseWriter, r *http.Request) {
 	// }
 	// training.Trainers = append(training.Trainers, value...)
 
+	// Поиск отличий
+	if value, err = trainers.ImageDifferences(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
 	// Запоминание картинок
 	// if value, err = trainers.ImageFields(sql, 0); err != nil {
 	// 	service.Fatal(w, err)
@@ -181,13 +189,21 @@ func (api *API) Everyday2(w http.ResponseWriter, r *http.Request) {
 	// }
 	// training.Trainers = append(training.Trainers, value...)
 
+	//  Пространство, логика (разобрать учебник). Лишняя фигура
+	if value, err = trainers.QuestionLogicsWaste(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
+
 	// Мнемотехника. Столбики. Сортировка
-	// if value, err = trainers.TextSort(sql, 0); err != nil {
-	// 	service.Fatal(w, err)
-	// 	sql.Rollback()
-	// 	return
-	// }
-	// training.Trainers = append(training.Trainers, value...)
+	if value, err = trainers.TextSort(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
 
 	// Запомнить и выбрать пары
 	// if value, err = trainers.TextPairsSpecific(sql, 0); err != nil {
@@ -198,12 +214,12 @@ func (api *API) Everyday2(w http.ResponseWriter, r *http.Request) {
 	// training.Trainers = append(training.Trainers, value...)
 
 	// Тезирование.
-	if value, err = trainers.TextTezirovanie(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.TextTezirovanie(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Таблицы числовые. Случайные
 	// if value, err = trainers.MatrixRandomSequence(sql, 0, 3); err != nil {
@@ -216,6 +232,14 @@ func (api *API) Everyday2(w http.ResponseWriter, r *http.Request) {
 	// TODO: Коврики (Фигуры, Символы, Геометрия)
 	// TODO: Поиск отличий
 	// TODO: Пространство, логика (разобрать учебник)
+
+	// Отобразить результаты
+	if value, err = trainers.Result(); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, value...)
 
 	// Отобразить результаты
 	if value, err = trainers.Result(); err != nil {

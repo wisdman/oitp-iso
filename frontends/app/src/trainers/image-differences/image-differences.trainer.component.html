@@ -1,6 +1,10 @@
 <img
-  *ngIf="config.image"
+  *ngIf="mode == 'show'"
   class="image"
-  [class.anim]="config.mode === 'play'"
-  [src]="image"
+  [src]="imageA"
+>
+<img
+  *ngIf="mode == 'play'"
+  class="image"
+  [src]="imageB"
 >

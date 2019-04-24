@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 
   width: 100%;
@@ -13,10 +13,16 @@
   overflow: hidden;
 }
 
-.box {
-  display: grid;
-  grid-template-columns: auto-fit;
-  grid-template-rows: repeat(auto-fit, 50px);
+.h1 {
+  display: block;
+  margin: 0;
+
+  padding-left: 8px;
+  padding-right: 8px;
+
+  font-size: 22px;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .item {
@@ -36,4 +42,10 @@
   border-radius: 4px;
   background-color: #eee4da;
   color: #776e65;
+
+  border-top: 1px solid #333;
+  border-left: 1px solid #333;
+  border-bottom: 1px solid #666;
+  border-right: 1px solid #666;
+
 }

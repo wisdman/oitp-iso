@@ -50,6 +50,7 @@ export class ImageDifferencesTrainerComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.mode = "show"
     this._updateResult({
       isFinish: false,
       success: 0,
@@ -57,14 +58,24 @@ export class ImageDifferencesTrainerComponent implements OnInit, OnChanges {
     })
   }
 
+  mode: "show" | "play" = "show"
+
   constructor(private _sanitizer: DomSanitizer){}
 
-  get image() {
-    return this._sanitizer.bypassSecurityTrustUrl(this.config.image)
+  get imageA() {
+    return this._sanitizer.bypassSecurityTrustUrl( `/differences/${this.config.imageA}.svg` )
+  }
+
+  get imageB() {
+    return this._sanitizer.bypassSecurityTrustUrl( `/differences/${this.config.imageB}.svg` )
   }
 
   @HostListener("click", ["$event"])
   onHostClick() {
-    this._updateResult({ isFinish: true })
+    if (this.mode === "show") {
+      this.mode = "play"
+    } else {
+       this._updateResult({ isFinish: true })
+    }
   }
 }

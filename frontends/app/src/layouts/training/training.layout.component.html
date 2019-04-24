@@ -58,6 +58,13 @@
       (result)="onResult($event)"
     ></trainer-question>
 
+    <trainer-relax
+      *ngIf="config.id === 'relax'"
+      [config]="config"
+      [size]="size"
+      (result)="onResult($event)"
+    ></trainer-relax>
+
     <trainer-result
       *ngIf="config.id === 'result'"
       [config]="config"
