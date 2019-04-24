@@ -1,6 +1,7 @@
 <div class="field" *ngIf="config">
 
-  <p *ngIf="mode==='show'" class="p" (click)="onClick()">{{ config.sentence }}</p>
+  <p *ngIf="mode==='show'" class="p" (click)="onClick()">{{ config.data }}</p>
+  <button *ngIf="mode==='show'" class="button" (click)="onClick()">Продолжить</button>
 
   <div class="comb">{{ comb }}</div>
 

@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  HostListener,
   // HostListener,
 } from "@angular/core"
 
@@ -77,7 +78,7 @@ export class TextPairsTrainerComponent implements OnInit, OnChanges {
   }
 
   private _initItems(pairs: Array<[string, string]>) {
-    const [left, right] = pairs
+    let [left, right] = pairs
                           .reduce(([left, right], [A, B]) => {
                             const itemA = {
                               companion: null as ITextPairsItem | null,
@@ -106,7 +107,11 @@ export class TextPairsTrainerComponent implements OnInit, OnChanges {
                             right.push(itemB)
                             return [left, right]
                           }, [[] as Array<ITextPairsItem>, [] as Array<ITextPairsItem>])
-                          .map(arr => arr.sort(() => Math.random() - 0.5))
+
+    if (this.config.mode !== "show") {
+      left = left.sort(() => Math.random() - 0.5)
+      right = right.sort(() => Math.random() - 0.5)
+    }
 
     return left.map((A, i) => [A, right[i]]) as Array<[ITextPairsItem, ITextPairsItem]>
   }
@@ -184,6 +189,9 @@ export class TextPairsTrainerComponent implements OnInit, OnChanges {
   }
 
   onClick(item: ITextPairsItem) {
+    if (this.config.mode === "show") {
+      return
+    }
     switch (item.side) {
       case "left":
         this.left = this.left === item ? undefined : item
@@ -209,5 +217,13 @@ export class TextPairsTrainerComponent implements OnInit, OnChanges {
       success: this.pairs.reduce((sum, [A, B]) => A.companion === B ? ++sum : sum, 0),
       isFinish: forceFinish || this.pairs.length === this.config.items.length
     })
+  }
+
+  @HostListener("click", ["$event"])
+  onHostClick() {
+    if (this.config.mode !== "show") {
+      return
+    }
+    this._updateResult({ isFinish: true })
   }
 }

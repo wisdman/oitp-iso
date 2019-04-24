@@ -126,76 +126,76 @@ func (api *API) Everyday2(w http.ResponseWriter, r *http.Request) {
 	// training.Trainers = append(training.Trainers, value...)
 
 	// === Текст.  Чтение ===
-	if value, err = trainers.TextReading(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.TextReading(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Арифметико-практическое мышление. Серии
-	if value, err = trainers.QuestionMathSeries(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.QuestionMathSeries(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Арифметико-практическое мышление. Среднее число
-	if value, err = trainers.QuestionMathMiddle(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.QuestionMathMiddle(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Активизация лексикона. Слова по группам
-	if value, err = trainers.ClassificationWords(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.ClassificationWords(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Активизация лексикона. Цвета по группам
-	if value, err = trainers.ClassificationColors(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.ClassificationColors(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Афоризмы. Первые буквы слов
-	if value, err = trainers.TextLetters(sql, 0, 5); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.TextLetters(sql, 0, 5); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Мнемотехника. Восстановите таблицу по памяти. Все уникальные
-	if value, err = trainers.MatrixFillingUnique(sql, 0, 3); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.MatrixFillingUnique(sql, 0, 3); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Мнемотехника. Столбики. Сортировка
-	if value, err = trainers.TextSort(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.TextSort(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Запомнить и выбрать пары
-	if value, err = trainers.TextPairsSpecific(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, value...)
+	// if value, err = trainers.TextPairsSpecific(sql, 0); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
 
 	// Тезирование.
 	if value, err = trainers.TextTezirovanie(sql, 0); err != nil {
@@ -206,16 +206,24 @@ func (api *API) Everyday2(w http.ResponseWriter, r *http.Request) {
 	training.Trainers = append(training.Trainers, value...)
 
 	// Таблицы числовые. Случайные
-	if value, err = trainers.MatrixRandomSequence(sql, 0, 3); err != nil {
+	// if value, err = trainers.MatrixRandomSequence(sql, 0, 3); err != nil {
+	// 	service.Fatal(w, err)
+	// 	sql.Rollback()
+	// 	return
+	// }
+	// training.Trainers = append(training.Trainers, value...)
+
+	// TODO: Коврики (Фигуры, Символы, Геометрия)
+	// TODO: Поиск отличий
+	// TODO: Пространство, логика (разобрать учебник)
+
+	// Отобразить результаты
+	if value, err = trainers.Result(); err != nil {
 		service.Fatal(w, err)
 		sql.Rollback()
 		return
 	}
 	training.Trainers = append(training.Trainers, value...)
-
-	// TODO: Коврики (Фигуры, Символы, Геометрия)
-	// TODO: Поиск отличий
-	// TODO: Пространство, логика (разобрать учебник)
 
 	if err = sql.Commit(); err != nil {
 		service.Fatal(w, err)

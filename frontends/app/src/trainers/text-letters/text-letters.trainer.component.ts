@@ -85,9 +85,10 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges {
   }
 
   onClick() {
-    if (this.config.mode === 'show') {
+    console.dir(1111111)
+    if (this.mode === 'show') {
       this.letters = this.config
-                          .sentence
+                          .data
                           .split(" ")
                           .map(word => word.charAt(0))
                           .filter(letter => /^[А-Яа-яЁё]$/i.test(letter))

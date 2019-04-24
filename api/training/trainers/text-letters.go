@@ -20,7 +20,7 @@ type TextLettersConfig struct {
 
 func newTextLettersConfig(timeLimit uint16) *TextLettersConfig {
 	return &TextLettersConfig{
-		ID:        "classification",
+		ID:        "text-letters",
 		UID:       uuid.UUID(),
 		TimeLimit: timeLimit,
 	}
@@ -41,11 +41,17 @@ func TextLetters(
 	}
 
 	rows, err := sql.Query(`
-    SELECT
-      data
-    FROM public.trainers_data_texts
-    WHERE type = 'expression'
-    ORDER BY random()
+		SELECT
+			data
+		FROM (
+			SELECT
+	      data
+	    FROM public.trainers_data_texts
+	    WHERE type = 'expression'
+	    ORDER BY char_length(data)
+	    LIMIT 20
+		) t
+		ORDER BY random()
     LIMIT $1
     `,
 		quantity,

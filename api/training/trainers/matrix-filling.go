@@ -134,7 +134,7 @@ func MatrixFillingUnique(
 			array_agg(i."data") AS "icons"
 		FROM (
 			SELECT
-				"data"
+				'data:image/svg+xml;base64,' || encode("data"::bytea, 'base64') AS "data"
 			FROM public.trainers_data_icons
 			LIMIT $1
 		) i

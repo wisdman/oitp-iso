@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 
   width: 100%;
@@ -16,4 +16,20 @@
 
 .article {
   user-select: text;
+}
+
+.article::selection {
+  background-color: #ffff00;
+}
+
+.h1 {
+  display: block;
+  margin: 0;
+
+  padding-left: 8px;
+  padding-right: 8px;
+
+  font-size: 22px;
+  line-height: 1.2;
+  text-align: center;
 }

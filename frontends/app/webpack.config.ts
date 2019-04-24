@@ -212,7 +212,7 @@ export default {
     },{
       from: PATH("./manifest.json"),
       transform(content) {
-        return JSON.stringify(JSON.parse(content))
+        return JSON.stringify(JSON.parse(String(content)))
       },
     }]),
 

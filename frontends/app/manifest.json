@@ -13,7 +13,7 @@
     "type": "image/png"
   }],
 
-  "orientation": "landscape",
+  "orientation": "portrait",
   "display": "fullscreen",
   "start_url": ".",
 

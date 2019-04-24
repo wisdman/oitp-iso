@@ -13,7 +13,7 @@ export type IClassificationTrainerItem = {
 
 export interface IClassificationTrainerConfig extends ITrainerConfig {
   id: IClassificationTrainer
-  type: "image" | "text" | "color"
+  type: "image" | "words" | "colors"
   items: Array<IClassificationTrainerItem>
   itemTimeout: number
 }

@@ -11,7 +11,7 @@ type TextSortConfig struct {
 	UID       string `json:"uid"`
 	TimeLimit int    `json:"timeLimit"`
 
-	Items []string `json:"data"`
+	Items []string `json:"items"`
 }
 
 type TextSortParameters struct {

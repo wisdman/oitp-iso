@@ -8,7 +8,7 @@
   class="group"
   [class.text] = "config.text === 'text'"
   (click)="onClick(group)"
-  [style.background-color]="config.type === 'color' && group || 'transparent'"
+  [style.background-color]="config.type === 'colors' && group || 'transparent'"
 >
-  {{ config.type !== 'color' && group || "" }}
+  {{ config.type !== 'colors' && group || "" }}
 </div>

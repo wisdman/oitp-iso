@@ -61,7 +61,7 @@ export class TextTezirovanieTrainerComponent implements OnInit, OnChanges {
   ){}
 
   get body() {
-    return this._sanitizer.bypassSecurityTrustHtml(this.config.body)
+    return this._sanitizer.bypassSecurityTrustHtml(this.config.data)
   }
 
   onClick() {
