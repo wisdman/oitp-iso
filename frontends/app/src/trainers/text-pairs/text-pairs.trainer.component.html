@@ -1,4 +1,10 @@
-<h1 *ngIf="config.title" class="h1">{{config.title}}</h1>
+<h1 *ngIf="config.type === 'antonyms'" class="h1">Отметьте антонимы</h1>
+<h1 *ngIf="config.type === 'paronyms'" class="h1">Отметьте паронимы</h1>
+<h1 *ngIf="config.type === 'synonyms'" class="h1">Отметьте синонимы</h1>
+<h1 *ngIf="config.type === 'specific'" class="h1">
+  <span *ngIf="config.mode === 'show'">Запомните пары слов</span>
+  <span *ngIf="config.mode === 'play'">Востановите пары по памяти</span>
+</h1>
 <svg
   class="svg"
   [attr.viewBox]="viewBox"

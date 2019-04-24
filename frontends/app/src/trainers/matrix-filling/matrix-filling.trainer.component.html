@@ -12,7 +12,7 @@
 
 <div class="items" *ngIf="this.config.mode === 'play'" [style]="matrixStyle">
   <div
-    *ngFor="let item of this.config.items; let i = index"
+    *ngFor="let item of this.items; let i = index"
     (dragstart)="dragItemsStart($event, i)"
   >
     <img [src]="sanitizeUrl(item)">

@@ -15,13 +15,13 @@ export interface IQuestionTrainerAnswer {
 
 export interface IQuestionTrainerConfig extends ITrainerConfig {
   id: IQuestionTrainer
-  body: string
 
-  type?: "image" | "text"
-  items?: Array<IQuestionTrainerAnswer>
-  multiple?: boolean
-
+  data: string
   button?: string
+
+  itemsType?: "image" | "text"
+  multiple?: boolean
+  items?: Array<IQuestionTrainerAnswer>
 }
 
 export interface IQuestionTrainerResult extends ITrainerResult {

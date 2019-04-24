@@ -7,6 +7,7 @@ import {
 export type ITextPairsTrainer = "text-pairs"
 
 export type ITextPairsItemSide = "left" | "right"
+export type ITextPairsType = "antonyms" | "paronyms" | "synonyms" | "specific"
 
 export interface ITextPairsItem {
   companion: ITextPairsItem,
@@ -23,6 +24,7 @@ export interface ITextPairsItem {
 export interface ITextPairsTrainerConfig extends ITrainerConfig {
   id: ITextPairsTrainer
   mode: "show" | "play"
+  type: ITextPairsType
   items: Array<[string, string]>
 }
 

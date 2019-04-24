@@ -56,8 +56,8 @@ INSERT INTO private.trainers_complexity_configs("trainer", "complexity", "config
   ('image-fields', 0, '{"pages":3, "minItems": 3, "maxItems": 4, "extraItems": 3, "timeLimit": 5, "questionTimeLimit": 30, "questionAnswers": 6}'),
   ('image-fields', 1, '{"pages":3, "minItems": 3, "maxItems": 4, "extraItems": 3, "timeLimit": 5, "questionTimeLimit": 30, "questionAnswers": 6}'),
   -- matrix-filling
-  ('matrix-filling', 0, '{"size":5, "showTimeLimit": 5, "playTimeLimit": 60}'),
-  ('matrix-filling', 1, '{"size":5, "showTimeLimit": 5, "playTimeLimit": 60}'),
+  ('matrix-filling', 0, '{"size":3, "showTimeLimit": 5, "playTimeLimit": 60}'),
+  ('matrix-filling', 1, '{"size":4, "showTimeLimit": 5, "playTimeLimit": 60}'),
   -- matrix-random-sequence
   ('matrix-random-sequence', 0, '{"size":5, "timeLimit": 60, "showSuccess": true }'),
   ('matrix-random-sequence', 1, '{"size":5, "timeLimit": 60, "showSuccess": true }'),

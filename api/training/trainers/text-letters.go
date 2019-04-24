@@ -1,21 +1,29 @@
 package trainers
 
 import (
-	"github.com/google/uuid"
-
 	"github.com/wisdman/oitp-isov/api/lib/db"
+	"github.com/wisdman/oitp-isov/api/lib/uuid"
 )
-
-type TextLettersConfig struct {
-	ID        string `json:"id"`
-	UID       string `json:"uid"`
-	TimeLimit int    `json:"timeLimit"`
-	Data      string `json:"data"`
-}
 
 type TextLettersParameters struct {
 	ItemsLimit int `json:"itemsLimit"`
 	TimeLimit  int `json:"timeLimit"`
+}
+
+type TextLettersConfig struct {
+	ID        string `json:"id"`
+	UID       string `json:"uid"`
+	TimeLimit uint16 `json:"timeLimit"`
+
+	Data string `json:"data"`
+}
+
+func newTextLettersConfig(timeLimit uint16) *TextLettersConfig {
+	return &TextLettersConfig{
+		ID:        "classification",
+		UID:       uuid.UUID(),
+		TimeLimit: timeLimit,
+	}
 }
 
 func TextLetters(
@@ -48,17 +56,7 @@ func TextLetters(
 	defer rows.Close()
 
 	for rows.Next() {
-		uid, err := uuid.NewUUID()
-		if err != nil {
-			return nil, err
-		}
-
-		config := &TextLettersConfig{
-			ID:        "text-letters",
-			UID:       uid.String(),
-			TimeLimit: parameters.TimeLimit,
-		}
-
+		config := newTextLettersConfig(uint16(parameters.TimeLimit))
 		if err = rows.Scan(&config.Data); err != nil {
 			return nil, err
 		}

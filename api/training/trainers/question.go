@@ -1,51 +1,63 @@
 package trainers
 
 import (
-	"github.com/google/uuid"
+	"github.com/wisdman/oitp-isov/api/lib/uuid"
 )
 
-type QuestionAnswer struct {
-	Correct bool   `json:"correct"`
+type QuestionItemsType string
+
+const (
+	QuestionItemsType_Image QuestionItemsType = "image"
+	QuestionItemsType_Input QuestionItemsType = "input"
+	QuestionItemsType_None  QuestionItemsType = "none"
+	QuestionItemsType_Text  QuestionItemsType = "text"
+)
+
+type QuestionItem struct {
 	Data    string `json:"data"`
+	Correct bool   `json:"correct"`
 }
 
 type QuestionConfig struct {
 	ID        string `json:"id"`
 	UID       string `json:"uid"`
-	Body      string `json:"body"`
 	TimeLimit int    `json:"timeLimit"`
 
-	Type   string `json:"type"`
+	Data   string `json:"data"`
 	Button string `json:"button"`
 
-	Items []*QuestionAnswer `json:"items"`
+	ItemsType QuestionItemsType `json:"itemsType"`
+	Multiple  bool              `json:"multiple"`
+	Items     []*QuestionItem   `json:"items"`
 }
 
+func newQuestionConfig(itemsType QuestionItemsType, timeLimit int) *QuestionConfig {
+	return &QuestionConfig{
+		ID:        "question",
+		UID:       uuid.UUID(),
+		TimeLimit: timeLimit,
+
+		ItemsType: itemsType,
+		Multiple:  false,
+	}
+}
+
+// TODO: Move to frontend
 func Message(
-	body string,
+	data string,
 	button string,
 ) (
 	configs []interface{},
 	err error,
 ) {
-
 	if button == "" {
 		button = "Продолжить"
 	}
 
-	uid, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
+	config := newQuestionConfig(QuestionItemsType_None, 0)
+	config.Data = data
+	config.Button = button
 
-	configs = append(configs, &QuestionConfig{
-		ID:        "question",
-		UID:       uid.String(),
-		Body:      body,
-		TimeLimit: 0,
-
-		Type:   "text",
-		Button: button,
-	})
-	return configs, nil
+	configs = append(configs, config)
+	return
 }

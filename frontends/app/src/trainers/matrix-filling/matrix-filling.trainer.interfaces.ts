@@ -8,8 +8,6 @@ export type IMatrixFillingTrainer = "matrix-filling"
 
 export interface IMatrixFillingTrainerItem {
   shape: string
-  color: string
-  background: string
 }
 
 export interface IMatrixFillingTrainerConfig extends ITrainerConfig {
@@ -17,7 +15,7 @@ export interface IMatrixFillingTrainerConfig extends ITrainerConfig {
 
   mode: "show" | "play"
 
-  items: Array<IMatrixFillingTrainerItem>
+  items: Array<string>
   matrix: Array<number>
 
   showErrors?: boolean

@@ -16,6 +16,7 @@ func main() {
 
 	srv.GET("/specific/:type", api.Specific)
 	srv.GET("/everyday", api.Everyday)
+	srv.GET("/everyday2", api.Everyday2)
 
 	srv.ListenAndServe()
 }

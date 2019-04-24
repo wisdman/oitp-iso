@@ -73,12 +73,14 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges {
     return this._sanitizer.bypassSecurityTrustStyle(`--side: ${side}`)
   }
 
+  items!: Array<IMatrixFillingTrainerItem>
   matrix!: Array<IItem>
 
   private _init() {
+    this.items = this.config.items.map(shape => ({shape}))
     this.matrix = this.config
                       .matrix
-                      .map((id) => id < 0 ? {} : { item: this.config.items[id] })
+                      .map((id) => id < 0 ? {} : { item: this.items[id] })
   }
 
   sanitizeUrl(item: IMatrixFillingTrainerItem) {
@@ -114,7 +116,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges {
       return
     }
 
-    const id = this.config.items.indexOf(userItem)
+    const id = this.items.indexOf(userItem)
 
     if (id < 0) {
       return
@@ -141,7 +143,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges {
       return
     }
 
-    item.userItem = this.config.items[id]
+    item.userItem = this.items[id]
     this._check()
   }
 

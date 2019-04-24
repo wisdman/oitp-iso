@@ -49,8 +49,8 @@ CREATE VIEW public.trainers_data_texts AS
     COALESCE(
       json_agg(
         json_build_object(
-          'type', q."type",
-          'body', q.body,
+          'itemsType', q."type",
+          'data', q.body,
           'items', q.items
         )
       ) FILTER (WHERE q."id" IS NOT NULL),

@@ -1,8 +1,6 @@
 package trainers
 
 import (
-	"github.com/google/uuid"
-
 	"github.com/wisdman/oitp-isov/api/lib/db"
 )
 
@@ -42,27 +40,14 @@ func QuestionWasteWords(
 
 	for rows.Next() {
 		var question string
-		var answers []*QuestionAnswer
+		var answers []*QuestionItem
 		if err = rows.Scan(&question, &answers); err != nil {
 			return nil, err
 		}
 
-		uid, err := uuid.NewUUID()
-		if err != nil {
-			return nil, err
-		}
-
-		config := &QuestionConfig{
-			ID:        "question",
-			UID:       uid.String(),
-			Body:      "<h1>Укаите лишнее слово</h1>",
-			TimeLimit: parameters.TimeLimit,
-
-			Type:   "text",
-			Button: "",
-
-			Items: answers,
-		}
+		config := newQuestionConfig(QuestionItemsType_Text, parameters.TimeLimit)
+		config.Data = "<h1>Укажите лишнее слово</h1>"
+		config.Items = answers
 
 		configs = append(configs, config)
 	}
@@ -106,27 +91,14 @@ func QuestionCloseWords(
 
 	for rows.Next() {
 		var question string
-		var answers []*QuestionAnswer
+		var answers []*QuestionItem
 		if err = rows.Scan(&question, &answers); err != nil {
 			return nil, err
 		}
 
-		uid, err := uuid.NewUUID()
-		if err != nil {
-			return nil, err
-		}
-
-		config := &QuestionConfig{
-			ID:        "question",
-			UID:       uid.String(),
-			Body:      question + "<p>это</p>",
-			TimeLimit: parameters.TimeLimit,
-
-			Type:   "text",
-			Button: "",
-
-			Items: answers,
-		}
+		config := newQuestionConfig(QuestionItemsType_Text, parameters.TimeLimit)
+		config.Data = question + "<p>это</p>"
+		config.Items = answers
 
 		configs = append(configs, config)
 	}

@@ -1,22 +1,50 @@
 package trainers
 
 import (
-	"github.com/google/uuid"
-
 	"github.com/wisdman/oitp-isov/api/lib/db"
+	"github.com/wisdman/oitp-isov/api/lib/uuid"
 )
 
-type TextPairsConfig struct {
-	ID        string     `json:"id"`
-	UID       string     `json:"uid"`
-	TimeLimit int        `json:"timeLimit"`
-	Items     [][]string `json:"items"`
-	Title     string     `json:"title"`
-}
+type TextPairsMode string
+
+const (
+	TextPairsMode_Play TextPairsMode = "play"
+	TextPairsMode_Show TextPairsMode = "show"
+)
+
+type TextPairsType string
+
+const (
+	TextPairsType_Antonyms TextPairsType = "antonyms"
+	TextPairsType_Paronyms TextPairsType = "paronyms"
+	TextPairsType_Synonyms TextPairsType = "synonyms"
+	TextPairsType_Specific TextPairsType = "specific"
+)
 
 type TextPairsParameters struct {
 	ItemsLimit int `json:"itemsLimit"`
 	TimeLimit  int `json:"timeLimit"`
+}
+
+type TextPairsConfig struct {
+	ID        string `json:"id"`
+	UID       string `json:"uid"`
+	TimeLimit uint16 `json:"timeLimit"`
+
+	Mode  TextPairsMode `json:"mode"`
+	Type  TextPairsType `json:"type"`
+	Items [][]string    `json:"items"`
+}
+
+func newTextPairsConfig(tpy TextPairsType, timeLimit uint16) *TextPairsConfig {
+	return &TextPairsConfig{
+		ID:        "text-pairs",
+		UID:       uuid.UUID(),
+		TimeLimit: timeLimit,
+
+		Mode: TextPairsMode_Play,
+		Type: tpy,
+	}
 }
 
 func TextPairsAntonyms(
@@ -32,17 +60,7 @@ func TextPairsAntonyms(
 		return nil, err
 	}
 
-	uid, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
-
-	config := &TextPairsConfig{
-		ID:        "text-pairs",
-		UID:       uid.String(),
-		TimeLimit: parameters.TimeLimit,
-		Title:     "Отметьте антонимы",
-	}
+	config := newTextPairsConfig(TextPairsType_Antonyms, uint16(parameters.TimeLimit))
 
 	rows, err := sql.Query(`
     SELECT
@@ -101,17 +119,7 @@ func TextPairsSynonyms(
 		return nil, err
 	}
 
-	uid, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
-
-	config := &TextPairsConfig{
-		ID:        "text-pairs",
-		UID:       uid.String(),
-		TimeLimit: parameters.TimeLimit,
-		Title:     "Отметьте синонимы",
-	}
+	config := newTextPairsConfig(TextPairsType_Synonyms, uint16(parameters.TimeLimit))
 
 	rows, err := sql.Query(`
     SELECT
@@ -155,5 +163,131 @@ func TextPairsSynonyms(
 	}
 
 	configs = append(configs, config)
+	return configs, nil
+}
+
+func TextPairsParonyms(
+	sql *db.Transaction,
+	complexity uint8,
+) (
+	configs []interface{},
+	err error,
+) {
+
+	var parameters TextPairsParameters
+	if err = GetComplexityConfig(sql, "text-pairs", complexity, &parameters); err != nil {
+		return nil, err
+	}
+
+	config := newTextPairsConfig(TextPairsType_Paronyms, uint16(parameters.TimeLimit))
+
+	rows, err := sql.Query(`
+    SELECT
+      array_agg("word") AS "words"
+    FROM (
+      SELECT
+        ROW_NUMBER() OVER (PARTITION BY "id" ORDER BY random()) AS cnt,
+        middleTable.*
+      FROM (
+        SELECT
+          dataTable."id",
+          unnest(dataTable."paronyms") AS "word"
+        FROM (
+          SELECT
+            "id",
+            paronyms
+          FROM public.trainers_data_words_paronyms
+          ORDER BY random()
+          LIMIT $1
+        ) dataTable
+      ) middleTable
+    ) partedTable
+    WHERE partedTable.cnt <= 2
+    GROUP BY "id"
+    ORDER BY random()
+    `,
+		parameters.ItemsLimit,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var pair []string
+		if err = rows.Scan(&pair); err != nil {
+			return nil, err
+		}
+
+		config.Items = append(config.Items, pair)
+	}
+
+	configs = append(configs, config)
+	return configs, nil
+}
+
+func TextPairsSpecific(
+	sql *db.Transaction,
+	complexity uint8,
+) (
+	configs []interface{},
+	err error,
+) {
+
+	var parameters TextPairsParameters
+	if err = GetComplexityConfig(sql, "text-pairs", complexity, &parameters); err != nil {
+		return nil, err
+	}
+
+	config := newTextPairsConfig(TextPairsType_Specific, uint16(parameters.TimeLimit))
+
+	rows, err := sql.Query(`
+    SELECT
+      array_agg("word") AS "words"
+    FROM (
+      SELECT
+        ROW_NUMBER() OVER (PARTITION BY "id" ORDER BY random()) AS cnt,
+        middleTable.*
+      FROM (
+        SELECT
+          dataTable."id",
+          unnest(dataTable."words") AS "word"
+        FROM (
+          SELECT
+            "id",
+            words
+          FROM public.trainers_data_words_pairs
+          ORDER BY random()
+          LIMIT $1
+        ) dataTable
+      ) middleTable
+    ) partedTable
+    WHERE partedTable.cnt <= 2
+    GROUP BY "id"
+    ORDER BY random()
+    `,
+		parameters.ItemsLimit,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var pair []string
+		if err = rows.Scan(&pair); err != nil {
+			return nil, err
+		}
+
+		config.Items = append(config.Items, pair)
+	}
+
+	configB := newTextPairsConfig(TextPairsType_Specific, uint16(parameters.TimeLimit))
+	configB.Items = config.Items
+	configB.Mode = TextPairsMode_Show
+
+	configs = append(configs, configB)
+	configs = append(configs, config)
+
 	return configs, nil
 }

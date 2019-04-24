@@ -66,12 +66,7 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.showCurrent = !!this.config.showCurrent
     this.rules = this.config.items
-                            .reduce(
-                              (prev, item) => prev.includes(item) ? prev : (prev.push(item), prev),
-                              new Array<ITablePipeTrainerItem>()
-                            )
-
-    this.items = this.config.items.map(item => ({...item}))
+    this.items = this.config.matrix.map(i => ({...this.rules[i]}))
 
     this.current = 0
 

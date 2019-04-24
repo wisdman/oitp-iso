@@ -9,3 +9,13 @@ CREATE TABLE private.trainers_data_words_pairs (
 
   CONSTRAINT trainers_data_words_pairs__idx__pkey PRIMARY KEY ("id")
 ) WITH (OIDS = FALSE);
+
+CREATE VIEW public.trainers_data_words_pairs AS
+  SELECT
+    t."id" as "id",
+    t."enabled" as "enabled",
+    t."words" as "words"
+  FROM private.trainers_data_words_pairs t
+  WHERE NOT t."deleted";
+
+GRANT SELECT ON public.trainers_data_words_pairs TO api;

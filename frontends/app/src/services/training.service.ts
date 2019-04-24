@@ -45,7 +45,7 @@ export class TrainingService {
                   zip(
                     this._lapTimerSubject
                         .pipe(
-                          switchMap((start) => timer(0, 1000).pipe(map(s => start - s))),
+                          // switchMap((start) => timer(0, 1000).pipe(map(s => start - s))),
                           filter(v => v === 0),
                         ),
                     value => value

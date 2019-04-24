@@ -17,6 +17,7 @@ export interface ITablePipeTrainerItem {
 export interface ITablePipeTrainerConfig extends ITrainerConfig {
   id: ITablePipeTrainer
   items: Array<ITablePipeTrainerItem>
+  matrix: Array<number>
 
   showCurrent?: boolean
 }

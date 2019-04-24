@@ -72,14 +72,14 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.palette = undefined
-    if (this.config.items !== undefined) {
+    if (this.config.items) {
       this.palette = this.config.items.map(item => ({...item,  x: 0, y: 0, fillPath: "", path: "" }) )
 
-      if (this.config.type === "image") {
+      if (this.config.itemsType === "image") {
         this._initImagesPaletteLayout()
       }
 
-       if (this.config.type === "text") {
+       if (this.config.itemsType === "text") {
         this._initTextPaletteLayout()
       }
     }
@@ -96,7 +96,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
   ){}
 
   get body() {
-    return this._sanitizer.bypassSecurityTrustHtml(this.config.body)
+    return this._sanitizer.bypassSecurityTrustHtml(this.config.data)
   }
 
   paletteWidth!: number

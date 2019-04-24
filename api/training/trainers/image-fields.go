@@ -4,18 +4,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/google/uuid"
-
 	"github.com/wisdman/oitp-isov/api/lib/db"
+	"github.com/wisdman/oitp-isov/api/lib/uuid"
 )
-
-type ImageFieldsConfig struct {
-	ID        string `json:"id"`
-	UID       string `json:"uid"`
-	TimeLimit int    `json:"timeLimit"`
-
-	Items []string `json:"items"`
-}
 
 type ImageFieldsParameters struct {
 	Pages             int `json:"pages"`
@@ -25,6 +16,22 @@ type ImageFieldsParameters struct {
 	TimeLimit         int `json:"timeLimit"`
 	QuestionTimeLimit int `json:"questionTimeLimit"`
 	QuestionAnswers   int `json:"questionAnswers"`
+}
+
+type ImageFieldConfig struct {
+	ID        string `json:"id"`
+	UID       string `json:"uid"`
+	TimeLimit uint16 `json:"timeLimit"`
+
+	Items []string `json:"items"`
+}
+
+func newImageFieldConfig(timeLimit uint16) *ImageFieldConfig {
+	return &ImageFieldConfig{
+		ID:        "image-field",
+		UID:       uuid.UUID(),
+		TimeLimit: timeLimit,
+	}
 }
 
 func ImageFields(
@@ -64,8 +71,8 @@ func ImageFields(
 	}
 	defer rows.Close()
 
-	var config *ImageFieldsConfig
-	var answers []*QuestionAnswer
+	var config *ImageFieldConfig
+	var answers []*QuestionItem
 	var i, j int
 	for rows.Next() {
 		var icon string
@@ -75,16 +82,7 @@ func ImageFields(
 
 		if j < len(pages) {
 			if i == 0 {
-				uid, err := uuid.NewUUID()
-				if err != nil {
-					return nil, err
-				}
-
-				config = &ImageFieldsConfig{
-					ID:        "image-field",
-					UID:       uid.String(),
-					TimeLimit: parameters.TimeLimit,
-				}
+				config = newImageFieldConfig(uint16(parameters.TimeLimit))
 			}
 
 			config.Items = append(config.Items, icon)
@@ -97,30 +95,20 @@ func ImageFields(
 			}
 		}
 
-		answers = append(answers, &QuestionAnswer{
-			Correct: j < len(pages),
+		answers = append(answers, &QuestionItem{
 			Data:    icon,
+			Correct: j < len(pages),
 		})
 	}
 
 	rand.Shuffle(len(answers), func(i, j int) { answers[i], answers[j] = answers[j], answers[i] })
 
-	uid, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
+	question := newQuestionConfig(QuestionItemsType_Image, parameters.QuestionTimeLimit)
 
-	question := &QuestionConfig{
-		ID:        "question",
-		UID:       uid.String(),
-		Body:      "<h1>Отметьте фигуры встретившиеся вам ранее</h1>",
-		TimeLimit: parameters.QuestionTimeLimit,
-
-		Type:   "image",
-		Button: "Продолжить",
-
-		Items: answers[0:parameters.QuestionAnswers],
-	}
+	question.Data = "<h1>Отметьте фигуры встретившиеся вам ранее</h1>"
+	question.Button = "Продолжить"
+	question.Items = answers[0:parameters.QuestionAnswers]
+	question.Multiple = true
 
 	configs = append(configs, question)
 	return configs, nil

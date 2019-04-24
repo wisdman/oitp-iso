@@ -1,20 +1,28 @@
 package trainers
 
 import (
-	"github.com/google/uuid"
-
 	"github.com/wisdman/oitp-isov/api/lib/db"
+	"github.com/wisdman/oitp-isov/api/lib/uuid"
 )
+
+type TextReadingParameters struct {
+	TimeLimit int `json:"timeLimit"`
+}
 
 type TextReadingConfig struct {
 	ID        string `json:"id"`
 	UID       string `json:"uid"`
-	TimeLimit int    `json:"timeLimit"`
-	Data      string `json:"data"`
+	TimeLimit uint16 `json:"timeLimit"`
+
+	Data string `json:"data"`
 }
 
-type TextReadingParameters struct {
-	TimeLimit int `json:"timeLimit"`
+func newTextReadingConfig(timeLimit uint16) *TextReadingConfig {
+	return &TextReadingConfig{
+		ID:        "text-reading",
+		UID:       uuid.UUID(),
+		TimeLimit: timeLimit,
+	}
 }
 
 func TextReading(
@@ -30,16 +38,7 @@ func TextReading(
 		return nil, err
 	}
 
-	uid, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
-
-	config := &TextReadingConfig{
-		ID:        "text-reading",
-		UID:       uid.String(),
-		TimeLimit: parameters.TimeLimit,
-	}
+	config := newTextReadingConfig(uint16(parameters.TimeLimit))
 
 	var questions []*QuestionConfig
 	if err := sql.QueryRow(`
@@ -57,13 +56,8 @@ func TextReading(
 	configs = append(configs, config)
 
 	for i, max := 0, len(questions); i < max; i++ {
-		uid, err := uuid.NewUUID()
-		if err != nil {
-			return nil, err
-		}
 		questions[i].ID = "question"
-		questions[i].UID = uid.String()
-
+		questions[i].UID = uuid.UUID()
 		configs = append(configs, questions[i])
 	}
 

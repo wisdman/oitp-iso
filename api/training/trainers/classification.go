@@ -1,9 +1,15 @@
 package trainers
 
 import (
-	"github.com/google/uuid"
-
 	"github.com/wisdman/oitp-isov/api/lib/db"
+	"github.com/wisdman/oitp-isov/api/lib/uuid"
+)
+
+type ClassificationType string
+
+const (
+	ClassificationType_Colors ClassificationType = "colors"
+	ClassificationType_Words  ClassificationType = "words"
 )
 
 type ClassificationItem struct {
@@ -15,11 +21,20 @@ type ClassificationItem struct {
 type ClassificationConfig struct {
 	ID        string `json:"id"`
 	UID       string `json:"uid"`
-	TimeLimit int    `json:"timeLimit"`
+	TimeLimit uint16 `json:"timeLimit"`
 
-	Type string `json:"type"`
-
+	Type  ClassificationType    `json:"type"`
 	Items []*ClassificationItem `json:"items"`
+}
+
+func newClassificationConfig(tpy ClassificationType, timeLimit uint16) *ClassificationConfig {
+	return &ClassificationConfig{
+		ID:        "classification",
+		UID:       uuid.UUID(),
+		TimeLimit: timeLimit,
+
+		Type: tpy,
+	}
 }
 
 // Classification Colors
@@ -42,21 +57,11 @@ func ClassificationColors(
 		return nil, err
 	}
 
-	uid, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
-
-	config := &ClassificationConfig{
-		ID:        "classification",
-		UID:       uid.String(),
-		TimeLimit: parameters.TimeLimit,
-		Type:      "color",
-	}
+	config := newClassificationConfig(ClassificationType_Colors, uint16(parameters.TimeLimit))
 
 	rows, err := sql.Query(`
     SELECT
-      "color" AS "group",
+      '#' || "color" AS "group",
       "title" AS "data"
     FROM public.trainers_data_classification_colors
     ORDER BY random()
@@ -104,17 +109,7 @@ func ClassificationWords(
 		return nil, err
 	}
 
-	uid, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
-
-	config := &ClassificationConfig{
-		ID:        "classification",
-		UID:       uid.String(),
-		TimeLimit: parameters.TimeLimit,
-		Type:      "text",
-	}
+	config := newClassificationConfig(ClassificationType_Words, uint16(parameters.TimeLimit))
 
 	rows, err := sql.Query(`
     SELECT

@@ -4,12 +4,19 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/google/uuid"
-
 	"github.com/wisdman/oitp-isov/api/lib/db"
+	"github.com/wisdman/oitp-isov/api/lib/svg"
+	"github.com/wisdman/oitp-isov/api/lib/uuid"
 )
 
-var TablePipeAction = [...]string{"up", "down", "left", "right"}
+// var TablePipeActions = [...]string{"up", "down", "left", "right"}
+var TablePipeActions = [...]string{"down", "left", "right"}
+
+type TablePipeParameters struct {
+	Size       int `json:"size"`
+	ItemsCount int `json:"itemsCount"`
+	TimeLimit  int `json:"timeLimit"`
+}
 
 type TablePipeItem struct {
 	Data   string `json:"data"`
@@ -19,53 +26,59 @@ type TablePipeItem struct {
 type TablePipeConfig struct {
 	ID        string `json:"id"`
 	UID       string `json:"uid"`
-	TimeLimit int    `json:"timeLimit"`
+	TimeLimit uint16 `json:"timeLimit"`
 
-	Items []*TablePipeItem `json:"items"`
+	Items  []*TablePipeItem `json:"items"`
+	Matrix []uint16         `json:"matrix"`
 }
 
-var TABLE_PIPE_ALPHABET_EN = [...]rune{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}
-var TABLE_PIPE_ALPHABET_RU = [...]rune{'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Э', 'Ю', 'Я'}
-var TABLE_PIPE_NUMBERS = [...]rune{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
+func newTablePipeConfig(timeLimit uint16) *TablePipeConfig {
+	return &TablePipeConfig{
+		ID:        "table-pipe",
+		UID:       uuid.UUID(),
+		TimeLimit: timeLimit,
 
-func TablePipeAlphabetEN(
+		Items:  make([]*TablePipeItem, len(TablePipeActions)),
+		Matrix: []uint16{},
+	}
+}
+
+func TablePipeEN(
 	sql *db.Transaction,
 	complexity uint8,
 ) (
 	configs []interface{},
 	err error,
 ) {
-	items := make([]rune, len(TABLE_PIPE_ALPHABET_EN))
-	for i := 0; i < len(TABLE_PIPE_ALPHABET_EN); i++ {
-		items[i] = TABLE_PIPE_ALPHABET_EN[i]
-	}
-	config, err := tablePipe(sql, complexity, items)
-	if err != nil {
-		return nil, err
+	length := len(ARR_ALPHABET_EN)
+	items := make([]rune, length)
+	for i := 0; i < length; i++ {
+		items[i] = ARR_ALPHABET_EN[i]
 	}
 
-	configs = append(configs, config)
-	return configs, nil
+	if config, err := tablePipe(sql, complexity, items); err == nil {
+		return append(configs, config), nil
+	}
+	return nil, err
 }
 
-func TablePipeAlphabetRU(
+func TablePipeRU(
 	sql *db.Transaction,
 	complexity uint8,
 ) (
 	configs []interface{},
 	err error,
 ) {
-	items := make([]rune, len(TABLE_PIPE_ALPHABET_RU))
-	for i := 0; i < len(TABLE_PIPE_ALPHABET_RU); i++ {
-		items[i] = TABLE_PIPE_ALPHABET_RU[i]
-	}
-	config, err := tablePipe(sql, complexity, items)
-	if err != nil {
-		return nil, err
+	length := len(ARR_ALPHABET_RU)
+	items := make([]rune, length)
+	for i := 0; i < length; i++ {
+		items[i] = ARR_ALPHABET_RU[i]
 	}
 
-	configs = append(configs, config)
-	return configs, nil
+	if config, err := tablePipe(sql, complexity, items); err == nil {
+		return append(configs, config), nil
+	}
+	return nil, err
 }
 
 func TablePipeNumbers(
@@ -75,23 +88,16 @@ func TablePipeNumbers(
 	configs []interface{},
 	err error,
 ) {
-	items := make([]rune, len(TABLE_PIPE_NUMBERS))
-	for i := 0; i < len(TABLE_PIPE_NUMBERS); i++ {
-		items[i] = TABLE_PIPE_NUMBERS[i]
-	}
-	config, err := tablePipe(sql, complexity, items)
-	if err != nil {
-		return nil, err
+	length := len(ARR_NUMBERS_AS_RUNE)
+	items := make([]rune, length)
+	for i := 0; i < length; i++ {
+		items[i] = ARR_NUMBERS_AS_RUNE[i]
 	}
 
-	configs = append(configs, config)
-	return configs, nil
-}
-
-type TablePipeParameters struct {
-	Size       int `json:"size"`
-	ItemsCount int `json:"itemsCount"`
-	TimeLimit  int `json:"timeLimit"`
+	if config, err := tablePipe(sql, complexity, items); err == nil {
+		return append(configs, config), nil
+	}
+	return nil, err
 }
 
 func tablePipe(
@@ -104,29 +110,26 @@ func tablePipe(
 ) {
 	var parameters TablePipeParameters
 	if err = GetComplexityConfig(sql, "table-pipe", complexity, &parameters); err != nil {
-		return nil, err
+		return
 	}
 
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(items), func(i, j int) { items[i], items[j] = items[j], items[i] })
 
-	uid, err := uuid.NewUUID()
-	if err != nil {
-		return nil, err
-	}
+	config = newTablePipeConfig(uint16(parameters.TimeLimit))
 
-	config = &TablePipeConfig{
-		ID:        "table-pipe",
-		UID:       uid.String(),
-		TimeLimit: parameters.TimeLimit,
+	for i, max := 0, len(TablePipeActions); i < max; i++ {
+		j := rand.Intn(max)
+		data := svg.RuneSVG(items[j])
+		config.Items[i] = &TablePipeItem{
+			Data:   data.Base64(),
+			Action: TablePipeActions[j],
+		}
 	}
 
 	for i := 0; i < parameters.Size; i++ {
-		j := rand.Intn(4)
-		config.Items = append(config.Items, &TablePipeItem{
-			Data:   getCharSVG(items[j]),
-			Action: TablePipeAction[j],
-		})
+		j := rand.Intn(len(config.Items))
+		config.Matrix = append(config.Matrix, uint16(j))
 	}
 
 	return config, nil
