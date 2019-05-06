@@ -7,7 +7,6 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-  HostListener,
 } from "@angular/core"
 
 import { Router, NavigationEnd, ActivatedRoute } from "@angular/router"
@@ -90,10 +89,4 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       this._scrollSubscription.unsubscribe()
     }
   }
-
-  @HostListener("swipe", ["$event"])
-  onHostClick(event: Event) {
-    console.dir(event)
-  }
-
 }
