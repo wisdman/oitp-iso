@@ -12,9 +12,11 @@ html {
 
   overflow: hidden;
   overflow-y: scroll;
+  touch-action: none;
 }
 
 body {
+
   width: 100%;
   min-width: 100%;
   max-width: 100%;
