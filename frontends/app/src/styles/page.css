@@ -12,6 +12,7 @@ html {
 
   overflow: hidden;
   overflow-y: scroll;
+  touch-action: manipulation;
 }
 
 body {
