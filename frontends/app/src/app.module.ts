@@ -88,7 +88,6 @@ import {
 } from "./interceptors"
 
 import { ROUTES } from "./app.routing"
-import { HAMMER } from "./hammer.config"
 
 @NgModule({
   bootstrap: [ RootLayoutComponent ],
@@ -191,9 +190,6 @@ import { HAMMER } from "./hammer.config"
       provide: LOCALE_ID,
       useValue: "ru"
     },
-
-    // HammerJS config
-    HAMMER,
   ],
 
   schemas: [

@@ -185,4 +185,44 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
         return this._step("right")
     }
   }
+
+  private _startX?: number
+  private _startY?: number
+
+  private _onPointerDown(x: number, y: number) {
+    this._startX = x
+    this._startY = y
+  }
+
+  private _onPointerUp(x: number, y: number) {
+    if (this._startX === undefined || this._startY === undefined) {
+      return
+    }
+
+    const deltaX = this._startX - x
+    const deltaY = this._startY - y
+
+    this._startX = undefined
+    this._startY = undefined
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 100)
+        this._step("left")
+      else if (deltaX < -100)
+        this._step("right")
+    } else {
+      if (deltaY > 100)
+        this._step("up")
+      else if (deltaY < -100)
+        this._step("down")
+    }
+  }
+
+  @HostListener("document:pointerdown", ["$event"]) onPointerDown(event: PointerEvent) {
+    this._onPointerDown(event.screenX, event.screenY)
+  }
+
+  @HostListener("document:pointerup", ["$event"]) onPointerUp(event: PointerEvent) {
+    this._onPointerUp(event.screenX, event.screenY)
+  }
 }
