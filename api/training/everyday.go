@@ -6,6 +6,7 @@ import (
 
 	"github.com/wisdman/oitp-isov/api/lib/service"
 	"github.com/wisdman/oitp-isov/api/training/trainers/image-fields"
+	"github.com/wisdman/oitp-isov/api/training/trainers/matrix-sequence"
 	"github.com/wisdman/oitp-isov/api/training/trainers/table-pipe"
 )
 
@@ -38,6 +39,22 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 
 	// Запоминание картинок
 	if configs, err = imageFields.Build(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, configs...)
+
+	// Таблицы числовые на основе паттернов
+	if configs, err = matrixSequence.Build(sql, 0); err != nil {
+		service.Fatal(w, err)
+		sql.Rollback()
+		return
+	}
+	training.Trainers = append(training.Trainers, configs...)
+
+	// Таблицы числовые случайные
+	if configs, err = matrixSequence.BuildRandom(sql, 0); err != nil {
 		service.Fatal(w, err)
 		sql.Rollback()
 		return

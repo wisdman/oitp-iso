@@ -6,6 +6,8 @@ const (
 	ClassificationColors ITrainer = "classification-colors"
 	ClassificationWords  ITrainer = "classification-words"
 	ImageFields          ITrainer = "image-fields"
+	MatrixSequence       ITrainer = "matrix-sequence"
+	MatrixRandomSequence ITrainer = "matrix-random-sequence"
 	TablePipe            ITrainer = "table-pipe"
 )
 
@@ -14,8 +16,9 @@ type IUITrainer string
 const (
 	UIClassification IUITrainer = "classification"
 	UIImageField     IUITrainer = "image-field"
-	UITablePipe      IUITrainer = "table-pipe"
+	UIMatrixSequence IUITrainer = "matrix-sequence"
 	UIQuestion       IUITrainer = "question"
+	UITablePipe      IUITrainer = "table-pipe"
 )
 
 var ui = map[ITrainer]IUITrainer{

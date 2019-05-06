@@ -1,6 +1,8 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -9,21 +11,18 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
-import { DomSanitizer } from "@angular/platform-browser"
+import { RoughGenerator } from "../../lib/rough/generator"
+
+import {
+  LapTimerService,
+} from "../../services"
 
 import {
   IMatrixSequenceTrainerConfig,
-  IMatrixSequenceTrainerResult,
   IMatrixSequenceTrainerItem,
+  IMatrixSequenceTrainerResult,
+  MatrixSequenceTrainerID,
 } from "./matrix-sequence.trainer.interfaces"
-
-// interface IItem {
-//   value: number,
-//   color: string,
-//   background: string,
-//   success?: boolean,
-//   error?: boolean,
-// }
 
 @Component({
   selector: "trainer-matrix-sequence",
@@ -32,15 +31,28 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatrixSequenceTrainerComponent implements OnInit, OnChanges {
+  constructor(
+    private _cdr: ChangeDetectorRef,
+    private _elRef:ElementRef<HTMLElement>,
+    private _lapTimerService: LapTimerService,
+  ){}
+
+  private _style = getComputedStyle(this._elRef.nativeElement)
+
+  private _getCSSPropertyIntValue(property: string): number {
+    const value = this._style.getPropertyValue(property)
+    return Number.parseInt(value)
+  }
+
+
   @Input()
   config!: IMatrixSequenceTrainerConfig
 
   result: IMatrixSequenceTrainerResult = {
-    id: "matrix-sequence",
+    id: MatrixSequenceTrainerID,
     config: this.config,
     success: 0,
     error: 0,
-    current: 0,
   }
 
   @Output("result")
@@ -63,47 +75,98 @@ export class MatrixSequenceTrainerComponent implements OnInit, OnChanges {
       isFinish: false,
       success: 0,
       error: 0,
-      current: 0,
+    })
+    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+  }
+
+  matrix!: Array<IMatrixSequenceTrainerItem>
+  matrixViewBox: string = "0 0 0 0"
+  matrixWidth: number = 0
+  matrixHeight: number = 0
+
+  current: number = 0
+
+  private _init() {
+    this.current = 0
+
+    const side = Math.sqrt(this.config.matrix.length)
+    const columns = Math.ceil(side)
+    const rows = Math.floor(side)
+
+    const boxSize = this._getCSSPropertyIntValue("--box-size")
+    const gap = this._getCSSPropertyIntValue("--gap")
+
+    const width = boxSize * columns + gap * (columns + 1)
+    const height = boxSize * rows + gap * (rows + 1)
+
+    this.matrixViewBox = `0 0 ${width} ${height}`
+    this.matrixWidth = width
+    this.matrixHeight = height
+
+    const svgGenerator = new RoughGenerator({}, { width, height } )
+
+    this.matrix = this.config.matrix.map((data, i) => {
+      const x = (boxSize + gap) * (i % columns) + gap
+      const y = (boxSize + gap) * Math.floor(i/columns) + gap
+
+      const sets = svgGenerator.rectangle(x, y, boxSize, boxSize, {
+                                          fill: "none",
+                                          fillStyle: "solid",
+                                          roughness: 1,
+                                        }).sets
+
+      const pathSet = sets.find(set => set.type === "path")
+      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
+
+      const fillPathSet = sets.find(set => set.type === "fillPath")
+      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
+
+      return {
+        data,
+        x,
+        y,
+        width: boxSize,
+        height: boxSize,
+        path,
+        fillPath,
+        color: "",
+        background: ""
+      }
     })
   }
 
 
-  constructor(private _sanitizer: DomSanitizer){}
+  private _step(item: IMatrixSequenceTrainerItem) {
+    if (item.data === (this.current + 1)) {
+      this.current++
+      this._updateResult({
+        success: this.result.success + 1,
+        isFinish: this.current >= this.matrix.length
+      })
 
-  matrix!: Array<IMatrixSequenceTrainerItem>
+      if (this.config.showSucess) {
+        item.isSuccess = true
+        return
+      }
 
-  get matrixStyle() {
-    const side = Math.sqrt(this.matrix.length)
-    return this._sanitizer.bypassSecurityTrustStyle(`--side: ${side}`)
-  }
+      item.isActive = true
+      setTimeout(() => {
+        item.isActive = false
+        this._cdr.markForCheck()
+      }, 250)
+      return
+    }
 
-  private _init() {
-    this.matrix = this.config.matrix.map(value => ({
-      value,
-      color: "#776e65",
-      background: "#ffffff",
-    }))
+    this._updateResult({ error: this.result.error + 1 })
 
-    console.log(this.matrix)
+    item.isError = true
+    setTimeout(() => {
+      item.isError = false
+      this._cdr.markForCheck()
+    }, 250)
   }
 
   onClick(item: IMatrixSequenceTrainerItem) {
-    if (item.value === (this.result.current + 1)) {
-      this._updateResult({
-        current: this.result.current + 1,
-        success: this.result.success + 1,
-      })
-      item.isSuccess = true
-    } else {
-      this._updateResult({
-        error: this.result.error + 1
-      })
-      item.isError = true
-      setTimeout(() => item.isError = false, 1000)
-    }
-
-    if (this.result.current >= this.matrix.length) {
-      this._updateResult({ isFinish: true })
-    }
+    this._step(item)
   }
 }

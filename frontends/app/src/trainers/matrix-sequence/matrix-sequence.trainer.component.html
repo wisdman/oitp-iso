@@ -1,7 +1,42 @@
-<div class="field" *ngIf="config">
-  <div class="matrix" [style]="matrixStyle">
-    <div *ngFor="let item of matrix" [class.success]="item.isSuccess" [style.color]="item.color" (click)="onClick(item)">
-      <span>{{ item.value }}</span>
-    </div>
-  </div>
-</div>
+<svg
+  *ngIf="matrix && matrix.length > 0"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <path id="success" d="M5 25l3-3c4 2 7 3 11 7 9-10 14-15 25-21l1 2c-9 8-15 16-24 32L5 25z"></path>
+  </defs>
+  <g
+    *ngFor="let item of matrix"
+    class="item"
+    [class.active]="item.isActive"
+    [class.success]="item.isSuccess"
+    [class.error]="item.isError"
+    (click)="onClick(item)"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      class="text"
+      [attr.x]="item.x + item.width / 2 + 2"
+      [attr.y]="item.y + item.height / 2 + 2"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}</text>
+    <use
+      class="success-icon"
+      href="#success"
+      [attr.x]="item.x + item.width / 2 - 23"
+      [attr.y]="item.y + item.height / 2 - 27"
+    ></use>
+  </g>
+</svg>

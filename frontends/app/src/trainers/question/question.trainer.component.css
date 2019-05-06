@@ -53,10 +53,6 @@
   fill: none;
 }
 
-.item:hover .path {
-  stroke: var(--item-selected-color);
-}
-
 .selected .path {
   stroke: var(--item-selected-color);
   stroke-width: 3;

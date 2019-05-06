@@ -5,11 +5,23 @@ import {
 } from "../interfaces"
 
 export type IMatrixSequenceTrainer = "matrix-sequence"
+export const MatrixSequenceTrainerID: IMatrixSequenceTrainer = "matrix-sequence"
 
 export interface IMatrixSequenceTrainerItem {
-  value: number
+  data: number
+
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+
+  fillPath: string,
+  path: string,
+
   color: string
   background: string
+
+  isActive?: boolean
   isSuccess?: boolean
   isError?: boolean
 }
@@ -18,15 +30,12 @@ export interface IMatrixSequenceTrainerConfig extends ITrainerConfig {
   id: IMatrixSequenceTrainer
 
   matrix: Array<number>
-
-  showErrors?: boolean
   showSucess?: boolean
 }
 
 export interface IMatrixSequenceTrainerResult extends ITrainerResult {
   id: IMatrixSequenceTrainer
   config: IMatrixSequenceTrainerConfig
-  current: number
   success: number
   error: number
 }
