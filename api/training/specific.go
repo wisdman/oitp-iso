@@ -6,6 +6,7 @@ import (
 
 	"github.com/wisdman/oitp-isov/api/lib/service"
 	"github.com/wisdman/oitp-isov/api/training/trainers"
+	"github.com/wisdman/oitp-isov/api/training/trainers/table-pipe"
 )
 
 func (api *API) Specific(w http.ResponseWriter, r *http.Request) {
@@ -16,22 +17,12 @@ func (api *API) Specific(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	trainerType := service.GetParam(r, "type")
+	training := newTraining(1800)
 
-	var value []interface{}
+	trainerType := trainers.ITrainer(service.GetParam(r, "type"))
 	switch trainerType {
-	case "classification-colors":
-		value, err = trainers.ClassificationColors(sql, 0)
-	case "classification-words":
-		value, err = trainers.ClassificationWords(sql, 0)
-	case "image-fields":
-		value, err = trainers.ImageFields(sql, 0)
-	case "text-sort":
-		value, err = trainers.TextSort(sql, 0)
-	case "text-reading":
-		value, err = trainers.TextReading(sql, 0)
-	case "matrix-filling":
-		value, err = trainers.MatrixFillingIcons(sql, 0, 3)
+	case trainers.TablePipe:
+		training.Trainers, err = tablePipe.Build(sql, 0, tablePipe.RunesRU)
 	default:
 		service.Error(w, http.StatusNotFound)
 		sql.Rollback()
@@ -47,14 +38,6 @@ func (api *API) Specific(w http.ResponseWriter, r *http.Request) {
 	if err = sql.Commit(); err != nil {
 		service.Fatal(w, err)
 		return
-	}
-
-	training := &Training{
-		ID:          "00000000-0000-0000-0000-000000000000",
-		Title:       "Единственный тренажер",
-		Description: "Тренажер без описания",
-		TimeLimit:   7200,
-		Trainers:    value,
 	}
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")

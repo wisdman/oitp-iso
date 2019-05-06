@@ -3,17 +3,66 @@
     *ngFor="let item of rules"
     class="rule"
   >
-    <img class="rule-image" [src]="getImage(item)" draggable="false">
+    <svg
+      class="item"
+      [attr.viewBox]="item.viewBox"
+      [attr.width]="item.width"
+      [attr.height]="item.height"
+    >
+      <path
+        class="fill-path"
+        [attr.d]="item.fillPath"
+      ></path>
+      <path
+        class="path"
+        [attr.d]="item.path"
+      ></path>
+      <text
+        class="text"
+        [attr.x]="item.width / 2 + 2"
+        [attr.y]="item.height / 2 + 2"
+        text-anchor="middle"
+        dominant-baseline="middle"
+      >{{ item.data }}</text>
+    </svg>
     <span *ngIf="item.action ==='up'">&#8194;&#8212;&#8194;Вверх</span>
     <span *ngIf="item.action ==='down'">&#8194;&#8212;&#8194;Вниз</span>
     <span *ngIf="item.action ==='left'">&#8194;&#8212;&#8194;Влево</span>
     <span *ngIf="item.action ==='right'">&#8194;&#8212;&#8194;Вправо</span>
   </div>
 </div>
-<div
-  *ngFor="let item of items; let i = index"
+
+<svg
+  *ngFor="let item of matrix; let i = index"
   class="item"
-  [class.current]="i === current"
-  >
-  <img class="item-image" [src]="getImage(item)" draggable="false">
-</div>
+  [class.item--current]="i === current"
+  [class.item--success]="item.isSuccess"
+  [class.item--error]="item.isError"
+  [attr.viewBox]="item.viewBox"
+  [attr.width]="item.width"
+  [attr.height]="item.height"
+>
+  <path
+    class="fill-path"
+    [attr.d]="item.fillPath"
+  ></path>
+  <path
+    class="path"
+    [attr.d]="item.path"
+  ></path>
+  <text
+    class="text"
+    [attr.x]="item.width / 2 + 2"
+    [attr.y]="item.height / 2 + 2"
+    text-anchor="middle"
+    dominant-baseline="middle"
+  >{{ item.data }}</text>
+  <path
+    class="success"
+    d="M13 25l2-2 7 4c5-6 8-8 14-12l1 1c-5 5-9 10-14 19L13 25z"
+  ></path>
+  <path
+    class="error"
+    d="M37 17l-4-4-8 9-8-9-4 4 8 9-8 9 1 2 11-8 10 8 1-1-8-10 9-9z"
+  ></path>
+</svg>

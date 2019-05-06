@@ -10,7 +10,6 @@ import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrain
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
 import { IClassificationTrainer, IClassificationTrainerConfig, IClassificationTrainerResult } from "./classification"
 import { IRelaxTrainer, IRelaxTrainerConfig, IRelaxTrainerResult } from "./relax"
-import { IResultTrainer, IResultTrainerConfig, IResultTrainerResult } from "./result"
 import { ITextSortTrainer, ITextSortTrainerConfig, ITextSortTrainerResult } from "./text-sort"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
 import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResult } from "./text-reading"
@@ -23,7 +22,6 @@ export type ITrainer = IClassificationTrainer
                      | IMatrixSequenceTrainer
                      | IQuestionTrainer
                      | IRelaxTrainer
-                     | IResultTrainer
                      | ITablePipeTrainer
                      | ITextLettersTrainer
                      | ITextPairsTrainer
@@ -40,7 +38,6 @@ export type ITrainerConfigs = IClassificationTrainerConfig
                             | IMatrixSequenceTrainerConfig
                             | IQuestionTrainerConfig
                             | IRelaxTrainerConfig
-                            | IResultTrainerConfig
                             | ITablePipeTrainerConfig
                             | ITextLettersTrainerConfig
                             | ITextPairsTrainerConfig
@@ -56,7 +53,6 @@ export type ITrainerResults = IClassificationTrainerResult
                             | IMatrixSequenceTrainerResult
                             | IQuestionTrainerResult
                             | IRelaxTrainerResult
-                            | IResultTrainerResult
                             | ITablePipeTrainerResult
                             | ITextLettersTrainerResult
                             | ITextPairsTrainerResult
@@ -96,9 +92,6 @@ export interface IGameFieldSize {
 
 export interface ITraining {
   id: string
-  title: string
-  description: string
-  timeLimit: string
-
+  timeLimit: number
   trainers: Array<ITrainerConfigs>
 }

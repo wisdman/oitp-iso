@@ -1,26 +1,50 @@
-import { Component, ChangeDetectionStrategy, Input, OnChanges, ElementRef } from "@angular/core"
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+} from "@angular/core"
+
+import {
+  Subscription,
+} from "rxjs"
+
+import {
+  LapTimerService
+} from "../../services"
 
 @Component({
   selector: "lap-timer",
   templateUrl: "./lap-timer.component.html",
   styleUrls: [ "./lap-timer.component.css" ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LapTimerComponent implements OnChanges {
-  @Input()
-  limit?: number
-
+export class LapTimerComponent implements OnInit, OnDestroy {
   constructor(
-    private _el: ElementRef<HTMLElement>
+    private _lapTimerService: LapTimerService,
+    private _el: ElementRef<HTMLElement>,
   ){}
 
-  ngOnChanges() {
+  private _lapTimerSubscriber!: Subscription
+
+  ngOnInit() {
+    this._lapTimerSubscriber = this._lapTimerService.lapTimer.subscribe(timeout => this._initAnimations(timeout))
+  }
+
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+  }
+
+  private _initAnimations(timeout: number) {
     window.requestAnimationFrame(() => {
       this._el.nativeElement.style.setProperty("--limit", "0")
       this._el.nativeElement.style.setProperty("--animation", "none")
+      if (timeout <= 0) return
       window.requestAnimationFrame(() => {
-        this._el.nativeElement.style.setProperty("--limit", String(this.limit || 0))
+        this._el.nativeElement.style.setProperty("--limit", String(timeout))
         this._el.nativeElement.style.setProperty("--animation", "lapProgress")
+
       })
     })
   }

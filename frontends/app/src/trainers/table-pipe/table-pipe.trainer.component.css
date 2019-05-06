@@ -1,63 +1,116 @@
 :host {
+  --item-text-color: var(--color-text);
   --item-background-color: #eee4da;
   --item-border-color: #bbada0;
-  --item-current-border-color: #0273d4;
+  --item-current-color: #0273d4;
+  --item-success-color: rgb(45, 169, 79);
+  --item-error-color: rgb(237, 63, 44);
+
+  --item-size: 50px;
+  --gap: 8px;
+  --columns: 10;
 
   width: 100%;
-  max-width: 572px;
+  max-width: calc(var(--item-size) * var(--columns) + var(--gap) * (var(--columns) - 1) );
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, 50px);
-  grid-template-rows: min-content repeat(auto-fit, 50px);
+  grid-template-columns: repeat(auto-fit, var(--item-size));
+  grid-template-rows: min-content repeat(auto-fit, var(--item-size));
   justify-content: center;
   align-content: center;
 
-  gap: 8px;
-
-  position: relative;
-  overflow: hidden;
+  gap: var(--gap);
 }
 
 @media (max-width: 650px) {
   :host {
-    max-width: 340px;
+    --columns: 6;
   }
 }
 
 @media (max-width: 400px) {
   :host {
-    max-width: 282px;
+    --columns: 5;
   }
 }
 
-/* :host::before {
-  content: "";
+/* Items */
+
+.item {
   display: block;
-  grid-row-start: 2;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  background-image: linear-gradient(
-                      transparent 0%,
-                      transparent calc(100 / 58 * 24%),
-                      #f00 calc(100 / 58 * 24%),
-                      #f00 calc(100 / 58 * 26%),
-                      transparent calc(100 / 58 * 26%),
-                      transparent 100%),
-                    linear-gradient(
-                      transparent 0%,
-                      transparent 25%,
-                      #f00 25%,
-                      #f00 75%,
-                      transparent 75%,
-                      transparent 100%);
-  background-size: 100% 58px, 2px 108px;
-  background-position: 0 top, 100px top;
-  background-repeat: repeat-y;
+  width: var(--item-size);
+  height: var(--item-size);
 }
- */
 
+.item--success,
+.item--error {
+  opacity: .7;
+}
+
+
+.path {
+  stroke: var(--item-border-color);
+  stroke-width: 1;
+  fill: none;
+}
+
+.item--current .path {
+  stroke: var(--item-current-color);
+}
+
+.fill-path {
+  stroke: none;
+  stroke-width: 0;
+  fill: var(--item-background-color);
+}
+
+.text {
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--item-text-color);
+  fill: currentColor;
+
+  transform: rotateY(0);
+  transform-origin: center;
+  opacity: 1;
+
+  transition: transform .15s linear, opacity 0s linear .15s;
+}
+
+.item--success .text,
+.item--error .text {
+  transform: rotateY(-90deg);
+  opacity: 0;
+}
+
+.item--current .text {
+  color: var(--item-current-color);
+}
+
+.success {
+  fill: var(--item-success-color);
+}
+
+.error {
+  fill: var(--item-error-color);
+}
+
+.success,
+.error {
+  transform: rotateY(90deg);
+  transform-origin: center;
+  opacity: 0;
+
+  transition: transform .15s linear .15s;
+}
+
+.item--success .success,
+.item--error .error {
+  transform: rotateY(0deg);
+  opacity: 1;
+}
 
 
 /* Rules area */
@@ -67,10 +120,10 @@
   grid-column-start: 1;
   grid-column-end: -1;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 8px;
+  column-gap: 16px;
 
   padding-bottom: 24px;
 }
@@ -79,51 +132,14 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  font-size: 18px;
 }
 
-.rule + .rule {
-  margin-top: 8px;
-}
-
-.rule-image {
-  width: 24px;
-  height: 24px;
+.rule .item {
+  width: 32px;
+  height: 32px;
 }
 
 .rule span {
   margin-top: -2px;
+  font-size: 18px;
 }
-
-
-/* Items */
-
-.item {
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-
-  width: 50px;
-  height: 50px;
-
-  border-radius: 4px;
-  background-color: var(--item-background-color);
-  background-size: 100%;
-  background-repeat: no-repeat;
-
-  border: 2px solid var(--item-border-color);
-
-  opacity: .2;
-  transition: opacity 250ms;
-}
-
-.current {
-  border-color: var(--item-current-border-color);
-}
-
-.current,
-.current ~ .item {
-  opacity: 1;
-}
-

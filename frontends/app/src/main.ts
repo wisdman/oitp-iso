@@ -1,4 +1,5 @@
 
+(window as any).__Zone_disable_requestAnimationFrame=true
 import "zone.js/dist/zone"
 
 import { enableProdMode } from "@angular/core"

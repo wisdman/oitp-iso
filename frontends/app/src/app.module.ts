@@ -17,6 +17,7 @@ import {
   CardChargerComponent,
   CardEverydayComponent,
   CardRecommendationsComponent,
+  GlobalTimerComponent,
   HeaderNotificationsComponent,
   HeaderUserComponent,
   IndicatorBrainComponent,
@@ -26,6 +27,8 @@ import {
   LogComponent,
   SidebarUserComponent,
   SocialBbuttonsComponent,
+  TrainingGreetingComponent,
+  TrainingResultComponent,
 } from "./components"
 
 import {
@@ -54,7 +57,6 @@ import {
   MatrixSequenceTrainerComponent,
   QuestionTrainerComponent,
   RelaxTrainerComponent,
-  ResultTrainerComponent,
   TablePipeTrainerComponent,
   TextLettersTrainerComponent,
   TextPairsTrainerComponent,
@@ -75,6 +77,7 @@ import {
   NotificationService,
   NotificationServiceFactory,
 
+  LapTimerService,
   LogService,
   TrainingService,
   UserService,
@@ -98,6 +101,7 @@ import { HAMMER } from "./hammer.config"
     CardChargerComponent,
     CardEverydayComponent,
     CardRecommendationsComponent,
+    GlobalTimerComponent,
     HeaderNotificationsComponent,
     HeaderUserComponent,
     IndicatorBrainComponent,
@@ -107,6 +111,8 @@ import { HAMMER } from "./hammer.config"
     LogComponent,
     SidebarUserComponent,
     SocialBbuttonsComponent,
+    TrainingGreetingComponent,
+    TrainingResultComponent,
 
     ButtonDirective,
 
@@ -131,7 +137,6 @@ import { HAMMER } from "./hammer.config"
     MatrixSequenceTrainerComponent,
     QuestionTrainerComponent,
     RelaxTrainerComponent,
-    ResultTrainerComponent,
     TablePipeTrainerComponent,
     TextLettersTrainerComponent,
     TextPairsTrainerComponent,
@@ -160,6 +165,7 @@ import { HAMMER } from "./hammer.config"
   providers: [
     LogoutGuardService,
 
+    LapTimerService,
     LogService,
     TrainingService,
     UserService,

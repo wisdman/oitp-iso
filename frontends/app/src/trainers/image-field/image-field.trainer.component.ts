@@ -2,17 +2,23 @@ import {
   Component,
   ChangeDetectionStrategy,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
-  HostListener,
 } from "@angular/core"
 
 import { DomSanitizer } from "@angular/platform-browser"
 
 import {
+  LapTimerService,
+} from "../../services"
+
+import {
+  ImageFieldID,
+  IImageFieldItem,
   IImageFieldTrainerConfig,
   IImageFieldTrainerResult,
 } from "./image-field.trainer.interfaces"
@@ -21,12 +27,6 @@ import {
   IGameFieldSize
 } from "../interfaces"
 
-interface IItem {
-  image: string,
-  dx: number,
-  dy: number,
-}
-
 @Component({
   selector: "trainer-image-field",
   templateUrl: "./image-field.trainer.component.html",
@@ -34,6 +34,11 @@ interface IItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageFieldTrainerComponent implements OnInit, OnChanges {
+  constructor(
+    private _lapTimerService: LapTimerService,
+    private _sanitizer: DomSanitizer,
+  ){}
+
   @Input()
   config!: IImageFieldTrainerConfig
 
@@ -41,7 +46,7 @@ export class ImageFieldTrainerComponent implements OnInit, OnChanges {
   size!: IGameFieldSize
 
   result: IImageFieldTrainerResult = {
-    id: "image-field",
+    id: ImageFieldID,
     config: this.config
   }
 
@@ -64,43 +69,31 @@ export class ImageFieldTrainerComponent implements OnInit, OnChanges {
     this._updateResult({
       isFinish: false,
     })
+    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
   }
 
-  constructor(private _sanitizer: DomSanitizer){}
+  srcSanitize(value: string) {
+    return this._sanitizer.bypassSecurityTrustUrl(value)
+  }
 
-  items!: Array<IItem>
+  items!: Array<IImageFieldItem>
 
   private _init() {
     const vertex = this.config.items.length
     const angle = 360 / vertex
     const radius = Math.min(this.size.width, this.size.height) / 4
+    const randomTheta = Math.floor(Math.random() * 100)
 
-    const theta = Math.floor(Math.random() * 100)
-
-    const deltas = Array.from(Array(vertex), (_, i) => ({ theta: theta + (Math.PI * angle * i) / 180, r: radius }))
-                        .map(({ r, theta }) => [
-                          r * Math.cos(theta),
-                          r * Math.sin(theta),
-                        ])
-
-    this.items = this.config
-                     .items
-                     .map((image, i) => {
-                       const [dx, dy] = deltas[i]
-                       const item: IItem = {
-                         image,
-                         dx, dy,
-                       }
-                       return item
-                     })
-
+    this.items = this.config.items.map((data, i) => {
+      const theta = randomTheta + (Math.PI * angle * i) / 180
+      const dx = radius * Math.cos(theta)
+      const dy = radius * Math.sin(theta)
+      const transform = `translate(${dx}px, ${dy}px)`
+      return {data, transform}
+    })
   }
 
-  sanitize(item: IItem) {
-    return this._sanitizer.bypassSecurityTrustUrl(item.image)
-  }
-
-  @HostListener("click", ["$event"])
+  @HostListener("click")
   onHostClick() {
     this._updateResult({ isFinish: true })
   }

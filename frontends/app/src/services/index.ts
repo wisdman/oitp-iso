@@ -1,3 +1,4 @@
+export * from "./lap-timer.service"
 export * from "./log.service"
 export * from "./logout-guard.service"
 export * from "./notification.service"

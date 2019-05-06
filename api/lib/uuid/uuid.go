@@ -4,10 +4,12 @@ import (
 	"github.com/google/uuid"
 )
 
-func UUID() string {
+type UID string
+
+func UUID() UID {
 	uid, err := uuid.NewUUID()
 	if err != nil {
 		panic(err)
 	}
-	return uid.String()
+	return UID(uid.String())
 }

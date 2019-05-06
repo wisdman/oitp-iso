@@ -52,9 +52,11 @@ INSERT INTO private.trainers_complexity_configs("trainer", "complexity", "config
   -- classification-words
   ('classification-words', 0, '{"groupLimit":3, "itemsLimit":5, "itemTimeLimit": 7, "timeLimit": 105 }'),
   ('classification-words', 1, '{"groupLimit":3, "itemsLimit":5, "itemTimeLimit": 7, "timeLimit": 105 }'),
+
   -- image-fields
-  ('image-fields', 0, '{"pages":3, "minItems": 3, "maxItems": 4, "extraItems": 3, "timeLimit": 5, "questionTimeLimit": 30, "questionAnswers": 6}'),
-  ('image-fields', 1, '{"pages":3, "minItems": 3, "maxItems": 4, "extraItems": 3, "timeLimit": 5, "questionTimeLimit": 30, "questionAnswers": 6}'),
+  ('image-fields', 0, '{"pages":3, "minItemsPerPage": 3, "maxItemsPerPage": 4, "extraItems": 3, "timeLimit": 30, "pageTimeLimit": 5, "answersCoint": 9}'),
+  ('image-fields', 1, '{"pages":3, "minItemsPerPage": 3, "maxItemsPerPage": 4, "extraItems": 3, "timeLimit": 30, "pageTimeLimit": 5, "answersCoint": 9}'),
+
   -- matrix-filling
   ('matrix-filling', 0, '{"size":3, "showTimeLimit": 5, "playTimeLimit": 60}'),
   ('matrix-filling', 1, '{"size":4, "showTimeLimit": 5, "playTimeLimit": 60}'),

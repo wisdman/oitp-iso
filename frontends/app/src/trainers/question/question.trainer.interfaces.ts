@@ -8,7 +8,12 @@ export type IQuestionTrainer = "question"
 
 export interface IQuestionTrainerAnswer {
   data: string
-  correct?: boolean
+  correct: boolean
+
+  x: number,
+  y: number,
+  fillPath: string,
+  path: string,
 
   isSelected?: boolean
 }
@@ -16,12 +21,15 @@ export interface IQuestionTrainerAnswer {
 export interface IQuestionTrainerConfig extends ITrainerConfig {
   id: IQuestionTrainer
 
-  data: string
+  body: string
   button?: string
 
   itemsType?: "image" | "text"
   multiple?: boolean
-  items?: Array<IQuestionTrainerAnswer>
+  items?: Array<{
+    data: string
+    correct?: boolean
+  }>
 }
 
 export interface IQuestionTrainerResult extends ITrainerResult {

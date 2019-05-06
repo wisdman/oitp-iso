@@ -5,21 +5,32 @@ import {
 } from "../interfaces"
 
 export type ITablePipeTrainer = "table-pipe"
+export const TablePipeID: ITablePipeTrainer = "table-pipe"
 
 export type ITablePipeTrainerItemActionType = "up" | "down" | "left" | "right"
 
 export interface ITablePipeTrainerItem {
   data: string
   action: ITablePipeTrainerItemActionType
-  isSuccess?: boolean
+
+  viewBox: string,
+  width: number,
+  height: number,
+
+  fillPath: string,
+  path: string,
+
+  isSuccess: boolean,
+  isError: boolean,
 }
 
 export interface ITablePipeTrainerConfig extends ITrainerConfig {
   id: ITablePipeTrainer
-  items: Array<ITablePipeTrainerItem>
+  items: Array<{
+    data: string
+    action: ITablePipeTrainerItemActionType
+  }>
   matrix: Array<number>
-
-  showCurrent?: boolean
 }
 
 export interface ITablePipeTrainerResult extends ITrainerResult {

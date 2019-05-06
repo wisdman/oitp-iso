@@ -1,7 +1,20 @@
 :host {
-  --item-background-color: rgb(238, 228, 218, .80);
-  --item-border-color: rgb(187, 173, 160, .87);
-  --item-hover-border-color: #0273d4;
+  --item-text-color: var(--color-text);
+  --item-background-color: #eee4da;
+  --item-border-color: #bbada0;
+  --item-selected-color: #0273d4;
+
+  --columns: 5;
+  --gap: 8px;
+
+  --item-image-size: 80px;
+  --item-image-margin: 16px;
+
+  --item-text-min-width: 150px;
+  --item-text-padding: 12px;
+  --item-text-height: 48px;
+
+  --item-stroke-width: 3;
 
   display: flex;
   flex-direction: column;
@@ -14,14 +27,13 @@
   min-height: 100%;
 
   position: relative;
-
 }
 
 .button {
   margin-top: 16px;
 }
 
-.palette {
+.matrix {
   display: block;
   width: auto;
   height: auto;
@@ -31,7 +43,7 @@
   margin-top: 16px;
 }
 
-.palette-item {
+.item {
   cursor: pointer;
 }
 
@@ -41,15 +53,25 @@
   fill: none;
 }
 
+.item:hover .path {
+  stroke: var(--item-selected-color);
+}
+
+.selected .path {
+  stroke: var(--item-selected-color);
+  stroke-width: 3;
+}
+
 .fill-path {
   stroke: none;
   stroke-width: 0;
   fill: var(--item-background-color);
+  opacity: .7;
 }
 
-.selected .fill-path {
-  fill: rgb(44, 190, 80, .7);
-}
+/* .selected .fill-path {
+  fill: var(--item-selected-color);
+} */
 
 .image {
 

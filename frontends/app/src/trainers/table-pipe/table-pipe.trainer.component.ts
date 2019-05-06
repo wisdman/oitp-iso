@@ -1,6 +1,7 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ElementRef,
   EventEmitter,
   HostListener,
   Input,
@@ -10,13 +11,18 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
-import { DomSanitizer } from "@angular/platform-browser"
+import { RoughGenerator } from "../../lib/rough/generator"
+
+import {
+  LapTimerService,
+} from "../../services"
 
 import {
   ITablePipeTrainerConfig,
   ITablePipeTrainerItem,
   ITablePipeTrainerItemActionType,
   ITablePipeTrainerResult,
+  TablePipeID,
 } from "./table-pipe.trainer.interfaces"
 
 import {
@@ -30,6 +36,19 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TablePipeTrainerComponent implements OnInit, OnChanges {
+
+  constructor(
+    private _lapTimerService: LapTimerService,
+    private _elRef:ElementRef<HTMLElement>,
+  ){}
+
+  private _style = getComputedStyle(this._elRef.nativeElement)
+
+  private get itemSize() {
+    const value = this._style.getPropertyValue("--item-size")
+    return Number.parseInt(value)
+  }
+
   @Input()
   config!: ITablePipeTrainerConfig
 
@@ -37,7 +56,7 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
   size!: IGameFieldSize
 
   result: ITablePipeTrainerResult = {
-    id: "table-pipe",
+    id: TablePipeID,
     config: this.config,
     success: 0,
     error: 0,
@@ -57,42 +76,100 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
     }
   }
 
-  showCurrent!: boolean
-  current: number = 0
-
-  rules!: Array<ITablePipeTrainerItem>
-  items!: Array<ITablePipeTrainerItem>
-
   ngOnInit() {
-    this.showCurrent = !!this.config.showCurrent
-    this.rules = this.config.items
-    this.items = this.config.matrix.map(i => ({...this.rules[i]}))
-
-    this.current = 0
-
+    this._init()
     this._updateResult({
       isFinish: false,
       success: 0,
       error: 0,
     })
+    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
   }
 
-  constructor(private _sanitizer: DomSanitizer){}
+  current: number = 0
+  rules!: Array<ITablePipeTrainerItem>
+  matrix!: Array<ITablePipeTrainerItem>
 
-  getImage(item: ITablePipeTrainerItem) {
-    return this._sanitizer.bypassSecurityTrustUrl(item.data)
+  private _init() {
+    this.current = 0
+
+    const itemSize = this.itemSize
+    const drawSize = itemSize - 4
+    const svgGenerator = new RoughGenerator({}, { width: itemSize, height: itemSize } )
+
+    this.rules = this.config.items.map(({data, action}) => {
+      const sets = svgGenerator.rectangle(2, 2, drawSize, drawSize, {
+                                          fill: "none",
+                                          fillStyle: "solid",
+                                          roughness: 1,
+                                        }).sets
+
+      const pathSet = sets.find(set => set.type === "path")
+      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
+
+      const fillPathSet = sets.find(set => set.type === "fillPath")
+      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
+
+      return {
+        data,
+        action,
+
+        viewBox: `0 0 ${itemSize} ${itemSize}`,
+        width: itemSize,
+        height: itemSize,
+
+        path,
+        fillPath,
+
+        isSuccess: false,
+        isError: false,
+      }
+    })
+
+    this.matrix = this.config.matrix.map(i => {
+      const sets = svgGenerator.rectangle(2, 2, drawSize, drawSize, {
+                                          fill: "none",
+                                          fillStyle: "solid",
+                                          roughness: 1,
+                                        }).sets
+
+      const pathSet = sets.find(set => set.type === "path")
+      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
+
+      const fillPathSet = sets.find(set => set.type === "fillPath")
+      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
+
+      return {
+        ...this.rules[i],
+        path,
+        fillPath,
+      }
+    })
   }
 
   private _step(action: ITablePipeTrainerItemActionType) {
-    const currentItem = this.items[this.current]
+    const currentItem = this.matrix[this.current]
     currentItem.isSuccess = currentItem.action === action
+    currentItem.isError = !currentItem.isSuccess
 
-    const current = this.current + 1
-    const success = this.items.filter(item => item.isSuccess).length
-    const error = this.items.length - success
+    const result = this.matrix.reduce((prev, item) => {
+      if (item.isSuccess) prev.success++
+      if (item.isError) prev.error++
+      return prev
+    },{success: 0, error: 0})
 
-    this._updateResult({ success, error, isFinish: current >= this.items.length })
-    this.current = current
+    const next = this.current + 1
+    if (next >= this.matrix.length) {
+      this._updateResult({ ...result, isFinish: true })
+    } else {
+      this._updateResult({ ...result, isFinish: false })
+      this.current = next
+    }
+  }
+
+  OnTimeout() {
+    console.dir("OnTimeout")
+    this._updateResult({ isFinish: true })
   }
 
   @HostListener("document:keydown", ["$event"])
@@ -107,25 +184,5 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
       case "ArrowRight":
         return this._step("right")
     }
-  }
-
-  @HostListener("window:swipeleft")
-  onSwipeLeft() {
-    return this._step("left")
-  }
-
-  @HostListener("window:swiperight")
-  onSwipeRight() {
-    return this._step("right")
-  }
-
-  @HostListener("window:swipeup")
-  onSwipeUp() {
-    return this._step("up")
-  }
-
-  @HostListener("window:swipedown")
-  onSwipeDown() {
-    return this._step("down")
   }
 }

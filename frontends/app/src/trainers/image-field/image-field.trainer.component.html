@@ -1,10 +1,8 @@
-<div
+<h1 class="h1">Запомните картинки</h1>
+<img
+  #ImageNode
   *ngFor="let item of items"
-  class="image-wrapper"
-  [style.transform]="'translate('+item.dx+'px,'+item.dy+'px)'"
+  class="image"
+  [style.transform]="item.transform"
+  [src]="srcSanitize(item.data)"
 >
-  <img
-    class="image"
-    [src]="sanitize(item)"
-  >
-</div>

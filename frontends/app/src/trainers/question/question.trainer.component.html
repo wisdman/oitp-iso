@@ -1,15 +1,15 @@
-<article class="article" [innerHtml]="body"></article>
+<article class="article" [innerHtml]="htmlSanitize(config.body)"></article>
 
 <svg
-  *ngIf="palette"
-  class="palette"
-  [attr.viewBox]="paletteViewBox"
-  [attr.width]="paletteWidth"
-  [attr.height]="paletteHeight"
+  *ngIf="matrix && matrix.length > 0"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
 >
   <g
-    *ngFor="let item of palette"
-    class="palette-item"
+    *ngFor="let item of matrix"
+    class="item"
     [class.selected]="item.isSelected"
     (click)="onAnswerClick(item)"
   >
@@ -34,7 +34,6 @@
     <text
       *ngIf="config.itemsType === 'text'"
       class="text"
-      text-anchor="middle"
       [attr.x]="item.x"
       [attr.y]="item.y"
       dominant-baseline="middle"
@@ -44,9 +43,9 @@
 </svg>
 
 <button
-  *ngIf="config.button"
+  *ngIf="config.multiple"
   class="button button--main"
   (click)="onButtonClick()"
 >
-  <span>{{ config.button }}</span>
+  <span>Продолжить</span>
 </button>

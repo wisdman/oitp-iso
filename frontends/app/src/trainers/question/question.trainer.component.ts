@@ -1,6 +1,7 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -14,29 +15,14 @@ import { DomSanitizer } from "@angular/platform-browser"
 import { RoughGenerator } from "../../lib/rough/generator"
 
 import {
+  LapTimerService,
+} from "../../services"
+
+import {
   IQuestionTrainerConfig,
   IQuestionTrainerResult,
   IQuestionTrainerAnswer,
 } from "./question.trainer.interfaces"
-
-const BOX_SIZE = 100
-const PADDING = 8
-const GAP = 8
-const SHAPE_SIZE = 80
-
-const FONT = "bold 18px sans-serif"
-const MIN_TEXT_WIDTH = 10
-
-const BOX_MIN_WIDTH = 150
-const BOX_HEIGHT = 48
-const BOX_PADDING = 12
-
-interface IPaletteItem extends IQuestionTrainerAnswer {
-  x: number,
-  y: number,
-  fillPath: string,
-  path: string,
-}
 
 @Component({
   selector: "trainer-question",
@@ -45,6 +31,19 @@ interface IPaletteItem extends IQuestionTrainerAnswer {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuestionTrainerComponent implements OnInit, OnChanges {
+  constructor(
+    private _lapTimerService: LapTimerService,
+    private _sanitizer: DomSanitizer,
+    private _elRef:ElementRef<HTMLElement>,
+  ){}
+
+  private _style = getComputedStyle(this._elRef.nativeElement)
+
+  private _getCSSPropertyIntValue(property: string): number {
+    const value = this._style.getPropertyValue(property)
+    return Number.parseInt(value)
+  }
+
   @Input()
   config!: IQuestionTrainerConfig
 
@@ -71,141 +70,153 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.palette = undefined
-    if (this.config.items) {
-      this.palette = this.config.items.map(item => ({...item,  x: 0, y: 0, fillPath: "", path: "" }) )
-
-      if (this.config.itemsType === "image") {
-        this._initImagesPaletteLayout()
-      }
-
-       if (this.config.itemsType === "text") {
-        this._initTextPaletteLayout()
-      }
-    }
-
+    this._init()
     this._updateResult({
       isFinish: false,
       success: 0,
       error: 0,
     })
+    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
   }
 
-  constructor(
-    private _sanitizer: DomSanitizer,
-  ){}
-
-  get body() {
-    return this._sanitizer.bypassSecurityTrustHtml(this.config.data)
+  htmlSanitize(value: string) {
+    return this._sanitizer.bypassSecurityTrustHtml(value)
   }
 
-  paletteWidth!: number
-  paletteHeight!: number
+  matrix?: Array<IQuestionTrainerAnswer>
+  matrixViewBox: string = "0 0 0 0"
+  matrixWidth: number = 0
+  matrixHeight: number = 0
 
-  shapeWidth: number = SHAPE_SIZE
-  shapeHeight: number = SHAPE_SIZE
+  shapeWidth: number = 0
+  shapeHeight: number = 0
 
-  palette?: Array<IPaletteItem>
+  private _init() {
+    this.matrix = undefined
 
-  get paletteViewBox() {
-    return `0 0 ${this.paletteWidth} ${this.paletteHeight}`
-  }
+    if (this.config.items) {
+      switch (this.config.itemsType) {
+        case "image":
+          this.matrix = this._getImagesMatrix()
+          break
 
-  private _initImagesPaletteLayout() {
-    if (this.palette === undefined) {
-      return
+        case "text":
+          this.matrix = this._getTextsMatrix()
+          break
+      }
     }
-    const length = Math.min(this.palette.length, 5)
-    const height = Math.ceil(this.palette.length / 5)
-    const paletteWidth = BOX_SIZE * length + GAP * (length - 1) + PADDING * 2
-    const paletteHeight = BOX_SIZE * height + GAP * (height - 1) + PADDING * 2
+  }
 
-    const svgGenerator = new RoughGenerator({}, { width: paletteWidth, height: paletteHeight } )
+  private _getImagesMatrix(): Array<IQuestionTrainerAnswer> {
+    if (this.config.items === undefined) {
+      return []
+    }
 
-    this.palette = this.palette.map((item, i) => {
-      const x = (BOX_SIZE + GAP) * (i % 5) + PADDING
-      const y = (BOX_SIZE + GAP) * Math.floor(i/5) + PADDING
+    const columns = this._getCSSPropertyIntValue("--columns")
+    const rows = Math.ceil(this.config.items.length / columns)
+    const gap = this._getCSSPropertyIntValue("--gap")
 
-      const sets = svgGenerator
-                    .rectangle(x, y, BOX_SIZE, BOX_SIZE, {
-                        fill: "none",
-                        fillStyle: "solid",
-                        roughness: 1
-                    }).sets
+    const imageSize = this._getCSSPropertyIntValue("--item-image-size")
+    const imageMargin = this._getCSSPropertyIntValue("--item-image-margin")
+    const strokeWidth = this._getCSSPropertyIntValue("--item-stroke-width")
+
+    const boxSize = imageSize + imageMargin + strokeWidth * 2
+
+    const width = boxSize * columns + gap * (columns + 1)
+    const height = boxSize * rows + gap * (rows + 1)
+
+    this.matrixViewBox = `0 0 ${width} ${height}`
+    this.matrixWidth = width
+    this.matrixHeight = height
+
+    this.shapeWidth = imageSize
+    this.shapeHeight = imageSize
+
+    const svgGenerator = new RoughGenerator({}, { width, height } )
+    return this.config.items.map((item, i) => {
+      const x = (boxSize + gap) * (i % columns) + gap
+      const y = (boxSize + gap) * Math.floor(i/columns) + gap
+
+      const sets = svgGenerator.rectangle(x, y, boxSize, boxSize, {
+                                          fill: "none",
+                                          fillStyle: "solid",
+                                          roughness: 1,
+                                        }).sets
 
       const pathSet = sets.find(set => set.type === "path")
-      item.path = pathSet && svgGenerator.opsToPath(pathSet) || ""
+      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
 
       const fillPathSet = sets.find(set => set.type === "fillPath")
-      item.fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
+      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
 
-      item.x = x + (BOX_SIZE - SHAPE_SIZE) / 2
-      item.y = y + (BOX_SIZE - SHAPE_SIZE) / 2
-
-      return item
+      return {
+        data: item.data,
+        correct: !!item.correct,
+        x: x + (boxSize - imageSize) / 2,
+        y: y + (boxSize - imageSize) / 2,
+        path,
+        fillPath,
+      }
     })
-
-    this.paletteWidth = paletteWidth
-    this.paletteHeight = paletteHeight
   }
 
-  private _initTextPaletteLayout() {
-    if (this.palette === undefined) {
-      return
+  private _getTextsMatrix(): Array<IQuestionTrainerAnswer> {
+    if (this.config.items === undefined) {
+      return []
     }
 
-    let getTextWidth = (_: string) => MIN_TEXT_WIDTH
+    const columns = this._getCSSPropertyIntValue("--columns")
+    const rows = Math.ceil(this.config.items.length / columns)
+    const gap = this._getCSSPropertyIntValue("--gap")
 
     const context = document.createElement("canvas").getContext("2d")
-    if (context !== null) {
-      context.font = FONT
-      getTextWidth = (text: string) => context.measureText(text).width
+    if (context === null) {
+      return []
     }
+    context.font = "bold 18px sans-serif"
+    const getTextWidth = (text: string) => context.measureText(text).width
+    const maxTextWidth = Math.ceil(Math.max(...this.config.items.map(({data}) => getTextWidth(data))))
 
-    const maxTextWidth = Math.ceil(
-                           Math.max(
-                            ...this.palette.map(item => getTextWidth(item.data))
-                           )
-                         )
+    const minBoxWidth = this._getCSSPropertyIntValue("--item-text-min-width")
+    const boxPadding = this._getCSSPropertyIntValue("--item-text-padding")
+    const strokeWidth = this._getCSSPropertyIntValue("--item-stroke-width")
 
-    const length = this.palette.length
+    const boxWidth = Math.max(maxTextWidth + boxPadding * 2, minBoxWidth) + strokeWidth * 2
+    const boxHeight = this._getCSSPropertyIntValue("--item-text-height") + strokeWidth * 2
 
-    const boxWidth = Math.max(maxTextWidth + BOX_PADDING * 2, BOX_MIN_WIDTH)
-    const boxHeight = BOX_HEIGHT
+    const width = boxWidth * columns + gap * (columns + 1)
+    const height = boxHeight * rows + gap * (rows + 1)
 
-    const paletteWidth = boxWidth * length + GAP * (length - 1) + PADDING * 2
-    const paletteHeight = BOX_HEIGHT + PADDING * 2
+    this.matrixViewBox = `0 0 ${width} ${height}`
+    this.matrixWidth = width
+    this.matrixHeight = height
 
-    const svgGenerator = new RoughGenerator({}, { width: paletteWidth, height: paletteHeight } )
+    const svgGenerator = new RoughGenerator({}, { width, height } )
+    return this.config.items.map((item, i) => {
+      const x = (boxWidth + gap) * (i % columns) + gap
+      const y = (boxHeight + gap) * Math.floor(i/columns) + gap
 
-    this.palette = this.palette.map((item, i) => {
-      const x = (boxWidth + GAP) * i + PADDING
-      const y = PADDING
-
-      const sets = svgGenerator
-                    .rectangle(x, y, boxWidth, boxHeight, {
-                        fill: "none",
-                        fillStyle: "solid",
-                        roughness: 1
-                    }).sets
+      const sets = svgGenerator.rectangle(x, y, boxWidth, boxHeight, {
+                                          fill: "none",
+                                          fillStyle: "solid",
+                                          roughness: 1,
+                                        }).sets
 
       const pathSet = sets.find(set => set.type === "path")
-      item.path = pathSet && svgGenerator.opsToPath(pathSet) || ""
+      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
 
       const fillPathSet = sets.find(set => set.type === "fillPath")
-      item.fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
+      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
 
-      item.x = PADDING + (boxWidth + GAP) * i + boxWidth / 2
-      item.y = boxHeight / 2 + PADDING
-
-      return item
+       return {
+        data: item.data,
+        correct: !!item.correct,
+        x: x + boxWidth - boxWidth / 2,
+        y: y + boxHeight - boxHeight / 2,
+        path,
+        fillPath,
+      }
     })
-
-    this.shapeWidth = boxWidth
-    this.shapeHeight = boxHeight
-
-    this.paletteWidth = paletteWidth
-    this.paletteHeight = paletteHeight
   }
 
   onButtonClick() {
@@ -217,7 +228,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
   onAnswerClick(item: IQuestionTrainerAnswer) {
     item.isSelected = !item.isSelected
 
-    if (!this.config.multiple && !this.config.button) {
+    if (!this.config.multiple) {
       this._updateResult({
         isFinish: true,
       })
