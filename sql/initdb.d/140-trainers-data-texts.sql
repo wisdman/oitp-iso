@@ -3,6 +3,7 @@ SET search_path = "$user";
 CREATE TYPE public.trainers_data_texts__type AS ENUM (
   'expression', -- Выражения и цытаты
   'reading',    -- Рассказ и вопросы
+  'relax',      -- Расслобление
   'tezirovanie' -- Тезирование
 );
 

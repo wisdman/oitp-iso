@@ -19,6 +19,7 @@ const (
 	UIMatrixSequence IUITrainer = "matrix-sequence"
 	UIQuestion       IUITrainer = "question"
 	UITablePipe      IUITrainer = "table-pipe"
+	UIRelax          IUITrainer = "relax"
 )
 
 var ui = map[ITrainer]IUITrainer{

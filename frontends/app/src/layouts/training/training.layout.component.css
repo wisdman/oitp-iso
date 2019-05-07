@@ -38,12 +38,6 @@
   background-color: var(--color-background);
   box-shadow: var(--shadow-field);
 
-  background-image:
-    linear-gradient(-20deg, transparent 0%, transparent 50%, var(--color-middle) 50%, var(--color-second) 100%);
-  background-size: 172px 62px;
-  background-position: left top, left bottom, left bottom;
-  background-repeat: no-repeat;
-
   overflow: visible;
   position: relative;
   user-select: none;
@@ -52,6 +46,25 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.field::after {
+  content: "";
+  display: block;
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  width: 172px;
+  height: 62px;
+
+  background-color: transparent;
+  background-image:
+    linear-gradient(-20deg, transparent 0%, transparent 50%, var(--color-middle) 50%, var(--color-second) 100%);
+  background-size: 100%;
+  background-repeat: no-repeat;
+
+  border-radius: 9px 0 0 0;
 }
 
 /* === Game field === */

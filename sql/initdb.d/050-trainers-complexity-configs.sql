@@ -59,11 +59,11 @@ INSERT INTO private.trainers_complexity_configs("trainer", "complexity", "config
   ('matrix-filling', 0, '{"size":3, "showTimeLimit": 5, "playTimeLimit": 60}'),
   ('matrix-filling', 1, '{"size":4, "showTimeLimit": 5, "playTimeLimit": 60}'),
   -- matrix-random-sequence
-  ('matrix-random-sequence', 0, '{"size":25, "timeLimit": 60, "showSuccess": true, "quantity": 5 }'),
-  ('matrix-random-sequence', 1, '{"size":25, "timeLimit": 60, "showSuccess": true, "quantity": 5 }'),
+  ('matrix-random-sequence', 0, '{"size":25, "timeLimit": 30, "showSuccess": true, "quantity": 5 }'),
+  ('matrix-random-sequence', 1, '{"size":25, "timeLimit": 30, "showSuccess": true, "quantity": 5 }'),
   -- matrix-sequence
-  ('matrix-sequence', 0, '{"size":25, "timeLimit": 60, "showSuccess": true, "quantity": 5 }'),
-  ('matrix-sequence', 1, '{"size":25, "timeLimit": 60, "showSuccess": true, "quantity": 5 }'),
+  ('matrix-sequence', 0, '{"size":25, "timeLimit": 30, "showSuccess": true, "quantity": 5 }'),
+  ('matrix-sequence', 1, '{"size":25, "timeLimit": 30, "showSuccess": true, "quantity": 5 }'),
   -- question-close-words
   ('question-close-words', 0, '{"timeLimit": 30}'),
   ('question-close-words', 1, '{"timeLimit": 30}'),

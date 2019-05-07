@@ -3,9 +3,18 @@ import {
   ChangeDetectionStrategy,
   EventEmitter,
   Input,
+  OnInit,
   Output,
-  HostListener,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
 } from "@angular/core"
+
+import { DomSanitizer } from "@angular/platform-browser"
+
+import {
+  LapTimerService,
+} from "../../services"
 
 import {
   IRelaxTrainerConfig,
@@ -18,7 +27,12 @@ import {
   styleUrls: [ "./relax.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RelaxTrainerComponent {
+export class RelaxTrainerComponent implements OnInit {
+  constructor(
+    private _lapTimerService: LapTimerService,
+    private _sanitizer: DomSanitizer,
+  ){}
+
   @Input()
   config!: IRelaxTrainerConfig
 
@@ -35,12 +49,33 @@ export class RelaxTrainerComponent {
     this.resultValueChange.emit(this.result)
   }
 
-  get image() {
-    return `/images/${this.config.image}.jpg`
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
   }
 
-  @HostListener("click", ["$event"])
-  onHostClick() {
-   this._updateResult({ isFinish: true })
+  ngOnInit() {
+    this._initAnimations()
+    this._updateResult({ isFinish: false })
+    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+  }
+
+  sanitizeUrl(value: string) {
+    return this._sanitizer.bypassSecurityTrustUrl(value)
+  }
+
+  @ViewChild('h1Node') h1NodeRef!: ElementRef<HTMLElement>
+
+  private _initAnimations() {
+    const h1 = this.h1NodeRef.nativeElement
+    window.requestAnimationFrame(() => {
+      h1.style.transition = "none"
+      h1.style.transform = "scale(0, 0)"
+      window.requestAnimationFrame(() => {
+        h1.style.transition = "transform 9s"
+        h1.style.transform = "scale(1, 1)"
+      })
+    })
   }
 }

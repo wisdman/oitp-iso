@@ -6,6 +6,7 @@
   position: absolute;
   left: 10px;
   top: 10px;
+  z-index: 999;
 
   font-size: 16px;
   font-weight: 600;

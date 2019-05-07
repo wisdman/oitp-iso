@@ -1,5 +1,12 @@
-<img
+<picture
   *ngIf="config.image"
   class="image"
-  [src]="image"
 >
+  <source [srcset]="sanitizeUrl('/images/' + this.config.image + '.webp')">
+  <img [src]="sanitizeUrl('/images/' + this.config.image + '.jpg')">
+</picture>
+
+<h1
+  #h1Node
+  class="h1"
+>{{ config.text }}</h1>
