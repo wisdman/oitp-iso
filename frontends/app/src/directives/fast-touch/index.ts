@@ -1,0 +1,1 @@
+export * from "./fast-touch.directive"

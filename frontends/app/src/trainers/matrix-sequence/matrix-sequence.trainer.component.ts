@@ -166,7 +166,7 @@ export class MatrixSequenceTrainerComponent implements OnInit, OnChanges {
     }, 250)
   }
 
-  onClick(item: IMatrixSequenceTrainerItem) {
+  onTouch(item: IMatrixSequenceTrainerItem) {
     this._step(item)
   }
 }

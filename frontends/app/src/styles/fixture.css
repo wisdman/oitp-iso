@@ -1,4 +1,5 @@
 *, *::before, *::after {
+  touch-action: inherit;
   box-sizing: inherit;
   outline: none;
 }

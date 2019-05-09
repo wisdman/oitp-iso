@@ -33,6 +33,7 @@ import {
 
 import {
   ButtonDirective,
+  FastTouchDirective,
 } from "./directives"
 
 import {
@@ -114,6 +115,7 @@ import { ROUTES } from "./app.routing"
     TrainingResultComponent,
 
     ButtonDirective,
+    FastTouchDirective,
 
     ClubLayoutComponent,
     DashboardLayoutComponent,

@@ -6,9 +6,11 @@ import {
   HostListener,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
+  NgZone,
 } from "@angular/core"
 
 import { RoughGenerator } from "../../lib/rough/generator"
@@ -29,17 +31,30 @@ import {
   IGameFieldSize
 } from "../interfaces"
 
+import {
+  SWIPE_DELTA
+} from "../../app.config"
+
+const isPointerEvent = "PointerEvent" in window
+const isTouchEvents = "ontouchstart" in window
+
+const preventFunction = function(event: Event) {
+  event.preventDefault()
+  event.stopPropagation()
+}
+
 @Component({
   selector: "trainer-table-pipe",
   templateUrl: "./table-pipe.trainer.component.html",
   styleUrls: [ "./table-pipe.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TablePipeTrainerComponent implements OnInit, OnChanges {
+export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private _lapTimerService: LapTimerService,
     private _elRef:ElementRef<HTMLElement>,
+    private _ngZone: NgZone
   ){}
 
   private _style = getComputedStyle(this._elRef.nativeElement)
@@ -78,12 +93,17 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this._init()
+    this._lockSwipe()
     this._updateResult({
       isFinish: false,
       success: 0,
       error: 0,
     })
     this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+  }
+
+  ngOnDestroy() {
+    this._unlockSwipe()
   }
 
   current: number = 0
@@ -147,6 +167,23 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
     })
   }
 
+  private _lockSwipe() {
+    this._ngZone.runOutsideAngular(() =>{
+      document.documentElement.classList.add("touch-action-none")
+      document.addEventListener("pointermove", preventFunction, { passive: false, capture: true })
+      document.addEventListener("touchmove", preventFunction, { passive: false, capture: true })
+    })
+  }
+
+  private _unlockSwipe() {
+    console.dir("_unlockSwipe")
+    this._ngZone.runOutsideAngular(() =>{
+      document.documentElement.classList.remove("touch-action-none")
+      document.removeEventListener("pointermove", preventFunction, { capture: true })
+      document.removeEventListener("touchmove", preventFunction, { capture: true })
+    })
+  }
+
   private _step(action: ITablePipeTrainerItemActionType) {
     const currentItem = this.matrix[this.current]
     currentItem.isSuccess = currentItem.action === action
@@ -165,11 +202,6 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
       this._updateResult({ ...result, isFinish: false })
       this.current = next
     }
-  }
-
-  OnTimeout() {
-    console.dir("OnTimeout")
-    this._updateResult({ isFinish: true })
   }
 
   @HostListener("document:keydown", ["$event"])
@@ -201,28 +233,73 @@ export class TablePipeTrainerComponent implements OnInit, OnChanges {
 
     const deltaX = this._startX - x
     const deltaY = this._startY - y
-
     this._startX = undefined
     this._startY = undefined
 
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      if (deltaX > 100)
+      if (deltaX > SWIPE_DELTA)
         this._step("left")
-      else if (deltaX < -100)
+      else if (deltaX < SWIPE_DELTA * -1)
         this._step("right")
     } else {
-      if (deltaY > 100)
+      if (deltaY > SWIPE_DELTA)
         this._step("up")
-      else if (deltaY < -100)
+      else if (deltaY < SWIPE_DELTA * -1)
         this._step("down")
     }
   }
 
   @HostListener("document:pointerdown", ["$event"]) onPointerDown(event: PointerEvent) {
-    this._onPointerDown(event.screenX, event.screenY)
+    if (!event.isPrimary) {
+      return
+    }
+    this._onPointerDown(event.clientX, event.clientY)
+  }
+
+  @HostListener("document:touchstart", ["$event"]) onTouchStart(event: TouchEvent) {
+    if (isPointerEvent) {
+      return
+    }
+
+    if (event.changedTouches.length !== 1) {
+      return
+    }
+
+    const touch = event.changedTouches[0]
+    this._onPointerDown(touch.clientX, touch.clientY)
+  }
+
+  @HostListener("document:mousedown", ["$event"]) onMouseDown(event: MouseEvent) {
+    if (isPointerEvent || isTouchEvents) {
+      return
+    }
+    this._onPointerDown(event.clientX, event.clientY)
   }
 
   @HostListener("document:pointerup", ["$event"]) onPointerUp(event: PointerEvent) {
-    this._onPointerUp(event.screenX, event.screenY)
+    if (!event.isPrimary) {
+      return
+    }
+    this._onPointerUp(event.clientX, event.clientY)
+  }
+
+  @HostListener("document:touchend", ["$event"]) onTouchEnd(event: TouchEvent) {
+     if (isPointerEvent) {
+      return
+    }
+
+    if (event.changedTouches.length !== 1) {
+      return
+    }
+
+    const touch = event.changedTouches[0]
+    this._onPointerUp(touch.clientX, touch.clientY)
+  }
+
+  @HostListener("document:mouseup", ["$event"]) onMouseUp(event: MouseEvent) {
+    if (isPointerEvent || isTouchEvents) {
+      return
+    }
+    this._onPointerUp(event.clientX, event.clientY)
   }
 }

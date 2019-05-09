@@ -15,7 +15,7 @@
     [class.active]="item.isActive"
     [class.success]="item.isSuccess"
     [class.error]="item.isError"
-    (click)="onClick(item)"
+    fastTouch (touch)="onTouch(item)"
   >
     <path
       class="fill-path"
