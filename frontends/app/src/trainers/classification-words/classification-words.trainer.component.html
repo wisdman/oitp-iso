@@ -1,25 +1,24 @@
+<h1 class="word">
+  <span #dataNode class="word-text animate">{{ item && item.data }}</span>
+</h1>
+
 <svg
   *ngIf="matrix && matrix.length > 0"
   class="matrix"
   [attr.viewBox]="matrixViewBox"
   [attr.width]="matrixWidth"
   [attr.height]="matrixHeight"
-  xmlns="http://www.w3.org/2000/svg"
   preserveAspectRatio="xMidYMid meet"
 >
-  <defs>
-    <path id="success" d="M5 25l3-3c4 2 7 3 11 7 9-10 14-15 25-21l1 2c-9 8-15 16-24 32L5 25z"></path>
-  </defs>
   <g
     *ngFor="let item of matrix"
     class="item"
-    [class.active]="item.isActive"
-    [class.success]="item.isSuccess"
-    [class.error]="item.isError"
     fastTouch (touch)="onTouch(item)"
   >
     <path
       class="fill-path"
+      [class.success]="item.isSuccess"
+      [class.error]="item.isError"
       [attr.d]="item.fillPath"
     ></path>
     <path
@@ -28,16 +27,10 @@
     ></path>
     <text
       class="text"
-      [attr.x]="item.x + item.width / 2 + 2"
-      [attr.y]="item.y + item.height / 2 + 2"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
       dominant-baseline="middle"
       text-anchor="middle"
     >{{ item.data }}</text>
-    <use
-      class="success-icon"
-      href="#success"
-      [attr.x]="item.x + item.width / 2 - 23"
-      [attr.y]="item.y + item.height / 2 - 27"
-    ></use>
   </g>
 </svg>

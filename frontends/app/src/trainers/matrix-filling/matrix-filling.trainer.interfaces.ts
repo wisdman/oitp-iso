@@ -5,21 +5,41 @@ import {
 } from "../interfaces"
 
 export type IMatrixFillingTrainer = "matrix-filling"
+export const MatrixFillingTrainerID: IMatrixFillingTrainer = "matrix-filling"
 
 export interface IMatrixFillingTrainerItem {
-  shape: string
+  data: string
+
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+
+  fillPath: string,
+  path: string,
+}
+
+export interface IMatrixFillingTrainerMatrixItem {
+  data: number
+  userData: number
+
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+
+  fillPath: string,
+  path: string,
 }
 
 export interface IMatrixFillingTrainerConfig extends ITrainerConfig {
   id: IMatrixFillingTrainer
 
-  mode: "show" | "play"
-
   items: Array<string>
   matrix: Array<number>
 
-  showErrors?: boolean
-  showSucess?: boolean
+  showTimeLimit: number
+  playTimeLimit: number
 }
 
 export interface IMatrixFillingTrainerResult extends ITrainerResult {

@@ -21,27 +21,11 @@ type Item struct {
 type Config struct {
 	*trainers.Config
 
+	TimeLimit uint16 `json:"timeLimit"`
+
 	Body      string     `json:"body"`
 	ItemsType IItemsType `json:"itemsType"`
 	Multiple  bool       `json:"multiple"`
 
 	Items []*Item `json:"items"`
-}
-
-func NewConfig(
-	timeLimit uint16,
-	body string,
-	itemsType IItemsType,
-	multiple bool,
-	items []*Item,
-) *Config {
-	return &Config{
-		Config: trainers.NewConfig(trainers.UIQuestion, timeLimit),
-
-		Body:      body,
-		ItemsType: itemsType,
-		Multiple:  multiple,
-
-		Items: items,
-	}
 }

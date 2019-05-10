@@ -1,6 +1,6 @@
 export * from "./interfaces"
 
-export * from "./classification"
+export * from "./classification-words"
 export * from "./image-carpet"
 export * from "./image-differences"
 export * from "./image-field"

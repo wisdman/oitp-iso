@@ -35,8 +35,7 @@ func Build(
 		if err = rows.Scan(&config.Text); err != nil {
 			return nil, err
 		}
-
-		config.Image = random.Uint8(1, relaxImagesCount)
+		config.Image = random.Uint8(1, ImagesCount)
 		configs = append(configs, config)
 	}
 

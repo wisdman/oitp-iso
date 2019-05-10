@@ -4,7 +4,11 @@
   --item-border-color: #bbada0;
   --item-selected-color: #0273d4;
 
+  --item-success-color: rgb(45, 169, 79, 0.7);
+  --item-error-color: rgba(237, 63, 44, 0.7);
+
   --columns: 5;
+  --text-columns: 3;
   --gap: 8px;
 
   --item-image-size: 80px;
@@ -43,8 +47,13 @@
   margin-top: 16px;
 }
 
-.item {
+.item--cursor-pointer {
   cursor: pointer;
+}
+
+.item--opacity {
+  opacity: 0;
+  transition: opacity .25s;
 }
 
 .path {
@@ -63,11 +72,16 @@
   stroke-width: 0;
   fill: var(--item-background-color);
   opacity: .7;
+  transition: fill .25s;
 }
 
-/* .selected .fill-path {
-  fill: var(--item-selected-color);
-} */
+.item--success .fill-path {
+  fill: var(--item-success-color);
+}
+
+.item--error .fill-path {
+  fill: var(--item-error-color);
+}
 
 .image {
 

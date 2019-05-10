@@ -5,6 +5,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -12,11 +13,11 @@ import {
 
 import { DomSanitizer } from "@angular/platform-browser"
 
+import { Subscription } from "rxjs"
+
 import { RoughGenerator } from "../../lib/rough/generator"
 
-import {
-  LapTimerService,
-} from "../../services"
+import { LapTimerService } from "../../services"
 
 import {
   IQuestionTrainerConfig,
@@ -30,7 +31,7 @@ import {
   styleUrls: [ "./question.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuestionTrainerComponent implements OnInit, OnChanges {
+export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private _lapTimerService: LapTimerService,
     private _sanitizer: DomSanitizer,
@@ -63,11 +64,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
+  private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
     this._init()
@@ -76,12 +73,26 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
       success: 0,
       error: 0,
     })
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
     this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+  }
+
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
+  }
+
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
   htmlSanitize(value: string) {
     return this._sanitizer.bypassSecurityTrustHtml(value)
   }
+
+  isResultMode!: boolean
 
   matrix?: Array<IQuestionTrainerAnswer>
   matrixViewBox: string = "0 0 0 0"
@@ -92,6 +103,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
   shapeHeight: number = 0
 
   private _init() {
+    this.isResultMode = false
     this.matrix = undefined
 
     if (this.config.items) {
@@ -165,7 +177,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
       return []
     }
 
-    const columns = this._getCSSPropertyIntValue("--columns")
+    const columns = this._getCSSPropertyIntValue("--text-columns")
     const rows = Math.ceil(this.config.items.length / columns)
     const gap = this._getCSSPropertyIntValue("--gap")
 
@@ -219,19 +231,33 @@ export class QuestionTrainerComponent implements OnInit, OnChanges {
     })
   }
 
+  private _showResult() {
+    this._lapTimerService.setLapTimeout(0)
+    this.isResultMode = true
+  }
+
+  private _timeout() {
+    this._updateResult({ isTimeout: true })
+    this._showResult()
+  }
+
   onButtonClick() {
-    this._updateResult({
-      isFinish: true,
-    })
+    if (this.isResultMode) {
+      this._updateResult({ isFinish: true })
+      return
+    }
+    this._showResult()
   }
 
   onAnswerClick(item: IQuestionTrainerAnswer) {
+    if (this.isResultMode) {
+      return
+    }
+
     item.isSelected = !item.isSelected
 
     if (!this.config.multiple) {
-      this._updateResult({
-        isFinish: true,
-      })
+      this._showResult()
     }
   }
 }

@@ -1,20 +1,20 @@
 
-import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } from "./table-pipe"
+import { IClassificationWordsTrainer, IClassificationWordsTrainerConfig, IClassificationWordsTrainerResult } from "./classification-words"
+import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
 import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
-import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
-import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
-import { ITextPairsTrainer, ITextPairsTrainerConfig, ITextPairsTrainerResult } from "./text-pairs"
-import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
 import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
-import { IClassificationTrainer, IClassificationTrainerConfig, IClassificationTrainerResult } from "./classification"
+import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
 import { IRelaxTrainer, IRelaxTrainerConfig, IRelaxTrainerResult } from "./relax"
-import { ITextSortTrainer, ITextSortTrainerConfig, ITextSortTrainerResult } from "./text-sort"
+import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } from "./table-pipe"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
+import { ITextPairsTrainer, ITextPairsTrainerConfig, ITextPairsTrainerResult } from "./text-pairs"
 import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResult } from "./text-reading"
+import { ITextSortTrainer, ITextSortTrainerConfig, ITextSortTrainerResult } from "./text-sort"
+import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
 
-export type ITrainer = IClassificationTrainer
+export type ITrainer = IClassificationWordsTrainer
                      | IImageCarpetTrainer
                      | IImageDifferencesTrainer
                      | IImageFieldTrainer
@@ -30,7 +30,7 @@ export type ITrainer = IClassificationTrainer
                      | ITextTezirovanieTrainer
 
 
-export type ITrainerConfigs = IClassificationTrainerConfig
+export type ITrainerConfigs = IClassificationWordsTrainerConfig
                             | IImageCarpetTrainerConfig
                             | IImageDifferencesTrainerConfig
                             | IImageFieldTrainerConfig
@@ -45,7 +45,7 @@ export type ITrainerConfigs = IClassificationTrainerConfig
                             | ITextSortTrainerConfig
                             | ITextTezirovanieTrainerConfig
 
-export type ITrainerResults = IClassificationTrainerResult
+export type ITrainerResults = IClassificationWordsTrainerResult
                             | IImageCarpetTrainerResult
                             | IImageDifferencesTrainerResult
                             | IImageFieldTrainerResult
@@ -63,13 +63,6 @@ export type ITrainerResults = IClassificationTrainerResult
 export interface ITrainerConfig {
   id: ITrainer
   uid: string
-
-  title?: string
-
-  timeLimit?: number
-  isGameMode?: boolean
-
-  globalTimeLimit?: number
 }
 
 export interface ITrainerResult {
@@ -77,17 +70,11 @@ export interface ITrainerResult {
   config: ITrainerConfig
 
   isFinish?: boolean
-
-  time?: number
   isTimeout?: boolean
 
+  time?: number
   success?: number
   error?: number
-}
-
-export interface IGameFieldSize {
-  width: number
-  height: number
 }
 
 export interface ITraining {

@@ -30,6 +30,8 @@ export interface IQuestionTrainerConfig extends ITrainerConfig {
     data: string
     correct?: boolean
   }>
+
+  timeLimit: number
 }
 
 export interface IQuestionTrainerResult extends ITrainerResult {

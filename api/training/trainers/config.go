@@ -5,10 +5,6 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/uuid"
 )
 
-type Parameters struct {
-	TimeLimit uint16 `json:"timeLimit", description:"Лимит времени"`
-}
-
 func QueryParameters(
 	sql *db.Transaction,
 	trainer ITrainer,
@@ -32,18 +28,15 @@ func QueryParameters(
 }
 
 type Config struct {
-	ID        IUITrainer `json:"id"`
-	UID       uuid.UID   `json:"uid"`
-	TimeLimit uint16     `json:"timeLimit"`
+	ID  IUITrainer `json:"id"`
+	UID uuid.UID   `json:"uid"`
 }
 
 func NewConfig(
 	id IUITrainer,
-	timeLimit uint16,
 ) *Config {
 	return &Config{
-		ID:        id,
-		UID:       uuid.UUID(),
-		TimeLimit: timeLimit,
+		ID:  id,
+		UID: uuid.UUID(),
 	}
 }

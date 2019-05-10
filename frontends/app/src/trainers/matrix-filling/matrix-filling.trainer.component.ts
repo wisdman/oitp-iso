@@ -1,30 +1,36 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
-  HostListener,
 } from "@angular/core"
 
+import { RoughGenerator } from "../../lib/rough/generator"
+
 import { DomSanitizer } from "@angular/platform-browser"
+
+import { Subscription } from "rxjs"
+import { LapTimerService } from "../../services"
 
 import {
   IMatrixFillingTrainerConfig,
   IMatrixFillingTrainerResult,
   IMatrixFillingTrainerItem,
+  IMatrixFillingTrainerMatrixItem,
 } from "./matrix-filling.trainer.interfaces"
 
-interface IItem {
-  item?: IMatrixFillingTrainerItem
-  userItem?: IMatrixFillingTrainerItem
+const RESULT_TIMEOUT = 5
 
-  isSuccess?: boolean
-  isError?: boolean
-}
+const isPointerEvent = "PointerEvent" in window
+const isTouchEvents = "ontouchstart" in window
 
 @Component({
   selector: "trainer-matrix-filling",
@@ -32,7 +38,25 @@ interface IItem {
   styleUrls: [ "./matrix-filling.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatrixFillingTrainerComponent implements OnInit, OnChanges {
+export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestroy {
+  constructor(
+    private _cdr: ChangeDetectorRef,
+    private _elRef:ElementRef<HTMLElement>,
+    private _lapTimerService: LapTimerService,
+    private _sanitizer: DomSanitizer,
+  ){}
+
+  private _style = getComputedStyle(this._elRef.nativeElement)
+
+  private _getCSSPropertyIntValue(property: string): number {
+    const value = this._style.getPropertyValue(property)
+    return Number.parseInt(value)
+  }
+
+  urlSanitize(value: string) {
+    return this._sanitizer.bypassSecurityTrustUrl(value)
+  }
+
   @Input()
   config!: IMatrixFillingTrainerConfig
 
@@ -51,365 +75,357 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
+  private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
+    this._initEvents()
     this._init()
     this._updateResult({
       isFinish: false,
       success: 0,
       error: 0,
     })
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
+    this._lapTimerService.setLapTimeout(this.config.showTimeLimit || 0)
   }
 
-  constructor(private _sanitizer: DomSanitizer){}
-
-  get matrixStyle() {
-    const side = Math.sqrt(this.config.matrix.length)
-    return this._sanitizer.bypassSecurityTrustStyle(`--side: ${side}`)
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
   }
+
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._resetEvents()
+  }
+
+  mode: "show" | "play" | "result" = "show"
 
   items!: Array<IMatrixFillingTrainerItem>
-  matrix!: Array<IItem>
+
+  matrix!: Array<IMatrixFillingTrainerMatrixItem>
+  matrixViewBox: string = "0 0 0 0"
+  matrixWidth: number = 0
+  matrixHeight: number = 0
+
+  shapeWidth: number = 0
+  shapeHeight: number = 0
 
   private _init() {
-    this.items = this.config.items.map(shape => ({shape}))
-    this.matrix = this.config
-                      .matrix
-                      .map((id) => id < 0 ? {} : { item: this.items[id] })
+    this.mode = "show"
+
+    const itemsCount = this.config.items.length
+
+    const side = Math.sqrt(this.config.matrix.length)
+    const columns = Math.ceil(side)
+    const rows = Math.floor(side)
+
+    const imageSize = this._getCSSPropertyIntValue("--item-image-size")
+    const imageMargin = this._getCSSPropertyIntValue("--item-image-margin")
+    const strokeWidth = this._getCSSPropertyIntValue("--item-stroke-width")
+
+    const boxSize = imageSize + imageMargin + strokeWidth * 2
+    const gap = this._getCSSPropertyIntValue("--gap")
+    const itemsMargin = this._getCSSPropertyIntValue("--items-margin")
+
+    const itemsColumns = this._getCSSPropertyIntValue("--items-columns")
+    const itemsRows = Math.ceil(itemsCount / itemsColumns)
+
+    const itemsWidth = boxSize * itemsColumns + gap * (itemsColumns + 1)
+    const itemsHeight = boxSize * itemsRows + gap * (itemsRows + 1)
+
+    const matrixWidth = boxSize * columns + gap * (columns + 1)
+    const matrixHeight = boxSize * rows + gap * (rows + 1)
+
+    const width = Math.max(itemsWidth, matrixWidth)
+    const height = matrixHeight + itemsMargin + itemsHeight
+
+    const itemsOffsetLeft = Math.ceil((width - itemsWidth) / 2)
+    const itemsOffsetTop = matrixHeight + itemsMargin
+
+    const matrixOffsetLeft = Math.ceil((width - matrixWidth) / 2)
+
+    this.matrixViewBox = `0 0 ${width} ${height}`
+    this.matrixWidth = width
+    this.matrixHeight = height
+
+    this.shapeWidth = imageSize
+    this.shapeHeight = imageSize
+
+    const svgGenerator = new RoughGenerator({}, { width, height } )
+
+    this.items = this.config.items.map((data, i) => {
+      const x = itemsOffsetLeft + (boxSize + gap) * (i % itemsColumns) + gap
+      const y = itemsOffsetTop + (boxSize + gap) * Math.floor(i/itemsColumns) + gap
+
+      const sets = svgGenerator.rectangle(x, y, boxSize, boxSize, {
+                                          fill: "none",
+                                          fillStyle: "solid",
+                                          roughness: 1,
+                                        }).sets
+
+      const pathSet = sets.find(set => set.type === "path")
+      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
+
+      const fillPathSet = sets.find(set => set.type === "fillPath")
+      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
+
+      return {
+        data,
+        x: x + (boxSize - imageSize) / 2,
+        y: y + (boxSize - imageSize) / 2,
+        width: boxSize,
+        height: boxSize,
+        path,
+        fillPath,
+      }
+    })
+
+    this.matrix = this.config.matrix.map((data, i) => {
+      const x = matrixOffsetLeft + (boxSize + gap) * (i % columns) + gap
+      const y = (boxSize + gap) * Math.floor(i/columns) + gap
+
+      const sets = svgGenerator.rectangle(x, y, boxSize, boxSize, {
+                                          fill: "none",
+                                          fillStyle: "solid",
+                                          roughness: 1,
+                                        }).sets
+
+      const pathSet = sets.find(set => set.type === "path")
+      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
+
+      const fillPathSet = sets.find(set => set.type === "fillPath")
+      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
+
+      return {
+        data: this.items[data] !== undefined ? data : -1,
+        userData: -1,
+        x: x + (boxSize - imageSize) / 2,
+        y: y + (boxSize - imageSize) / 2,
+        width: boxSize,
+        height: boxSize,
+        path,
+        fillPath,
+      }
+    })
   }
 
-  sanitizeUrl(item: IMatrixFillingTrainerItem) {
-    return this._sanitizer.bypassSecurityTrustUrl(item.shape)
+  private _timeout() {
+    this.current = undefined
+    switch (this.mode) {
+      case "show":
+        this.mode = "play"
+        this._cdr.markForCheck()
+        this._lapTimerService.setLapTimeout(this.config.playTimeLimit || 0)
+        return
+
+      case "play":
+        this._updateResult({ isTimeout: true })
+        this.mode = "result"
+        this._cdr.markForCheck()
+        this._lapTimerService.setLapTimeout(RESULT_TIMEOUT)
+        return
+
+      case "result":
+        this._updateResult({ isFinish: true })
+        return
+    }
   }
 
-  private _check() {
-    const success = this.matrix
-                        .reduce( (success, item) => item.item === item.userItem ? ++success : success, 0)
-    const error = this.matrix.length - success
-    const isDone = this.matrix.every(item => item.userItem !== undefined)
-    this._updateResult({ success, error, isFinish: error === 0 || isDone })
+  private _step() {
+    const {success, error, isFinish} = this.matrix.reduce( (prev, item) => {
+      if (item.data < 0) {
+        return prev
+      }
+
+      prev.success += item.data === item.userData ? 1 : 0
+      prev.error += item.data !== item.userData ? 1 : 0
+      prev.isFinish = prev.isFinish && item.userData >= 0
+      return prev
+    }, { success: 0, error: 0, isFinish: true } as { success: number, error: number, isFinish: boolean })
+
+    this._updateResult({ success, error })
+
+    if (isFinish) {
+      this.mode = "result"
+      this._cdr.markForCheck()
+      this._lapTimerService.setLapTimeout(RESULT_TIMEOUT)
+    }
   }
 
-  dragItemsStart(event: DragEvent, id?: number) {
-    if (this.config.mode !== "play") {
-      return
-    }
-
-    if (id === undefined) {
-      return
-    }
-
-    (event.dataTransfer as DataTransfer).setData("id", String(id))
+  current?: {
+    data: number,
+    transform: string,
   }
 
-  dragMatrixStart(event: DragEvent, userItem?: IMatrixFillingTrainerItem) {
-    if (this.config.mode !== "play") {
+  private _pointerDown(x: number, y: number, data?: number) {
+    if (this.mode !== "play") {
       return
     }
 
-    if (userItem === undefined) {
+    if (data === undefined || data < 0 || this.items[data] === undefined) {
+      this.current = undefined
       return
     }
 
-    const id = this.items.indexOf(userItem)
-
-    if (id < 0) {
-      return
-    }
-
-    (event.dataTransfer as DataTransfer).setData("id", String(id))
+    const transform = `translate(${x}px, ${y}px)`
+    this.current = { data, transform }
+    this._cdr.markForCheck()
   }
 
-  allowDrop(event: DragEvent) {
-    if (this.config.mode !== "play") {
+  private _pointerUp(x: number, y: number) {
+    if (!this.current) {
       return
     }
-    event.preventDefault()
+    const current = this.current
+
+    this.current = undefined
+    this._cdr.detectChanges()
+
+    const dropElement = document.elementFromPoint(x,y)
+    if (!dropElement) {
+      return
+    }
+
+    const gElement = dropElement.closest("[matrixIndex]")
+    if (!gElement) {
+      return
+    }
+
+    const matrixIDstr = gElement.getAttribute("matrixIndex")
+    if (!matrixIDstr){
+      return
+    }
+
+    const matrixID = Number.parseInt(matrixIDstr)
+    if (Number.isNaN(matrixID)){
+      return
+    }
+
+    if (this.matrix[matrixID] !== undefined) {
+      this.matrix[matrixID].userData = current.data
+      this._cdr.markForCheck()
+    }
+
+    this._step()
   }
 
-  drop(event: DragEvent, item:IItem) {
-    if (this.config.mode !== "play") {
+  private _pointerMove(x: number, y: number) {
+    if (!this.current) {
       return
     }
-    event.preventDefault()
-
-    const id = Number.parseInt((event.dataTransfer as DataTransfer).getData("id"))
-    if (Number.isNaN(id) || id < 0) {
-      return
-    }
-
-    item.userItem = this.items[id]
-    this._check()
+    this.current.transform = `translate(${x}px, ${y}px)`
+    this._cdr.markForCheck()
   }
 
-  @HostListener("click", ["$event"])
-  onHostClick() {
-    if (this.config.mode !== "show") {
-      return
+  private _onPointerMoveListener!: (event: PointerEvent) => void
+  private _onTouchMoveListener!: (event: TouchEvent) => void
+  private _onMouseMoveListener!: (event: MouseEvent) => void
+
+  private _initMoveListeners() {
+    const self = this
+    this._onPointerMoveListener = function(event: PointerEvent) {
+      event.preventDefault()
+      event.stopPropagation()
+      if (!event.isPrimary) {
+        return
+      }
+      self._pointerMove(event.clientX, event.clientY)
     }
-    this._updateResult({ isFinish: true })
+
+    this._onTouchMoveListener = function(event: TouchEvent) {
+      event.preventDefault()
+      event.stopPropagation()
+      if (isPointerEvent) {
+        return
+      }
+      if (event.changedTouches.length !== 1) {
+        return
+      }
+
+      const touch = event.changedTouches[0]
+      self._pointerMove(touch.clientX, touch.clientY)
+    }
+
+    this._onMouseMoveListener = function(event: MouseEvent) {
+      event.preventDefault()
+      event.stopPropagation()
+      if (isPointerEvent || isTouchEvents) {
+        return
+      }
+      self._pointerMove(event.clientX, event.clientY)
+    }
   }
 
+  private _initEvents() {
+    this.current = undefined
+    document.documentElement.classList.add("touch-action-none")
+    this._initMoveListeners()
+    document.addEventListener("pointermove", this._onPointerMoveListener, { passive: false, capture: true })
+    document.addEventListener("touchmove", this._onTouchMoveListener, { passive: false, capture: true })
+    document.addEventListener("mousemove", this._onMouseMoveListener, { passive: false, capture: true })
+  }
+
+  private _resetEvents() {
+    document.removeEventListener("pointermove", this._onPointerMoveListener, { capture: true })
+    document.removeEventListener("touchmove", this._onTouchMoveListener, { capture: true })
+    document.removeEventListener("mousemove", this._onMouseMoveListener, { capture: true })
+    document.documentElement.classList.remove("touch-action-none")
+  }
+
+  onPointerDown(event: PointerEvent, data?: number) {
+    if (!event.isPrimary) {
+      return
+    }
+    this._pointerDown(event.clientX, event.clientY, data)
+  }
+
+  onTouchStart(event: TouchEvent, data?: number) {
+    if (isPointerEvent) {
+      return
+    }
+
+    if (event.changedTouches.length !== 1) {
+      return
+    }
+
+    const touch = event.changedTouches[0]
+    this._pointerDown(touch.clientX, touch.clientY, data)
+  }
+
+  onMouseDown(event: MouseEvent, data?: number) {
+    if (isPointerEvent || isTouchEvents) {
+      return
+    }
+    this._pointerDown(event.clientX, event.clientY, data)
+  }
+
+  @HostListener("document:pointerup", ["$event"]) onHostPointerUp(event: PointerEvent) {
+    if (!event.isPrimary) {
+      return
+    }
+    this._pointerUp(event.clientX, event.clientY)
+  }
+
+  @HostListener("document:touchend", ["$event"]) onHostTouchEnd(event: TouchEvent) {
+    if (isPointerEvent) {
+      return
+    }
+
+    if (event.changedTouches.length !== 1) {
+      return
+    }
+
+    const touch = event.changedTouches[0]
+    this._pointerUp(touch.clientX, touch.clientY)
+  }
+
+  @HostListener("document:mouseup", ["$event"]) onHostMouseUp(event: MouseEvent) {
+    if (isPointerEvent || isTouchEvents) {
+      return
+    }
+    this._pointerUp(event.clientX, event.clientY)
+  }
 }
-
-
-
-// import {
-//   Component,
-//   ChangeDetectionStrategy,
-//   EventEmitter,
-//   Input,
-//   OnChanges,
-//   OnInit,
-//   Output,
-//   SimpleChanges,
-//   HostListener,
-// } from "@angular/core"
-
-// import { RoughGenerator } from "../../lib/rough/generator"
-
-// import {
-//   IMatrixFillingTrainerConfig,
-//   IMatrixFillingTrainerResult,
-//   IMatrixFillingTrainerItem,
-// } from "./matrix-filling.trainer.interfaces"
-
-// const BOX_SIZE = 100
-// const PADDING = 8
-// const GAP = 8
-// const SHAPE_SIZE = 80
-
-// interface IMatrixItem {
-//   item?: IMatrixFillingTrainerItem
-//   userItem?: IMatrixFillingTrainerItem
-
-//   x: number,
-//   y: number,
-
-//   fillPath: string,
-//   path: string,
-
-//   isSuccess?: boolean
-//   isError?: boolean
-// }
-
-// interface IPaletteItem extends IMatrixFillingTrainerItem {
-//   x: number,
-//   y: number,
-//   fillPath: string,
-//   path: string,
-// }
-
-// @Component({
-//   selector: "trainer-matrix-filling",
-//   templateUrl: "./matrix-filling.trainer.component.html",
-//   styleUrls: [ "./matrix-filling.trainer.component.css" ],
-//   changeDetection: ChangeDetectionStrategy.OnPush,
-// })
-// export class MatrixFillingTrainerComponent implements OnInit, OnChanges {
-//   @Input()
-//   config!: IMatrixFillingTrainerConfig
-
-//   result: IMatrixFillingTrainerResult = {
-//     id: "matrix-filling",
-//     config: this.config,
-//     success: 0,
-//     error: 0,
-//   }
-
-//   @Output("result")
-//   resultValueChange = new EventEmitter<IMatrixFillingTrainerResult>()
-
-//   private _updateResult(result: Partial<IMatrixFillingTrainerResult>) {
-//     this.result = {...this.result, config: this.config, ...result}
-//     this.resultValueChange.emit(this.result)
-//   }
-
-//   ngOnChanges(sc: SimpleChanges ) {
-//     if (sc.config !== undefined && !sc.config.firstChange) {
-//       this.ngOnInit()
-//     }
-//   }
-
-//   paletteWidth!: number
-//   paletteHeight!: number
-
-//   matrixWidth!: number
-//   matrixHeight!: number
-
-//   shapeWidth: number = SHAPE_SIZE
-//   shapeHeight: number = SHAPE_SIZE
-
-//   get matrixViewBox() {
-//     return `0 0 ${this.matrixWidth} ${this.matrixHeight}`
-//   }
-
-//   get paletteViewBox() {
-//     return `0 0 ${this.paletteWidth} ${this.paletteHeight}`
-//   }
-
-//   getCursor(uri: string) {
-//     return `url(${uri}), auto`;
-//   }
-
-//   matrix!: Array<IMatrixItem>
-//   palette!: Array<IPaletteItem>
-
-//   ngOnInit() {
-//     this.matrix = this.config.matrix.map(id => ({ item: this.config.items[id], x: 0, y: 0, fillPath: "", path: "" }))
-//     this._initMatrixLayout()
-
-//     this.palette = this.config.items.map(item => ({...item,  x: 0, y: 0, fillPath: "", path: "" }) )
-//     this._initPaletteLayout()
-//   }
-
-//   private _initMatrixLayout() {
-//     const side = Math.sqrt(this.matrix.length)
-//     const svgWidth = BOX_SIZE * side + GAP * (side - 1) + PADDING * 2
-//     const svgHeight = svgWidth
-
-//     const svgGenerator = new RoughGenerator({}, { width: svgWidth, height: svgHeight } )
-
-//     this.matrix = this.matrix.map((item, i) => {
-//       const x = (BOX_SIZE + GAP) * (i % side) + PADDING
-//       const y = (BOX_SIZE + GAP) * Math.floor(i / side) + PADDING
-
-//       const sets = svgGenerator
-//                     .rectangle(x, y, BOX_SIZE, BOX_SIZE, {
-//                         fill: "none",
-//                         fillStyle: "solid",
-//                         roughness: 1
-//                     }).sets
-
-//       const pathSet = sets.find(set => set.type === "path")
-//       item.path = pathSet && svgGenerator.opsToPath(pathSet) || ""
-
-//       const fillPathSet = sets.find(set => set.type === "fillPath")
-//       item.fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
-
-//       item.x = x + (BOX_SIZE - SHAPE_SIZE) / 2
-//       item.y = y + (BOX_SIZE - SHAPE_SIZE) / 2
-
-//       return item
-//     })
-
-//     this.matrixWidth = svgWidth
-//     this.matrixHeight = svgHeight
-//   }
-
-//   private _initPaletteLayout() {
-//     const length = this.palette.length
-//     const paletteWidth = BOX_SIZE * length + GAP * (length - 1) + PADDING * 2
-//     const paletteHeight = BOX_SIZE + PADDING * 2
-
-//     const svgGenerator = new RoughGenerator({}, { width: paletteWidth, height: paletteHeight } )
-
-//     this.palette = this.palette.map((item, i) => {
-//       const x = (BOX_SIZE + GAP) * i + PADDING
-//       const y = PADDING
-
-//       const sets = svgGenerator
-//                     .rectangle(x, y, BOX_SIZE, BOX_SIZE, {
-//                         fill: "none",
-//                         fillStyle: "solid",
-//                         roughness: 1
-//                     }).sets
-
-//       const pathSet = sets.find(set => set.type === "path")
-//       item.path = pathSet && svgGenerator.opsToPath(pathSet) || ""
-
-//       const fillPathSet = sets.find(set => set.type === "fillPath")
-//       item.fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
-
-//       item.x = x + (BOX_SIZE - SHAPE_SIZE) / 2
-//       item.y = y + (BOX_SIZE - SHAPE_SIZE) / 2
-
-//       return item
-//     })
-
-//     this.paletteWidth = paletteWidth
-//     this.paletteHeight = paletteHeight
-//   }
-
-//   private _check() {
-//     const success = this.matrix
-//                         .reduce( (success, item) => item.item === item.userItem ? ++success : success, 0)
-//     const error = this.matrix.length - success
-//     const isDone = this.matrix.every(item => item.userItem !== undefined)
-//     this._updateResult({ success, error, isFinish: error === 0 || isDone })
-//   }
-
-//   dragItemsStart(node: SVGGElement, id?: any) {
-//     if (this.config.mode !== "play") {
-//       return
-//     }
-
-//     if (id === undefined) {
-//       return
-//     }
-
-//     const image = node.querySelector("image")
-//     if (!image) {
-//       return
-//     }
-
-//     // const mImage = image.cloneNode(true)
-
-
-//     // (event.dataTransfer as DataTransfer).setData("id", String(id))
-//   }
-
-//   dragMatrixStart(event: DragEvent, userItem?: IMatrixFillingTrainerItem) {
-//     if (this.config.mode !== "play") {
-//       return
-//     }
-
-//     if (userItem === undefined) {
-//       return
-//     }
-
-//     const id = this.config.items.indexOf(userItem)
-
-//     if (id < 0) {
-//       return
-//     }
-
-//     (event.dataTransfer as DataTransfer).setData("id", String(id))
-//   }
-
-//   allowDrop(event: DragEvent) {
-//     if (this.config.mode !== "play") {
-//       return
-//     }
-//     event.preventDefault()
-//   }
-
-//   drop(event: DragEvent, item:IMatrixItem) {
-//     if (this.config.mode !== "play") {
-//       return
-//     }
-//     event.preventDefault()
-
-//     const id = Number.parseInt((event.dataTransfer as DataTransfer).getData("id"))
-//     if (Number.isNaN(id) || id < 0) {
-//       return
-//     }
-
-//     item.userItem = this.config.items[id]
-//     this._check()
-//   }
-
-//   @HostListener("click", ["$event"])
-//   onHostClick() {
-//     if (this.config.mode !== "show") {
-//       return
-//     }
-//     this._updateResult({ isFinish: true })
-//   }
-
-// }

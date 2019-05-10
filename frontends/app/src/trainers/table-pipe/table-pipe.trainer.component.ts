@@ -13,11 +13,11 @@ import {
   NgZone,
 } from "@angular/core"
 
+import { Subscription } from "rxjs"
+
 import { RoughGenerator } from "../../lib/rough/generator"
 
-import {
-  LapTimerService,
-} from "../../services"
+import { LapTimerService } from "../../services"
 
 import {
   ITablePipeTrainerConfig,
@@ -27,14 +27,7 @@ import {
   TablePipeID,
 } from "./table-pipe.trainer.interfaces"
 
-import {
-  IGameFieldSize
-} from "../interfaces"
-
-import {
-  SWIPE_DELTA
-} from "../../app.config"
-
+const SWIPE_DELTA = 60
 const isPointerEvent = "PointerEvent" in window
 const isTouchEvents = "ontouchstart" in window
 
@@ -67,9 +60,6 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
   @Input()
   config!: ITablePipeTrainerConfig
 
-  @Input()
-  size!: IGameFieldSize
-
   result: ITablePipeTrainerResult = {
     id: TablePipeID,
     config: this.config,
@@ -85,25 +75,30 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
+  private _lapTimerSubscriber!: Subscription
+
+  ngOnInit() {
+    this._lockScroll()
+    this._init()
+    this._updateResult({
+      isFinish: false,
+      success: 0,
+      error: 0,
+    })
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
+    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+  }
+
   ngOnChanges(sc: SimpleChanges ) {
     if (sc.config !== undefined && !sc.config.firstChange) {
       this.ngOnInit()
     }
   }
 
-  ngOnInit() {
-    this._init()
-    this._lockSwipe()
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
-  }
-
   ngOnDestroy() {
-    this._unlockSwipe()
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._unlockScroll()
   }
 
   current: number = 0
@@ -167,7 +162,7 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
     })
   }
 
-  private _lockSwipe() {
+  private _lockScroll() {
     this._ngZone.runOutsideAngular(() =>{
       document.documentElement.classList.add("touch-action-none")
       document.addEventListener("pointermove", preventFunction, { passive: false, capture: true })
@@ -175,8 +170,7 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
     })
   }
 
-  private _unlockSwipe() {
-    console.dir("_unlockSwipe")
+  private _unlockScroll() {
     this._ngZone.runOutsideAngular(() =>{
       document.documentElement.classList.remove("touch-action-none")
       document.removeEventListener("pointermove", preventFunction, { capture: true })
@@ -202,6 +196,10 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
       this._updateResult({ ...result, isFinish: false })
       this.current = next
     }
+  }
+
+  private _timeout() {
+    this._updateResult({ isTimeout: true, isFinish: true })
   }
 
   @HostListener("document:keydown", ["$event"])

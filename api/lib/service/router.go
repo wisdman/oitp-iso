@@ -14,6 +14,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"runtime/debug"
 )
 
 type ctxParamsKey int
@@ -55,6 +56,7 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	defer func() {
 		if rvr := recover(); rvr != nil {
 			log.Printf("Panic: %+v\n", rvr)
+			debug.PrintStack()
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
 	}()

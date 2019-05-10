@@ -6,11 +6,15 @@
   [attr.viewBox]="matrixViewBox"
   [attr.width]="matrixWidth"
   [attr.height]="matrixHeight"
+  preserveAspectRatio="xMidYMid meet"
 >
   <g
     *ngFor="let item of matrix"
     class="item"
     [class.selected]="item.isSelected"
+    [class.item--cursor-pointer]="!isResultMode"
+    [class.item--success]="isResultMode && ((item.correct && item.isSelected) || (!item.correct && !item.isSelected))"
+    [class.item--error]="isResultMode && ((item.correct && !item.isSelected) || (!item.correct && item.isSelected))"
     (click)="onAnswerClick(item)"
   >
     <path
@@ -43,9 +47,10 @@
 </svg>
 
 <button
-  *ngIf="config.multiple"
+  *ngIf="isResultMode || config.multiple"
   class="button button--main"
   (click)="onButtonClick()"
 >
-  <span>Продолжить</span>
+  <span *ngIf="!isResultMode">Проверить</span>
+  <span *ngIf="isResultMode">Продолжить</span>
 </button>

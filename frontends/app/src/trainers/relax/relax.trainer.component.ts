@@ -1,20 +1,21 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
   ViewChild,
-  ElementRef,
 } from "@angular/core"
 
 import { DomSanitizer } from "@angular/platform-browser"
 
-import {
-  LapTimerService,
-} from "../../services"
+import { Subscription } from "rxjs"
+import { LapTimerService } from "../../services"
 
 import {
   IRelaxTrainerConfig,
@@ -27,7 +28,7 @@ import {
   styleUrls: [ "./relax.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RelaxTrainerComponent implements OnInit {
+export class RelaxTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private _lapTimerService: LapTimerService,
     private _sanitizer: DomSanitizer,
@@ -49,16 +50,24 @@ export class RelaxTrainerComponent implements OnInit {
     this.resultValueChange.emit(this.result)
   }
 
+  private _lapTimerSubscriber!: Subscription
+
+  ngOnInit() {
+    this._initAnimations()
+    this._updateResult({ isFinish: false })
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
+    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+  }
+
   ngOnChanges(sc: SimpleChanges ) {
     if (sc.config !== undefined && !sc.config.firstChange) {
       this.ngOnInit()
     }
   }
 
-  ngOnInit() {
-    this._initAnimations()
-    this._updateResult({ isFinish: false })
-    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
   sanitizeUrl(value: string) {
@@ -77,5 +86,9 @@ export class RelaxTrainerComponent implements OnInit {
         h1.style.transform = "scale(1, 1)"
       })
     })
+  }
+
+  private _timeout() {
+    this._updateResult({ isTimeout: true, isFinish: true })
   }
 }

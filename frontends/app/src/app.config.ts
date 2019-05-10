@@ -18,5 +18,3 @@ export const API_USER = `${API_BASE}/user`
 export const API_TRAINING = `${API_BASE}/training`
 export const API_TRAINING_EVERYDAY = `${API_TRAINING}/everyday`
 export const API_TRAINING_ONCE = `${API_TRAINING}/once`
-
-export const SWIPE_DELTA = 60

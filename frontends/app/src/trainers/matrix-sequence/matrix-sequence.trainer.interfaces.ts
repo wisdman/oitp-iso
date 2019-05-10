@@ -31,6 +31,8 @@ export interface IMatrixSequenceTrainerConfig extends ITrainerConfig {
 
   matrix: Array<number>
   showSucess?: boolean
+
+  timeLimit: number
 }
 
 export interface IMatrixSequenceTrainerResult extends ITrainerResult {

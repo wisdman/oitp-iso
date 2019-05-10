@@ -1,10 +1,12 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ElementRef,
   EventEmitter,
   HostListener,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -12,9 +14,9 @@ import {
 
 import { DomSanitizer } from "@angular/platform-browser"
 
-import {
-  LapTimerService,
-} from "../../services"
+import { Subscription } from "rxjs"
+
+import { LapTimerService } from "../../services"
 
 import {
   ImageFieldID,
@@ -23,27 +25,21 @@ import {
   IImageFieldTrainerResult,
 } from "./image-field.trainer.interfaces"
 
-import {
-  IGameFieldSize
-} from "../interfaces"
-
 @Component({
   selector: "trainer-image-field",
   templateUrl: "./image-field.trainer.component.html",
   styleUrls: [ "./image-field.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageFieldTrainerComponent implements OnInit, OnChanges {
+export class ImageFieldTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
+    private _el: ElementRef<HTMLElement>,
     private _lapTimerService: LapTimerService,
     private _sanitizer: DomSanitizer,
   ){}
 
   @Input()
   config!: IImageFieldTrainerConfig
-
-  @Input()
-  size!: IGameFieldSize
 
   result: IImageFieldTrainerResult = {
     id: ImageFieldID,
@@ -58,18 +54,26 @@ export class ImageFieldTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
+  private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
     this._init()
     this._updateResult({
       isFinish: false,
     })
-    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
+    this._lapTimerService.setLapTimeout(this.config.showTimeLimit || 0)
+  }
+
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
+  }
+
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
   srcSanitize(value: string) {
@@ -79,9 +83,11 @@ export class ImageFieldTrainerComponent implements OnInit, OnChanges {
   items!: Array<IImageFieldItem>
 
   private _init() {
+    const {width, height} =  this._el.nativeElement.getBoundingClientRect()
+
     const vertex = this.config.items.length
     const angle = 360 / vertex
-    const radius = Math.min(this.size.width, this.size.height) / 4
+    const radius = Math.min(width, height) / 4
     const randomTheta = Math.floor(Math.random() * 100)
 
     this.items = this.config.items.map((data, i) => {
@@ -91,6 +97,10 @@ export class ImageFieldTrainerComponent implements OnInit, OnChanges {
       const transform = `translate(${dx}px, ${dy}px)`
       return {data, transform}
     })
+  }
+
+  private _timeout() {
+    this._updateResult({ isTimeout: true, isFinish: true })
   }
 
   @HostListener("click")

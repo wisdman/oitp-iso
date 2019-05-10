@@ -5,27 +5,30 @@ import (
 )
 
 type Parameters struct {
-	*trainers.Parameters
+	TimeLimit uint16 `json:"timeLimit", description:"Лимит времени заполнения"`
 
-	Size        uint8 `json:"size", description:"Размер таблицы"`
-	ShowSuccess bool  `json:"showSuccess", description:"Показывать результат"`
+	Quantity int `json:"quantity", description:"Количество таблиц"`
 
-	Quantity uint8 `json:"quantity", description:"Количество таблиц подряд"`
+	MatrixSize  int  `json:"matrixSize", description:"Размер таблицы"`
+	ShowSuccess bool `json:"showSuccess", description:"Показывать результат"`
 }
 
 type Config struct {
 	*trainers.Config
+
+	TimeLimit uint16 `json:"timeLimit"`
 
 	Matrix     []uint16 `json:"matrix"`
 	ShowSucess bool     `json:"showSucess"`
 }
 
 func newConfig(
-	param Parameters,
+	params Parameters,
 ) *Config {
 	return &Config{
-		Config:     trainers.NewConfig(trainers.UIMatrixSequence, param.TimeLimit),
-		Matrix:     make([]uint16, param.Size),
-		ShowSucess: param.ShowSuccess,
+		Config:     trainers.NewConfig(trainers.UIMatrixSequence),
+		Matrix:     make([]uint16, params.MatrixSize),
+		ShowSucess: params.ShowSuccess,
+		TimeLimit:  params.TimeLimit,
 	}
 }

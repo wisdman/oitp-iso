@@ -50,7 +50,7 @@ import {
 } from "./layouts"
 
 import {
-  ClassificationTrainerComponent,
+  ClassificationWordsTrainerComponent,
   ImageCarpetTrainerComponent,
   ImageDifferencesTrainerComponent,
   ImageFieldTrainerComponent,
@@ -130,7 +130,7 @@ import { ROUTES } from "./app.routing"
 
     TablePipeTrainerComponent,
 
-    ClassificationTrainerComponent,
+    ClassificationWordsTrainerComponent,
     ImageCarpetTrainerComponent,
     ImageDifferencesTrainerComponent,
     ImageFieldTrainerComponent,

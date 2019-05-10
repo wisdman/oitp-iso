@@ -11,6 +11,8 @@ export interface IRelaxTrainerConfig extends ITrainerConfig {
 
   image: number
   text: string
+
+  timeLimit: number
 }
 
 export interface IRelaxTrainerResult extends ITrainerResult {

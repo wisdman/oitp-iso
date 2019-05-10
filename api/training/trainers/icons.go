@@ -6,7 +6,7 @@ import (
 
 func QueryIcons(
 	sql *db.Transaction,
-	count uint8,
+	count int,
 ) (
 	icons []*string,
 	err error,
@@ -18,7 +18,7 @@ func QueryIcons(
     ORDER BY random()
     LIMIT $1
     `,
-		int(count),
+		count,
 	)
 	if err != nil {
 		return nil, err

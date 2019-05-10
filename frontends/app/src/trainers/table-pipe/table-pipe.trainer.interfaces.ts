@@ -31,6 +31,7 @@ export interface ITablePipeTrainerConfig extends ITrainerConfig {
     action: ITablePipeTrainerItemActionType
   }>
   matrix: Array<number>
+  timeLimit: number
 }
 
 export interface ITablePipeTrainerResult extends ITrainerResult {
@@ -39,3 +40,4 @@ export interface ITablePipeTrainerResult extends ITrainerResult {
   success: number
   error: number
 }
+

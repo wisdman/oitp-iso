@@ -2,7 +2,6 @@ package tablePipe
 
 import (
 	"math/rand"
-	"time"
 
 	"github.com/wisdman/oitp-isov/api/lib/db"
 	"github.com/wisdman/oitp-isov/api/training/trainers"
@@ -16,17 +15,13 @@ func Build(
 	configs []interface{},
 	err error,
 ) {
-	rand.Seed(time.Now().UnixNano())
-
-	var parameters Parameters
-	if err = trainers.QueryParameters(sql, trainers.TablePipe, complexity, &parameters); err != nil {
+	var params Parameters
+	if err = trainers.QueryParameters(sql, trainers.TablePipe, complexity, &params); err != nil {
 		return nil, err
 	}
 
-	config := newConfig(parameters)
-
+	config := newConfig(params)
 	itemsLen := len(config.Items)
-	matrixLen := len(config.Matrix)
 
 	// Fill items
 	runes := getRunes(runeType)
@@ -38,7 +33,7 @@ func Build(
 	}
 
 	// Fill matrix
-	for i := 0; i < matrixLen; i++ {
+	for i, max := 0, len(config.Matrix); i < max; i++ {
 		config.Matrix[i] = uint16(rand.Intn(itemsLen))
 	}
 

@@ -10,108 +10,93 @@
     *ngIf="mode === 'game' && config"
     class="game"
   >
-    <trainer-classification
-      *ngIf="config.id === 'classification'"
+    <trainer-classification-words
+      *ngIf="config.id === 'classification-words'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
-    ></trainer-classification>
+    ></trainer-classification-words>
 
     <trainer-image-carpet
       *ngIf="config.id === 'image-carpet'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-image-carpet>
 
     <trainer-image-differences
       *ngIf="config.id === 'image-differences'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-image-differences>
 
     <trainer-image-field
       *ngIf="config.id === 'image-field'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-image-field>
 
     <trainer-matrix-filling
       *ngIf="config.id === 'matrix-filling'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-matrix-filling>
 
     <trainer-matrix-sequence
       *ngIf="config.id === 'matrix-sequence'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-matrix-sequence>
 
     <trainer-question
       *ngIf="config.id === 'question'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-question>
 
     <trainer-relax
       *ngIf="config.id === 'relax'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-relax>
 
     <trainer-result
       *ngIf="config.id === 'result'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-result>
 
     <trainer-table-pipe
       *ngIf="config.id === 'table-pipe'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-table-pipe>
 
     <trainer-text-letters
       *ngIf="config.id === 'text-letters'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-text-letters>
 
     <trainer-text-pairs
       *ngIf="config.id === 'text-pairs'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-text-pairs>
 
     <trainer-text-reading
       *ngIf="config.id === 'text-reading'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-text-reading>
 
     <trainer-text-sort
       *ngIf="config.id === 'text-sort'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-text-sort>
 
     <trainer-text-tezirovanie
       *ngIf="config.id === 'text-tezirovanie'"
       [config]="config"
-      [size]="size"
       (result)="onResult($event)"
     ></trainer-text-tezirovanie>
   </div>

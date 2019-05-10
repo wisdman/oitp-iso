@@ -2,7 +2,6 @@ package matrixSequence
 
 import (
 	"math/rand"
-	"time"
 
 	"github.com/wisdman/oitp-isov/api/lib/db"
 	"github.com/wisdman/oitp-isov/api/training/trainers"
@@ -15,8 +14,8 @@ func Build(
 	configs []interface{},
 	err error,
 ) {
-	var parameters Parameters
-	if err = trainers.QueryParameters(sql, trainers.MatrixSequence, complexity, &parameters); err != nil {
+	var params Parameters
+	if err = trainers.QueryParameters(sql, trainers.MatrixSequence, complexity, &params); err != nil {
 		return nil, err
 	}
 
@@ -31,8 +30,8 @@ func Build(
     ORDER BY random()
     LIMIT $2
     `,
-		parameters.Size,
-		parameters.Quantity,
+		params.MatrixSize,
+		params.Quantity,
 	)
 	if err != nil {
 		return nil, err
@@ -40,7 +39,7 @@ func Build(
 	defer rows.Close()
 
 	for rows.Next() {
-		config := newConfig(parameters)
+		config := newConfig(params)
 		if err = rows.Scan(&config.Matrix); err != nil {
 			return nil, err
 		}
@@ -57,16 +56,13 @@ func BuildRandom(
 	configs []interface{},
 	err error,
 ) {
-	rand.Seed(time.Now().UnixNano())
-
-	var parameters Parameters
-	if err = trainers.QueryParameters(sql, trainers.MatrixRandomSequence, complexity, &parameters); err != nil {
+	var params Parameters
+	if err = trainers.QueryParameters(sql, trainers.MatrixRandomSequence, complexity, &params); err != nil {
 		return nil, err
 	}
 
-	var i uint8
-	for i = 0; i < parameters.Quantity; i++ {
-		config := newConfig(parameters)
+	for i := 0; i < params.Quantity; i++ {
+		config := newConfig(params)
 		for j, max := 0, len(config.Matrix); j < max; j++ {
 			config.Matrix[j] = uint16(j + 1)
 		}

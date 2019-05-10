@@ -1,4 +1,4 @@
-package imageFields
+package matrixFilling
 
 import (
 	"math/rand"
@@ -9,12 +9,12 @@ import (
 
 type Parameters struct {
 	ShowTimeLimit     uint16 `json:"showTimeLimit", description:"Лимит времени предпоказа"`
+	PlayTimeLimit     uint16 `json:"playTimeLimit", description:"Лимит времени заполнения"`
 	QuestionTimeLimit uint16 `json:"questionTimeLimit", description:"Лимит времени вопроса"`
 
-	Quantity int `json:"quantity", description:"Количество таблиц"`
-
-	MinItems int `json:"minItems", description:"Минимальное число картинок на странице"`
-	MaxItems int `json:"maxItems", description:"Максимальное число картинок на странице"`
+	Quantity   int `json:"quantity", description:"Количество таблиц"`
+	ItemsSize  int `json:"itemsSize", description:"Количество элементов"`
+	MatrixSize int `json:"matrixSize", description:"Размер таблицы"`
 
 	AnswersCount     int `json:"answersCount", description:"Количество вариантов ответа"`
 	FakeAnswersCount int `json:"fakeAnswersCount", description:"Количество фейковых ответов"`
@@ -23,19 +23,24 @@ type Parameters struct {
 type Config struct {
 	*trainers.Config
 
-	ShowTimeLimit uint16    `json:"showTimeLimit"`
-	Items         []*string `json:"items"`
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	Items  []*string `json:"items"`
+	Matrix []uint16  `json:"matrix"`
 }
 
 func newConfig(
 	params Parameters,
 ) *Config {
-	length := rand.Intn(params.MaxItems-params.MinItems+1) + params.MinItems
-
 	return &Config{
-		Config:        trainers.NewConfig(trainers.UIImageField),
+		Config: trainers.NewConfig(trainers.UIMatrixFilling),
+
+		Items:  make([]*string, params.ItemsSize),
+		Matrix: make([]uint16, params.MatrixSize),
+
 		ShowTimeLimit: params.ShowTimeLimit,
-		Items:         make([]*string, length),
+		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }
 
@@ -48,7 +53,7 @@ func newQuestionConfig(
 	return &question.Config{
 		Config: trainers.NewConfig(trainers.UIQuestion),
 
-		Body: "<h1>Отметьте фигуры встретившиеся вам ранее</h1>",
+		Body: "<h1>Отметьте фигуры встретившиеся вам в таблицах</h1>",
 
 		ItemsType: question.Image,
 		Items:     items[0:params.AnswersCount],

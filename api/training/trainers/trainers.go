@@ -6,28 +6,24 @@ const (
 	ClassificationColors ITrainer = "classification-colors"
 	ClassificationWords  ITrainer = "classification-words"
 	ImageFields          ITrainer = "image-fields"
-	MatrixSequence       ITrainer = "matrix-sequence"
+	MatrixFilling        ITrainer = "matrix-filling"
+	MatrixRandomFilling  ITrainer = "matrix-random-filling"
 	MatrixRandomSequence ITrainer = "matrix-random-sequence"
+	MatrixSequence       ITrainer = "matrix-sequence"
+	MatrixUniqueFilling  ITrainer = "matrix-unique-filling"
+	QuestionCloseWords   ITrainer = "question-close-words"
+	QuestionWasteWords   ITrainer = "question-waste-words"
 	TablePipe            ITrainer = "table-pipe"
 )
 
 type IUITrainer string
 
 const (
-	UIClassification IUITrainer = "classification"
-	UIImageField     IUITrainer = "image-field"
-	UIMatrixSequence IUITrainer = "matrix-sequence"
-	UIQuestion       IUITrainer = "question"
-	UITablePipe      IUITrainer = "table-pipe"
-	UIRelax          IUITrainer = "relax"
+	UIClassificationWords IUITrainer = "classification-words"
+	UIImageField          IUITrainer = "image-field"
+	UIMatrixFilling       IUITrainer = "matrix-filling"
+	UIMatrixSequence      IUITrainer = "matrix-sequence"
+	UIQuestion            IUITrainer = "question"
+	UIRelax               IUITrainer = "relax"
+	UITablePipe           IUITrainer = "table-pipe"
 )
-
-var ui = map[ITrainer]IUITrainer{
-	ClassificationColors: UIClassification,
-	ClassificationWords:  UIClassification,
-	TablePipe:            UITablePipe,
-}
-
-func GetUI(trainer ITrainer) IUITrainer {
-	return ui[trainer]
-}

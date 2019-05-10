@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -13,9 +14,9 @@ import {
 
 import { RoughGenerator } from "../../lib/rough/generator"
 
-import {
-  LapTimerService,
-} from "../../services"
+import { Subscription } from "rxjs"
+
+import { LapTimerService } from "../../services"
 
 import {
   IMatrixSequenceTrainerConfig,
@@ -30,7 +31,7 @@ import {
   styleUrls: [ "./matrix-sequence.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatrixSequenceTrainerComponent implements OnInit, OnChanges {
+export class MatrixSequenceTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private _cdr: ChangeDetectorRef,
     private _elRef:ElementRef<HTMLElement>,
@@ -63,11 +64,7 @@ export class MatrixSequenceTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
+  private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
     this._init()
@@ -76,7 +73,19 @@ export class MatrixSequenceTrainerComponent implements OnInit, OnChanges {
       success: 0,
       error: 0,
     })
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
     this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+  }
+
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
+  }
+
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
   matrix!: Array<IMatrixSequenceTrainerItem>
@@ -164,6 +173,10 @@ export class MatrixSequenceTrainerComponent implements OnInit, OnChanges {
       item.isError = false
       this._cdr.markForCheck()
     }, 250)
+  }
+
+  private _timeout() {
+    this._updateResult({ isTimeout: true, isFinish: true })
   }
 
   onTouch(item: IMatrixSequenceTrainerItem) {
