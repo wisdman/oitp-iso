@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X7 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="1590px" height="776px" version="1.1" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+viewBox="0 0 1409 687"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+    <radialGradient id="id0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(4.71349 -0 -0 -4.71353 -6540 -240)" cx="1761.23" cy="-42.0132" r="442.949" fx="1761.23" fy="-42.0132">
+     <stop offset="0" stop-opacity="1" stop-color="#CCCCCC"/>
+     <stop offset="1" stop-opacity="1" stop-color="#9DB9C9"/>
+    </radialGradient>
+    <radialGradient id="id1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(57.2674 -0 -0 -57.2668 -99253 -2464)" cx="1763.94" cy="-42.2936" r="36.4583" fx="1763.94" fy="-42.2936">
+     <stop offset="0" stop-opacity="1" stop-color="#CCCCCC"/>
+     <stop offset="1" stop-opacity="1" stop-color="#9DB9C9"/>
+    </radialGradient>
+ </defs>
+ <g id="Слой_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_3303499152">
+   <path fill="url(#id0)" d="M704 687c-388,0 -704,-24 -704,-55 0,-30 316,-54 704,-54 389,0 705,24 705,54 0,31 -316,55 -705,55z"/>
+   <path fill="url(#id1)" d="M54 473c30,0 54,-26 54,-58 0,-32 -24,-58 -54,-58 -30,0 -54,26 -54,58 0,32 24,58 54,58z"/>
+   <path fill="#E84E2F" d="M1355 473c30,0 54,-26 54,-58 0,-32 -24,-58 -54,-58 -30,0 -55,26 -55,58 0,32 25,58 55,58z"/>
+   <polygon fill="#4CBAF2" points="24,349 384,236 630,0 1169,34 1380,349 1380,468 1332,539 57,539 24,468 "/>
+   <polygon fill="#369CD0" points="426,231 637,32 1161,64 1252,231 1233,237 443,237 "/>
+   <polygon fill="#369CD0" points="24,463 57,539 1332,539 1380,468 "/>
+   <path fill="#369CD0" d="M1308 539l-310 0c0,-85 69,-155 155,-155 85,0 155,70 155,155z"/>
+   <path fill="#454C54" d="M1153 425c63,0 114,51 114,114 0,63 -51,114 -114,114 -63,0 -114,-51 -114,-114 0,-63 51,-114 114,-114z"/>
+   <path fill="#7D8590" d="M1153 491c26,0 48,22 48,48 0,27 -22,48 -48,48 -26,0 -48,-21 -48,-48 0,-26 22,-48 48,-48z"/>
+   <polygon fill="#98DCFF" points="443,237 645,47 1147,75 1233,237 "/>
+   <polygon fill="#BEE9FF" points="789,55 647,237 591,237 736,52 "/>
+   <polygon fill="#BEE9FF" points="717,51 572,237 538,237 684,49 "/>
+   <polygon fill="#BEE9FF" points="840,58 700,237 666,237 807,56 "/>
+   <polygon fill="#BEE9FF" points="1112,73 984,237 929,237 1059,70 "/>
+   <polygon fill="#BEE9FF" points="1040,69 910,237 875,237 1007,67 "/>
+   <polygon fill="#BEE9FF" points="1154,88 1038,237 1003,237 1130,74 1147,75 "/>
+   <polygon fill="#4CBAF2" points="825,57 863,59 863,258 825,258 "/>
+   <polygon fill="#369CD0" points="863,51 844,48 844,506 863,506 "/>
+   <polygon fill="#369CD0" points="747,285 816,285 816,263 747,263 "/>
+   <polygon fill="#369CD0" points="1142,285 1211,285 1211,263 1142,263 "/>
+   <polygon fill="#369CD0" points="426,468 443,468 443,231 426,231 "/>
+   <polygon fill="#369CD0" points="1234,367 1252,367 1252,231 1234,231 "/>
+   <path fill="#369CD0" d="M919 509c32,-98 125,-170 234,-170 35,0 68,7 99,21l0 15c-30,-15 -64,-23 -99,-23 -100,0 -184,66 -211,157l-23 0z"/>
+   <path fill="#369CD0" d="M411 539l-310 0c0,-85 70,-155 155,-155 86,0 155,70 155,155z"/>
+   <path fill="#454C54" d="M256 425c63,0 114,51 114,114 0,63 -51,114 -114,114 -63,0 -114,-51 -114,-114 0,-63 51,-114 114,-114z"/>
+   <path fill="#7D8590" d="M256 491c27,0 48,22 48,48 0,27 -21,48 -48,48 -26,0 -48,-21 -48,-48 0,-26 22,-48 48,-48z"/>
+   <path fill="#78D1FF" d="M445 284c-11,0 -19,-9 -19,-20l0 -58c0,-11 8,-20 19,-20l0 98z"/>
+   <polygon fill="white" points="445,284 455,284 455,186 445,186 "/>
+  </g>
+ </g>
+</svg>
