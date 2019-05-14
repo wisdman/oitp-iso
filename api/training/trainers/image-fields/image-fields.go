@@ -1,10 +1,43 @@
 package imageFields
 
 import (
+	"strconv"
+
 	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/training/trainers"
+
+	"github.com/wisdman/oitp-isov/api/training/trainers/icons"
 	"github.com/wisdman/oitp-isov/api/training/trainers/question"
 )
+
+var complexityData = [...]Parameters{
+	Parameters{
+		ShowTimeLimit:     5,
+		QuestionTimeLimit: 30,
+		MinItems:          3,
+		MaxItems:          4,
+		AnswersCount:      10,
+		FakeAnswersCount:  5,
+		Quantity:          3,
+	},
+	Parameters{
+		ShowTimeLimit:     5,
+		QuestionTimeLimit: 30,
+		MinItems:          4,
+		MaxItems:          5,
+		AnswersCount:      10,
+		FakeAnswersCount:  5,
+		Quantity:          3,
+	},
+	Parameters{
+		ShowTimeLimit:     5,
+		QuestionTimeLimit: 30,
+		MinItems:          4,
+		MaxItems:          5,
+		AnswersCount:      10,
+		FakeAnswersCount:  5,
+		Quantity:          5,
+	},
+}
 
 func Build(
 	sql *db.Transaction,
@@ -13,10 +46,8 @@ func Build(
 	configs []interface{},
 	err error,
 ) {
-	var params Parameters
-	if err = trainers.QueryParameters(sql, trainers.ImageFields, complexity, &params); err != nil {
-		return nil, err
-	}
+
+	params := complexityData[complexity]
 
 	var answers []*question.Item
 	var fieldsConfigs []*Config = make([]*Config, params.Quantity)
@@ -27,14 +58,12 @@ func Build(
 		iconsCount += len(fieldsConfigs[i].Items)
 	}
 
-	icons, err := trainers.QueryIcons(sql, iconsCount)
-	if err != nil {
-		return nil, err
-	}
+	iconsList := icons.GetIcons(iconsCount)
 
 	for i := 0; i < params.FakeAnswersCount; i++ {
+		answerIcon := strconv.Itoa(iconsList[i])
 		answers = append(answers, &question.Item{
-			Data:    icons[i],
+			Data:    &answerIcon,
 			Correct: false,
 		})
 	}
@@ -42,10 +71,11 @@ func Build(
 	offset := params.FakeAnswersCount
 	for i, maxI := 0, len(fieldsConfigs); i < maxI; i++ {
 		for j, maxJ := 0, len(fieldsConfigs[i].Items); j < maxJ; j++ {
-			icon := icons[offset]
+			icon := iconsList[offset]
 			fieldsConfigs[i].Items[j] = icon
+			answerIcon := strconv.Itoa(icon)
 			answers = append(answers, &question.Item{
-				Data:    icon,
+				Data:    &answerIcon,
 				Correct: true,
 			})
 			offset++

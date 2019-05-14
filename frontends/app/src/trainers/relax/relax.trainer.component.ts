@@ -15,7 +15,7 @@ import {
 import { DomSanitizer } from "@angular/platform-browser"
 
 import { Subscription } from "rxjs"
-import { LapTimerService } from "../../services"
+import { TimerLapService } from "../../services"
 
 import {
   IRelaxTrainerConfig,
@@ -30,8 +30,8 @@ import {
 })
 export class RelaxTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
-    private _lapTimerService: LapTimerService,
     private _sanitizer: DomSanitizer,
+    private _timerLapService: TimerLapService,
   ){}
 
   @Input()
@@ -56,8 +56,8 @@ export class RelaxTrainerComponent implements OnInit, OnChanges, OnDestroy {
     this._initAnimations()
     this._updateResult({ isFinish: false })
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
-    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.timeLimit || 0)
   }
 
   ngOnChanges(sc: SimpleChanges ) {

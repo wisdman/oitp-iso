@@ -2,20 +2,25 @@ import {
   Component,
   ChangeDetectionStrategy,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
-  HostListener,
 } from "@angular/core"
+
+import { DomSanitizer } from "@angular/platform-browser"
+
+import { Subscription } from "rxjs"
+
+import { TimerLapService } from "../../services"
 
 import {
   IImageDifferencesTrainerConfig,
   IImageDifferencesTrainerResult,
 } from "./image-differences.trainer.interfaces"
-
-import { DomSanitizer } from "@angular/platform-browser"
 
 @Component({
   selector: "trainer-image-differences",
@@ -23,7 +28,12 @@ import { DomSanitizer } from "@angular/platform-browser"
   styleUrls: [ "./image-differences.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageDifferencesTrainerComponent implements OnInit, OnChanges {
+export class ImageDifferencesTrainerComponent implements OnInit, OnChanges, OnDestroy {
+
+  constructor(
+    private _timerLapService: TimerLapService,
+    private _sanitizer: DomSanitizer,
+  ){}
 
   @Input()
   config!: IImageDifferencesTrainerConfig
@@ -43,24 +53,41 @@ export class ImageDifferencesTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
+  private _lapTimerSubscriber!: Subscription
+
+  ngOnInit() {
+    this._init()
+    this._updateResult({
+      isFinish: false,
+      success: 0,
+      error: 0,
+    })
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.timeLimit)
+  }
+
   ngOnChanges(sc: SimpleChanges ) {
     if (sc.config !== undefined && !sc.config.firstChange) {
       this.ngOnInit()
     }
   }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+  }
+
+  private _init() {
     this.mode = "show"
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
+  }
+
+  private _timeout() {
+    this._updateResult({ isTimeout: true, isFinish: true })
   }
 
   mode: "show" | "play" = "show"
 
-  constructor(private _sanitizer: DomSanitizer){}
+
 
   get imageA() {
     return this._sanitizer.bypassSecurityTrustUrl( `/differences/${this.config.imageA}.svg` )

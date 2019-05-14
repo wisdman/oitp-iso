@@ -18,7 +18,7 @@ import { RoughGenerator } from "../../lib/rough/generator"
 import { DomSanitizer } from "@angular/platform-browser"
 
 import { Subscription } from "rxjs"
-import { LapTimerService } from "../../services"
+import { TimerLapService } from "../../services"
 
 import {
   IMatrixFillingTrainerConfig,
@@ -42,7 +42,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
   constructor(
     private _cdr: ChangeDetectorRef,
     private _elRef:ElementRef<HTMLElement>,
-    private _lapTimerService: LapTimerService,
+    private _timerLapService: TimerLapService,
     private _sanitizer: DomSanitizer,
   ){}
 
@@ -86,8 +86,8 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
       error: 0,
     })
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
-    this._lapTimerService.setLapTimeout(this.config.showTimeLimit || 0)
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.showTimeLimit)
   }
 
   ngOnChanges(sc: SimpleChanges ) {
@@ -173,7 +173,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
       const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
 
       return {
-        data,
+        data: `/icons/${data}.svg`,
         x: x + (boxSize - imageSize) / 2,
         y: y + (boxSize - imageSize) / 2,
         width: boxSize,
@@ -218,14 +218,14 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
       case "show":
         this.mode = "play"
         this._cdr.markForCheck()
-        this._lapTimerService.setLapTimeout(this.config.playTimeLimit || 0)
+        this._timerLapService.setTimeout(this.config.playTimeLimit || 0)
         return
 
       case "play":
         this._updateResult({ isTimeout: true })
         this.mode = "result"
         this._cdr.markForCheck()
-        this._lapTimerService.setLapTimeout(RESULT_TIMEOUT)
+        this._timerLapService.setTimeout(RESULT_TIMEOUT)
         return
 
       case "result":
@@ -251,7 +251,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
     if (isFinish) {
       this.mode = "result"
       this._cdr.markForCheck()
-      this._lapTimerService.setLapTimeout(RESULT_TIMEOUT)
+      this._timerLapService.setTimeout(RESULT_TIMEOUT)
     }
   }
 
@@ -361,7 +361,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
 
   private _initEvents() {
     this.current = undefined
-    document.documentElement.classList.add("touch-action-none")
+    // document.documentElement.classList.add("touch-action-none")
     this._initMoveListeners()
     document.addEventListener("pointermove", this._onPointerMoveListener, { passive: false, capture: true })
     document.addEventListener("touchmove", this._onTouchMoveListener, { passive: false, capture: true })
@@ -372,7 +372,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
     document.removeEventListener("pointermove", this._onPointerMoveListener, { capture: true })
     document.removeEventListener("touchmove", this._onTouchMoveListener, { capture: true })
     document.removeEventListener("mousemove", this._onMouseMoveListener, { capture: true })
-    document.documentElement.classList.remove("touch-action-none")
+    // document.documentElement.classList.remove("touch-action-none")
   }
 
   onPointerDown(event: PointerEvent, data?: number) {

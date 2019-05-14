@@ -13,11 +13,10 @@ import {
   NgZone,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
-
 import { RoughGenerator } from "../../lib/rough/generator"
 
-import { LapTimerService } from "../../services"
+import { Subscription } from "rxjs"
+import { TimerLapService } from "../../services"
 
 import {
   ITablePipeTrainerConfig,
@@ -45,9 +44,9 @@ const preventFunction = function(event: Event) {
 export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
-    private _lapTimerService: LapTimerService,
     private _elRef:ElementRef<HTMLElement>,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
+    private _timerLapService: TimerLapService,
   ){}
 
   private _style = getComputedStyle(this._elRef.nativeElement)
@@ -86,8 +85,8 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
       error: 0,
     })
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
-    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.timeLimit || 0)
   }
 
   ngOnChanges(sc: SimpleChanges ) {
@@ -164,7 +163,7 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
 
   private _lockScroll() {
     this._ngZone.runOutsideAngular(() =>{
-      document.documentElement.classList.add("touch-action-none")
+      // document.documentElement.classList.add("touch-action-none")
       document.addEventListener("pointermove", preventFunction, { passive: false, capture: true })
       document.addEventListener("touchmove", preventFunction, { passive: false, capture: true })
     })
@@ -172,7 +171,7 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
 
   private _unlockScroll() {
     this._ngZone.runOutsideAngular(() =>{
-      document.documentElement.classList.remove("touch-action-none")
+      // document.documentElement.classList.remove("touch-action-none")
       document.removeEventListener("pointermove", preventFunction, { capture: true })
       document.removeEventListener("touchmove", preventFunction, { capture: true })
     })

@@ -360,3 +360,4 @@ INSERT INTO private.trainers_lexicon_pairs (word_a, word_b) VALUES
   (6114, 6002);
 
 REFRESH MATERIALIZED VIEW public.trainers_lexicon;
+REFRESH MATERIALIZED VIEW public.trainers_lexicon_pairs;

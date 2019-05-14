@@ -8,6 +8,9 @@ export type IImageDifferencesTrainer = "image-differences"
 
 export interface IImageDifferencesTrainerConfig extends ITrainerConfig {
   id: IImageDifferencesTrainer
+
+  timeLimit: number
+
   imageA: number,
   imageB: number,
   differences?: Array<string>

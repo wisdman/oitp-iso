@@ -13,11 +13,10 @@ import {
 
 import { DomSanitizer } from "@angular/platform-browser"
 
-import { Subscription } from "rxjs"
-
 import { RoughGenerator } from "../../lib/rough/generator"
 
-import { LapTimerService } from "../../services"
+import { Subscription } from "rxjs"
+import { TimerLapService } from "../../services"
 
 import {
   IQuestionTrainerConfig,
@@ -33,9 +32,9 @@ import {
 })
 export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
-    private _lapTimerService: LapTimerService,
-    private _sanitizer: DomSanitizer,
     private _elRef:ElementRef<HTMLElement>,
+    private _sanitizer: DomSanitizer,
+    private _timerLapService: TimerLapService,
   ){}
 
   private _style = getComputedStyle(this._elRef.nativeElement)
@@ -74,8 +73,8 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
       error: 0,
     })
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
-    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.timeLimit || 0)
   }
 
   ngOnChanges(sc: SimpleChanges ) {
@@ -109,6 +108,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
     if (this.config.items) {
       switch (this.config.itemsType) {
         case "image":
+        case "icon":
           this.matrix = this._getImagesMatrix()
           break
 
@@ -162,7 +162,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
       const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
 
       return {
-        data: item.data,
+        data: this.config.itemsType === 'icon' ? `/icons/${item.data}.svg` : item.data,
         correct: !!item.correct,
         x: x + (boxSize - imageSize) / 2,
         y: y + (boxSize - imageSize) / 2,
@@ -232,7 +232,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private _showResult() {
-    this._lapTimerService.setLapTimeout(0)
+    this._timerLapService.setTimeout(0)
     this.isResultMode = true
   }
 

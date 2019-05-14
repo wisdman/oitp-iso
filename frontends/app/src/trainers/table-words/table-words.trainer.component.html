@@ -1,0 +1,21 @@
+<h1>Заполните таблицу</h1>
+<table>
+  <tr>
+    <th class="header"></th>
+    <th *ngFor="let column of config.columns" class="header">{{ column }}</th>
+  </tr>
+  <tr *ngFor="let rune of config.runes">
+    <td class="header">{{ rune }}</td>
+    <td *ngFor="let _ of config.columns">
+      <input type="text" class="input">
+    </td>
+  </tr>
+</table>
+
+<button
+  class="button button--main"
+  (click)="onButtonClick()"
+>
+  <span *ngIf="!isResultMode">Проверить</span>
+  <span *ngIf="isResultMode">Продолжить</span>
+</button>

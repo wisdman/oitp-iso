@@ -84,23 +84,26 @@ CREATE MATERIALIZED VIEW public.trainers_lexicon AS
     t."group" as "group",
     t."definitions" as "definitions",
 
+    t."forColumns" AS "forColumns",
+    t."color" AS "color",
+
     COALESCE(
-      json_agg(
+      array_agg(
         r1.word
       ) FILTER (WHERE r1.id IS NOT NULL),
-      '[]'
+      '{}'
     ) AS "antonyms",
     COALESCE(
-      json_agg(
+      array_agg(
         r2.word
       ) FILTER (WHERE r2.id IS NOT NULL),
-      '[]'
+      '{}'
     ) AS "paronyms",
     COALESCE(
-      json_agg(
+      array_agg(
         r3.word
       ) FILTER (WHERE r3.id IS NOT NULL),
-      '[]'
+      '{}'
     ) AS "synonyms"
   FROM private.trainers_lexicon t
   LEFT JOIN (
@@ -133,3 +136,11 @@ CREATE MATERIALIZED VIEW public.trainers_lexicon AS
   GROUP BY t.id;
 
 GRANT SELECT ON public.trainers_lexicon TO api;
+
+CREATE MATERIALIZED VIEW public.trainers_lexicon_pairs AS
+  SELECT l1."word" AS "word_a", l2."word" AS "word_b"
+  FROM private.trainers_lexicon_pairs p
+  LEFT JOIN private.trainers_lexicon l1 ON p.word_a = l1.id
+  LEFT JOIN private.trainers_lexicon l2 ON p.word_b = l2.id;
+
+GRANT SELECT ON public.trainers_lexicon_pairs TO api;

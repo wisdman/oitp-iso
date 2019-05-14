@@ -1,41 +1,40 @@
 package imageFields
 
 import (
-	"math/rand"
-
-	"github.com/wisdman/oitp-isov/api/training/trainers"
+	"github.com/wisdman/oitp-isov/api/lib/w-rand"
+	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
 	"github.com/wisdman/oitp-isov/api/training/trainers/question"
 )
 
 type Parameters struct {
-	ShowTimeLimit     uint16 `json:"showTimeLimit", description:"Лимит времени предпоказа"`
-	QuestionTimeLimit uint16 `json:"questionTimeLimit", description:"Лимит времени вопроса"`
+	ShowTimeLimit     uint16 `json:"pageTimeLimit"`
+	QuestionTimeLimit uint16 `json:"playTimeLimit"`
 
-	Quantity int `json:"quantity", description:"Количество таблиц"`
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
 
-	MinItems int `json:"minItems", description:"Минимальное число картинок на странице"`
-	MaxItems int `json:"maxItems", description:"Максимальное число картинок на странице"`
+	AnswersCount     int `json:"answersCount"`
+	FakeAnswersCount int `json:"fakeAnswersCount"`
 
-	AnswersCount     int `json:"answersCount", description:"Количество вариантов ответа"`
-	FakeAnswersCount int `json:"fakeAnswersCount", description:"Количество фейковых ответов"`
+	Quantity int `json:"quantity"`
 }
 
 type Config struct {
-	*trainers.Config
+	*abstract.Config
 
-	ShowTimeLimit uint16    `json:"showTimeLimit"`
-	Items         []*string `json:"items"`
+	TimeLimit uint16 `json:"timeLimit"`
+	Items     []int  `json:"items"`
 }
 
 func newConfig(
 	params Parameters,
 ) *Config {
-	length := rand.Intn(params.MaxItems-params.MinItems+1) + params.MinItems
+	length := wRand.Range(params.MinItems, params.MaxItems)
 
 	return &Config{
-		Config:        trainers.NewConfig(trainers.UIImageField),
-		ShowTimeLimit: params.ShowTimeLimit,
-		Items:         make([]*string, length),
+		Config:    abstract.NewConfig(abstract.UIImageField),
+		TimeLimit: params.ShowTimeLimit,
+		Items:     make([]int, length),
 	}
 }
 
@@ -43,14 +42,14 @@ func newQuestionConfig(
 	params Parameters,
 	items []*question.Item,
 ) *question.Config {
-	rand.Shuffle(len(items), func(i, j int) { items[i], items[j] = items[j], items[i] })
+	wRand.Shuffle(len(items), func(i, j int) { items[i], items[j] = items[j], items[i] })
 
 	return &question.Config{
-		Config: trainers.NewConfig(trainers.UIQuestion),
+		Config: abstract.NewConfig(abstract.UIQuestion),
 
-		Body: "<h1>Отметьте фигуры встретившиеся вам ранее</h1>",
+		Body: "<h1>Отметьте фигуры встретившиеся вам на картинках</h1>",
 
-		ItemsType: question.Image,
+		ItemsType: question.Icon,
 		Items:     items[0:params.AnswersCount],
 		Multiple:  true,
 

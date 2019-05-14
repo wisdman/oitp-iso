@@ -3,40 +3,40 @@ package matrixFilling
 import (
 	"math/rand"
 
-	"github.com/wisdman/oitp-isov/api/training/trainers"
+	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
 	"github.com/wisdman/oitp-isov/api/training/trainers/question"
 )
 
 type Parameters struct {
-	ShowTimeLimit     uint16 `json:"showTimeLimit", description:"Лимит времени предпоказа"`
-	PlayTimeLimit     uint16 `json:"playTimeLimit", description:"Лимит времени заполнения"`
-	QuestionTimeLimit uint16 `json:"questionTimeLimit", description:"Лимит времени вопроса"`
+	ShowTimeLimit     uint16 `json:"showTimeLimit"`
+	PlayTimeLimit     uint16 `json:"playTimeLimit"`
+	QuestionTimeLimit uint16 `json:"questionTimeLimit"`
 
-	Quantity   int `json:"quantity", description:"Количество таблиц"`
-	ItemsSize  int `json:"itemsSize", description:"Количество элементов"`
-	MatrixSize int `json:"matrixSize", description:"Размер таблицы"`
+	Quantity   int `json:"quantity"`
+	ItemsSize  int `json:"itemsSize"`
+	MatrixSize int `json:"matrixSize"`
 
-	AnswersCount     int `json:"answersCount", description:"Количество вариантов ответа"`
-	FakeAnswersCount int `json:"fakeAnswersCount", description:"Количество фейковых ответов"`
+	AnswersCount     int `json:"answersCount"`
+	FakeAnswersCount int `json:"fakeAnswersCount"`
 }
 
 type Config struct {
-	*trainers.Config
+	*abstract.Config
 
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Items  []*string `json:"items"`
-	Matrix []uint16  `json:"matrix"`
+	Items  []int    `json:"items"`
+	Matrix []uint16 `json:"matrix"`
 }
 
 func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: trainers.NewConfig(trainers.UIMatrixFilling),
+		Config: abstract.NewConfig(abstract.UIMatrixFilling),
 
-		Items:  make([]*string, params.ItemsSize),
+		Items:  make([]int, params.ItemsSize),
 		Matrix: make([]uint16, params.MatrixSize),
 
 		ShowTimeLimit: params.ShowTimeLimit,
@@ -51,11 +51,11 @@ func newQuestionConfig(
 	rand.Shuffle(len(items), func(i, j int) { items[i], items[j] = items[j], items[i] })
 
 	return &question.Config{
-		Config: trainers.NewConfig(trainers.UIQuestion),
+		Config: abstract.NewConfig(abstract.UIQuestion),
 
 		Body: "<h1>Отметьте фигуры встретившиеся вам в таблицах</h1>",
 
-		ItemsType: question.Image,
+		ItemsType: question.Icon,
 		Items:     items[0:params.AnswersCount],
 		Multiple:  true,
 

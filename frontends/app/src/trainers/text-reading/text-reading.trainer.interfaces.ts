@@ -10,6 +10,8 @@ export interface ITextReadingTrainerConfig extends ITrainerConfig {
   id: ITextReadingTrainer
   mode: "show" | "play"
   data: string
+
+  timeLimit: number
 }
 
 export interface ITextReadingTrainerResult extends ITrainerResult {

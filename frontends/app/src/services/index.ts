@@ -1,4 +1,6 @@
-export * from "./lap-timer.service"
+export * from "./fullscreen.service"
+export * from "./timer-lap.service"
+export * from "./timer-global.service"
 export * from "./log.service"
 export * from "./logout-guard.service"
 export * from "./notification.service"

@@ -8,6 +8,9 @@ export type ITextLettersTrainer = "text-letters"
 
 export interface ITextLettersTrainerConfig extends ITrainerConfig {
   id: ITextLettersTrainer
+
+  timeLimit: number
+
   data: string
 }
 

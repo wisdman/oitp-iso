@@ -1,16 +1,18 @@
 package question
 
 import (
-	"github.com/wisdman/oitp-isov/api/training/trainers"
+	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
 )
 
 type IItemsType string
 
 const (
-	Image IItemsType = "image"
-	Input IItemsType = "input"
-	None  IItemsType = "none"
-	Text  IItemsType = "text"
+	Image       IItemsType = "image"
+	Icon        IItemsType = "icon"
+	InputNumber IItemsType = "input-number"
+	InputText   IItemsType = "input-text"
+	None        IItemsType = "none"
+	Text        IItemsType = "text"
 )
 
 type Item struct {
@@ -19,7 +21,7 @@ type Item struct {
 }
 
 type Config struct {
-	*trainers.Config
+	*abstract.Config
 
 	TimeLimit uint16 `json:"timeLimit"`
 

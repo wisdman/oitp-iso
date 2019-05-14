@@ -15,7 +15,7 @@ export interface IImageFieldItem {
 export interface IImageFieldTrainerConfig extends ITrainerConfig {
   id: IImageFieldTrainer
   items: Array<string>
-  showTimeLimit: number
+  timeLimit: number
 }
 
 export interface IImageFieldTrainerResult extends ITrainerResult {

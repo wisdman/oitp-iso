@@ -4,10 +4,24 @@ import (
 	"math/rand"
 
 	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/training/trainers"
 )
 
-func Build(
+var complexityData = [...]Parameters{
+	Parameters{
+		TimeLimit:  120,
+		MatrixSize: 30,
+	},
+	Parameters{
+		TimeLimit:  60,
+		MatrixSize: 30,
+	},
+	Parameters{
+		TimeLimit:  30,
+		MatrixSize: 30,
+	},
+}
+
+func build(
 	sql *db.Transaction,
 	complexity uint8,
 	runeType IRunes,
@@ -15,10 +29,7 @@ func Build(
 	configs []interface{},
 	err error,
 ) {
-	var params Parameters
-	if err = trainers.QueryParameters(sql, trainers.TablePipe, complexity, &params); err != nil {
-		return nil, err
-	}
+	params := complexityData[complexity]
 
 	config := newConfig(params)
 	itemsLen := len(config.Items)
@@ -38,4 +49,34 @@ func Build(
 	}
 
 	return append(configs, config), nil
+}
+
+func BuildRU(
+	sql *db.Transaction,
+	complexity uint8,
+) (
+	configs []interface{},
+	err error,
+) {
+	return build(sql, complexity, RunesRU)
+}
+
+func BuildEN(
+	sql *db.Transaction,
+	complexity uint8,
+) (
+	configs []interface{},
+	err error,
+) {
+	return build(sql, complexity, RunesEN)
+}
+
+func BuildNUMBERS(
+	sql *db.Transaction,
+	complexity uint8,
+) (
+	configs []interface{},
+	err error,
+) {
+	return build(sql, complexity, RunesNUMBERS)
 }

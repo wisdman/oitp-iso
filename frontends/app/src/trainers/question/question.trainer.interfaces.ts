@@ -24,7 +24,7 @@ export interface IQuestionTrainerConfig extends ITrainerConfig {
   body: string
   button?: string
 
-  itemsType?: "image" | "text"
+  itemsType?: "image" | "icon" | "text" | "input-text" | "input-number",
   multiple?: boolean
   items?: Array<{
     data: string

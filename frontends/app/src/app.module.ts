@@ -50,20 +50,23 @@ import {
 } from "./layouts"
 
 import {
-  ClassificationWordsTrainerComponent,
+  ClassificationTrainerComponent,
   ImageCarpetTrainerComponent,
   ImageDifferencesTrainerComponent,
+  ImageExpressionsTrainerComponent,
   ImageFieldTrainerComponent,
+  MathEquationTrainerComponent,
+  MathPuzzleTrainerComponent,
   MatrixFillingTrainerComponent,
   MatrixSequenceTrainerComponent,
   QuestionTrainerComponent,
   RelaxTrainerComponent,
   TablePipeTrainerComponent,
+  TableWordsTrainerComponent,
   TextLettersTrainerComponent,
-  TextPairsTrainerComponent,
   TextReadingTrainerComponent,
-  TextSortTrainerComponent,
-  TextTezirovanieTrainerComponent,
+  WordsColumnsTrainerComponent,
+  WordsPairsTrainerComponent,
 } from "./trainers"
 
 import {
@@ -73,12 +76,16 @@ import {
 } from "./pipes"
 
 import {
+  FullscreenService,
+  FullscreenServiceFactory,
+
   LogoutGuardService,
 
   NotificationService,
   NotificationServiceFactory,
 
-  LapTimerService,
+  TimerLapService,
+  TimerGlobalService,
   LogService,
   TrainingService,
   UserService,
@@ -130,20 +137,23 @@ import { ROUTES } from "./app.routing"
 
     TablePipeTrainerComponent,
 
-    ClassificationWordsTrainerComponent,
+    ClassificationTrainerComponent,
     ImageCarpetTrainerComponent,
     ImageDifferencesTrainerComponent,
+    ImageExpressionsTrainerComponent,
     ImageFieldTrainerComponent,
+    MathEquationTrainerComponent,
+    MathPuzzleTrainerComponent,
     MatrixFillingTrainerComponent,
     MatrixSequenceTrainerComponent,
     QuestionTrainerComponent,
     RelaxTrainerComponent,
     TablePipeTrainerComponent,
+    TableWordsTrainerComponent,
     TextLettersTrainerComponent,
-    TextPairsTrainerComponent,
     TextReadingTrainerComponent,
-    TextSortTrainerComponent,
-    TextTezirovanieTrainerComponent,
+    WordsColumnsTrainerComponent,
+    WordsPairsTrainerComponent,
 
     DaysPipe,
     TimerPipe,
@@ -166,8 +176,9 @@ import { ROUTES } from "./app.routing"
   providers: [
     LogoutGuardService,
 
-    LapTimerService,
     LogService,
+    TimerGlobalService,
+    TimerLapService,
     TrainingService,
     UserService,
 
@@ -177,6 +188,15 @@ import { ROUTES } from "./app.routing"
       provide: APP_INITIALIZER,
       useFactory: NotificationServiceFactory,
       deps: [ NotificationService ],
+      multi: true
+    },
+
+    // Fullscreen services
+    FullscreenService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: FullscreenServiceFactory,
+      deps: [ FullscreenService ],
       multi: true
     },
 

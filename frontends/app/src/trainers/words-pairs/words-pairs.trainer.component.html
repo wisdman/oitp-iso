@@ -1,0 +1,34 @@
+<h1 *ngIf="config.itemsType === 'antonyms'" class="h1">Отметьте антонимы</h1>
+<h1 *ngIf="config.itemsType === 'paronyms'" class="h1">Отметьте паронимы</h1>
+<h1 *ngIf="config.itemsType === 'synonyms'" class="h1">Отметьте синонимы</h1>
+<svg
+  class="svg"
+  [attr.viewBox]="viewBox"
+  [attr.width]="svgWidth"
+  [attr.height]="svgHeight"
+>
+  <g
+    *ngFor="let item of items"
+    class="item"
+    [class.selected]="isSelected(item)"
+    [class.disabled]="item.disabled"
+    (click)="onClick(item)"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      class="text"
+      text-anchor="middle"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.text }}</text>
+  </g>
+</svg>

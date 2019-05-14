@@ -14,8 +14,9 @@ func main() {
 	api := &API{db}
 	srv := service.New()
 
-	srv.GET("/specific/:type", api.Specific)
+	srv.GET("/debug", api.Debug)
 	srv.GET("/everyday", api.Everyday)
+	srv.GET("/once", api.Once)
 
 	srv.ListenAndServe()
 }

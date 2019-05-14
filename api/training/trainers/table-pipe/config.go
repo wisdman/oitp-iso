@@ -1,12 +1,12 @@
 package tablePipe
 
 import (
-	"github.com/wisdman/oitp-isov/api/training/trainers"
+	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
 )
 
 type Parameters struct {
-	TimeLimit  uint16 `json:"timeLimit", description:"Лимит времени заполнения"`
-	MatrixSize uint   `json:"matrixSize", description:"Размер"`
+	TimeLimit  uint16 `json:"timeLimit"`
+	MatrixSize uint   `json:"matrixSize"`
 }
 
 type IAction string
@@ -26,7 +26,7 @@ type Item struct {
 }
 
 type Config struct {
-	*trainers.Config
+	*abstract.Config
 
 	TimeLimit uint16 `json:"timeLimit"`
 
@@ -38,7 +38,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:    trainers.NewConfig(trainers.UITablePipe),
+		Config:    abstract.NewConfig(abstract.UITablePipe),
 		Items:     make([]*Item, len(actions)),
 		Matrix:    make([]uint16, params.MatrixSize),
 		TimeLimit: params.TimeLimit,

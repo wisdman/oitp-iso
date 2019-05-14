@@ -6,13 +6,8 @@ import {
   OnInit,
 } from "@angular/core"
 
-import {
-  Subscription,
-} from "rxjs"
-
-import {
-  LapTimerService
-} from "../../services"
+import { Subscription} from "rxjs"
+import { TimerLapService } from "../../services"
 
 @Component({
   selector: "lap-timer",
@@ -22,14 +17,14 @@ import {
 })
 export class LapTimerComponent implements OnInit, OnDestroy {
   constructor(
-    private _lapTimerService: LapTimerService,
     private _el: ElementRef<HTMLElement>,
+    private _timerLapService: TimerLapService,
   ){}
 
   private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
-    this._lapTimerSubscriber = this._lapTimerService.lapTimer.subscribe(timeout => this._initAnimations(timeout))
+    this._lapTimerSubscriber = this._timerLapService.timer.subscribe(timeout => this._initAnimations(timeout))
   }
 
   ngOnDestroy() {

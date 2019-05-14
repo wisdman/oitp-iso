@@ -16,8 +16,9 @@ import {
 import { zip } from "rxjs/operators"
 
 import {
-  LapTimerService,
+  TimerLapService,
   TrainingService,
+  FullscreenService,
 } from "../../services"
 
 import {
@@ -35,7 +36,8 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private _cdr: ChangeDetectorRef,
-    private _lapTimerService: LapTimerService,
+    private _fullscreenService: FullscreenService,
+    private _timerLapService: TimerLapService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _trainingService: TrainingService,
@@ -62,7 +64,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   }
 
   onFinish() {
-     // this.mode = "result"
+     this.mode = "result"
      this._trainingService.isGlobalTimerEnabled = false
   }
 
@@ -70,6 +72,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   private _trainingSubscriber!: Subscription
 
   ngOnInit() {
+    this._fullscreenService.lockScroll()
     this.mode = "greeting"
     this._stepSubject = new Subject<true>()
 
@@ -80,7 +83,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
                                         zip(this._stepSubject, value => value)
                                       ).subscribe(
                                         config => {
-                                          this._lapTimerService.setLapTimeout(0)
+                                          this._timerLapService.setTimeout(0)
                                           this.config = config
                                           this._cdr.markForCheck()
                                           console.log(this.config)
@@ -94,6 +97,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._trainingSubscriber) this._trainingSubscriber.unsubscribe()
     if (this._routeParamsSubscriber) this._routeParamsSubscriber.unsubscribe()
+    this._fullscreenService.unlockScroll()
   }
 
   onGoDashboard() {

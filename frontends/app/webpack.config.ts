@@ -215,11 +215,7 @@ export default {
         return JSON.stringify(JSON.parse(String(content)))
       },
     },{
-      from: PATH("./images"),
-      to: "images"
-    },{
-      from: PATH("./differences"),
-      to: "differences"
+      from: PATH("./data"),
     }]),
 
   ].concat(isProduction ? [

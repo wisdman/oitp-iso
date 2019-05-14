@@ -1,23 +1,23 @@
 package relax
 
 import (
-	"github.com/wisdman/oitp-isov/api/training/trainers"
+	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
 )
 
-const ImagesCount = 10
+const MAX_RELAX_ID = 45
 
 type Config struct {
-	*trainers.Config
+	*abstract.Config
 
 	TimeLimit uint16 `json:"timeLimit"`
 
-	Image uint8  `json:"image"`
+	Image int    `json:"image"`
 	Text  string `json:"text"`
 }
 
 func newConfig() *Config {
 	return &Config{
-		Config:    trainers.NewConfig(trainers.UIRelax),
+		Config:    abstract.NewConfig(abstract.UIRelax),
 		TimeLimit: 10,
 	}
 }

@@ -7,17 +7,51 @@ import (
 	"time"
 
 	"github.com/wisdman/oitp-isov/api/lib/service"
-	"github.com/wisdman/oitp-isov/api/training/trainers/classification-words"
-	"github.com/wisdman/oitp-isov/api/training/trainers/image-fields"
-	"github.com/wisdman/oitp-isov/api/training/trainers/matrix-filling"
-	"github.com/wisdman/oitp-isov/api/training/trainers/matrix-sequence"
-	"github.com/wisdman/oitp-isov/api/training/trainers/question-words"
-	"github.com/wisdman/oitp-isov/api/training/trainers/relax"
-	"github.com/wisdman/oitp-isov/api/training/trainers/table-pipe"
+
+	"github.com/wisdman/oitp-isov/api/training/trainers"
 )
 
 func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
+
+	var trainersList = []trainers.ITrainer{
+		"table-pipe-ru", "table-pipe-number",
+	}
+
+	var trainersRandom = [][]trainers.ITrainer{
+		{"classification-words", "classification-definitions", "classification-colors"},
+		{"image-expressions"}, {"image-fields"},
+		{"math-middle", "math-sequence", "math-waste"},
+		{"matrix-filling-pattern"}, {"matrix-sequence-pattern"},
+		{"matrix-filling-unique"},
+		// {"space-part"},
+		{"table-words"},
+		{"text-letters"},
+		{"text-reading-tezirovanie"},
+		// {"words-columns-pairs"}, {"words-columns-words"},
+		{"words-pairs-antonyms", "words-pairs-paronyms", "words-pairs-synonyms", "words-questions-close", "words-questions-waste"},
+	}
+
+	rand.Shuffle(len(trainersRandom), func(i, j int) {
+		trainersRandom[i], trainersRandom[j] = trainersRandom[j], trainersRandom[i]
+	})
+
+	var trainersFinish = [...]trainers.ITrainer{"matrix-filling-random", "matrix-sequence-random"}
+
+	rand.Shuffle(len(trainersFinish), func(i, j int) {
+		trainersFinish[i], trainersFinish[j] = trainersFinish[j], trainersFinish[i]
+	})
+
+	for i, max := 0, len(trainersRandom); i < max; i++ {
+		current := trainersRandom[i]
+		rand.Shuffle(len(current), func(i, j int) { current[i], current[j] = current[j], current[i] })
+		trainersList = append(trainersList, current...)
+		if i%3 == 0 {
+			trainersList = append(trainersList, "relax")
+		}
+	}
+
+	trainersList = append(trainersList, trainersFinish[0])
 
 	sql, err := api.db.Acquire()
 	if err != nil {
@@ -28,109 +62,14 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	training := newTraining(1800)
 	var configs []interface{}
 
-	// === Разминка - Буквы
-	if configs, err = tablePipe.Build(sql, 0, tablePipe.RunesRU); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
+	for i, max := 0, len(trainersList); i < max; i++ {
+		if configs, err = trainers.Build(sql, trainersList[i], 0); err != nil {
+			service.Fatal(w, err)
+			sql.Rollback()
+			return
+		}
+		training.Trainers = append(training.Trainers, configs...)
 	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// === Разминка - Цифры
-	if configs, err = tablePipe.Build(sql, 0, tablePipe.RunesNUMBERS); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Запоминание картинок
-	if configs, err = imageFields.Build(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Relax
-	if configs, err = relax.Build(sql, 1); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Таблицы числовые на основе паттернов
-	if configs, err = matrixSequence.Build(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Классификация слов
-	if configs, err = classificationWords.Build(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Таблицы с уникальными картинками
-	if configs, err = matrixFilling.BuildUnique(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Relax
-	if configs, err = relax.Build(sql, 1); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// === Уберите лишнее слово
-	if configs, err = questionWords.Build(sql, 0, questionWords.Waste); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// === Слово - это
-	if configs, err = questionWords.Build(sql, 0, questionWords.Close); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Таблицы с картинками по паттернам
-	if configs, err = matrixFilling.Build(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Таблицы числовые случайные
-	if configs, err = matrixSequence.BuildRandom(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
-
-	// Таблицы с картинками случайные
-	if configs, err = matrixFilling.BuildRandom(sql, 0); err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-	training.Trainers = append(training.Trainers, configs...)
 
 	if err = sql.Commit(); err != nil {
 		service.Fatal(w, err)

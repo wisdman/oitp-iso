@@ -3,13 +3,14 @@ SET search_path = "$user";
 CREATE TYPE public.trainers__type AS ENUM (
   'classification-colors', -- Классификация цветов
   'classification-words', -- Классификация слов
-  'image-carpet', -- Коврики
+  'image-carpets', -- Коврики
   'image-differences', -- Поиск отличий
-  'image-expression', -- Запомнить фразу к картинке
-  'image-field', -- Запомнить картинки
+  'image-expressions', -- Запомнить фразу к картинке
+  'image-fields', -- Запомнить картинки
   'math-middle', -- Среднее число в скобках
   'math-sequence', -- Числовой ряд
   'math-waste', -- Лишнее число
+  'math-equation', -- Уравнение
   'matrix-filling-pattern', -- Запомнить таблицу на основе паттерна
   'matrix-filling-random',  -- Запомнить случайную таблицу
   'matrix-filling-unique', -- Запомнить уникальную таблицу
@@ -27,9 +28,15 @@ CREATE TYPE public.trainers__type AS ENUM (
   'words-column', -- Востановить список слов по памяти
   'words-definition', -- Дифиниции к словам
   'words-pairs', -- Два столбика слов
+  'words-pairs-antonyms', -- Два столбика слов, антинимы
+  'words-pairs-paronyms', -- Два столбика слов, паронимы
+  'words-pairs-synonyms', -- Два столбика слов, синонимы
   'words-waste' -- Выбрать лишнее слово
 );
 
+'antonyms', -- Антонимы
+  'paronyms', -- Паронимы
+  'synonyms'  -- Синонимы
 
 CREATE TABLE private.complexity (
   "id"      uuid    NOT NULL DEFAULT uuid_generate_v1mc(),
@@ -116,31 +123,31 @@ INSERT INTO private.complexity("trainer", "complexity", "data") VALUES
   '}'),
 
   -- Коврики
-  ('image-carpet', 0, '{'
+  ('image-carpets', 0, '{'
     '"showTimeLimit":5,'
     '"playTimeLimit":30,'
     '"complexity": 0,'
     '"quantity": 3'
   '}'),
-  ('image-carpet', 1, '{'
+  ('image-carpets', 1, '{'
     '"showTimeLimit":5,'
     '"playTimeLimit":30,'
     '"complexity": 0,'
     '"quantity": 5'
   '}'),
-  ('image-carpet', 2, '{'
+  ('image-carpets', 2, '{'
     '"showTimeLimit":5,'
     '"playTimeLimit":30,'
     '"complexity": 1,'
     '"quantity": 5'
   '}'),
-  ('image-carpet', 3, '{'
+  ('image-carpets', 3, '{'
     '"showTimeLimit":5,'
     '"playTimeLimit":30,'
     '"complexity": 2,'
     '"quantity": 5'
   '}'),
-  ('image-carpet', 4, '{'
+  ('image-carpets', 4, '{'
     '"showTimeLimit":3,'
     '"playTimeLimit":30,'
     '"complexity": 2,'
@@ -175,122 +182,142 @@ INSERT INTO private.complexity("trainer", "complexity", "data") VALUES
   '}'),
 
   -- Запомнить фразу к картинке
-  ('image-expression', 0, '{'
+  ('image-expressions', 0, '{'
     '"showTimeLimit":7,'
     '"playTimeLimit":30,'
     '"quantity": 3'
   '}'),
-  ('image-expression', 1, '{'
+  ('image-expressions', 1, '{'
     '"showTimeLimit":7,'
     '"playTimeLimit":30,'
     '"quantity": 5'
   '}'),
-  ('image-expression', 2, '{'
+  ('image-expressions', 2, '{'
     '"showTimeLimit":7,'
     '"playTimeLimit":30,'
     '"quantity": 7'
   '}'),
-  ('image-expression', 3, '{'
+  ('image-expressions', 3, '{'
     '"showTimeLimit":5,'
     '"playTimeLimit":20,'
     '"quantity": 7'
   '}'),
-  ('image-expression', 4, '{'
+  ('image-expressions', 4, '{'
     '"showTimeLimit":3,'
     '"playTimeLimit":20,'
     '"quantity": 7'
   '}'),
 
   -- Запомнить картинки
-  ('image-field', 0, '{'
+  ('image-fields', 0, '{'
     '"showTimeLimit":5,'
     '"playTimeLimit":60,'
+    '"minItems":3,'
+    '"maxItems":4,'
+    '"answersCount":5,'
+    '"fakeAnswersCount":2,'
     '"quantity": 3'
   '}'),
-  ('image-field', 1, '{'
+  ('image-fields', 1, '{'
     '"showTimeLimit":5,'
     '"playTimeLimit":60,'
+    '"minItems":3,'
+    '"maxItems":4,'
+    '"answersCount":5,'
+    '"fakeAnswersCount":2,'
     '"quantity": 5'
   '}'),
-  ('image-field', 2, '{'
+  ('image-fields', 2, '{'
     '"showTimeLimit":3,'
     '"playTimeLimit":60,'
+    '"minItems":4,'
+    '"maxItems":5,'
+    '"answersCount":10,'
+    '"fakeAnswersCount":4,'
     '"quantity": 5'
   '}'),
-  ('image-field', 3, '{'
+  ('image-fields', 3, '{'
     '"showTimeLimit":3,'
     '"playTimeLimit":30,'
+    '"minItems":4,'
+    '"maxItems":5,'
+    '"answersCount":10,'
+    '"fakeAnswersCount":5,'
     '"quantity": 5'
   '}'),
-  ('image-field', 4, '{'
+  ('image-fields', 4, '{'
     '"showTimeLimit":3,'
     '"playTimeLimit":30,'
+    '"minItems":5,'
+    '"maxItems":5,'
+    '"answersCount":10,'
+    '"fakeAnswersCount":5,'
     '"quantity": 7'
   '}'),
 
   -- Среднее число в скобках
   ('math-middle', 0, '{'
-    '"itemTimeLimit":120,'
+    '"timeLimit":120,'
     '"quantity": 3'
   '}'),
   ('math-middle', 1, '{'
-    '"itemTimeLimit":90,'
+    '"timeLimit":90,'
     '"quantity": 3'
   '}'),
   ('math-middle', 2, '{'
-    '"itemTimeLimit":60,'
+    '"timeLimit":60,'
     '"quantity": 5'
   '}'),
   ('math-middle', 3, '{'
-    '"itemTimeLimit":30,'
+    '"timeLimit":30,'
     '"quantity": 5'
   '}'),
   ('math-middle', 4, '{'
-    '"itemTimeLimit":20,'
+    '"timeLimit":20,'
     '"quantity": 5'
   '}'),
 
   -- Числовой ряд
   ('math-sequence', 0, '{'
-    '"itemTimeLimit":120,'
+    '"timeLimit":120,'
     '"quantity": 3'
   '}'),
   ('math-sequence', 1, '{'
-    '"itemTimeLimit":90,'
+    '"timeLimit":90,'
     '"quantity": 3'
   '}'),
   ('math-sequence', 2, '{'
-    '"itemTimeLimit":60,'
+    '"timeLimit":60,'
     '"quantity": 5'
   '}'),
   ('math-sequence', 3, '{'
-    '"itemTimeLimit":30,'
+    '"timeLimit":30,'
     '"quantity": 5'
   '}'),
   ('math-sequence', 4, '{'
-    '"itemTimeLimit":20,'
+    '"timeLimit":20,'
     '"quantity": 5'
   '}'),
 
   -- Лишнее число
   ('math-waste', 0, '{'
-    '"itemTimeLimit":120,'
+    '"timeLimit":120,'
     '"quantity": 3'
   '}'),
   ('math-waste', 1, '{'
-    '"itemTimeLimit":90,'
+    '"timeLimit":90,'
     '"quantity": 3'
   '}'),
   ('math-waste', 2, '{'
-    '"itemTimeLimit":60,'
+    '"timeLimit":60,'
     '"quantity": 5'
   '}'),
   ('math-waste', 3, '{'
-    '"itemTimeLimit":30,'
+    '"timeLimit":30,'
     '"quantity": 5'
   '}'),
   ('math-waste', 4, '{'
-    '"itemTimeLimit":20,'
+    '"timeLimit":20,'
     '"quantity": 5'
   '}'),
 
@@ -663,23 +690,28 @@ INSERT INTO private.complexity("trainer", "complexity", "data") VALUES
   -- Заполнение таблицы словами
   ('table-words', 0, '{'
     '"timeLimit":120,'
-    '"columns":1'
+    '"itemsCount":5,'
+    '"columnsCount":1'
   '}'),
   ('table-words', 1, '{'
     '"timeLimit":120,'
-    '"columns":2'
+    '"itemsCount":5,'
+    '"columnsCount":2'
   '}'),
   ('table-words', 2, '{'
     '"timeLimit":120,'
-    '"columns":3'
+    '"itemsCount":5,'
+    '"columnsCount":3'
   '}'),
   ('table-words', 3, '{'
     '"timeLimit":90,'
-    '"columns":3'
+    '"itemsCount":7,'
+    '"columnsCount":3'
   '}'),
   ('table-words', 4, '{'
     '"timeLimit":60,'
-    '"columns":3'
+    '"itemsCount":7,'
+    '"columnsCount":3'
   '}'),
 
   -- Первые буквы слов фразы
@@ -716,23 +748,23 @@ INSERT INTO private.complexity("trainer", "complexity", "data") VALUES
 
   -- Текст для чтения
   ('text-reading', 0, '{'
-    '"showTimeLimit":60,'
+    '"timeLimit":60,'
     '"questionTimeLimit":30'
   '}'),
   ('text-reading', 1, '{'
-    '"showTimeLimit":50,'
+    '"timeLimit":50,'
     '"questionTimeLimit":30'
   '}'),
   ('text-reading', 2, '{'
-    '"showTimeLimit":40,'
+    '"timeLimit":40,'
     '"questionTimeLimit":20'
   '}'),
   ('text-reading', 3, '{'
-    '"showTimeLimit":30,'
+    '"timeLimit":30,'
     '"questionTimeLimit":20'
   '}'),
   ('text-reading', 4, '{'
-    '"showTimeLimit":20,'
+    '"timeLimit":20,'
     '"questionTimeLimit":10'
   '}'),
 
@@ -802,6 +834,28 @@ INSERT INTO private.complexity("trainer", "complexity", "data") VALUES
     '"itemsCount":7'
   '}'),
 
+  -- Дифиниции к словам
+  ('words-definition', 0, '{'
+    '"itemTimeLimit":10,'
+    '"quantity": 3'
+  '}'),
+  ('words-definition', 1, '{'
+    '"itemTimeLimit":10,'
+    '"quantity": 4'
+  '}'),
+  ('words-definition', 2, '{'
+    '"itemTimeLimit":10,'
+    '"quantity": 5'
+  '}'),
+  ('words-definition', 3, '{'
+    '"itemTimeLimit":8,'
+    '"quantity": 5'
+  '}'),
+  ('words-definition', 4, '{'
+    '"itemTimeLimit":5,'
+    '"quantity": 5'
+  '}'),
+
   -- Два столбика слов
   ('words-pairs', 0, '{'
     '"showTimeLimit":30,'
@@ -826,6 +880,72 @@ INSERT INTO private.complexity("trainer", "complexity", "data") VALUES
   ('words-pairs', 4, '{'
     '"showTimeLimit":10,'
     '"playTimeLimit":30,'
+    '"itemsCount":7'
+  '}'),
+
+  -- Два столбика слов, антинимы
+  ('words-pairs-antonyms', 0, '{'
+    '"timeLimit":30,'
+    '"itemsCount":5'
+  '}'),
+  ('words-pairs-antonyms', 1, '{'
+    '"timeLimit":20,'
+    '"itemsCount":5'
+  '}'),
+  ('words-pairs-antonyms', 2, '{'
+    '"timeLimit":30,'
+    '"itemsCount":6'
+  '}'),
+  ('words-pairs-antonyms', 3, '{'
+    '"timeLimit":30,'
+    '"itemsCount":7'
+  '}'),
+  ('words-pairs-antonyms', 4, '{'
+    '"timeLimit":20,'
+    '"itemsCount":7'
+  '}'),
+
+  -- Два столбика слов, паронимы
+  ('words-pairs-paronyms', 0, '{'
+    '"timeLimit":30,'
+    '"itemsCount":5'
+  '}'),
+  ('words-pairs-paronyms', 1, '{'
+    '"timeLimit":20,'
+    '"itemsCount":5'
+  '}'),
+  ('words-pairs-paronyms', 2, '{'
+    '"timeLimit":30,'
+    '"itemsCount":6'
+  '}'),
+  ('words-pairs-paronyms', 3, '{'
+    '"timeLimit":30,'
+    '"itemsCount":7'
+  '}'),
+  ('words-pairs-paronyms', 4, '{'
+    '"timeLimit":20,'
+    '"itemsCount":7'
+  '}'),
+
+  -- Два столбика слов, синонимы
+  ('words-pairs-synonyms', 0, '{'
+    '"timeLimit":30,'
+    '"itemsCount":5'
+  '}'),
+  ('words-pairs-synonyms', 1, '{'
+    '"timeLimit":20,'
+    '"itemsCount":5'
+  '}'),
+  ('words-pairs-synonyms', 2, '{'
+    '"timeLimit":30,'
+    '"itemsCount":6'
+  '}'),
+  ('words-pairs-synonyms', 3, '{'
+    '"timeLimit":30,'
+    '"itemsCount":7'
+  '}'),
+  ('words-pairs-synonyms', 4, '{'
+    '"timeLimit":20,'
     '"itemsCount":7'
   '}'),
 

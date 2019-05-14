@@ -4,12 +4,16 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from "@angular/core"
 
 import { DomSanitizer } from "@angular/platform-browser"
+
+import { Subscription } from "rxjs"
+import { TimerLapService } from "../../services"
 
 import {
   ITextReadingTrainerConfig,
@@ -22,7 +26,12 @@ import {
   styleUrls: [ "./text-reading.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextReadingTrainerComponent implements OnInit, OnChanges {
+export class TextReadingTrainerComponent implements OnInit, OnChanges, OnDestroy {
+  constructor(
+    private _sanitizer: DomSanitizer,
+    private _timerLapService: TimerLapService,
+  ){}
+
   @Input()
   config!: ITextReadingTrainerConfig
 
@@ -41,24 +50,33 @@ export class TextReadingTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
+  private _lapTimerSubscriber!: Subscription
+
+  ngOnInit() {
+    this._updateResult({
+      isFinish: false,
+      success: 0,
+      error: 0,
+    })
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.timeLimit)
+  }
+
   ngOnChanges(sc: SimpleChanges ) {
     if (sc.config !== undefined && !sc.config.firstChange) {
       this.ngOnInit()
     }
   }
 
-  ngOnInit() {
-    // console.log(this.config)
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
-  constructor(
-    private _sanitizer: DomSanitizer,
-  ){}
+  private _timeout() {
+    this._updateResult({ isTimeout: true, isFinish: true })
+  }
+
 
   get data() {
     return this._sanitizer.bypassSecurityTrustHtml(this.config.data)

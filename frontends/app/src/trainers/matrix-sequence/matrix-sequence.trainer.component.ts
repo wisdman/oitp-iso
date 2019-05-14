@@ -15,8 +15,7 @@ import {
 import { RoughGenerator } from "../../lib/rough/generator"
 
 import { Subscription } from "rxjs"
-
-import { LapTimerService } from "../../services"
+import { TimerLapService } from "../../services"
 
 import {
   IMatrixSequenceTrainerConfig,
@@ -35,7 +34,7 @@ export class MatrixSequenceTrainerComponent implements OnInit, OnChanges, OnDest
   constructor(
     private _cdr: ChangeDetectorRef,
     private _elRef:ElementRef<HTMLElement>,
-    private _lapTimerService: LapTimerService,
+    private _timerLapService: TimerLapService,
   ){}
 
   private _style = getComputedStyle(this._elRef.nativeElement)
@@ -74,8 +73,8 @@ export class MatrixSequenceTrainerComponent implements OnInit, OnChanges, OnDest
       error: 0,
     })
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
-    this._lapTimerService.setLapTimeout(this.config.timeLimit || 0)
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.timeLimit || 0)
   }
 
   ngOnChanges(sc: SimpleChanges ) {

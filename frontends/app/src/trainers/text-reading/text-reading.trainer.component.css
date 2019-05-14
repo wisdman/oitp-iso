@@ -17,3 +17,7 @@
 .article {
   user-select: text;
 }
+
+.button {
+  margin-top: 16px;
+}

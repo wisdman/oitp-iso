@@ -15,8 +15,7 @@ import {
 import { DomSanitizer } from "@angular/platform-browser"
 
 import { Subscription } from "rxjs"
-
-import { LapTimerService } from "../../services"
+import { TimerLapService } from "../../services"
 
 import {
   ImageFieldID,
@@ -34,8 +33,8 @@ import {
 export class ImageFieldTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private _el: ElementRef<HTMLElement>,
-    private _lapTimerService: LapTimerService,
     private _sanitizer: DomSanitizer,
+    private _timerLapService: TimerLapService,
   ){}
 
   @Input()
@@ -62,8 +61,8 @@ export class ImageFieldTrainerComponent implements OnInit, OnChanges, OnDestroy 
       isFinish: false,
     })
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._lapTimerService.lapTimeout.subscribe(() => this._timeout())
-    this._lapTimerService.setLapTimeout(this.config.showTimeLimit || 0)
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.timeLimit)
   }
 
   ngOnChanges(sc: SimpleChanges ) {
@@ -95,7 +94,7 @@ export class ImageFieldTrainerComponent implements OnInit, OnChanges, OnDestroy 
       const dx = radius * Math.cos(theta)
       const dy = radius * Math.sin(theta)
       const transform = `translate(${dx}px, ${dy}px)`
-      return {data, transform}
+      return {data: `/icons/${data}.svg`, transform}
     })
   }
 

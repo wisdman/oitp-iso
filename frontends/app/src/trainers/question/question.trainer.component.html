@@ -26,7 +26,7 @@
       [attr.d]="item.path"
     ></path>
     <image
-      *ngIf="config.itemsType === 'image'"
+      *ngIf="config.itemsType === 'image' || config.itemsType === 'icon'"
       class="image"
       [attr.x]="item.x"
       [attr.y]="item.y"
@@ -46,8 +46,21 @@
   </g>
 </svg>
 
+<input
+  *ngIf="config.itemsType === 'input-text'"
+  class="input"
+  type="text"
+>
+
+<input
+  *ngIf="config.itemsType === 'input-number'"
+  class="input"
+  type="number"
+  min="0"
+>
+
 <button
-  *ngIf="isResultMode || config.multiple"
+  *ngIf="isResultMode || config.multiple || config.itemsType === 'input-text' || config.itemsType === 'input-number'"
   class="button button--main"
   (click)="onButtonClick()"
 >

@@ -1,64 +1,76 @@
 
-import { IClassificationWordsTrainer, IClassificationWordsTrainerConfig, IClassificationWordsTrainerResult } from "./classification-words"
+import { IClassificationTrainer, IClassificationTrainerConfig, IClassificationTrainerResult } from "./classification"
 import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
+import { IImageExpressionsTrainer, IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult } from "./image-expressions"
 import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
+import { IMathEquationTrainer, IMathEquationTrainerConfig, IMathEquationTrainerResult } from "./math-equation"
+import { IMathPuzzleTrainer, IMathPuzzleTrainerConfig, IMathPuzzleTrainerResult } from "./math-puzzle"
 import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
 import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
 import { IRelaxTrainer, IRelaxTrainerConfig, IRelaxTrainerResult } from "./relax"
 import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } from "./table-pipe"
+import { ITableWordsTrainer, ITableWordsTrainerConfig, ITableWordsTrainerResult } from "./table-words"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
-import { ITextPairsTrainer, ITextPairsTrainerConfig, ITextPairsTrainerResult } from "./text-pairs"
 import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResult } from "./text-reading"
-import { ITextSortTrainer, ITextSortTrainerConfig, ITextSortTrainerResult } from "./text-sort"
-import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
+import { IWordsColumnsTrainer, IWordsColumnsTrainerConfig, IWordsColumnsTrainerResult } from "./words-columns"
+import { IWordsPairsTrainer, IWordsPairsTrainerConfig, IWordsPairsTrainerResult } from "./words-pairs"
 
-export type ITrainer = IClassificationWordsTrainer
+export type ITrainer = IClassificationTrainer
                      | IImageCarpetTrainer
                      | IImageDifferencesTrainer
+                     | IImageExpressionsTrainer
                      | IImageFieldTrainer
+                     | IMathPuzzleTrainer
+                     | IMathEquationTrainer
                      | IMatrixFillingTrainer
                      | IMatrixSequenceTrainer
                      | IQuestionTrainer
                      | IRelaxTrainer
                      | ITablePipeTrainer
+                     | ITableWordsTrainer
                      | ITextLettersTrainer
-                     | ITextPairsTrainer
                      | ITextReadingTrainer
-                     | ITextSortTrainer
-                     | ITextTezirovanieTrainer
+                     | IWordsColumnsTrainer
+                     | IWordsPairsTrainer
 
 
-export type ITrainerConfigs = IClassificationWordsTrainerConfig
+export type ITrainerConfigs = IClassificationTrainerConfig
                             | IImageCarpetTrainerConfig
                             | IImageDifferencesTrainerConfig
+                            | IImageExpressionsTrainerConfig
                             | IImageFieldTrainerConfig
+                            | IMathEquationTrainerConfig
+                            | IMathPuzzleTrainerConfig
                             | IMatrixFillingTrainerConfig
                             | IMatrixSequenceTrainerConfig
                             | IQuestionTrainerConfig
                             | IRelaxTrainerConfig
                             | ITablePipeTrainerConfig
+                            | ITableWordsTrainerConfig
                             | ITextLettersTrainerConfig
-                            | ITextPairsTrainerConfig
                             | ITextReadingTrainerConfig
-                            | ITextSortTrainerConfig
-                            | ITextTezirovanieTrainerConfig
+                            | IWordsColumnsTrainerConfig
+                            | IWordsPairsTrainerConfig
 
-export type ITrainerResults = IClassificationWordsTrainerResult
+export type ITrainerResults = IClassificationTrainerResult
                             | IImageCarpetTrainerResult
                             | IImageDifferencesTrainerResult
+                            | IImageExpressionsTrainerResult
                             | IImageFieldTrainerResult
+                            | IMathEquationTrainerResult
+                            | IMathPuzzleTrainerResult
                             | IMatrixFillingTrainerResult
                             | IMatrixSequenceTrainerResult
                             | IQuestionTrainerResult
                             | IRelaxTrainerResult
                             | ITablePipeTrainerResult
+                            | ITableWordsTrainerResult
                             | ITextLettersTrainerResult
-                            | ITextPairsTrainerResult
                             | ITextReadingTrainerResult
-                            | ITextSortTrainerResult
-                            | ITextTezirovanieTrainerResult
+                            | IWordsColumnsTrainerResult
+                            | IWordsPairsTrainerResult
 
 export interface ITrainerConfig {
   id: ITrainer

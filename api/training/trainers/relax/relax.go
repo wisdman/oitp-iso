@@ -2,7 +2,7 @@ package relax
 
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/lib/unique-rand"
+	"github.com/wisdman/oitp-isov/api/lib/w-rand"
 )
 
 func Build(
@@ -16,26 +16,25 @@ func Build(
 	rows, err := sql.Query(`
     SELECT
       data
-    FROM public.trainers_data_texts
+    FROM public.trainers_texts
     WHERE type = 'relax'
     ORDER BY random()
-    LIMIT $1
+    LIMIT 1
     `,
-		quantity,
 	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	random := uniqueRand.New()
+	rand := wRand.NewUnique()
 
 	for rows.Next() {
 		config := newConfig()
 		if err = rows.Scan(&config.Text); err != nil {
 			return nil, err
 		}
-		config.Image = random.Uint8(1, ImagesCount)
+		config.Image = rand.Intn(MAX_RELAX_ID)
 		configs = append(configs, config)
 	}
 

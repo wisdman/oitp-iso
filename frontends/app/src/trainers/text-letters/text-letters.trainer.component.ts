@@ -5,12 +5,16 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from "@angular/core"
 
 import { DomSanitizer } from "@angular/platform-browser"
+
+import { Subscription } from "rxjs"
+import { TimerLapService } from "../../services"
 
 import {
   ITextLettersTrainerConfig,
@@ -23,7 +27,13 @@ import {
   styleUrls: [ "./text-letters.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextLettersTrainerComponent implements OnInit, OnChanges {
+export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy {
+  constructor(
+    private _el: ElementRef<HTMLElement>,
+    private _sanitizer: DomSanitizer,
+    private _timerLapService: TimerLapService,
+  ){}
+
   @Input()
   config!: ITextLettersTrainerConfig
 
@@ -42,11 +52,7 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges {
     this.resultValueChange.emit(this.result)
   }
 
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
+  private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
     this._init()
@@ -55,13 +61,23 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges {
       success: 0,
       error: 0,
     })
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
+    this._timerLapService.setTimeout(this.config.timeLimit)
+  }
+
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.config !== undefined && !sc.config.firstChange) {
+      this.ngOnInit()
+    }
+  }
+
+  ngOnDestroy() {
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
 
-  constructor(
-    private _sanitizer: DomSanitizer,
-    private _el: ElementRef<HTMLElement>
-  ){}
+
 
   letters: Array<string> = []
   comb: string = ""
@@ -107,5 +123,9 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges {
     this.comb = ""
     this.letters = []
     this.mode = "show"
+  }
+
+  private _timeout() {
+    this._updateResult({ isTimeout: true, isFinish: true })
   }
 }

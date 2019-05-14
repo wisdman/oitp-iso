@@ -10,11 +10,11 @@
     *ngIf="mode === 'game' && config"
     class="game"
   >
-    <trainer-classification-words
-      *ngIf="config.id === 'classification-words'"
+    <trainer-classification
+      *ngIf="config.id === 'classification'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-classification-words>
+    ></trainer-classification>
 
     <trainer-image-carpet
       *ngIf="config.id === 'image-carpet'"
@@ -28,11 +28,29 @@
       (result)="onResult($event)"
     ></trainer-image-differences>
 
+    <trainer-image-expressions
+      *ngIf="config.id === 'image-expressions'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-image-expressions>
+
     <trainer-image-field
       *ngIf="config.id === 'image-field'"
       [config]="config"
       (result)="onResult($event)"
     ></trainer-image-field>
+
+    <trainer-math-equation
+      *ngIf="config.id === 'math-equation'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-math-equation>
+
+    <trainer-math-puzzle
+      *ngIf="config.id === 'math-puzzle'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-math-puzzle>
 
     <trainer-matrix-filling
       *ngIf="config.id === 'matrix-filling'"
@@ -58,17 +76,17 @@
       (result)="onResult($event)"
     ></trainer-relax>
 
-    <trainer-result
-      *ngIf="config.id === 'result'"
-      [config]="config"
-      (result)="onResult($event)"
-    ></trainer-result>
-
     <trainer-table-pipe
       *ngIf="config.id === 'table-pipe'"
       [config]="config"
       (result)="onResult($event)"
     ></trainer-table-pipe>
+
+    <trainer-table-words
+      *ngIf="config.id === 'table-words'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-table-words>
 
     <trainer-text-letters
       *ngIf="config.id === 'text-letters'"
@@ -76,29 +94,23 @@
       (result)="onResult($event)"
     ></trainer-text-letters>
 
-    <trainer-text-pairs
-      *ngIf="config.id === 'text-pairs'"
-      [config]="config"
-      (result)="onResult($event)"
-    ></trainer-text-pairs>
-
     <trainer-text-reading
       *ngIf="config.id === 'text-reading'"
       [config]="config"
       (result)="onResult($event)"
     ></trainer-text-reading>
 
-    <trainer-text-sort
-      *ngIf="config.id === 'text-sort'"
+    <trainer-words-columns
+      *ngIf="config.id === 'words-columns'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-text-sort>
+    ></trainer-words-columns>
 
-    <trainer-text-tezirovanie
-      *ngIf="config.id === 'text-tezirovanie'"
+    <trainer-words-pairs
+      *ngIf="config.id === 'words-pairs'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-text-tezirovanie>
+    ></trainer-words-pairs>
   </div>
 
   <training-result

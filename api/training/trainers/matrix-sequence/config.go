@@ -1,20 +1,20 @@
 package matrixSequence
 
 import (
-	"github.com/wisdman/oitp-isov/api/training/trainers"
+	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
 )
 
 type Parameters struct {
-	TimeLimit uint16 `json:"timeLimit", description:"Лимит времени заполнения"`
+	TimeLimit uint16 `json:"timeLimit"`
 
-	Quantity int `json:"quantity", description:"Количество таблиц"`
+	Quantity int `json:"quantity"`
 
-	MatrixSize  int  `json:"matrixSize", description:"Размер таблицы"`
-	ShowSuccess bool `json:"showSuccess", description:"Показывать результат"`
+	MatrixSize  int  `json:"matrixSize"`
+	ShowSuccess bool `json:"showSuccess"`
 }
 
 type Config struct {
-	*trainers.Config
+	*abstract.Config
 
 	TimeLimit uint16 `json:"timeLimit"`
 
@@ -26,7 +26,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:     trainers.NewConfig(trainers.UIMatrixSequence),
+		Config:     abstract.NewConfig(abstract.UIMatrixSequence),
 		Matrix:     make([]uint16, params.MatrixSize),
 		ShowSucess: params.ShowSuccess,
 		TimeLimit:  params.TimeLimit,

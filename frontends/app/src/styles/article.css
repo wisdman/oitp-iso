@@ -29,3 +29,19 @@
   line-height: 1.35;
   text-align: left;
 }
+
+.article img {
+  display: block;
+  max-width: 400px;
+  max-height: 400px;
+  object-fit: cover;
+  margin: 10px auto 0 auto;
+}
+
+.article .color-error {
+  color: var(--color-error);
+}
+
+.article .font-bold {
+  font-weight: 500;
+}
