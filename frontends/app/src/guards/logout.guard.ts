@@ -3,10 +3,10 @@ import { CanActivate, Router } from "@angular/router"
 
 import { Observable, of } from "rxjs"
 
-import { UserService } from "./user.service"
+import { UserService } from "../services"
 
 @Injectable()
-export class LogoutGuardService implements CanActivate {
+export class LogoutGuard implements CanActivate {
   constructor(
     private _userService: UserService,
     private _router: Router,

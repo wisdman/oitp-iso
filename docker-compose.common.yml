@@ -40,6 +40,29 @@ services:
     networks:
       default:
 
+  api-recommendation:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_NAME=recommendation
+    image: oitp-isov/api-recommendation
+    secrets:
+      - secret-api
+    environment:
+      - PGAPPNAME=recommendation
+      - PGHOST=sql
+      - PGSSLMODE=disable
+      - PGDATABASE=oitp
+      - PGUSER=api
+      - PGPASSWORD=API-P@Ssw0rd
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
   api-user:
     restart: unless-stopped
     build:

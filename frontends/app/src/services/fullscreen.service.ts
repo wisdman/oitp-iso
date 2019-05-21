@@ -5,7 +5,7 @@ import {
 } from "rxjs"
 
 import {
-  filter
+  filter,
 } from "rxjs/operators"
 
 interface IEventData {
@@ -187,7 +187,7 @@ export class FullscreenService {
     document.removeEventListener("mousemove", this._onMouseMoveListener, { capture: true })
   }
 
-  private _initStateSubscriber() {
+  private _initScrollSubscriber() {
     this._isScrollLocked.subscribe( isScrollLocked => {
       if (isScrollLocked) {
         document.documentElement.classList.add("touch-action-none")
@@ -199,11 +199,29 @@ export class FullscreenService {
     })
   }
 
+  updateHeight() {
+    window.requestAnimationFrame(() => {
+      document.documentElement.style.setProperty("--body-scroll-top", `${document.body.scrollTop}`)
+      document.documentElement.style.setProperty("--window-height", `${window.innerHeight}`)
+    })
+  }
+
+  private _initHeightDetection() {
+    window.addEventListener("resize", () => this.updateHeight(), { passive: false, capture: true })
+    window.addEventListener("deviceorientation", () => this.updateHeight(), { passive: false, capture: true })
+  }
+
   load(): Promise<void> {
+    // Pointer Events
     this._initDownListeners()
     this._initMoveListeners()
     this._initUpListeners()
-    this._initStateSubscriber()
+    this._initScrollSubscriber()
+
+    // Rwal window height
+    this._initHeightDetection()
+    this.updateHeight()
+
     return Promise.resolve()
   }
 }

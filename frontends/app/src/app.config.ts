@@ -15,6 +15,8 @@ export const API_REGISTER = `${API_BASE}/register`
 
 export const API_USER = `${API_BASE}/user`
 
+export const API_RECOMMENDATION = `${API_BASE}/recommendation`
+
 export const API_TRAINING = `${API_BASE}/training`
 export const API_TRAINING_EVERYDAY = `${API_TRAINING}/everyday`
 // export const API_TRAINING_EVERYDAY = `${API_TRAINING}/debug`

@@ -92,7 +92,7 @@
 
 /* ======= Log section ======= */
 
-.log {
+.progress {
   display: block;
   width: 100%;
 
@@ -107,7 +107,7 @@
   min-height: 400px;
 }
 
-.log__h2 {
+.progress__h2 {
   display: flex;
 
   padding: 0;
@@ -121,7 +121,7 @@
   text-transform: uppercase;
 }
 
-.log__h2 span {
+.progress__h2 span {
   margin-left: 16px;
 }
 

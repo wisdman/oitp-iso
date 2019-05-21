@@ -8,11 +8,11 @@ type ILogRecord = {
 }
 
 @Injectable({ providedIn: "root" })
-export class LogService {
+export class ProgressService {
 
-  private logSource = new BehaviorSubject<Array<ILogRecord>>([])
+  private progressSource = new BehaviorSubject<Array<ILogRecord>>([])
 
-  get log() {
-    return this.logSource.asObservable()
+  get progress() {
+    return this.progressSource.asObservable()
   }
 }

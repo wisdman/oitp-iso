@@ -314,9 +314,9 @@ export default {
         target: "http://localhost",
         pathRewrite: { "^/api/training" : "" }
       },
-      "/api/auth": {
+      "/api/recommendation": {
         target: "http://localhost",
-        pathRewrite: { "^/api/auth" : "" }
+        pathRewrite: { "^/api/recommendation" : "" }
       }
     }
   }

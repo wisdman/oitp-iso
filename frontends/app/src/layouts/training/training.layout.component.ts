@@ -73,6 +73,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._fullscreenService.lockScroll()
+    this._fullscreenService.updateHeight()
     this.mode = "greeting"
     this._stepSubject = new Subject<true>()
 

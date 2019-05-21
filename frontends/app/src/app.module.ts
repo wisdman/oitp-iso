@@ -24,7 +24,7 @@ import {
   IndicatorChartsComponent,
   IndicatorSpeedComponent,
   LapTimerComponent,
-  LogComponent,
+  ProgressListComponent,
   SidebarUserComponent,
   SocialBbuttonsComponent,
   TrainingGreetingComponent,
@@ -79,17 +79,21 @@ import {
   FullscreenService,
   FullscreenServiceFactory,
 
-  LogoutGuardService,
-
   NotificationService,
   NotificationServiceFactory,
 
-  TimerLapService,
+  ProgressService,
+  RecommendationService,
   TimerGlobalService,
-  LogService,
+  TimerLapService,
   TrainingService,
   UserService,
 } from "./services"
+
+import {
+  LogoutGuard,
+  TrainingRoutingGuard,
+} from "./guards"
 
 import {
   ErrorInterceptor
@@ -115,7 +119,7 @@ import { ROUTES } from "./app.routing"
     IndicatorChartsComponent,
     IndicatorSpeedComponent,
     LapTimerComponent,
-    LogComponent,
+    ProgressListComponent,
     SidebarUserComponent,
     SocialBbuttonsComponent,
     TrainingGreetingComponent,
@@ -174,9 +178,11 @@ import { ROUTES } from "./app.routing"
   ],
 
   providers: [
-    LogoutGuardService,
+    LogoutGuard,
+    TrainingRoutingGuard,
 
-    LogService,
+    ProgressService,
+    RecommendationService,
     TimerGlobalService,
     TimerLapService,
     TrainingService,

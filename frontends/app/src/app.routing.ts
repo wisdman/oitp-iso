@@ -14,8 +14,9 @@ import {
 } from "./layouts"
 
 import {
-  LogoutGuardService,
-} from "./services"
+  LogoutGuard,
+  TrainingRoutingGuard,
+} from "./guards"
 
 export const ROUTES: Routes =
 [{
@@ -56,7 +57,7 @@ export const ROUTES: Routes =
   data: { signIn: true },
 },{
   path: "logout",
-  canActivate: [ LogoutGuardService ],
+  canActivate: [ LogoutGuard ],
   component: LoginLayoutComponent,
   data: { signIn: true },
 },{
@@ -65,6 +66,7 @@ export const ROUTES: Routes =
 },{
   path: "training/:type",
   component: TrainingLayoutComponent,
+  canActivate: [ TrainingRoutingGuard ],
 },{
   path: "patterns",
   component: PatternsLayoutComponent,
