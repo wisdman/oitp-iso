@@ -8,20 +8,20 @@ import (
 
 var complexityUniqueData = [...]Parameters{
 	Parameters{
-		ShowTimeLimit: 6,
+		ShowTimeLimit: 20,
 		PlayTimeLimit: 30,
 		Quantity:      3,
 		MatrixSize:    9,
 	},
 	Parameters{
-		ShowTimeLimit: 8,
-		PlayTimeLimit: 30,
+		ShowTimeLimit: 60,
+		PlayTimeLimit: 40,
 		Quantity:      3,
 		MatrixSize:    16,
 	},
 	Parameters{
-		ShowTimeLimit: 6,
-		PlayTimeLimit: 30,
+		ShowTimeLimit: 60,
+		PlayTimeLimit: 40,
 		Quantity:      3,
 		MatrixSize:    16,
 	},
