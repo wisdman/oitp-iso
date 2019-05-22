@@ -10,7 +10,10 @@ export const WordsColumnsTrainerID: IWordsColumnsTrainer = "words-columns"
 export interface IWordsColumnsTrainerConfig extends ITrainerConfig {
   id: IWordsColumnsTrainer
 
-  timeLimit: number
+  playTimeLimit: number
+  showTimeLimit: number
+
+  items: Array<Array<string>>
 }
 
 export interface IWordsColumnsTrainerResult extends ITrainerResult {

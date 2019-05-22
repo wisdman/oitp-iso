@@ -10,13 +10,13 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  NgZone,
 } from "@angular/core"
 
 import { RoughGenerator } from "../../lib/rough/generator"
 
 import { Subscription } from "rxjs"
 import { TimerLapService } from "../../services"
+import { FullscreenService } from "../../services"
 
 import {
   ITablePipeTrainerConfig,
@@ -25,15 +25,6 @@ import {
   ITablePipeTrainerResult,
   TablePipeID,
 } from "./table-pipe.trainer.interfaces"
-
-const SWIPE_DELTA = 60
-const isPointerEvent = "PointerEvent" in window
-const isTouchEvents = "ontouchstart" in window
-
-const preventFunction = function(event: Event) {
-  event.preventDefault()
-  event.stopPropagation()
-}
 
 @Component({
   selector: "trainer-table-pipe",
@@ -45,14 +36,14 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private _elRef:ElementRef<HTMLElement>,
-    private _ngZone: NgZone,
     private _timerLapService: TimerLapService,
+    private _fullscreenService: FullscreenService,
   ){}
 
   private _style = getComputedStyle(this._elRef.nativeElement)
 
-  private get itemSize() {
-    const value = this._style.getPropertyValue("--item-size")
+  private _getCSSPropertyIntValue(property: string): number {
+    const value = this._style.getPropertyValue(property)
     return Number.parseInt(value)
   }
 
@@ -75,15 +66,19 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private _lapTimerSubscriber!: Subscription
+  private _swipeSubscriber!: Subscription
 
   ngOnInit() {
-    this._lockScroll()
     this._init()
     this._updateResult({
       isFinish: false,
       success: 0,
       error: 0,
     })
+
+    if (this._swipeSubscriber) this._swipeSubscriber.unsubscribe()
+    this._swipeSubscriber = this._fullscreenService.swipe.subscribe(action => this._step(action))
+
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
     this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
     this._timerLapService.setTimeout(this.config.timeLimit || 0)
@@ -96,8 +91,8 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy() {
+    if (this._swipeSubscriber) this._swipeSubscriber.unsubscribe()
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._unlockScroll()
   }
 
   current: number = 0
@@ -107,7 +102,7 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
   private _init() {
     this.current = 0
 
-    const itemSize = this.itemSize
+    const itemSize = this._getCSSPropertyIntValue("--item-size")
     const drawSize = itemSize - 4
     const svgGenerator = new RoughGenerator({}, { width: itemSize, height: itemSize } )
 
@@ -161,22 +156,6 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
     })
   }
 
-  private _lockScroll() {
-    this._ngZone.runOutsideAngular(() =>{
-      // document.documentElement.classList.add("touch-action-none")
-      document.addEventListener("pointermove", preventFunction, { passive: false, capture: true })
-      document.addEventListener("touchmove", preventFunction, { passive: false, capture: true })
-    })
-  }
-
-  private _unlockScroll() {
-    this._ngZone.runOutsideAngular(() =>{
-      // document.documentElement.classList.remove("touch-action-none")
-      document.removeEventListener("pointermove", preventFunction, { capture: true })
-      document.removeEventListener("touchmove", preventFunction, { capture: true })
-    })
-  }
-
   private _step(action: ITablePipeTrainerItemActionType) {
     const currentItem = this.matrix[this.current]
     currentItem.isSuccess = currentItem.action === action
@@ -213,90 +192,5 @@ export class TablePipeTrainerComponent implements OnInit, OnDestroy, OnChanges {
       case "ArrowRight":
         return this._step("right")
     }
-  }
-
-  private _startX?: number
-  private _startY?: number
-
-  private _onPointerDown(x: number, y: number) {
-    this._startX = x
-    this._startY = y
-  }
-
-  private _onPointerUp(x: number, y: number) {
-    if (this._startX === undefined || this._startY === undefined) {
-      return
-    }
-
-    const deltaX = this._startX - x
-    const deltaY = this._startY - y
-    this._startX = undefined
-    this._startY = undefined
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      if (deltaX > SWIPE_DELTA)
-        this._step("left")
-      else if (deltaX < SWIPE_DELTA * -1)
-        this._step("right")
-    } else {
-      if (deltaY > SWIPE_DELTA)
-        this._step("up")
-      else if (deltaY < SWIPE_DELTA * -1)
-        this._step("down")
-    }
-  }
-
-  @HostListener("document:pointerdown", ["$event"]) onPointerDown(event: PointerEvent) {
-    if (!event.isPrimary) {
-      return
-    }
-    this._onPointerDown(event.clientX, event.clientY)
-  }
-
-  @HostListener("document:touchstart", ["$event"]) onTouchStart(event: TouchEvent) {
-    if (isPointerEvent) {
-      return
-    }
-
-    if (event.changedTouches.length !== 1) {
-      return
-    }
-
-    const touch = event.changedTouches[0]
-    this._onPointerDown(touch.clientX, touch.clientY)
-  }
-
-  @HostListener("document:mousedown", ["$event"]) onMouseDown(event: MouseEvent) {
-    if (isPointerEvent || isTouchEvents) {
-      return
-    }
-    this._onPointerDown(event.clientX, event.clientY)
-  }
-
-  @HostListener("document:pointerup", ["$event"]) onPointerUp(event: PointerEvent) {
-    if (!event.isPrimary) {
-      return
-    }
-    this._onPointerUp(event.clientX, event.clientY)
-  }
-
-  @HostListener("document:touchend", ["$event"]) onTouchEnd(event: TouchEvent) {
-     if (isPointerEvent) {
-      return
-    }
-
-    if (event.changedTouches.length !== 1) {
-      return
-    }
-
-    const touch = event.changedTouches[0]
-    this._onPointerUp(touch.clientX, touch.clientY)
-  }
-
-  @HostListener("document:mouseup", ["$event"]) onMouseUp(event: MouseEvent) {
-    if (isPointerEvent || isTouchEvents) {
-      return
-    }
-    this._onPointerUp(event.clientX, event.clientY)
   }
 }

@@ -59,11 +59,19 @@
   min="0"
 >
 
-<button
+<ng-container
   *ngIf="isResultMode || config.multiple || config.itemsType === 'input-text' || config.itemsType === 'input-number'"
-  class="button button--main"
-  (click)="onButtonClick()"
 >
-  <span *ngIf="!isResultMode">Проверить</span>
-  <span *ngIf="isResultMode">Продолжить</span>
-</button>
+  <trainer-button
+    *ngIf="!isResultMode"
+    class="button"
+    text="Проверить"
+    (touch)="onButtonTouch()"
+  ></trainer-button>
+  <trainer-button
+    *ngIf="isResultMode"
+    class="button"
+    text="Продолжить"
+    (touch)="onButtonTouch()"
+  ></trainer-button>
+</ng-container>

@@ -1,18 +1,35 @@
-<div class="field" *ngIf="config">
+<article class="article">
+  <p>Востановите по памяти<br>первую букву каждого слова</p>
+</article>
 
-  <p *ngIf="mode==='show'" class="p" (click)="onClick()">{{ config.data }}</p>
-  <button
-    *ngIf="mode==='show'"
-    class="button button--main"
-    (click)="onClick()"
-  >Продолжить</button>
+<p
+  class="p"
+  [class.hide]="mode==='play'"
+>{{ data }}</p>
 
-  <div class="comb">{{ comb }}</div>
-
-  <div *ngIf="mode==='fill'" class="items">
-    <div *ngFor="let item of letters" (click)="onLetterClick(item)">
-      <span>{{ item }}</span>
-    </div>
-  </div>
-
+<div
+  class="runes"
+  [class.hide]="mode==='show'"
+>
+  <span
+    *ngFor="let item of runes"
+    class="rune"
+    [class.rune--success]="mode==='result' && item.rune === item.user"
+    [class.rune--error]="mode==='result' && item.rune !== item.user"
+  >{{ item.user }}</span>
 </div>
+
+<trainer-button
+  class="button"
+  [class.hide]="mode==='play'"
+  text="Продолжить"
+  (touch)="onButtonTouch()"
+></trainer-button>
+
+<keypad
+  class="keypad"
+  [class.hide]="mode!=='play'"
+  type="ru"
+  force="true"
+  (key)="onKey($event)"
+></keypad>

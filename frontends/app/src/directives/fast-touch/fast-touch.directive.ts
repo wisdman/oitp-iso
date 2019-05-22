@@ -12,9 +12,6 @@ type IEvents = "pointerdown"
              | "mousedown"
              | "click"
 
-const isPointerEvent = "PointerEvent" in window
-const isTouchEvents = "ontouchstart" in window
-
 const preventFunction = function(event: Event) {
   event.preventDefault()
   event.stopPropagation()
@@ -25,19 +22,22 @@ const preventFunction = function(event: Event) {
 })
 export class FastTouchDirective implements OnInit, OnDestroy {
 
+  private readonly _isPointerEvent = "PointerEvent" in window
+  private readonly _isTouchEvents = "ontouchstart" in window
+
   constructor(
     private _el: ElementRef<HTMLButtonElement>
   ) {}
 
   @Output("touch")
-  touchValueChange = new EventEmitter<undefined>()
+  touchValueChange = new EventEmitter()
 
   private _getOnTouch() {
     const self = this
     return function(event: Event){
       event.preventDefault()
       event.stopPropagation()
-      self.touchValueChange.emit(undefined)
+      self.touchValueChange.emit()
     }
   }
 
@@ -56,18 +56,18 @@ export class FastTouchDirective implements OnInit, OnDestroy {
   }
 
   private _initPointerEvents() {
-    if (!isPointerEvent) {
+    if (!this._isPointerEvent) {
       return
     }
     this._eventListeners.push(["pointerdown", this._getOnTouch()])
   }
 
   private _initTouchEvents() {
-    if (!isTouchEvents) {
+    if (!this._isTouchEvents) {
       return
     }
 
-    if (isPointerEvent) {
+    if (this._isPointerEvent) {
       this._eventListeners.push(["touchstart", preventFunction])
       return
     }
@@ -78,7 +78,7 @@ export class FastTouchDirective implements OnInit, OnDestroy {
   private _initMouseEvents() {
     this._eventListeners.push(["click", preventFunction])
 
-    if (isPointerEvent || isTouchEvents) {
+    if (this._isPointerEvent || this._isTouchEvents) {
       this._eventListeners.push(["mousedown", preventFunction])
       return
     }

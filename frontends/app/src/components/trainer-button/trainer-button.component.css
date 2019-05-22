@@ -1,0 +1,75 @@
+:host {
+  --item-text-color: rgb(119, 110, 101);
+  --item-background-color: rgba(238, 228, 218, .7);
+  --item-border-color: rgb(187, 173, 160);
+  --item-selected-color: #0273d4;
+
+  --item-height: 50px;
+  --item-padding: 2px;
+  --text-padding: 24px;
+
+  display: flex;
+
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+@media (max-width: 400px) {
+  :host {
+    --item-height: 40px;
+    font-size: 16px;
+  }
+}
+
+.matrix {
+  display: block;
+  width: auto;
+  height: auto;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.path {
+  stroke: var(--item-border-color);
+  stroke-width: 1;
+  fill: none;
+
+  position: relative;
+  z-index: 999;
+
+  transition: stroke .25s;
+}
+
+.item:hover .path {
+  stroke: var(--item-selected-color);
+}
+
+.fill-path {
+  stroke: none;
+  stroke-width: 0;
+  fill: var(--item-background-color);
+}
+
+.text {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1;
+  text-transform: uppercase;
+
+  color: var(--item-text-color);
+  fill: currentColor;
+
+  transition: color .25s;
+}
+
+.item:hover .text {
+  color: var(--item-selected-color);
+}

@@ -1,0 +1,29 @@
+<svg
+  *ngIf="item"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <g
+    class="item"
+    fastTouch (touch)="onTouch()"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      class="text"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}</text>
+  </g>
+</svg>

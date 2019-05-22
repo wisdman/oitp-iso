@@ -15,20 +15,21 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
 
 	var trainersList = []trainers.ITrainer{
-		"classification-colors", "table-pipe-ru", "table-pipe-number",
+		"table-pipe-ru", "table-pipe-number",
 	}
 
 	var trainersRandom = [][]trainers.ITrainer{
 		{"classification-colors", "classification-definitions", "classification-words"},
 		{"image-expressions"}, {"image-fields"},
 		{"math-middle", "math-sequence", "math-waste"},
-		{"matrix-filling-pattern"}, {"matrix-sequence-pattern"},
+		{"matrix-filling-pattern"},
+		{"matrix-sequence-pattern"},
 		{"matrix-filling-unique"},
 		// {"space-part"},
 		{"table-words"},
 		{"text-letters"},
 		{"text-reading-tezirovanie"},
-		// {"words-columns-pairs"}, {"words-columns-words"},
+		{"words-columns-pairs"}, {"words-columns-words"},
 		{"words-pairs-antonyms", "words-pairs-paronyms", "words-pairs-synonyms", "words-questions-close", "words-questions-waste"},
 	}
 
@@ -36,7 +37,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 		trainersRandom[i], trainersRandom[j] = trainersRandom[j], trainersRandom[i]
 	})
 
-	var trainersFinish = [...]trainers.ITrainer{"matrix-filling-random", "matrix-sequence-random"}
+	var trainersFinish = [...]trainers.ITrainer{"matrix-sequence-random"}
 
 	rand.Shuffle(len(trainersFinish), func(i, j int) {
 		trainersFinish[i], trainersFinish[j] = trainersFinish[j], trainersFinish[i]

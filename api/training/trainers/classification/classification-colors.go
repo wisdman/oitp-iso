@@ -1,7 +1,6 @@
 package classification
 
 import (
-	"fmt"
 	"github.com/wisdman/oitp-isov/api/lib/db"
 )
 
@@ -37,7 +36,6 @@ func BuildColors(
     LIMIT $1`,
 		params.Quantity,
 	)
-	fmt.Printf("DEBUG: %+v", err)
 	if err != nil {
 		return nil, err
 	}

@@ -111,8 +111,8 @@ func Build(
 			config.Items = newSequence3()
 		}
 
-		configs = append(configs, newQuestionConfig(params, config.Items))
-		// configs = append(configs, config)
+		// configs = append(configs, newQuestionConfig(params, config.Items))
+		configs = append(configs, config)
 	}
 
 	return configs, nil

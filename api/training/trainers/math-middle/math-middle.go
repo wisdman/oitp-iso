@@ -123,8 +123,8 @@ func Build(
 			config.Items[2] = newMiddle()
 		}
 
-		configs = append(configs, newQuestionConfig(params, config.Items))
-		// configs = append(configs, config)
+		// configs = append(configs, newQuestionConfig(params, config.Items))
+		configs = append(configs, config)
 	}
 
 	return configs, nil

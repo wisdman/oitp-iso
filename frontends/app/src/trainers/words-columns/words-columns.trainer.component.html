@@ -1,0 +1,61 @@
+<h1 *ngIf="mode === 'show'" class="h1">Запомните слова</h1>
+<h1 *ngIf="mode === 'play'" class="h1">Востановите слова по памяти</h1>
+<h1 *ngIf="mode === 'result'" class="h1">Ваш результат</h1>
+
+<svg
+  *ngIf="items && items.length > 0"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <g
+    *ngFor="let item of items"
+    class="item"
+    [class.item--selected]="mode === 'play' && item === currentItem"
+    [class.item--success]="mode==='result' && item.column === hiddenColumn && item.data === item.user"
+    [class.item--error]="mode==='result' && item.column === hiddenColumn && item.data !== item.user"
+    fastTouch (touch)="onTouch(item)"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      *ngIf="item.column !== hiddenColumn"
+      class="text"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}</text>
+    <text
+      *ngIf="item.column === hiddenColumn"
+      class="text"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.user }}<tspan class="cursor">|</tspan></text>
+  </g>
+</svg>
+
+<trainer-button
+  *ngIf="mode === 'show' || mode === 'result'"
+  class="button"
+  text="Продолжить"
+  (touch)="onButtonTouch()"
+></trainer-button>
+<trainer-button
+  *ngIf="mode === 'play'"
+  class="button"
+  text="Проверить"
+  (touch)="onButtonTouch()"
+></trainer-button>
+
+<keypad class="keypad" type="ru" (key)="onKey($event)"></keypad>

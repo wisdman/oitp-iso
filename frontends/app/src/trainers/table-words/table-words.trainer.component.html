@@ -1,21 +1,72 @@
-<h1>Заполните таблицу</h1>
-<table>
-  <tr>
-    <th class="header"></th>
-    <th *ngFor="let column of config.columns" class="header">{{ column }}</th>
-  </tr>
-  <tr *ngFor="let rune of config.runes">
-    <td class="header">{{ rune }}</td>
-    <td *ngFor="let _ of config.columns">
-      <input type="text" class="input">
-    </td>
-  </tr>
-</table>
+<article class="article">
+  <h1>Заполните таблицу</h1>
+  <p>Словами из категории начинающимися на соответствующую букву</p>
+</article>
 
-<button
-  class="button button--main"
-  (click)="onButtonClick()"
+<svg
+  *ngIf="headers && headers.length > 0 && items && items.length > 0"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  preserveAspectRatio="xMidYMid meet"
 >
-  <span *ngIf="!isResultMode">Проверить</span>
-  <span *ngIf="isResultMode">Продолжить</span>
-</button>
+  <g
+    *ngFor="let item of headers"
+    class="header"
+  >
+    <path
+      class="header__fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="header__path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      class="header__text"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}</text>
+  </g>
+
+  <g
+    *ngFor="let item of items"
+    class="item"
+    [class.item--selected]="mode === 'play' && item === currentItem"
+    fastTouch (touch)="onTouch(item)"
+  >
+    <path
+      class="item__fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="item__path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      class="item__text"
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}<tspan class="item__cursor">|</tspan></text>
+  </g>
+</svg>
+
+<trainer-button
+  *ngIf="mode === 'play'"
+  class="button"
+  text="Проверить"
+  (touch)="onButtonTouch()"
+></trainer-button>
+<trainer-button
+  *ngIf="mode === 'result'"
+  class="button"
+  text="Продолжить"
+  (touch)="onButtonTouch()"
+></trainer-button>
+
+<keypad class="keypad" type="ru" (key)="onKey($event)"></keypad>

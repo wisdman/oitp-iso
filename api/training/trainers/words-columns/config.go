@@ -19,7 +19,7 @@ type Config struct {
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Items [][]*string
+	Items [][]*string `json:"items"`
 }
 
 func newConfig(

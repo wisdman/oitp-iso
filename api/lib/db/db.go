@@ -17,8 +17,8 @@ func New() *DB {
 	}
 
 	config.Logger = &DBLogger{}
-	// config.LogLevel = pgx.LogLevelError
-	config.LogLevel = pgx.LogLevelInfo
+	config.LogLevel = pgx.LogLevelError
+	// config.LogLevel = pgx.LogLevelInfo
 
 	pool, err := pgx.NewConnPool(pgx.ConnPoolConfig{ConnConfig: config})
 	if err != nil {

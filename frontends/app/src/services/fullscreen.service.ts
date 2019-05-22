@@ -2,10 +2,13 @@ import { Injectable } from "@angular/core"
 
 import {
   Subject,
+  Observable,
 } from "rxjs"
 
 import {
   filter,
+  share,
+  withLatestFrom,
 } from "rxjs/operators"
 
 interface IEventData {
@@ -14,6 +17,10 @@ interface IEventData {
   x: number
   y: number
 }
+
+type ISwipe = "up" | "down" | "left" | "right"
+
+const SWIPE_DELTA = 40
 
 @Injectable({ providedIn: "root" })
 export class FullscreenService {
@@ -34,9 +41,31 @@ export class FullscreenService {
     this._events.next(data)
   }
 
-  pointerdown = this._events.pipe(filter(({type}) => type === "down"))
-  pointermove = this._events.pipe(filter(({type}) => type === "move"))
-  pointerup = this._events.pipe(filter(({type}) => type === "up"))
+  pointerdown = this._events.pipe(filter(({type}) => type === "down"), share())
+  pointermove = this._events.pipe(filter(({type}) => type === "move"), share())
+  pointerup = this._events.pipe(filter(({type}) => type === "up"), share())
+
+  swipe: Observable<ISwipe> = this.pointerup.pipe(
+            withLatestFrom(this.pointerdown, (up, down) => {
+              const deltaX = down.x - up.x
+              const deltaY = down.y - up.y
+
+              if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX > SWIPE_DELTA)
+                  return "left"
+                else if (deltaX < SWIPE_DELTA * -1)
+                  return "right"
+              } else {
+                if (deltaY > SWIPE_DELTA)
+                  return "up"
+                else if (deltaY < SWIPE_DELTA * -1)
+                  return "down"
+              }
+
+              return undefined
+            }),
+            filter((x: ISwipe | undefined): x is ISwipe => x !== undefined )
+          )
 
   private _onPointerMoveListener!: (event: PointerEvent) => void
   private _onTouchMoveListener!: (event: TouchEvent) => void

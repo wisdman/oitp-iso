@@ -20,6 +20,8 @@
   align-content: center;
 
   gap: var(--gap);
+
+  margin: auto;
 }
 
 @media (max-width: 650px) {

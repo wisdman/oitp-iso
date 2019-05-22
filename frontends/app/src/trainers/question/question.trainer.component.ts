@@ -241,7 +241,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
     this._showResult()
   }
 
-  onButtonClick() {
+  onButtonTouch() {
     if (this.isResultMode) {
       this._updateResult({ isFinish: true })
       return

@@ -1,7 +1,7 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ElementRef,
+  ChangeDetectorRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -11,8 +11,6 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
-import { DomSanitizer } from "@angular/platform-browser"
-
 import { Subscription } from "rxjs"
 import { TimerLapService } from "../../services"
 
@@ -20,6 +18,11 @@ import {
   ITextLettersTrainerConfig,
   ITextLettersTrainerResult,
 } from "./text-letters.trainer.interfaces"
+
+const RUNES = [
+  ..."АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ".split(""),
+  ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
+]
 
 @Component({
   selector: "trainer-text-letters",
@@ -29,8 +32,7 @@ import {
 })
 export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
-    private _el: ElementRef<HTMLElement>,
-    private _sanitizer: DomSanitizer,
+    private _cdr: ChangeDetectorRef,
     private _timerLapService: TimerLapService,
   ){}
 
@@ -63,7 +65,7 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy
     })
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
     this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(this.config.timeLimit)
+    this._timerLapService.setTimeout(this.config.showTimeLimit)
   }
 
   ngOnChanges(sc: SimpleChanges ) {
@@ -76,56 +78,82 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
+  mode: "show" | "play" | "result" = "show"
 
-
-
-  letters: Array<string> = []
-  comb: string = ""
-  mode: "show" | "fill" = "show"
-
-  getDataUrl(value: string) {
-    return this._sanitizer.bypassSecurityTrustUrl(value)
-  }
-
-  onLetterClick(item: string) {
-    const index = this.letters.indexOf(item);
-    this.letters.splice(index, 1);
-
-    this.comb += item
-
-    if (this.letters.length <= 0) {
-      this._updateResult({
-        isFinish: true,
-      })
-    }
-  }
-
-  onClick() {
-    console.dir(1111111)
-    if (this.mode === 'show') {
-      this.letters = this.config
-                          .data
-                          .split(" ")
-                          .map(word => word.charAt(0))
-                          .filter(letter => /^[А-Яа-яЁё]$/i.test(letter))
-                          .sort(() => Math.random() - 0.5)
-
-      this.mode = 'fill'
-      return
-    }
-  }
+  data: string = ""
+  runes: Array<{
+    rune: string,
+    user?: string,
+  }> = []
 
   private _init() {
-    const columns = this.letters.length
-
-    this._el.nativeElement.style.setProperty("--columns", `${columns}`)
-
-    this.comb = ""
-    this.letters = []
     this.mode = "show"
+    this.data = this.config.data
+    this.runes = this.data
+                     .split(/\s/)
+                     .map(word => word.slice(0,1).toUpperCase())
+                     .filter(rune => RUNES.includes(rune))
+                     .map(rune => ({rune}))
+  }
+
+  private _play() {
+    this.mode = "play"
+    this._cdr.markForCheck()
+    this._timerLapService.setTimeout(this.config.playTimeLimit)
+  }
+
+  private _result() {
+    this.mode = "result"
+    this._cdr.markForCheck()
+    this._timerLapService.setTimeout(0)
   }
 
   private _timeout() {
-    this._updateResult({ isTimeout: true, isFinish: true })
+    if (this.mode === "play") {
+      this._updateResult({ isTimeout: true })
+      this._result()
+      return
+    }
+
+    this._play()
+  }
+
+  private _step(rune: string) {
+    const next = this.runes.find(item => !item.user)
+    if (next === undefined) {
+      this._result()
+      return
+    }
+
+    next.user = rune
+
+    const success =  this.runes.filter(({rune, user}) => rune === user).length
+    const error = this.runes.length - success
+    this._updateResult({ success, error })
+
+    if (this.runes.every(({user}) => !!user)) {
+      this._result()
+    }
+  }
+
+  onKey(rune: string) {
+    if (this.mode !== "play") {
+      return
+    }
+
+    if (!RUNES.includes(rune)) {
+      return
+    }
+
+    this._step(rune)
+  }
+
+  onButtonTouch() {
+    if (this.mode === "result") {
+      this._updateResult({ isFinish: true })
+      return
+    }
+
+    this._play()
   }
 }

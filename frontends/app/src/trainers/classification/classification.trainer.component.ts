@@ -106,7 +106,7 @@ export class ClassificationTrainerComponent implements OnInit, OnChanges, OnDest
         this._resetAnimation()
       },
       error => console.error(error),
-      // () => this._updateResult({ isFinish: true })
+      () => this._updateResult({ isFinish: true })
     )
 
     this._el.nativeElement.style.setProperty("--animation-duration", `${itemMsTimeLimit}ms`)
@@ -138,7 +138,7 @@ export class ClassificationTrainerComponent implements OnInit, OnChanges, OnDest
   }
 
   private _timeout() {
-    // this._updateResult({ isTimeout: true, isFinish: true })
+    this._updateResult({ isTimeout: true, isFinish: true })
   }
 
   onTouch(group: IClassificationTrainerGroup) {
