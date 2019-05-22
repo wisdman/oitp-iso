@@ -64,7 +64,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	var configs []interface{}
 
 	for i, max := 0, len(trainersList); i < max; i++ {
-		if configs, err = trainers.Build(sql, trainersList[i], 0); err != nil {
+		if configs, err = trainers.Build(sql, trainersList[i], uint8(rand.Intn(2))); err != nil {
 			service.Fatal(w, err)
 			sql.Rollback()
 			return
