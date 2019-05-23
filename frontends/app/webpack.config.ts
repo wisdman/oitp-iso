@@ -281,7 +281,8 @@ export default {
       new TerserWebpackPlugin({
         parallel: true,
         terserOptions: {
-          ecma: 8,
+          ecma: 6,
+          safari10: true,
           output: {
             ascii_only: true,
             comments: false,
