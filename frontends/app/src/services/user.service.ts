@@ -46,7 +46,7 @@ export class UserService {
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({email, password})
+      body: JSON.stringify({email: email.toLowerCase(), password})
     }).then(r => r.status === 200)
 
     return from(request)
