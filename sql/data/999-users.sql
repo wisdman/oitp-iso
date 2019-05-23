@@ -5,15 +5,29 @@ INSERT INTO private.users (id, enabled, deleted, roles, email, phone, password, 
 INSERT INTO private.users (id, enabled, deleted, roles, email, phone, password, oauth, name, image, "regTS") VALUES ('265848fc-64dd-11e9-b773-2f10957ae02c', true, false, '{user}', '89530500002@mail.ru', NULL, '\x1a21a8d6ec884aa5bec81b18a600fcb5df63f3db3fc6ff72213975d0ce68026aec5df4371273039ab9f3b003cb2fcd20b5de1d630f8aa1abff075c2a3287de1d', '{}', 'Лидия Васильева', NULL, '2019-04-22 09:01:00.537787');
 INSERT INTO private.users (id, enabled, deleted, roles, email, phone, password, oauth, name, image, "regTS") VALUES ('3f74652e-6586-11e9-a256-c3b56b04cafa', true, false, '{user}', 'a9126000812@gmail.com', NULL, '\xb2e719dc168080d4977e54c9caa703ed1fc631b74ecded9987c7059bfdfb7bc0db8df61bc4a9ae28f544039ec30ac61de30d457cb384d3c1fc33fd753cadbcd5', '{}', 'Александр Елсуков', NULL, '2019-04-23 05:11:27.611409');
 
-INSERT INTO private.sessions (id, "user", expires) VALUES ('9ab1a9a09eae1b9f0dc8d88d36623a5de31c3b1973da9b948a0f836c104df7d9671ebf253988e7a8bee506b8aebf686ce6aff0989c99b5eb92665533fc8c34a8', '0dfb6cd0-64dd-11e9-b773-b704a825f607', '2019-05-22 09:00:19.662953');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('4eb1484522e3eb0a84222622863513c7175e6a885f140b673475dc4e71bab54744804d90ed1248bd01915ff86f94c091806377bde97024d2cc0c2bd0e7672fde', '265848fc-64dd-11e9-b773-2f10957ae02c', '2019-05-22 09:01:00.537787');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('1d72c96bfa727e6150f10d7b87a29f89e372e74206b94fea0394aad37c8c592e64126a39a9a85bebcc77909bf9c8a29604582f9cd616baaf9e09a52ef8bd9ef7', '265848fc-64dd-11e9-b773-2f10957ae02c', '2019-05-22 12:00:15.406357');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('e50460d5a522eef054554ca3ebe68c90613abc2554deed0d2ea2627fb9efca07443fe5cf57c394873214e146f9d109248be9e3986b98c0c2708f59b90c10b190', '265848fc-64dd-11e9-b773-2f10957ae02c', '2019-05-22 13:27:40.079979');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('98ee2182f74354ca5da2f406ef627309369e82ac39f0b32cf3716537e61bd4dedb3833aaf970ca42e3ea08b90ae98851f23bff8bf75564e02422048b9d8cc261', '3f74652e-6586-11e9-a256-c3b56b04cafa', '2019-05-23 05:11:27.611409');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('9b9f94a8e2479e98c8e4ac5ccc990e7522bc59b4879ceb66845d7cb159e5c92184505d72d1fedd4dc91e7172474d854d2976a01a49ddc5e3531aa2407da11f5e', '3f74652e-6586-11e9-a256-c3b56b04cafa', '2019-05-23 05:12:02.415085');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('ac4c2ca5a59a9b62d5430d03b6cd805461230f4378027e8cc35e9341778e82d2ccaef57ba373c7fdbd8ca34e24233b6569234a568638746657812f9b79e2522b', '3f74652e-6586-11e9-a256-c3b56b04cafa', '2019-05-23 05:13:51.859954');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('c3f9b7ff81274a05ec00b157c1edeae69b867bb880f5b39eaa2f245167f21533f1191802fcb0cd20e858378c3fbd247522b3698c5c618f976ad6f804c6431a83', '3f74652e-6586-11e9-a256-c3b56b04cafa', '2019-05-23 05:21:38.771865');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('3fe86b5ef49e0878f28f6c9d4f8a5849411f419756010e8847f8ec91a98c163b64e9192d14a5c7af94cac18f477c31af3b3bd5dcfca67840b1799ddd4bf2993e', '265848fc-64dd-11e9-b773-2f10957ae02c', '2019-05-24 09:34:36.110019');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('6cfad5c3a536e48be8c5d95c33d0d9587b907d0e44ee3e808816f76cf87b24e870a15f2dd310f78d01cb77cb32fb4fcc92cb0a1482fa67682c908fb7e49175cc', '265848fc-64dd-11e9-b773-2f10957ae02c', '2019-05-28 05:11:12.884964');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('750da792d5a000cde886336250b065702552702c5fc4d48dbbf527b8cfbca70be07c4b52df1a3c5d140986bae3d333ae93097f6d5eb6d46a43b94c3561aa1a65', '0dfb6cd0-64dd-11e9-b773-b704a825f607', '2019-06-06 00:49:53.03198');
-INSERT INTO private.sessions (id, "user", expires) VALUES ('4b806d24ea4ad1d40ac39c058e2e5639983acb1bc03474f5038eedf8ced85c63890c981bc9c7d3fe2b969e1ccb35356bfa5a3d10fd125911cae69e91c773daab', '0dfb6cd0-64dd-11e9-b773-b704a825f607', '2019-06-06 00:53:38.709711');
+
+SELECT public.user__add(' ', 'aveowq@gmail.com', 'u8dQr9r');
+
+SELECT public.user__add('Шилин Николай', 'shilinnr@gmail.com', 'iQXjKAh');
+SELECT public.user__add('Конькова Алена Сергеевна', 'alyona-konkova@yandex.ru', 'wRMD8xP');
+SELECT public.user__add('Нестерова Елена Валерьевна', 'nest.ew@yandex.ru', 'tO1Cmnb');
+SELECT public.user__add('Шутова Ольга Валерьевна', 'intell-iq@mail.ru', 'AxPNpnP');
+SELECT public.user__add('Басова Надежда Анатольевна', 'salutnadia@gmail.com', '3qOnF9j');
+SELECT public.user__add('ПАНЯК Марина Васильевна', 'panyak@mail.ru', 'eq15Gsc');
+SELECT public.user__add('Звездникова Римма Анатольевна', 'ikrra@yandex.ru', 'WzZwPsw');
+SELECT public.user__add('Папонов Алексей', 'apaponov@gmail.com', '4b3sdHs');
+SELECT public.user__add('Карпова Марина Леонидовна', 'karpova-ml@mail.ru', 'RYCdx3k');
+SELECT public.user__add('Попова Оксана', 'oxana26popova@yandex.ru', 'B2y6PeB');
+SELECT public.user__add('Иванова Елена', 'chitaispb@gmail.com', '0mXpvVC');
+SELECT public.user__add(' ', '89122444222@mail.ru', 'sPq8g7v');
+SELECT public.user__add('Ягнищак В В', 'vilkavika@gmail.com', '3GJXTu8');
+SELECT public.user__add('Бедрина Н.В.', 'nat.ekb1976@gmail.com', 'i3ueP2k');
+SELECT public.user__add(' ', 's.lazareva2011@mail.ru', 'phBTsCJ');
+SELECT public.user__add('Кравцова', 'kravtsoval70@rambler.ru', '3olwRdj');
+SELECT public.user__add('Цугунова Н. А.', 'mega.chugunova65@mail.ru', 'WCcWyw9');
+SELECT public.user__add('Тимошенко И Н', 'irati69@mail.ru', 'v9dwFrR');
+SELECT public.user__add('Куликова И.И', 'iki84@mail.ru', '4cQNISB');
+SELECT public.user__add('Кувшинова И В', 'i.v.bukovskaya@rambler.ru', 'R238DpP');
+SELECT public.user__add('Андреева Е Н', 'e.g.hel@mail.ru', 'fB84Exm');
+SELECT public.user__add('Новоселова Т Я', 'tatiananovoselova@mail.ru', 'NsZJgie');
+SELECT public.user__add('Киселева Т.А', 'kiselevata02@mail.ru', 'uJFIVCN');
