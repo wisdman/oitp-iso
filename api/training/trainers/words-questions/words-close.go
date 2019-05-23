@@ -1,3 +1,8 @@
+// Активизация лексикона
+//
+// Слово - это ...
+//
+
 package wordsQuestion
 
 import (

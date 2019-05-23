@@ -21,7 +21,7 @@ export type IClassificationTrainerGroup = {
 export interface IClassificationTrainerConfig extends ITrainerConfig {
   id: IClassificationTrainer
 
-  type: "colors" | "texts" | "images"
+  type: "colors" | "definitions" | "words"
 
   itemTimeLimit: number
   items: Array<IClassificationTrainerItem>

@@ -1,6 +1,7 @@
 import {
   Component,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -29,6 +30,7 @@ import {
 })
 export class ImageExpressionsTrainerComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
+    private _cdr: ChangeDetectorRef,
     private _sanitizer: DomSanitizer,
     private _timerLapService: TimerLapService,
   ){}
@@ -61,7 +63,8 @@ export class ImageExpressionsTrainerComponent implements OnInit, OnChanges, OnDe
     })
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
     this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(this.config.timeLimit)
+    this._timerLapService.setTimeout(0)
+    this._init()
   }
 
   ngOnChanges(sc: SimpleChanges ) {
@@ -74,16 +77,96 @@ export class ImageExpressionsTrainerComponent implements OnInit, OnChanges, OnDe
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
-  get image() {
-    return `/expressions/${this.config.image}.jpg`
-  }
-
   srcSanitize(value: string) {
     return this._sanitizer.bypassSecurityTrustUrl(value)
   }
 
+  mode: "show" | "play" = "show"
+  pages!: Array<{
+    image: number
+    data: string
+  }>
+  currentPage: number = -1
+
+  get image() {
+    if (this.currentPage < 0) {
+      return ""
+    }
+    return `/expressions/${this.pages[this.currentPage].image}.jpg`
+  }
+
+  get data() {
+    if (this.currentPage < 0) {
+      return ""
+    }
+    return this.pages[this.currentPage].data
+  }
+
+  userData: string = ""
+
+  private _init() {
+    this.mode = "show"
+    this.pages = this.config.pages
+    this.currentPage = -1
+    this._step()
+  }
+
+  private _play() {
+    this.mode = "play"
+    this.pages = this.config.pages // TODO: Random
+    this.currentPage = -1
+    this._step()
+  }
+
+  private _step() {
+    this.currentPage++
+    this._timerLapService.setTimeout(this.mode === "show" ? this.config.showTimeLimit : this.config.playTimeLimit)
+  }
+
   private _timeout() {
-    this._updateResult({ isTimeout: true, isFinish: true })
+    switch (this.mode) {
+      case "show":
+        if (this.currentPage >= this.pages.length - 1) {
+          this._play()
+        } else {
+          this._step()
+        }
+        break
+
+      case "play":
+        if (this.currentPage >= this.pages.length - 1) {
+          this._updateResult({ isFinish: true })
+        } else {
+          this._step()
+        }
+        break
+    }
+    this._cdr.markForCheck()
+  }
+
+  onKey(key: string) {
+    if (this.mode !== "play") {
+      return
+    }
+
+    switch (key) {
+      case "BACKSPACE":
+        this.userData = this.userData.slice(0,-1);
+        return
+
+      default:
+        this.userData += key
+        return
+    }
+  }
+
+  onButtonTouch() {
+    if (this.currentPage >= this.pages.length - 1) {
+      this._updateResult({ isFinish: true })
+    } else {
+      this._step()
+    }
+    this._cdr.markForCheck()
   }
 
 }

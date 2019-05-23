@@ -1,3 +1,8 @@
+// Тезирование
+//
+// Выделите тезись
+//
+
 package textReading
 
 import (

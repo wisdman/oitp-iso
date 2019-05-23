@@ -1,3 +1,8 @@
+<!-- Активизация лексиклна -->
+<h1 class="h1" *ngIf="config.type === 'colors'">Укажите соответствующий цвет</h1>
+<h1 class="h1" *ngIf="config.type === 'definitions'">По лексическому значению узнайте слово</h1>
+<h1 class="h1" *ngIf="config.type === 'words'">Определите тематическую группу</h1>
+
 <h1 class="word">
   <span #dataNode class="word-text animate">{{ item && item.data }}</span>
 </h1>
@@ -22,12 +27,12 @@
       viewBox="0 0 300 50"
       preserveAspectRatio="xMidYMid meet"
     >
-    <text
-      class="group-text__text"
-      x="50%" y="50%"
-      dominant-baseline="middle"
-      text-anchor="middle"
-    >{{ group.data }}</text>
+      <text
+        class="group-text__text"
+        x="50%" y="50%"
+        dominant-baseline="middle"
+        text-anchor="middle"
+      >{{ group.data }}</text>
     </svg>
   </div>
 </div>

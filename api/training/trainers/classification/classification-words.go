@@ -1,3 +1,6 @@
+// Активизация лексиклна
+// Определите тематическую группу
+
 package classification
 
 import (
@@ -77,7 +80,7 @@ func BuildWords(
 	}
 	defer rows.Close()
 
-	config := newConfig(params, TypeTexts)
+	config := newConfig(params, TypeWords)
 
 	for rows.Next() {
 		item := &Item{}

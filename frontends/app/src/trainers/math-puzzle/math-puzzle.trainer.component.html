@@ -1,7 +1,10 @@
+<!-- Арифметико-практическое мышление -->
+
+<!-- Умение мыслить по аналогии -->
 <ng-container
   *ngIf="config && config.type === 'middle'"
 >
-  <h1 class="h1">Вставьте пропущенное число</h1>
+  <h1 class="h1">Найдите ответ по аналогии с первым примером</h1>
 
   <div class="middle-items">
     <div class="item">{{ config.items[0][0] }}</div>
@@ -31,10 +34,11 @@
   </div>
 </ng-container>
 
+<!-- Ритм мысли -->
 <ng-container
   *ngIf="config && config.type === 'sequence'"
 >
-  <h1 class="h1">Дополните последовательность</h1>
+  <h1 class="h1">Найдите закономерность, продолжите числовой ряд</h1>
 
   <div class="sequence-items">
     <div *ngFor="let item of items" class="item">{{ item }},</div>

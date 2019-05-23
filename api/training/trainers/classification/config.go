@@ -16,9 +16,9 @@ type Parameters struct {
 type IType string
 
 const (
-	TypeColors IType = "colors"
-	TypeTexts  IType = "texts"
-	TypeImages IType = "images"
+	TypeColors      IType = "colors"
+	TypeDefinitions IType = "definitions"
+	TypeWords       IType = "words"
 )
 
 type Item struct {

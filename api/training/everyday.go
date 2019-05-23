@@ -20,7 +20,8 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 
 	var trainersRandom = [][]trainers.ITrainer{
 		{"classification-colors", "classification-definitions", "classification-words"},
-		{"image-expressions"}, {"image-fields"},
+		{"image-expressions"},
+		{"image-fields"},
 		{"math-middle", "math-sequence", "math-waste"},
 		{"matrix-filling-pattern"},
 		{"matrix-sequence-pattern"},
@@ -29,7 +30,8 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 		{"table-words"},
 		{"text-letters"},
 		{"text-reading-tezirovanie"},
-		{"words-columns-pairs"}, {"words-columns-words"},
+		{"words-columns-pairs"},
+		{"words-columns-words"},
 		{"words-pairs-antonyms", "words-pairs-paronyms", "words-pairs-synonyms", "words-questions-close", "words-questions-waste"},
 	}
 
@@ -64,7 +66,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	var configs []interface{}
 
 	for i, max := 0, len(trainersList); i < max; i++ {
-		if configs, err = trainers.Build(sql, trainersList[i], uint8(rand.Intn(2))); err != nil {
+		if configs, err = trainers.Build(sql, trainersList[i], 0); err != nil {
 			service.Fatal(w, err)
 			sql.Rollback()
 			return

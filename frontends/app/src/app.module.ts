@@ -93,6 +93,7 @@ import {
 } from "./services"
 
 import {
+  AuthGuard,
   LogoutGuard,
   TrainingRoutingGuard,
 } from "./guards"
@@ -182,6 +183,7 @@ import { ROUTES } from "./app.routing"
   ],
 
   providers: [
+    AuthGuard,
     LogoutGuard,
     TrainingRoutingGuard,
 

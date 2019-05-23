@@ -1,3 +1,5 @@
+/// !!!! УБРАНО
+
 package matrixFilling
 
 import (

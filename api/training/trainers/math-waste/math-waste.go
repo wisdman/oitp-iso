@@ -1,3 +1,10 @@
+// Арифметико-практическое мышление
+// Логика
+//
+// Найдите число-исключение
+//
+// !!! Показать логику - кнопка
+
 package mathWaste
 
 import (
@@ -37,7 +44,7 @@ func newWaste1Item() int {
 }
 
 func newWaste1() (result []int) {
-	for i := 0; i < 11; i++ {
+	for i := 0; i < 5; i++ {
 		result = append(result, newWaste1Item())
 	}
 
@@ -59,7 +66,7 @@ func newWaste2Item(inc int) int {
 func newWaste2() (result []int) {
 	inc := wRand.Range(1, 49)
 
-	for i := 0; i < 11; i++ {
+	for i := 0; i < 5; i++ {
 		result = append(result, newWaste2Item(inc))
 	}
 

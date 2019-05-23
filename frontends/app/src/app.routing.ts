@@ -14,6 +14,7 @@ import {
 } from "./layouts"
 
 import {
+  AuthGuard,
   LogoutGuard,
   TrainingRoutingGuard,
 } from "./guards"
@@ -22,6 +23,7 @@ export const ROUTES: Routes =
 [{
   path: "",
   component: MainLayoutComponent,
+  canActivate: [ AuthGuard ],
   children: [{
     path: "",
     redirectTo: "/dashboard",

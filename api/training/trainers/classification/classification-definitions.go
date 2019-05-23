@@ -1,3 +1,6 @@
+// Активизация лексиклна
+// По лексическому значению узнайте слово
+
 package classification
 
 import (
@@ -58,7 +61,7 @@ func BuildDefinitions(
 	}
 	defer rows.Close()
 
-	config := newConfig(params, TypeTexts)
+	config := newConfig(params, TypeDefinitions)
 
 	for rows.Next() {
 		item := &Item{}

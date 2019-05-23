@@ -72,6 +72,8 @@ export class ImageCarpetTrainerComponent implements OnInit, OnChanges, OnDestroy
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
   }
 
+  mode: "show" | "play" = "show"
+
   private _init() {
 
   }

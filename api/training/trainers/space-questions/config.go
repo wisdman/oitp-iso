@@ -1,3 +1,8 @@
+// Пространство и логика
+//
+// Оприделите лишнюю фигуру
+//
+
 package spaceQuestions
 
 import (
@@ -21,7 +26,7 @@ func newQuestionConfig(
 	return &question.Config{
 		Config: abstract.NewConfig(abstract.UIQuestion),
 
-		Body: "",
+		Body: "Оприделите лишнюю фигуру",
 
 		ItemsType: question.Image,
 		Items:     items,

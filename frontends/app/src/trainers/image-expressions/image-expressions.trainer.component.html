@@ -1,2 +1,16 @@
+<!-- Горманизация работы полушарийй -->
+<h1 class="h1" *ngIf="mode==='show'">Запомните название</h1>
+<h1 class="h1" *ngIf="mode==='play'">Восстановите название по памяти</h1>
+
 <img class="image" [src]="srcSanitize(image)">
-<h1 class="h1">{{ config.data }}</h1>
+<div *ngIf="mode==='show'" class="h2-text">{{ data }}</div>
+<div *ngIf="mode==='play'" class="h2-input">{{ userData }}<span class="cursor">|</span></div>
+
+<trainer-button
+  *ngIf="mode === 'play'"
+  class="button"
+  text="Продолжить"
+  (touch)="onButtonTouch()"
+></trainer-button>
+
+<keypad *ngIf="mode === 'play'" class="keypad" type="ru" (key)="onKey($event)"></keypad>

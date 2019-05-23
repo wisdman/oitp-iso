@@ -46,7 +46,7 @@ func newQuestionConfig(
 
 	return &question.Config{
 		Config:    abstract.NewConfig(abstract.UIQuestion),
-		Body:      "<h1>Какое из чисел лишнее?</h1>",
+		Body:      "<h1>Найдите число-исключение</h1>",
 		ItemsType: question.Text,
 		Multiple:  false,
 		Items:     items,

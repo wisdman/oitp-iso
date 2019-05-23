@@ -10,10 +10,13 @@ export const ImageExpressionsTrainerID: IImageExpressionsTrainer = "image-expres
 export interface IImageExpressionsTrainerConfig extends ITrainerConfig {
   id: IImageExpressionsTrainer
 
-  timeLimit: number
+  showTimeLimit: number
+  playTimeLimit: number
 
-  image: number
-  data: string
+  pages: Array<{
+    image: number
+    data: string
+  }>
 }
 
 export interface IImageExpressionsTrainerResult extends ITrainerResult {

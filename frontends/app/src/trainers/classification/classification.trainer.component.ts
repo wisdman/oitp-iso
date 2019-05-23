@@ -109,7 +109,7 @@ export class ClassificationTrainerComponent implements OnInit, OnChanges, OnDest
       () => this._updateResult({ isFinish: true })
     )
 
-    this._el.nativeElement.style.setProperty("--animation-duration", `${itemMsTimeLimit}ms`)
+    this._el.nativeElement.style.setProperty("--animation-duration", `${itemMsTimeLimit * 1.3}ms`)
 
     if (this.config.type === 'colors') {
       this._el.nativeElement.style.setProperty("--columns", `${this.groups.length}`)

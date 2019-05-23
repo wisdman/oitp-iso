@@ -1,5 +1,6 @@
-<h1 *ngIf="mode === 'show'" class="h1">Запомните слова</h1>
-<h1 *ngIf="mode === 'play'" class="h1">Востановите слова по памяти</h1>
+<h1 *ngIf="mode === 'show' && config && this.config.items[0].length > 1" class="h1">Запомните пары слов</h1>
+<h1 *ngIf="mode === 'show' && config && this.config.items[0].length === 1" class="h1">Запомните слова</h1>
+<h1 *ngIf="mode === 'play'" class="h1">Восстановите слова по памяти</h1>
 <h1 *ngIf="mode === 'result'" class="h1">Ваш результат</h1>
 
 <svg
