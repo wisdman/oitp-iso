@@ -1,4 +1,6 @@
 
+import "core-js/es"
+
 // (window as any).__Zone_disable_requestAnimationFrame=true
 import "zone.js/dist/zone"
 

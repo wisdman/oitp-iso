@@ -21,7 +21,7 @@ import * as CompressionWebpackPlugin from "compression-webpack-plugin"
 const PATH = (...p: Array<string>) => resolve(__dirname, ...p)
 const PKG = require("./package.json")
 const isProduction = process.env.NODE_ENV === "production"
-const rxPaths = require("rxjs/_esm2015/path-mapping")
+const rxPaths = require("rxjs/_esm5/path-mapping")
 
 const postCSSPlugins = [
   require("postcss-import")(),
@@ -44,7 +44,7 @@ export default {
 
   resolve: {
     extensions: [".ts", ".js", ".json"],
-    mainFields: ["es2015", "browser", "module", "main"],
+    mainFields: ["browser", "module", "main"],
     symlinks: true,
     alias: {
       ...rxPaths(),
@@ -281,8 +281,9 @@ export default {
       new TerserWebpackPlugin({
         parallel: true,
         terserOptions: {
-          ecma: 6,
+          ecma: 5,
           safari10: true,
+          ie8: false,
           output: {
             ascii_only: true,
             comments: false,

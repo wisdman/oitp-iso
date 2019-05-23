@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "ESNext",
+    "target": "ES5",
+    "module": "ES2015",
     "moduleResolution": "Node",
 
     "rootDir": ".",
@@ -22,7 +22,9 @@
     "noUnusedParameters": true,
 
     "skipLibCheck": true,
-    "lib": ["DOM", "ES2018", "ESNext"],
+    "lib": ["DOM", "ES2015", "ES2016", "ES2017", "ES2018", "ESNext"],
+
+    "downlevelIteration": true,
 
     "typeRoots": [ "./node_modules/@types" ]
   }
