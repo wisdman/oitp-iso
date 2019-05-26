@@ -74,7 +74,7 @@ export class RelaxTrainerComponent implements OnInit, OnChanges, OnDestroy {
     return this._sanitizer.bypassSecurityTrustUrl(value)
   }
 
-  @ViewChild('h1Node') h1NodeRef!: ElementRef<HTMLElement>
+  @ViewChild('h1Node', { static: true }) h1NodeRef!: ElementRef<HTMLElement>
 
   private _initAnimations() {
     const h1 = this.h1NodeRef.nativeElement

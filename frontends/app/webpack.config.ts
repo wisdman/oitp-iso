@@ -3,28 +3,36 @@ import * as zlib from "zlib"
 
 import {
   Configuration,
+  ContextReplacementPlugin,
   DefinePlugin,
   HotModuleReplacementPlugin,
   LoaderOptionsPlugin,
   ProgressPlugin,
+  SourceMapDevToolPlugin,
 } from "webpack"
 
 import { AngularCompilerPlugin, PLATFORM } from "@ngtools/webpack"
 import { SuppressExtractedTextChunksWebpackPlugin } from "@angular-devkit/build-angular/src/angular-cli-files/plugins/suppress-entry-chunks-webpack-plugin"
 
-import * as CopyWebpackPlugin from "copy-webpack-plugin"
 import * as HtmlWebpackPlugin from "html-webpack-plugin"
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin"
 import * as TerserWebpackPlugin from "terser-webpack-plugin"
 import * as CompressionWebpackPlugin from "compression-webpack-plugin"
+import * as CircularDependencyPlugin from "circular-dependency-plugin"
+
+import { ScriptTarget } from "typescript"
+
+const isProduction = process.env.NODE_ENV === "production"
+const isES5 = process.env.JS_TARGET === "ES5"
+
+const rxPaths = require(isES5 ? "rxjs/_esm5/path-mapping.js" : "rxjs/_esm2015/path-mapping.js")
 
 const PATH = (...p: Array<string>) => resolve(__dirname, ...p)
 const PKG = require("./package.json")
-const isProduction = process.env.NODE_ENV === "production"
-const rxPaths = require("rxjs/_esm5/path-mapping")
 
 const postCSSPlugins = [
   require("postcss-import")(),
+  require("postcss-gap-properties")(),
   require("autoprefixer")(),
   require("postcss-csso")(),
 ]
@@ -39,22 +47,27 @@ export default {
 
   entry: {
     main: PATH("./src/main.ts"),
+    polyfills: [
+      isES5 ? PATH("./src/es5-polyfills.js") : PATH("./src/safari-nomodule.js"),
+      PATH("./src/polyfills.ts"),
+    ],
     styles: PATH("./src/styles/index.css"),
   },
 
   resolve: {
-    extensions: [".ts", ".js", ".json"],
-    mainFields: ["browser", "module", "main"],
+    extensions: [".ts", ".mjs", ".js", ".json"],
+    mainFields: [ ...(isES5 ? [] : ["es2015"]), "browser", "module", "main"],
     symlinks: true,
     alias: {
       ...rxPaths(),
+      ...(isES5 ? {} : { "zone.js/dist/zone": "zone.js/dist/zone-evergreen" }),
     },
   },
 
   output: {
     path: PATH("./artifacts"),
     publicPath: "/",
-    filename: `js/${isProduction ? "[id].[hash:10]" : "[name]"}.js`,
+    filename: `js/[name]-${isES5 ? "es5" : "es2015"}.[hash:10].js`,
     crossOriginLoading: false,
   },
 
@@ -64,26 +77,6 @@ export default {
       test: /\.html$/i,
       use: [{
         loader: "raw-loader"
-      }]
-    },{
-      // === SVG files ===
-      test: /\.svg$/,
-      use: [{
-        loader: "file-loader",
-        options: {
-          outputPath: "svg/",
-          name: "[name].[ext]",
-        },
-      },{
-        loader: "svgo-loader",
-        options: {
-          plugins: [
-            { cleanupIDs: false },
-            { convertPathData: false },
-            { removeUselessDefs: false },
-            { removeXMLProcInst: false },
-          ]
-        }
       }]
     },{
       // === Components styles ===
@@ -167,6 +160,8 @@ export default {
   },
 
   plugins: [
+    new ContextReplacementPlugin(/\@angular(\\|\/)core(\\|\/)/),
+
     new ProgressPlugin(),
 
     new LoaderOptionsPlugin({
@@ -181,42 +176,32 @@ export default {
       DEFINE_DEBUG: JSON.stringify(!isProduction),
     }),
 
+    new CircularDependencyPlugin({
+      exclude: /([\\\/]node_modules[\\\/])|(ngfactory\.js$)/,
+    }),
+
     new AngularCompilerPlugin({
-      entryModule: PATH("./src/app.module#AppModule"),
       mainPath: PATH("./src/main.ts"),
+      entryModule: PATH("./src/app.module#AppModule"),
       platform: PLATFORM.Browser,
       sourceMap: true,
+      directTemplateLoading: true,
+      nameLazyFiles: false,
       tsConfigPath: PATH("./tsconfig.json"),
+      forkTypeChecker: true,
+      contextElementDependencyConstructor: require("webpack/lib/dependencies/ContextElementDependency"),
+      compilerOptions: {
+        enableIvy: false,
+        target: isES5 ? ScriptTarget.ES5 : ScriptTarget.ES2015,
+      },
     }),
 
     new MiniCssExtractPlugin({
-      filename: `css/${isProduction ? "[id].[hash:10]" : "[name]"}.css`,
+      filename: "css/[name].[contenthash:10].css",
+      chunkFilename: "css/[name].[contenthash:10].css",
     }),
 
     new SuppressExtractedTextChunksWebpackPlugin(),
-
-    new HtmlWebpackPlugin({
-      template: PATH("./src/index.html"),
-      inject: "head",
-      chunksSortMode: "manual",
-      chunks: ["vendor", "common", "styles", "main"],
-      minify: {
-        collapseWhitespace: true,
-        removeComments: true,
-      },
-    }),
-
-    new CopyWebpackPlugin([{
-      from: PATH("./favicon"),
-      ignore: [".*"],
-    },{
-      from: PATH("./manifest.json"),
-      transform(content) {
-        return JSON.stringify(JSON.parse(String(content)))
-      },
-    },{
-      from: PATH("./data"),
-    }]),
 
   ].concat(isProduction ? [
     // === Production mode plugins ===
@@ -241,14 +226,24 @@ export default {
     })
   ] : [
     // === Development mode plugins ===
+    new SourceMapDevToolPlugin({
+      filename: "[file].map",
+      include: [/js$/, /css$/],
+    }),
+
+    new HtmlWebpackPlugin({
+      template: PATH("./src/index.html"),
+      inject: "head",
+      chunksSortMode: "manual",
+      chunks: ["polyfills", "vendor", "common", "styles", "main"],
+    }),
+
     new HotModuleReplacementPlugin()
   ]),
 
   optimization: {
     noEmitOnErrors: true,
-    runtimeChunk: {
-      name: "vendor"
-    },
+    runtimeChunk: { name: "vendor" },
     splitChunks: {
       maxAsyncRequests: Infinity,
       cacheGroups: {
@@ -272,7 +267,10 @@ export default {
           test: (module, chunks) => {
             const moduleName = module.nameForCondition ? module.nameForCondition() : ""
             return /[\\/]node_modules[\\/]/.test(moduleName) &&
-              !chunks.some(({ name }:{ name: string }) => name === "styles")
+              !chunks.some(({ name }:{ name: string }) => name === "polyfills"
+                                                       || name === "polyfills-es5"
+                                                       || name === "styles"
+                          )
           },
         },
       }
@@ -280,13 +278,24 @@ export default {
     minimizer: [
       new TerserWebpackPlugin({
         parallel: true,
+        sourceMap: false,
+        cache: true,
         terserOptions: {
-          ecma: 5,
+          ecma: isES5 ? 5 : 6,
           safari10: true,
           ie8: false,
           output: {
             ascii_only: true,
             comments: false,
+            webkit: true,
+          },
+          compress: {
+            pure_getters: true,
+            passes: 3,
+            global_defs: {
+              ngDevMode: false,
+              ngI18nClosureMode: false,
+            },
           },
         },
       }),
@@ -298,7 +307,8 @@ export default {
   },
 
   node: false,
-  devtool: isProduction ? false : "source-map",
+  profile: false,
+  devtool: isProduction ? false : "cheap-eval-source-map",
 
   stats: "minimal",
 

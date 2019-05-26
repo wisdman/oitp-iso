@@ -126,7 +126,7 @@ export class ClassificationTrainerComponent implements OnInit, OnChanges, OnDest
     this._stepSubject.next(true)
   }
 
-  @ViewChild("dataNode") dataNodeRef!: ElementRef<HTMLSpanElement>
+  @ViewChild("dataNode", { static: true }) dataNodeRef!: ElementRef<HTMLSpanElement>
   private _resetAnimation() {
     const element = this.dataNodeRef.nativeElement
     window.requestAnimationFrame(() => {

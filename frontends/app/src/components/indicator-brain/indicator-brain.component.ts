@@ -19,7 +19,7 @@ import { UserService } from "../../services"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndicatorBrainComponent implements OnInit, OnDestroy {
-  @ViewChild("brainNode") brainRef?: ElementRef<HTMLDivElement>
+  @ViewChild("brainNode", { static: true }) brainRef?: ElementRef<HTMLDivElement>
 
   constructor(private _userService: UserService) {}
   public user = this._userService.getUser()

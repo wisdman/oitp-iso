@@ -1,4 +1,5 @@
 import { APP_INITIALIZER, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core"
+import { APP_BASE_HREF } from "@angular/common"
 import { BrowserModule } from "@angular/platform-browser"
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
@@ -223,6 +224,12 @@ import { ROUTES } from "./app.routing"
     {
       provide: LOCALE_ID,
       useValue: "ru"
+    },
+
+    // App base
+    {
+      provide: APP_BASE_HREF,
+      useValue: "/",
     },
   ],
 

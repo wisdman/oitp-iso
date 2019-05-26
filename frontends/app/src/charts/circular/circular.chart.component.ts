@@ -15,7 +15,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CircularChartComponent implements OnChanges {
-  @ViewChild("circleNode") circleRef?: ElementRef<SVGPathElement>
+  @ViewChild("circleNode", { static: true }) circleRef?: ElementRef<SVGPathElement>
 
   @Input()
   value: number = 0

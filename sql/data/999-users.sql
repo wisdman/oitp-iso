@@ -31,3 +31,19 @@ SELECT public.user__add('Кувшинова И В', 'i.v.bukovskaya@rambler.ru',
 SELECT public.user__add('Андреева Е Н', 'e.g.hel@mail.ru', 'fB84Exm');
 SELECT public.user__add('Новоселова Т Я', 'tatiananovoselova@mail.ru', 'NsZJgie');
 SELECT public.user__add('Киселева Т.А', 'kiselevata02@mail.ru', 'uJFIVCN');
+
+
+SELECT public.user__add('Семенова Екатерина', 'natnatali1988@gmail.com', 'N0BSFW5');
+SELECT public.user__add('Переверзев Александр', '89097009111@bk.ru', 'o6hkH5m');
+SELECT public.user__add('Котельников Д.А.', '7wgx@mail.ru', '8JhafAB');
+SELECT public.user__add('Иванова Яна', 'ivanova.yana888@mail.ru', 'ZrCIwWc');
+SELECT public.user__add('Кирей Юрий', 'kirey.yv@gmail.com', 'v0vpcun');
+SELECT public.user__add('Мартьянова Надежда', 'martyanova@rocenka.ru', 'ToPkpXL');
+SELECT public.user__add('Крайних Елена', 'delovoibereg1@mail.ru', 'jQmqH9Q');
+SELECT public.user__add('Романченко Иван', 'r84@inbox.ru', 'mSm86j4');
+SELECT public.user__add('Воробьева Юлия', 'ulichik@mail.ru', 'jCJ8Bzy');
+SELECT public.user__add('Дементьева Марина', 'hello@preobrazovatel.pro', 'xKy1GxZ');
+SELECT public.user__add('Евсеевы', 'evseev@kzakazu.ru', '5m4rJO4');
+SELECT public.user__add('Дьяконов Алексей', 'dasar3000@mail.ru', 'QOUqwBN');
+SELECT public.user__add('Ускова Вера', 'darkfuneralskrillex@mail.ru', 'v5DZ43k');
+SELECT public.user__add('Екатерина Кац', 'kattykats17@mail.ru', 'm5XbRQg');

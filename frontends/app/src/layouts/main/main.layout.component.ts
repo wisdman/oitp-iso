@@ -46,7 +46,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     })
   }
 
-  @ViewChild("sidebarNode") sidebarRef?: ElementRef<HTMLDivElement>
+  @ViewChild("sidebarNode", { static: true }) sidebarRef?: ElementRef<HTMLDivElement>
 
   onSidebarClick({clientX, target}: {clientX: number, target: Node}) {
     if (!this.isSidebarActive) {

@@ -1,29 +1,20 @@
 
-import "core-js/es"
-
-// (window as any).__Zone_disable_requestAnimationFrame=true
-import "zone.js/dist/zone"
-
 import { enableProdMode } from "@angular/core"
-import { platformBrowser } from "@angular/platform-browser"
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic"
 
 import { registerLocaleData } from "@angular/common"
 import localeRu from "@angular/common/locales/ru"
 
-import { AppModuleNgFactory } from "./app.module.ngfactory"
+import { AppModule } from "./app.module"
 
-import { DEBUG, APP_FULL_NAME } from "./app.config"
+import { DEBUG } from "./app.config"
 
-console.log(APP_FULL_NAME)
-
-if (!DEBUG) {
-  enableProdMode()
-}
+if (!DEBUG) enableProdMode()
 
 function main(): Promise<any> {
   registerLocaleData(localeRu)
-  return platformBrowser()
-         .bootstrapModuleFactory(AppModuleNgFactory)
+  return platformBrowserDynamic()
+         .bootstrapModule(AppModule)
 }
 
 const domReadyHandler = () => {
