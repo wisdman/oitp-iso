@@ -1,19 +1,11 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
+  Component,
 } from "@angular/core"
 
-import { DomSanitizer } from "@angular/platform-browser"
-
-import { Subscription } from "rxjs"
-import { TimerLapService } from "../../services"
+import {
+  AbstractTrainerComponent,
+} from "../abstract"
 
 import {
   ITextReadingTrainerConfig,
@@ -26,76 +18,14 @@ import {
   styleUrls: [ "./text-reading.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextReadingTrainerComponent implements OnInit, OnChanges, OnDestroy {
-  constructor(
-    private _sanitizer: DomSanitizer,
-    private _timerLapService: TimerLapService,
-  ){}
+export class TextReadingTrainerComponent
+extends AbstractTrainerComponent<ITextReadingTrainerConfig, ITextReadingTrainerResult> {
 
-  @Input()
-  config!: ITextReadingTrainerConfig
-
-  result: ITextReadingTrainerResult = {
-    id: "text-reading",
-    config: this.config,
-    success: 0,
-    error: 0,
-  }
-
-  @Output("result")
-  resultValueChange = new EventEmitter<ITextReadingTrainerResult>()
-
-  private _updateResult(result: Partial<ITextReadingTrainerResult>) {
-    this.result = {...this.result, config: this.config, ...result}
-    this.resultValueChange.emit(this.result)
-  }
-
-  private _lapTimerSubscriber!: Subscription
-
-  ngOnInit() {
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(this.config.timeLimit)
-  }
-
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
-
-  ngOnDestroy() {
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-  }
-
-  private _timeout() {
-    this._updateResult({ isTimeout: true, isFinish: true })
-  }
-
-
-  get data() {
-    return this._sanitizer.bypassSecurityTrustHtml(this.config.data)
+  init() {
+    this.setTimeout(this.config.timeLimit)
   }
 
   onClick() {
-    this._updateResult({
-      isFinish: true,
-    })
+    this.finish()
   }
-
-
-
-
-
-
-
-
-
-
-
 }

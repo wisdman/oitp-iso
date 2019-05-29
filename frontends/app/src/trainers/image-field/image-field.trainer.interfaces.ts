@@ -5,7 +5,6 @@ import {
 } from "../interfaces"
 
 export type IImageFieldTrainer = "image-field"
-export const ImageFieldID: IImageFieldTrainer = "image-field"
 
 export interface IImageFieldItem {
   data: string,

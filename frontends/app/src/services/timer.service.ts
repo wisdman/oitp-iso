@@ -13,6 +13,7 @@ import {
   scan,
   share,
   switchMap,
+  takeWhile,
   withLatestFrom,
 } from "rxjs/operators"
 
@@ -43,7 +44,7 @@ export class TimerService {
                       share(),
                     )
 
-  globalTimeout = this.globalTimer.pipe(filter(value => value === 0))
+  globalTimeout = this.globalTimer.pipe(filter(value => value === 0), share())
 
   private _lapTimerSubject = new Subject<number>()
   setLapTimeout(value: number) {
@@ -62,5 +63,12 @@ export class TimerService {
                    share(),
                  )
 
-  lapTimeout = this.lapTimer.pipe(filter(([limit, value]) => limit > 0 && value === limit))
+  lapTimeout = this.lapTimer.pipe(filter(([limit, value]) => limit > 0 && value === limit), share())
+
+  getCustomTimer(limit: number) {
+    return this.globalTimer.pipe(
+      scan(current => --current, limit),
+      takeWhile(value => value >= 0),
+    )
+  }
 }

@@ -19,10 +19,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageCarpetTrainerComponent
-  extends AbstractTrainerComponent<IImageCarpetTrainerConfig, IImageCarpetTrainerResult> {
+extends AbstractTrainerComponent<IImageCarpetTrainerConfig, IImageCarpetTrainerResult> {
+
+  mode: "show" | "play" = "show"
 
   init() {
-    this.mode = "show"
     this.setTimeout(this.config.timeLimit)
   }
 }

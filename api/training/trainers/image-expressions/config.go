@@ -11,7 +11,7 @@ type Parameters struct {
 	Quantity int `json:"quantity"`
 }
 
-type Page struct {
+type Item struct {
 	Image int     `json:"image"`
 	Data  *string `json:"data"`
 }
@@ -22,7 +22,7 @@ type Config struct {
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Pages []*Page `json:"pages"`
+	Items []*Item `json:"items"`
 }
 
 func newConfig(

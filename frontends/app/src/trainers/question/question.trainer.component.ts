@@ -1,22 +1,15 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
+  Component,
 } from "@angular/core"
 
-import { DomSanitizer } from "@angular/platform-browser"
+import {
+  AbstractTrainerComponent,
+} from "../abstract"
 
-import { RoughGenerator } from "../../lib/rough/generator"
-
-import { Subscription } from "rxjs"
-import { TimerLapService } from "../../services"
+import {
+  genSVGRectangle,
+} from "../../lib/svg"
 
 import {
   IQuestionTrainerConfig,
@@ -30,66 +23,8 @@ import {
   styleUrls: [ "./question.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
-  constructor(
-    private _elRef:ElementRef<HTMLElement>,
-    private _sanitizer: DomSanitizer,
-    private _timerLapService: TimerLapService,
-  ){}
-
-  private _style = getComputedStyle(this._elRef.nativeElement)
-
-  private _getCSSPropertyIntValue(property: string): number {
-    const value = this._style.getPropertyValue(property)
-    return Number.parseInt(value)
-  }
-
-  @Input()
-  config!: IQuestionTrainerConfig
-
-  result: IQuestionTrainerResult = {
-    id: "question",
-    config: this.config,
-    answers: [],
-    success: 0,
-    error: 0,
-  }
-
-  @Output("result")
-  resultValueChange = new EventEmitter<IQuestionTrainerResult>()
-
-  private _updateResult(result: Partial<IQuestionTrainerResult>) {
-    this.result = {...this.result, config: this.config, ...result}
-    this.resultValueChange.emit(this.result)
-  }
-
-  private _lapTimerSubscriber!: Subscription
-
-  ngOnInit() {
-    this._init()
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(this.config.timeLimit || 0)
-  }
-
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
-
-  ngOnDestroy() {
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-  }
-
-  htmlSanitize(value: string) {
-    return this._sanitizer.bypassSecurityTrustHtml(value)
-  }
+export class QuestionTrainerComponent
+extends AbstractTrainerComponent<IQuestionTrainerConfig, IQuestionTrainerResult> {
 
   isResultMode!: boolean
 
@@ -101,7 +36,7 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
   shapeWidth: number = 0
   shapeHeight: number = 0
 
-  private _init() {
+  init() {
     this.isResultMode = false
     this.matrix = undefined
 
@@ -124,13 +59,13 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
       return []
     }
 
-    const columns = this._getCSSPropertyIntValue("--columns")
+    const columns = this.getCSSPropertyIntValue("--columns")
     const rows = Math.ceil(this.config.items.length / columns)
-    const gap = this._getCSSPropertyIntValue("--gap")
+    const gap = this.getCSSPropertyIntValue("--gap")
 
-    const imageSize = this._getCSSPropertyIntValue("--item-image-size")
-    const imageMargin = this._getCSSPropertyIntValue("--item-image-margin")
-    const strokeWidth = this._getCSSPropertyIntValue("--item-stroke-width")
+    const imageSize = this.getCSSPropertyIntValue("--item-image-size")
+    const imageMargin = this.getCSSPropertyIntValue("--item-image-margin")
+    const strokeWidth = this.getCSSPropertyIntValue("--item-stroke-width")
 
     const boxSize = imageSize + imageMargin + strokeWidth * 2
 
@@ -144,30 +79,14 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
     this.shapeWidth = imageSize
     this.shapeHeight = imageSize
 
-    const svgGenerator = new RoughGenerator({}, { width, height } )
     return this.config.items.map((item, i) => {
       const x = (boxSize + gap) * (i % columns) + gap
       const y = (boxSize + gap) * Math.floor(i/columns) + gap
 
-      const sets = svgGenerator.rectangle(x, y, boxSize, boxSize, {
-                                          fill: "none",
-                                          fillStyle: "solid",
-                                          roughness: 1,
-                                        }).sets
-
-      const pathSet = sets.find(set => set.type === "path")
-      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
-
-      const fillPathSet = sets.find(set => set.type === "fillPath")
-      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
-
       return {
+        ...genSVGRectangle(x, y, boxSize, boxSize),
         data: this.config.itemsType === 'icon' ? `/icons/${item.data}.svg` : item.data,
         correct: !!item.correct,
-        x: x + (boxSize - imageSize) / 2,
-        y: y + (boxSize - imageSize) / 2,
-        path,
-        fillPath,
       }
     })
   }
@@ -177,9 +96,9 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
       return []
     }
 
-    const columns = this._getCSSPropertyIntValue("--text-columns")
+    const columns = this.getCSSPropertyIntValue("--text-columns")
     const rows = Math.ceil(this.config.items.length / columns)
-    const gap = this._getCSSPropertyIntValue("--gap")
+    const gap = this.getCSSPropertyIntValue("--gap")
 
     const context = document.createElement("canvas").getContext("2d")
     if (context === null) {
@@ -189,12 +108,12 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
     const getTextWidth = (text: string) => context.measureText(text).width
     const maxTextWidth = Math.ceil(Math.max(...this.config.items.map(({data}) => getTextWidth(data))))
 
-    const minBoxWidth = this._getCSSPropertyIntValue("--item-text-min-width")
-    const boxPadding = this._getCSSPropertyIntValue("--item-text-padding")
-    const strokeWidth = this._getCSSPropertyIntValue("--item-stroke-width")
+    const minBoxWidth = this.getCSSPropertyIntValue("--item-text-min-width")
+    const boxPadding = this.getCSSPropertyIntValue("--item-text-padding")
+    const strokeWidth = this.getCSSPropertyIntValue("--item-stroke-width")
 
     const boxWidth = Math.max(maxTextWidth + boxPadding * 2, minBoxWidth) + strokeWidth * 2
-    const boxHeight = this._getCSSPropertyIntValue("--item-text-height") + strokeWidth * 2
+    const boxHeight = this.getCSSPropertyIntValue("--item-text-height") + strokeWidth * 2
 
     const width = boxWidth * columns + gap * (columns + 1)
     const height = boxHeight * rows + gap * (rows + 1)
@@ -203,47 +122,31 @@ export class QuestionTrainerComponent implements OnInit, OnChanges, OnDestroy {
     this.matrixWidth = width
     this.matrixHeight = height
 
-    const svgGenerator = new RoughGenerator({}, { width, height } )
     return this.config.items.map((item, i) => {
       const x = (boxWidth + gap) * (i % columns) + gap
       const y = (boxHeight + gap) * Math.floor(i/columns) + gap
 
-      const sets = svgGenerator.rectangle(x, y, boxWidth, boxHeight, {
-                                          fill: "none",
-                                          fillStyle: "solid",
-                                          roughness: 1,
-                                        }).sets
-
-      const pathSet = sets.find(set => set.type === "path")
-      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
-
-      const fillPathSet = sets.find(set => set.type === "fillPath")
-      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
-
-       return {
+      return {
+        ...genSVGRectangle(x, y, boxWidth, boxHeight),
         data: item.data,
         correct: !!item.correct,
-        x: x + boxWidth - boxWidth / 2,
-        y: y + boxHeight - boxHeight / 2,
-        path,
-        fillPath,
       }
     })
   }
 
   private _showResult() {
-    this._timerLapService.setTimeout(0)
+    this.setTimeout(0)
     this.isResultMode = true
   }
 
-  private _timeout() {
-    this._updateResult({ isTimeout: true })
+  timeout() {
+    this.updateResult({ isTimeout: true })
     this._showResult()
   }
 
   onButtonTouch() {
     if (this.isResultMode) {
-      this._updateResult({ isFinish: true })
+      this.finish()
       return
     }
     this._showResult()

@@ -5,7 +5,6 @@ import {
 } from "../interfaces"
 
 export type IMatrixFillingTrainer = "matrix-filling"
-export const MatrixFillingTrainerID: IMatrixFillingTrainer = "matrix-filling"
 
 export interface IMatrixFillingTrainerItem {
   data: string

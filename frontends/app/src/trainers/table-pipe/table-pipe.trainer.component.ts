@@ -7,8 +7,13 @@ import { Subscription, merge } from "rxjs"
 
 import {
   AbstractTrainerComponent,
-  SVGRectangle,
+
 } from "../abstract"
+
+import {
+  SVGRectangle,
+  genSVGRectangle,
+} from "../../lib/svg"
 
 import {
   ITablePipeTrainerAction,
@@ -48,14 +53,13 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
     this.itemSize = this.getCSSPropertyIntValue("--item-size")
 
     const drawSize = this.itemSize - 4
-    this.rules = this.config.items.map(item => ({...this.genSVGRectangle(2, 2, drawSize, drawSize), ...item}))
-    this.matrix = this.config.matrix.map(i => ({...this.genSVGRectangle(2, 2, drawSize, drawSize), ...this.rules[i]}))
+    this.rules = this.config.items.map(item => ({...genSVGRectangle(2, 2, drawSize, drawSize), ...item}))
+    this.matrix = this.config.matrix.map(i => ({...genSVGRectangle(2, 2, drawSize, drawSize), ...this.rules[i]}))
 
     if (this._actionSubscriber) this._actionSubscriber.unsubscribe()
-    this._actionSubscriber = merge(this.fullscreenService.swipe, this.keypadService.arrow)
+    this._actionSubscriber = merge(this.pointerService.swipe, this.keypadService.arrow)
                               .subscribe(action => this._step(action))
 
-    this.mode = "play"
     this.setTimeout(this.config.timeLimit)
   }
 

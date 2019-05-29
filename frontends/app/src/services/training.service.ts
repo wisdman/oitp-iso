@@ -2,14 +2,17 @@ import { Injectable } from "@angular/core"
 import { HttpClient } from  "@angular/common/http"
 
 import {
-  from,
-  Observable,
   concat,
+  from,
   of,
+  Subject,
 } from "rxjs"
 
 import {
+  mergeMap,
+  share,
   switchMap,
+  zip,
 } from "rxjs/operators"
 
 import {
@@ -17,10 +20,7 @@ import {
   API_TRAINING_ONCE,
 } from "../app.config"
 
-import {
-  ITraining,
-  ITrainerConfigs,
-} from "../trainers"
+import { ITraining } from "../trainers"
 
 import {
   TimerService,
@@ -34,25 +34,31 @@ export class TrainingService {
     private _timerService: TimerService,
   ) {}
 
-  getTraining(type: "everyday" | "once"): Observable<ITrainerConfigs | undefined> {
-    var config: Observable<ITraining>
-
+  private _training: Subject<string> = new Subject<string>()
+  initTraining(type: "everyday" | "once") {
     switch (type) {
       case "everyday":
-        config = this._httpClient.get<ITraining>(API_TRAINING_EVERYDAY)
-        break
+        this._training.next(API_TRAINING_EVERYDAY)
+        return
       case "once":
-        config = this._httpClient.get<ITraining>(API_TRAINING_ONCE)
-        break
-      default:
-        throw TypeError("Incorrect training type")
+        this._training.next(API_TRAINING_ONCE)
+        return
     }
-
-    return config.pipe(
-      switchMap(training => {
-        this._timerService.setGlobalTimeout(training.timeLimit || 0)
-        return concat(from(training.trainers), of(undefined))
-      })
-    )
+    throw TypeError("Incorrect training type")
   }
+
+  private _stepSubject: Subject<undefined> =  new Subject<undefined>()
+  step() {
+    this._stepSubject.next()
+  }
+
+  config = this._training.pipe(
+    switchMap(url => this._httpClient.get<ITraining>(url)),
+    mergeMap(training => {
+      this._timerService.setGlobalTimeout(training.timeLimit || 0)
+      return concat(from(training.trainers), of(undefined))
+    }),
+    zip(this._stepSubject, value => value),
+    share(),
+  )
 }

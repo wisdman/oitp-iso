@@ -25,8 +25,12 @@ import {
 } from "../../lib/util"
 
 import {
-  AbstractTrainerComponent,
   SVGRectangle,
+  genSVGRectangle,
+} from "../../lib/svg"
+
+import {
+  AbstractTrainerComponent,
 } from "../abstract"
 
 import {
@@ -97,7 +101,6 @@ export class ClassificationTrainerComponent
       this._initTextMatrix(groups)
     }
 
-    this.mode = "play"
     this._stepSubject.next()
     this.setTimeout(this.config.itemTimeLimit * this.matrix.length)
   }
@@ -123,7 +126,7 @@ export class ClassificationTrainerComponent
                       + padding
 
     this.matrix = groups.map((data, i) =>
-      ({...this.genSVGRectangle(padding + (itemWidth + gap) * i, padding, itemWidth, itemHeight), data})
+      ({...genSVGRectangle(padding + (itemWidth + gap) * i, padding, itemWidth, itemHeight), data})
     )
   }
 
@@ -161,7 +164,7 @@ export class ClassificationTrainerComponent
     this.matrix = groups.map((data, i) => {
       const x = padding + (itemWidth + gap) * (i % columns)
       const y = padding + (itemHeight + gap) * Math.floor(i/columns)
-      return {...this.genSVGRectangle(x, y, itemWidth, itemHeight), data}
+      return {...genSVGRectangle(x, y, itemWidth, itemHeight), data}
     })
   }
 

@@ -1,25 +1,23 @@
 import {
-  Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
   OnDestroy,
   OnInit,
 } from "@angular/core"
 
-import { ActivatedRoute, Router } from "@angular/router"
+import {
+  ActivatedRoute,
+  Router,
+} from "@angular/router"
+
+import { Subscription } from "rxjs"
 
 import {
-  Subject,
-  Subscription,
-} from "rxjs"
-
-import { zip } from "rxjs/operators"
-
-import {
-  FullscreenService,
   KeypadService,
-  TrainingService,
+  PointerService,
   TimerService,
+  TrainingService,
 } from "../../services"
 
 import {
@@ -37,70 +35,60 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private _cdr: ChangeDetectorRef,
-    private _fullscreenService: FullscreenService,
     private _keypadService: KeypadService,
+    private _pointerService: PointerService,
     private _route: ActivatedRoute,
     private _router: Router,
+    private _timerService: TimerService,
     private _trainingService: TrainingService,
-    private _timerService: TimerService
   ) {}
 
-  private _stepSubject!: Subject<true>
-  config?: ITrainerConfigs
+  mode: "greeting" | "game" | "result" = "greeting"
+  config!: ITrainerConfigs
 
   onResult(result: ITrainerResults) {
     if (result.isFinish) {
-      this._stepSubject.next(true)
+      this._trainingService.step()
     }
   }
 
-  onTimeout() {
-    this._stepSubject.next(true)
-  }
-
-  mode: "greeting" | "game" | "result" = "greeting"
   onStart() {
     this.mode = "game"
-    this._stepSubject.next(true)
+    this._trainingService.step()
     this._timerService.continue()
-  }
-
-  onFinish() {
-     this.mode = "result"
   }
 
   private _routeParamsSubscriber!: Subscription
   private _trainingSubscriber!: Subscription
 
   ngOnInit() {
-    this._fullscreenService.lockScroll()
+    this._timerService.pause()
+    this._pointerService.lockScroll()
     this._keypadService.lockKeypad()
-    this._fullscreenService.updateHeight()
     this.mode = "greeting"
-    this._stepSubject = new Subject<true>()
 
-    this._routeParamsSubscriber = this._route.params.subscribe(params => {
-      this._trainingSubscriber = this._trainingService
-                                      .getTraining(params.type)
-                                      .pipe(
-                                        zip(this._stepSubject, value => value)
-                                      ).subscribe(
-                                        config => {
-                                          this.config = config
-                                          this._cdr.markForCheck()
-                                          console.log(this.config)
-                                        },
-                                        error => console.error(error),
-                                        () => this.onFinish()
-                                      )
+    if (this._trainingSubscriber) this._trainingSubscriber.unsubscribe()
+    this._trainingSubscriber = this._trainingService.config.subscribe(config => {
+      if (config === undefined) {
+        this.mode = "result"
+        this._cdr.markForCheck()
+        return
+      }
+
+      this.config = config
+      this._cdr.markForCheck()
+      console.log(this.config)
     })
+
+    if (this._routeParamsSubscriber) this._routeParamsSubscriber.unsubscribe()
+    this._routeParamsSubscriber = this._route.params.subscribe(params => this._trainingService.initTraining(params.type))
   }
 
   ngOnDestroy() {
-    if (this._trainingSubscriber) this._trainingSubscriber.unsubscribe()
     if (this._routeParamsSubscriber) this._routeParamsSubscriber.unsubscribe()
+    if (this._trainingSubscriber) this._trainingSubscriber.unsubscribe()
     this._keypadService.unlockKeypad()
-    this._fullscreenService.unlockScroll()
+    this._pointerService.unlockScroll()
   }
 
   onGoDashboard() {

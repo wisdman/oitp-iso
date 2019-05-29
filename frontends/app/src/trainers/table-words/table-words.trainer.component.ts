@@ -7,8 +7,12 @@ import { Subscription } from "rxjs"
 
 import {
   AbstractTrainerComponent,
-  SVGRectangle,
 } from "../abstract"
+
+import {
+  SVGRectangle,
+  genSVGRectangle,
+} from "../../lib/svg"
 
 import {
   ITableWordsTrainerConfig,
@@ -24,7 +28,10 @@ type IActiveItem = IItem & {column: string}
   styleUrls: [ "./table-words.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableWordsTrainerComponent extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerResult> {
+export class TableWordsTrainerComponent
+extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerResult> {
+
+  mode: "show" | "play" | "result" = "show"
 
   matrixWidth: number = 0
   matrixHeight: number = 0
@@ -62,17 +69,17 @@ export class TableWordsTrainerComponent extends AbstractTrainerComponent<ITableW
 
     this.headers = [
       ...["", ...this.config.runes].map((data, i) =>
-          ({...this.genSVGRectangle(padding, padding + runeSize * i + gap * i, runeSize, runeSize), data})
+          ({...genSVGRectangle(padding, padding + runeSize * i + gap * i, runeSize, runeSize), data})
       ),
       ...this.config.columns.map((data, i) =>
-          ({...this.genSVGRectangle(padding + runeSize + columnWidth * i + gap * i, padding, columnWidth, runeSize), data})
+          ({...genSVGRectangle(padding + runeSize + columnWidth * i + gap * i, padding, columnWidth, runeSize), data})
       ),
     ]
 
     this.items = this.config.columns.map((column, i) => {
       const x = padding + runeSize + columnWidth * i + gap * i
       return this.config.runes.map((_, j) =>
-        ({...this.genSVGRectangle(x, padding + runeSize + runeSize * j + gap * j, columnWidth, runeSize), column, data: ""})
+        ({...genSVGRectangle(x, padding + runeSize + runeSize * j + gap * j, columnWidth, runeSize), column, data: ""})
       )
     }).flat()
 
@@ -82,7 +89,6 @@ export class TableWordsTrainerComponent extends AbstractTrainerComponent<ITableW
     this._keypadTabSubscriber = this.keypadService.tab
                                 .subscribe(() => this._onTab())
 
-    this.mode = "play"
     this.setTimeout(10)
     // this.setTimeout(10 || this.config.timeLimit)
   }

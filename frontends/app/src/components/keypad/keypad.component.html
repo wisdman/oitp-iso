@@ -21,8 +21,8 @@
     ></path>
     <text
       class="text"
-      [attr.x]="item.x"
-      [attr.y]="item.y"
+      [attr.x]="item.x + item.width / 2"
+      [attr.y]="item.y + item.height / 2 + 2"
       dominant-baseline="middle"
       text-anchor="middle"
     >{{ item.data }}</text>

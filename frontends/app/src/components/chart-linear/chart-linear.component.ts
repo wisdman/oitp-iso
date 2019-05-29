@@ -1,16 +1,16 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
   Input,
 } from "@angular/core"
 
 @Component({
-  selector: "linear-chart",
-  templateUrl: "./linear.chart.component.html",
-  styleUrls: [ "./linear.chart.component.css" ],
+  selector: "chart-linear",
+  templateUrl: "./chart-linear.component.html",
+  styleUrls: [ "./chart-linear.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LinearChartComponent {
+export class ChartLinearComponent {
   @Input()
   value: Array<number> = []
 

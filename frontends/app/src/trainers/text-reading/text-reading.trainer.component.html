@@ -2,7 +2,7 @@
 <h1 class="h1">Прочтите текст</h1>
 <!-- <h1 class="h1">Выделите тезись</h1> -->
 
-<article class="article" [innerHtml]="data"></article>
+<article class="article" [innerHtml]="sanitizeHtml(this.config.data)"></article>
 <button
     class="button button--main"
     (click)="onClick()"

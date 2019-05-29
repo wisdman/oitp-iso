@@ -1,7 +1,7 @@
 import {
-  Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
   ElementRef,
   EventEmitter,
   Input,
@@ -13,14 +13,11 @@ import {
 } from "@angular/core"
 
 import { DomSanitizer } from "@angular/platform-browser"
-
 import { Subscription } from "rxjs"
-
-import { genRectangle, opsToPath } from "../../lib/svg/generator"
 
 import {
   TimerService,
-  FullscreenService,
+  PointerService,
   KeypadService,
 } from "../../services"
 
@@ -29,37 +26,29 @@ import {
   ITrainerResults,
 } from "../interfaces"
 
-export interface SVGRectangle {
-  x: number
-  y: number
-
-  width: number
-  height: number
-
-  path: string
-  fillPath: string
-}
-
 @Component({
   selector: "trainer-abstract",
   template: "",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AbstractTrainerComponent<C extends ITrainerConfigs, R extends ITrainerResults>
-  implements OnInit, OnDestroy, OnChanges {
+implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private _cdr: ChangeDetectorRef,
     private _elRef:ElementRef<HTMLElement>,
-    private _timerService: TimerService,
     private _sanitizer: DomSanitizer,
+    private _timerService: TimerService,
 
-    public fullscreenService: FullscreenService,
+    public pointerService: PointerService,
     public keypadService: KeypadService,
-  ){}
+  ){
+    // Add global class
+    this._elRef.nativeElement.classList.add("trainer")
+  }
 
-  mode: "loading" | "show" | "play" | "result" = "loading"
 
+  // === Config and results ===
   @Input("config")
   config!: C
 
@@ -75,10 +64,8 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs, R extends ITrai
     }
   }
 
-  markForCheck() {
-    this._cdr.markForCheck()
-  }
 
+  // === Style reading ===
   private _style = getComputedStyle(this._elRef.nativeElement)
 
   getCSSPropertyIntValue(property: string): number {
@@ -88,10 +75,6 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs, R extends ITrai
 
   getCSSPropertyStringValue(property: string): string {
     return this._style.getPropertyValue(property)
-  }
-
-  setCSSProperty(property: string, value: string) {
-    this._elRef.nativeElement.style.setProperty(property, value)
   }
 
   getTextWidth(value: string): number
@@ -111,76 +94,119 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs, R extends ITrai
     return context.measureText(value).width
   }
 
+
+  // === Style manipulation ===
+  setCSSProperty(property: string, value: string) {
+    window.requestAnimationFrame(() =>{
+      this._elRef.nativeElement.style.setProperty(property, value)
+    })
+  }
+
+
+  // === Change Detector ===
+  markForCheck() {
+    this._cdr.markForCheck()
+  }
+  detectChanges() {
+    this._cdr.detectChanges()
+  }
+
+
+  // === Sanitizer ===
+  sanitizeUrl(value: string) {
+    return this._sanitizer.bypassSecurityTrustUrl(value)
+  }
+  sanitizeHtml(value: string) {
+    return this._sanitizer.bypassSecurityTrustHtml(value)
+  }
+
+
+  // === Timer ===
   setTimeout(value: number) {
     this._timerService.setLapTimeout(value)
+  }
+  getTimer(limit: number) {
+    return this._timerService.getCustomTimer(limit)
+  }
+
+  // === Matrix size ===
+  matrixWidth: number = 0
+  matrixHeight: number = 0
+  get matrixViewBox(): string {
+    return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
+  }
+
+
+  // === Native element size ===
+  width: number = 0
+  height: number = 0
+
+
+  // === Loading status ===
+  private _isLoading: boolean = true
+
+  @Output()
+  loadingChange: EventEmitter<boolean> = new EventEmitter<boolean>()
+
+  @Input()
+  get loading(){
+    return this._isLoading
+  }
+
+  set loading(value: boolean) {
+    this._isLoading = value;
+    this.loadingChange.emit(this._isLoading)
   }
 
   private _lapTimerSubscriber!: Subscription
 
-  width!: number
-  height!: number
-
   ngOnInit() {
-    this.mode = "loading"
+    // Enable loader
+    this.loading = true
 
+    // Lap timer subscribe
     this._timerService.setLapTimeout(0)
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
     this._lapTimerSubscriber = this._timerService.lapTimeout.subscribe(() => this.timeout())
 
-    const { width, height } = this._elRef.nativeElement.getBoundingClientRect()
-    this.width = width
-    this.height= height
-
+    // Reset results
     this.updateResult({
+      isTimeout: false,
       isFinish: false,
       success: 0,
       error: 0,
     } as Partial<R>)
 
-    this.init()
-  }
+    // Set native element size
+    const { width, height } = this._elRef.nativeElement.getBoundingClientRect()
+    this.width = width
+    this.height= height
 
-  ngOnDestroy() {
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this.destroy()
+    // Init trainer
+    this.init()
+
+    // Disable loader
+    this.loading = false
   }
 
   ngOnChanges(sc: SimpleChanges ) {
+    // Reload if config change
     if (sc.config !== undefined && !sc.config.firstChange) {
       this.ngOnInit()
     }
   }
 
-  genSVGRectangle(x: number, y: number, width: number, height: number): SVGRectangle {
-    const sets = genRectangle(x, y, width, height, { fill: true })
+  ngOnDestroy() {
+    // Lap timer unsubscribe
+    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
 
-    const pathSet = sets.find(set => set.type === "path")
-    const path = pathSet && opsToPath(pathSet) || ""
-
-    const fillPathSet = sets.find(set => set.type === "fillPath")
-    const fillPath = fillPathSet && opsToPath(fillPathSet) || ""
-
-    return { x, y, width, height, path, fillPath }
+    // Destroy trainer
+    this.destroy()
   }
 
-  sanitizeUrl(value: string) {
-    return this._sanitizer.bypassSecurityTrustUrl(value)
-  }
-
-  sanitizeHtml(value: string) {
-    return this._sanitizer.bypassSecurityTrustHtml(value)
-  }
-
+  // Default functions
   init() {}
   destroy() {}
-
-  finish() {
-    this.updateResult({ isFinish: true } as Partial<R>)
-  }
-
-  timeout() {
-    this.updateResult({ isTimeout: true, isFinish: true } as Partial<R>)
-  }
-
-
+  finish() { this.updateResult({ isFinish: true } as Partial<R>) }
+  timeout() { this.updateResult({ isTimeout: true } as Partial<R>) }
 }

@@ -5,7 +5,6 @@ import {
 } from "../interfaces"
 
 export type IMathPuzzleTrainer = "math-puzzle"
-export const MathPuzzleTrainerID: IMathPuzzleTrainer = "math-puzzle"
 
 export interface IMathPuzzleTrainerConfig extends ITrainerConfig {
   id: IMathPuzzleTrainer

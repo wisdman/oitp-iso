@@ -1,6 +1,6 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
   ElementRef,
   Input,
   OnChanges,
@@ -9,12 +9,12 @@ import {
 } from "@angular/core"
 
 @Component({
-  selector: "circular-chart",
-  templateUrl: "./circular.chart.component.html",
-  styleUrls: [ "./circular.chart.component.css" ],
+  selector: "chart-circular",
+  templateUrl: "./chart-circular.component.html",
+  styleUrls: [ "./chart-circular.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CircularChartComponent implements OnChanges {
+export class ChartCircularComponent implements OnChanges {
   @ViewChild("circleNode", { static: true }) circleRef?: ElementRef<SVGPathElement>
 
   @Input()

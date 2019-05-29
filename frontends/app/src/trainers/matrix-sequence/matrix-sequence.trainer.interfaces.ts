@@ -5,7 +5,6 @@ import {
 } from "../interfaces"
 
 export type IMatrixSequenceTrainer = "matrix-sequence"
-export const MatrixSequenceTrainerID: IMatrixSequenceTrainer = "matrix-sequence"
 
 export interface IMatrixSequenceTrainerItem {
   data: number

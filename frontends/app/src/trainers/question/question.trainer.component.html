@@ -1,4 +1,4 @@
-<article class="article" [innerHtml]="htmlSanitize(config.body)"></article>
+<article class="article" [innerHtml]="sanitizeHtml(config.body)"></article>
 
 <svg
   *ngIf="matrix && matrix.length > 0"

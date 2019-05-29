@@ -13,7 +13,10 @@ import {
 
 import { Subscription, merge } from "rxjs"
 
-import { genRectangle, opsToPath } from "../../lib/svg/generator"
+import {
+  SVGRectangle,
+  genSVGRectangle,
+} from "../../lib/svg"
 
 import { KeypadService } from "../../services"
 
@@ -55,14 +58,7 @@ export class TrainerButtonComponent implements OnInit, OnChanges, OnDestroy {
     return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
   }
 
-  item!: {
-    data: string
-
-    x: number,
-    y: number,
-    fillPath: string,
-    path: string,
-  }
+  item!: SVGRectangle & { data: string }
 
   private _keypadSubscriber!: Subscription
 
@@ -88,20 +84,9 @@ export class TrainerButtonComponent implements OnInit, OnChanges, OnDestroy {
     this.matrixWidth = width
     this.matrixHeight = height
 
-    const sets = genRectangle(itemPadding, itemPadding, itemWidth, itemHeight, { fill: true })
-
-    const pathSet = sets.find(set => set.type === "path")
-    const path = pathSet && opsToPath(pathSet) || ""
-
-    const fillPathSet = sets.find(set => set.type === "fillPath")
-    const fillPath = fillPathSet && opsToPath(fillPathSet) || ""
-
     this.item = {
+      ...genSVGRectangle(itemPadding, itemPadding, itemWidth, itemHeight),
       data: this.text,
-      x: itemPadding + itemWidth / 2 + 1,
-      y: itemPadding + itemHeight / 2 + 2,
-      path,
-      fillPath,
     }
 
     if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()

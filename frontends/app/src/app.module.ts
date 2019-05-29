@@ -10,14 +10,11 @@ import {
 } from "./app.root"
 
 import {
-  CircularChartComponent,
-  LinearChartComponent,
-} from "./charts"
-
-import {
   CardChargerComponent,
   CardEverydayComponent,
   CardRecommendationsComponent,
+  ChartCircularComponent,
+  ChartLinearComponent,
   HeaderNotificationsComponent,
   HeaderUserComponent,
   IndicatorBrainComponent,
@@ -81,18 +78,14 @@ import {
 } from "./pipes"
 
 import {
-  FullscreenService,
-  FullscreenServiceFactory,
-
   KeypadService,
   KeypadServiceFactory,
-
   NotificationService,
   NotificationServiceFactory,
-
+  PointerService,
+  PointerServiceFactory,
   ProgressService,
   RecommendationService,
-  TimerLapService,
   TimerService,
   TrainingService,
   UserService,
@@ -115,12 +108,11 @@ import { ROUTES } from "./app.routing"
   declarations: [
     RootLayoutComponent,
 
-    CircularChartComponent,
-    LinearChartComponent,
-
     CardChargerComponent,
     CardEverydayComponent,
     CardRecommendationsComponent,
+    ChartCircularComponent,
+    ChartLinearComponent,
     HeaderNotificationsComponent,
     HeaderUserComponent,
     IndicatorBrainComponent,
@@ -196,21 +188,10 @@ import { ROUTES } from "./app.routing"
 
     ProgressService,
     RecommendationService,
-    TimerLapService,
     TimerService,
     TrainingService,
     UserService,
 
-    // Fullscreen services
-    FullscreenService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: FullscreenServiceFactory,
-      deps: [ FullscreenService ],
-      multi: true
-    },
-
-    // Fullscreen services
     KeypadService,
     {
       provide: APP_INITIALIZER,
@@ -219,7 +200,6 @@ import { ROUTES } from "./app.routing"
       multi: true
     },
 
-    // Notification services
     NotificationService,
     {
       provide: APP_INITIALIZER,
@@ -228,20 +208,25 @@ import { ROUTES } from "./app.routing"
       multi: true
     },
 
-    // HTTP Interceptors
+    PointerService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: PointerServiceFactory,
+      deps: [ PointerService ],
+      multi: true
+    },
+
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
     },
 
-    // Locale config
     {
       provide: LOCALE_ID,
       useValue: "ru"
     },
 
-    // App base
     {
       provide: APP_BASE_HREF,
       useValue: "/",

@@ -1,21 +1,33 @@
 <!-- Горманизация работы полушарийй -->
-<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните название</h1>
-<h1 *ngIf="mode==='play' || mode==='result'" class="trainer-h1">Восстановите название по памяти</h1>
+<ng-container *ngIf="item">
+  <h1 *ngIf="item.mode==='show'" class="trainer-h1">Запомните название</h1>
+  <h1 *ngIf="item.mode==='play' || item.mode==='result'" class="trainer-h1">Восстановите название по памяти</h1>
 
-<ng-container *ngIf="page">
-  <picture class="image">
-    <source [srcset]="'/assets/expressions/' + page.image + '.webp'">
-    <img [src]="'/assets/expressions/' + page.image + '.jpg'">
+  <picture
+    *ngIf="item.image"
+    class="image"
+  >
+    <source [srcset]="'/assets/expressions/' + item.image + '.webp'">
+    <img [src]="'/assets/expressions/' + item.image + '.jpg'">
   </picture>
 
-  <div class="input">
-    <trainer-input [active]="true" (value)="page.userData"></trainer-input>
-  </div>
-  <div class="text">{{page.data}}</div>
+  <div
+    *ngIf="item.mode === 'show' || item.mode === 'result'"
+    class="text"
+  >{{item.data}}</div>
+  <trainer-input
+    *ngIf="item.mode === 'play' || item.mode === 'result'"
+    class="text-input"
+    [active]="item.mode === 'play'"
+    [success]="item.mode === 'result' && isSucess"
+    [error]="item.mode === 'result' && !isSucess"
+    [(value)]="userData"
+  ></trainer-input>
+
+  <trainer-button
+    class="button"
+    text="Продолжить"
+    (touch)="onButtonTouch()"
+  ></trainer-button>
 </ng-container>
 
-<trainer-button
-  class="button"
-  text="Продолжить"
-  (touch)="onButtonTouch()"
-></trainer-button>

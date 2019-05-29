@@ -23,7 +23,7 @@ export type ISwipe = "UP" | "DOWN" | "LEFT" | "RIGHT"
 const SWIPE_DELTA = 40
 
 @Injectable({ providedIn: "root" })
-export class FullscreenService {
+export class PointerService {
 
   private _isPointerEvent = "PointerEvent" in window
   private _isTouchEvents = "ontouchstart" in window
@@ -223,14 +223,16 @@ export class FullscreenService {
       if (isScrollLocked) {
         document.documentElement.classList.add("touch-action-none")
         this._enableMoveListeners()
+        this._updateHeight()
       } else {
         this._disableMoveListeners()
         document.documentElement.classList.remove("touch-action-none")
+        this._updateHeight()
       }
     })
   }
 
-  updateHeight() {
+  private _updateHeight() {
     window.requestAnimationFrame(() => {
       document.documentElement.style.setProperty("--body-scroll-top", `${document.body.scrollTop}`)
       document.documentElement.style.setProperty("--window-height", `${window.innerHeight}`)
@@ -238,8 +240,8 @@ export class FullscreenService {
   }
 
   private _initHeightDetection() {
-    window.addEventListener("resize", () => this.updateHeight(), { passive: false, capture: true })
-    window.addEventListener("deviceorientation", () => this.updateHeight(), { passive: false, capture: true })
+    window.addEventListener("resize", () => this._updateHeight(), { passive: false, capture: true })
+    window.addEventListener("deviceorientation", () => this._updateHeight(), { passive: false, capture: true })
   }
 
   load(): Promise<void> {
@@ -251,12 +253,12 @@ export class FullscreenService {
 
     // Rwal window height
     this._initHeightDetection()
-    this.updateHeight()
+    this._updateHeight()
 
     return Promise.resolve()
   }
 }
 
-export function FullscreenServiceFactory(fullscreenService: FullscreenService): Function {
-  return () => fullscreenService.load()
+export function PointerServiceFactory(pointerService: PointerService): Function {
+  return () => pointerService.load()
 }

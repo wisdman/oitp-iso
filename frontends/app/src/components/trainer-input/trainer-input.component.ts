@@ -2,14 +2,22 @@ import {
   Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from "@angular/core"
 
 import { Subscription, merge } from "rxjs"
+
+import {
+  genSVGRectangle,
+} from "../../lib/svg"
 
 import { KeypadService, IKeypadType, IArrow } from "../../services"
 
@@ -19,42 +27,93 @@ import { KeypadService, IKeypadType, IArrow } from "../../services"
   styleUrls: [ "./trainer-input.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TrainerInputComponent implements OnInit, OnDestroy {
+export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
+    private _elRef:ElementRef<HTMLElement>,
     private _cdr: ChangeDetectorRef,
     private _keypadService: KeypadService,
   ){}
 
-  @Output("value")
-  valueValueChange: EventEmitter<string> = new EventEmitter<string>()
+  private _style = getComputedStyle(this._elRef.nativeElement)
 
-  valueList: Array<string> = []
-  cursor: number = 1
-
-  @Input("value")
-  set value(value: string) {
-    this.valueList = [...value.split(""), ""]
-    this.cursor = this.valueList.length - 1
-    this._cdr.markForCheck()
+  private _getCSSPropertyIntValue(property: string): number {
+    const value = this._style.getPropertyValue(property)
+    return Number.parseInt(value)
   }
 
-  get value(): string {
-    return this.valueList.join()
+  valueList: Array<string> = [""]
+  cursor: number = 0
+
+  private _value: string = ""
+
+  @Output()
+  valueChange: EventEmitter<string> = new EventEmitter<string>()
+
+  @Input()
+  get value(){
+    return this._value
+  }
+
+  set value(value: string) {
+    this._value = value;
+    this.valueChange.emit(this._value)
   }
 
   @Input("active")
   isActive: boolean = false
 
-  @Input("trainerInput")
-  trainerInput: IKeypadType = "RU"
+  @Input("type")
+  type: IKeypadType = "RU"
+
+  @Input("embedded")
+  @HostBinding("class.embedded")
+  isEmbedded: boolean = false
+
+  @Input("success")
+  @HostBinding("class.embedded--success")
+  isSuccess: boolean = false
+
+  @Input("error")
+  @HostBinding("class.embedded--error")
+  isError: boolean = false
+
+  matrix!:{
+    padding: number
+    width: number
+    height: number
+    path: string
+  }
+
+  get matrixWidth() {
+    return this.matrix && this.matrix.width || 0
+  }
+
+  get matrixHeight() {
+    return this.matrix && this.matrix.height || 0
+  }
+
+  get matrixViewBox(): string {
+    return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
+  }
 
   private _keypadDataSubscriber!: Subscription
   private _keypadBackspaceSubscriber!: Subscription
   private _keypadArrowSubscriber!: Subscription
 
   ngOnInit() {
+    if (!this.isEmbedded) {
+      const padding = this._getCSSPropertyIntValue("--padding");
+
+      const {width, height} = this._elRef.nativeElement.getBoundingClientRect()
+
+      this.matrix = {
+        ...genSVGRectangle(padding, padding, width - padding * 2, height - padding * 2),
+        padding,
+      }
+    }
+
     if (this._keypadDataSubscriber) this._keypadDataSubscriber.unsubscribe()
-    switch (this.trainerInput) {
+    switch (this.type) {
       case "RU":
         this._keypadDataSubscriber = merge(this._keypadService.ru, this._keypadService.symbols, this._keypadService.space)
                                       .subscribe(key => this._onInput(key))
@@ -78,14 +137,20 @@ export class TrainerInputComponent implements OnInit, OnDestroy {
     if (this._keypadArrowSubscriber) this._keypadArrowSubscriber.unsubscribe()
     this._keypadArrowSubscriber = this._keypadService.arrow
                                       .subscribe((arrow) => this._onArrow(arrow))
-
-    this.value = ""
   }
 
   ngOnDestroy(){
     if (this._keypadDataSubscriber) this._keypadDataSubscriber.unsubscribe()
     if (this._keypadBackspaceSubscriber) this._keypadBackspaceSubscriber.unsubscribe()
     if (this._keypadArrowSubscriber) this._keypadArrowSubscriber.unsubscribe()
+  }
+
+  ngOnChanges(sc: SimpleChanges) {
+    if (sc.value && sc.value.currentValue !== this.valueList.join("")) {
+      this.valueList = [...this.value.split(""), ""]
+      this.cursor = this.valueList.length - 1
+      this._cdr.markForCheck()
+    }
   }
 
   private _onInput(key: string) {
@@ -95,6 +160,9 @@ export class TrainerInputComponent implements OnInit, OnDestroy {
 
     this.valueList.splice(this.cursor, 0, key)
     this.cursor++
+
+    this.value = this.valueList.join("")
+
     this._cdr.markForCheck()
   }
 
@@ -107,6 +175,9 @@ export class TrainerInputComponent implements OnInit, OnDestroy {
     this.cursor--
     if (this.cursor < 0) this.cursor = 0
     this.valueList.splice(this.cursor, 1)
+
+    this.value = this.valueList.join("")
+
     this._cdr.markForCheck()
   }
 

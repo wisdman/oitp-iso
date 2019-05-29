@@ -1,24 +1,16 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  ElementRef,
-  EventEmitter,
   HostListener,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
 } from "@angular/core"
 
-import { RoughGenerator } from "../../lib/rough/generator"
+import {
+  AbstractTrainerComponent,
+} from "../abstract"
 
-import { DomSanitizer } from "@angular/platform-browser"
-
-import { Subscription } from "rxjs"
-import { TimerLapService } from "../../services"
+import {
+  genSVGRectangle,
+} from "../../lib/svg"
 
 import {
   IMatrixFillingTrainerConfig,
@@ -38,82 +30,20 @@ const isTouchEvents = "ontouchstart" in window
   styleUrls: [ "./matrix-filling.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestroy {
-  constructor(
-    private _cdr: ChangeDetectorRef,
-    private _elRef:ElementRef<HTMLElement>,
-    private _timerLapService: TimerLapService,
-    private _sanitizer: DomSanitizer,
-  ){}
-
-  private _style = getComputedStyle(this._elRef.nativeElement)
-
-  private _getCSSPropertyIntValue(property: string): number {
-    const value = this._style.getPropertyValue(property)
-    return Number.parseInt(value)
-  }
-
-  urlSanitize(value: string) {
-    return this._sanitizer.bypassSecurityTrustUrl(value)
-  }
-
-  @Input()
-  config!: IMatrixFillingTrainerConfig
-
-  result: IMatrixFillingTrainerResult = {
-    id: "matrix-filling",
-    config: this.config,
-    success: 0,
-    error: 0,
-  }
-
-  @Output("result")
-  resultValueChange = new EventEmitter<IMatrixFillingTrainerResult>()
-
-  private _updateResult(result: Partial<IMatrixFillingTrainerResult>) {
-    this.result = {...this.result, config: this.config, ...result}
-    this.resultValueChange.emit(this.result)
-  }
-
-  private _lapTimerSubscriber!: Subscription
-
-  ngOnInit() {
-    this._initEvents()
-    this._init()
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(this.config.showTimeLimit)
-  }
-
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
-
-  ngOnDestroy() {
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._resetEvents()
-  }
+export class MatrixFillingTrainerComponent
+extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult> {
 
   mode: "show" | "play" | "result" = "show"
 
   items!: Array<IMatrixFillingTrainerItem>
 
   matrix!: Array<IMatrixFillingTrainerMatrixItem>
-  matrixViewBox: string = "0 0 0 0"
-  matrixWidth: number = 0
-  matrixHeight: number = 0
 
   shapeWidth: number = 0
   shapeHeight: number = 0
 
-  private _init() {
+  init() {
+    this._initEvents()
     this.mode = "show"
 
     const itemsCount = this.config.items.length
@@ -122,15 +52,15 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
     const columns = Math.ceil(side)
     const rows = Math.floor(side)
 
-    const imageSize = this._getCSSPropertyIntValue("--item-image-size")
-    const imageMargin = this._getCSSPropertyIntValue("--item-image-margin")
-    const strokeWidth = this._getCSSPropertyIntValue("--item-stroke-width")
+    const imageSize = this.getCSSPropertyIntValue("--item-image-size")
+    const imageMargin = this.getCSSPropertyIntValue("--item-image-margin")
+    const strokeWidth = this.getCSSPropertyIntValue("--item-stroke-width")
 
     const boxSize = imageSize + imageMargin + strokeWidth * 2
-    const gap = this._getCSSPropertyIntValue("--gap")
-    const itemsMargin = this._getCSSPropertyIntValue("--items-margin")
+    const gap = this.getCSSPropertyIntValue("--gap")
+    const itemsMargin = this.getCSSPropertyIntValue("--items-margin")
 
-    const itemsColumns = this._getCSSPropertyIntValue("--items-columns")
+    const itemsColumns = this.getCSSPropertyIntValue("--items-columns")
     const itemsRows = Math.ceil(itemsCount / itemsColumns)
 
     const itemsWidth = boxSize * itemsColumns + gap * (itemsColumns + 1)
@@ -147,39 +77,19 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
 
     const matrixOffsetLeft = Math.ceil((width - matrixWidth) / 2)
 
-    this.matrixViewBox = `0 0 ${width} ${height}`
     this.matrixWidth = width
     this.matrixHeight = height
 
     this.shapeWidth = imageSize
     this.shapeHeight = imageSize
 
-    const svgGenerator = new RoughGenerator({}, { width, height } )
-
     this.items = this.config.items.map((data, i) => {
       const x = itemsOffsetLeft + (boxSize + gap) * (i % itemsColumns) + gap
       const y = itemsOffsetTop + (boxSize + gap) * Math.floor(i/itemsColumns) + gap
 
-      const sets = svgGenerator.rectangle(x, y, boxSize, boxSize, {
-                                          fill: "none",
-                                          fillStyle: "solid",
-                                          roughness: 1,
-                                        }).sets
-
-      const pathSet = sets.find(set => set.type === "path")
-      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
-
-      const fillPathSet = sets.find(set => set.type === "fillPath")
-      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
-
       return {
+        ...genSVGRectangle(x, y, boxSize, boxSize),
         data: `/icons/${data}.svg`,
-        x: x + (boxSize - imageSize) / 2,
-        y: y + (boxSize - imageSize) / 2,
-        width: boxSize,
-        height: boxSize,
-        path,
-        fillPath,
       }
     })
 
@@ -187,49 +97,36 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
       const x = matrixOffsetLeft + (boxSize + gap) * (i % columns) + gap
       const y = (boxSize + gap) * Math.floor(i/columns) + gap
 
-      const sets = svgGenerator.rectangle(x, y, boxSize, boxSize, {
-                                          fill: "none",
-                                          fillStyle: "solid",
-                                          roughness: 1,
-                                        }).sets
-
-      const pathSet = sets.find(set => set.type === "path")
-      const path = pathSet && svgGenerator.opsToPath(pathSet) || ""
-
-      const fillPathSet = sets.find(set => set.type === "fillPath")
-      const fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
-
       return {
+        ...genSVGRectangle(x, y, boxSize, boxSize),
         data: this.items[data] !== undefined ? data : -1,
         userData: -1,
-        x: x + (boxSize - imageSize) / 2,
-        y: y + (boxSize - imageSize) / 2,
-        width: boxSize,
-        height: boxSize,
-        path,
-        fillPath,
       }
     })
   }
 
-  private _timeout() {
+  destroy() {
+    this._resetEvents()
+  }
+
+  timeout() {
     this.current = undefined
     switch (this.mode) {
       case "show":
         this.mode = "play"
-        this._cdr.markForCheck()
-        this._timerLapService.setTimeout(this.config.playTimeLimit || 0)
+        this.markForCheck()
+        this.setTimeout(this.config.playTimeLimit || 0)
         return
 
       case "play":
-        this._updateResult({ isTimeout: true })
+        this.updateResult({ isTimeout: true })
         this.mode = "result"
-        this._cdr.markForCheck()
-        this._timerLapService.setTimeout(RESULT_TIMEOUT)
+        this.markForCheck()
+        this.setTimeout(RESULT_TIMEOUT)
         return
 
       case "result":
-        this._updateResult({ isFinish: true })
+        this.finish()
         return
     }
   }
@@ -246,12 +143,12 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
       return prev
     }, { success: 0, error: 0, isFinish: true } as { success: number, error: number, isFinish: boolean })
 
-    this._updateResult({ success, error })
+    this.updateResult({ success, error })
 
     if (isFinish) {
       this.mode = "result"
-      this._cdr.markForCheck()
-      this._timerLapService.setTimeout(RESULT_TIMEOUT)
+      this.markForCheck()
+      this.setTimeout(RESULT_TIMEOUT)
     }
   }
 
@@ -272,7 +169,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
 
     const transform = `translate(${x}px, ${y}px)`
     this.current = { data, transform }
-    this._cdr.markForCheck()
+    this.markForCheck()
   }
 
   private _pointerUp(x: number, y: number) {
@@ -282,7 +179,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
     const current = this.current
 
     this.current = undefined
-    this._cdr.detectChanges()
+    this.detectChanges()
 
     const dropElement = document.elementFromPoint(x,y)
     if (!dropElement) {
@@ -306,7 +203,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
 
     if (this.matrix[matrixID] !== undefined) {
       this.matrix[matrixID].userData = current.data
-      this._cdr.markForCheck()
+      this.markForCheck()
     }
 
     this._step()
@@ -317,7 +214,7 @@ export class MatrixFillingTrainerComponent implements OnInit, OnChanges, OnDestr
       return
     }
     this.current.transform = `translate(${x}px, ${y}px)`
-    this._cdr.markForCheck()
+    this.markForCheck()
   }
 
   private _onPointerMoveListener!: (event: PointerEvent) => void

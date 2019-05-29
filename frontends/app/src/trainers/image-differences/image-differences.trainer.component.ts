@@ -15,14 +15,15 @@ import {
 @Component({
   selector: "trainer-image-differences",
   templateUrl: "./image-differences.trainer.component.html",
-  styleUrls: [ "./image-differences.trainer.component.css" ],
+  styleUrls: ["./image-differences.trainer.component.css"],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageDifferencesTrainerComponent
-  extends AbstractTrainerComponent<IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult> {
+extends AbstractTrainerComponent<IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult> {
+
+  mode: "show" | "play" = "show"
 
   init() {
-    this.mode = "show"
     this.setTimeout(this.config.timeLimit)
   }
 }

@@ -1,6 +1,6 @@
 <div class="wrapper" *ngIf="user | async as user">
   <div class="chart">
-    <linear-chart [value]="user.speed" [min]="20"></linear-chart>
+    <chart-linear [value]="user.speed" [min]="20"></chart-linear>
   </div>
 
   <p class="value">{{ user.speed | slice:-1 }}%</p>

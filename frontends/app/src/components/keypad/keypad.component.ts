@@ -9,7 +9,10 @@ import {
 
 import { Subscription } from "rxjs"
 
-import { genRectangle, opsToPath } from "../../lib/svg/generator"
+import {
+  SVGRectangle,
+  genSVGRectangle,
+} from "../../lib/svg"
 
 import {
   IKeypadType,
@@ -71,14 +74,7 @@ export class KeypadComponent implements OnInit, OnDestroy {
     return Number.parseInt(value)
   }
 
-  matrix?: Array<{
-    data: string
-
-    x: number,
-    y: number,
-    fillPath: string,
-    path: string,
-  }> = undefined
+  matrix?: Array<SVGRectangle & { data: string }> = undefined
 
   matrixWidth: number = 0
   matrixHeight: number = 0
@@ -140,20 +136,9 @@ export class KeypadComponent implements OnInit, OnDestroy {
         const x = offsetX
         offsetX += currentItemWidth + gap
 
-        const sets = genRectangle(x, y, currentItemWidth, itemHeight, { fill: true })
-
-        const pathSet = sets.find(set => set.type === "path")
-        const path = pathSet && opsToPath(pathSet) || ""
-
-        const fillPathSet = sets.find(set => set.type === "fillPath")
-        const fillPath = fillPathSet && opsToPath(fillPathSet) || ""
-
         return {
+          ...genSVGRectangle(x, y, currentItemWidth, itemHeight),
           data,
-          x: x + currentItemWidth / 2,
-          y: y + itemHeight / 2 + 2,
-          path,
-          fillPath,
         }
       })
     }).flat()

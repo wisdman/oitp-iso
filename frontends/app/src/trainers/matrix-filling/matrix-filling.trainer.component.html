@@ -100,6 +100,6 @@
   *ngIf = "current"
   class="movement"
   [style.transform] = "current.transform"
-  [src]="urlSanitize(items[current.data].data)"
+  [src]="sanitizeUrl(items[current.data].data)"
   draggable="false"
 >

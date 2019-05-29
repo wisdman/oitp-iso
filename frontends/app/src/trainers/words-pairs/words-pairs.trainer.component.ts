@@ -1,20 +1,16 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  EventEmitter,
+  Component,
   HostListener,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
-import { TimerLapService } from "../../services"
+import {
+  AbstractTrainerComponent,
+} from "../abstract"
 
-import { RoughGenerator } from "../../lib/rough/generator"
+import {
+  genSVGRectangle,
+} from "../../lib/svg"
 
 import {
   IWordsPairsItem,
@@ -39,52 +35,10 @@ const BOX_PADDING = 12
   styleUrls: [ "./words-pairs.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WordsPairsTrainerComponent implements OnInit, OnChanges, OnDestroy {
-  constructor(
-    private _timerLapService: TimerLapService,
-  ){}
+export class WordsPairsTrainerComponent
+extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerResult> {
 
-  @Input()
-  config!: IWordsPairsTrainerConfig
-
-  result: IWordsPairsTrainerResult = {
-    id: "words-pairs",
-    config: this.config,
-    success: 0,
-  }
-
-  @Output("result")
-  resultValueChange = new EventEmitter<IWordsPairsTrainerResult>()
-
-  private _updateResult(result: Partial<IWordsPairsTrainerResult>) {
-    this.result = {...this.result, config: this.config, ...result}
-    this.resultValueChange.emit(this.result)
-  }
-
-  private _lapTimerSubscriber!: Subscription
-
-  ngOnInit() {
-    this._init()
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-    })
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(this.config.timeLimit)
-  }
-
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
-
-  ngOnDestroy() {
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-  }
-
-  private _init() {
+  init() {
     this.pairs = []
     const data = this._InitTextPairsTrainerLayout(this._initItems(this.config.items))
     this.svgWidth = data[0]
@@ -92,8 +46,9 @@ export class WordsPairsTrainerComponent implements OnInit, OnChanges, OnDestroy 
     this.items = data[2]
   }
 
-  private _timeout() {
-    this._updateResult({ isTimeout: true, isFinish: true })
+  timeout() {
+    super.timeout()
+    this.finish()
   }
 
   svgWidth!: number
@@ -168,33 +123,9 @@ export class WordsPairsTrainerComponent implements OnInit, OnChanges, OnDestroy 
     const svgWidth = boxWidth * 2 + COLUMNS_GAP + PADDING * 2
     const svgHeight = boxHeight * pairs.length + ROW_GAP * (pairs.length - 1) + PADDING * 2
 
-    const svgGenerator = new RoughGenerator({}, { width: svgWidth, height: svgHeight } )
-
     const items: Array<IWordsPairsItem> = pairs.map((row, i) => {
       return row.map((item, j) => {
-        const sets = svgGenerator
-                      .rectangle(
-                        PADDING + (boxWidth + COLUMNS_GAP) * j,
-                        i * (boxHeight + ROW_GAP) + PADDING,
-                        boxWidth,
-                        boxHeight,
-                        {
-                          fill: "none",
-                          fillStyle: "solid",
-                          roughness: 1
-                        }
-                      ).sets
-
-        const pathSet = sets.find(set => set.type === "path")
-        item.path = pathSet && svgGenerator.opsToPath(pathSet) || ""
-
-        const fillPathSet = sets.find(set => set.type === "fillPath")
-        item.fillPath = fillPathSet && svgGenerator.opsToPath(fillPathSet) || ""
-
-        item.x = PADDING + (boxWidth + COLUMNS_GAP) * j + boxWidth / 2
-        item.y = i * (boxHeight + ROW_GAP) + PADDING + boxHeight / 2
-
-        return item
+        return { ...item, ...genSVGRectangle(PADDING + (boxWidth + COLUMNS_GAP) * j, i * (boxHeight + ROW_GAP) + PADDING, boxWidth, boxHeight) }
       })
     }).flat()
 
@@ -241,7 +172,7 @@ export class WordsPairsTrainerComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   private _check(forceFinish: boolean = false) {
-    this._updateResult({
+    this.updateResult({
       success: this.pairs.reduce((sum, [A, B]) => A.companion === B ? ++sum : sum, 0),
       isFinish: forceFinish || this.pairs.length === this.config.items.length
     })
@@ -252,6 +183,6 @@ export class WordsPairsTrainerComponent implements OnInit, OnChanges, OnDestroy 
     if (this.config.mode !== "show") {
       return
     }
-    this._updateResult({ isFinish: true })
+    this.finish()
   }
 }

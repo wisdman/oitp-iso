@@ -51,14 +51,14 @@ func Build(
 	config := newConfig(params)
 
 	for rows.Next() {
-		page := &Page{}
-		if err = rows.Scan(&page.Image, &page.Data); err != nil {
+		item := &Item{}
+		if err = rows.Scan(&item.Image, &item.Data); err != nil {
 			return nil, err
 		}
-		config.Pages = append(config.Pages, page)
+		config.Items = append(config.Items, item)
 	}
 
-	wRand.Shuffle(len(config.Pages), func(i, j int) { config.Pages[i], config.Pages[j] = config.Pages[j], config.Pages[i] })
+	wRand.Shuffle(len(config.Items), func(i, j int) { config.Items[i], config.Items[j] = config.Items[j], config.Items[i] })
 
 	configs = append(configs, config)
 	return configs, nil

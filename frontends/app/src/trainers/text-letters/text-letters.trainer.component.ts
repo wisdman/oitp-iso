@@ -1,18 +1,11 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
+  Component,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
-import { TimerLapService } from "../../services"
+import {
+  AbstractTrainerComponent,
+} from "../abstract"
 
 import {
   ITextLettersTrainerConfig,
@@ -30,53 +23,8 @@ const RUNES = [
   styleUrls: [ "./text-letters.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy {
-  constructor(
-    private _cdr: ChangeDetectorRef,
-    private _timerLapService: TimerLapService,
-  ){}
-
-  @Input()
-  config!: ITextLettersTrainerConfig
-
-  result: ITextLettersTrainerResult = {
-    id: "text-letters",
-    config: this.config,
-    success: 0,
-    error: 0,
-  }
-
-  @Output("result")
-  resultValueChange = new EventEmitter<ITextLettersTrainerResult>()
-
-  private _updateResult(result: Partial<ITextLettersTrainerResult>) {
-    this.result = {...this.result, config: this.config, ...result}
-    this.resultValueChange.emit(this.result)
-  }
-
-  private _lapTimerSubscriber!: Subscription
-
-  ngOnInit() {
-    this._init()
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(this.config.showTimeLimit)
-  }
-
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
-
-  ngOnDestroy() {
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-  }
+export class TextLettersTrainerComponent
+extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerResult> {
 
   mode: "show" | "play" | "result" = "show"
 
@@ -86,7 +34,7 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy
     user?: string,
   }> = []
 
-  private _init() {
+  init() {
     this.mode = "show"
     this.data = this.config.data
     this.runes = this.data
@@ -98,19 +46,19 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy
 
   private _play() {
     this.mode = "play"
-    this._cdr.markForCheck()
-    this._timerLapService.setTimeout(this.config.playTimeLimit)
+    this.markForCheck()
+    this.setTimeout(this.config.playTimeLimit)
   }
 
   private _result() {
     this.mode = "result"
-    this._cdr.markForCheck()
-    this._timerLapService.setTimeout(0)
+    this.markForCheck()
+    this.setTimeout(0)
   }
 
-  private _timeout() {
+  timeout() {
     if (this.mode === "play") {
-      this._updateResult({ isTimeout: true })
+      this.updateResult({ isTimeout: true })
       this._result()
       return
     }
@@ -129,7 +77,7 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy
 
     const success =  this.runes.filter(({rune, user}) => rune === user).length
     const error = this.runes.length - success
-    this._updateResult({ success, error })
+    this.updateResult({ success, error })
 
     if (this.runes.every(({user}) => !!user)) {
       this._result()
@@ -150,7 +98,7 @@ export class TextLettersTrainerComponent implements OnInit, OnChanges, OnDestroy
 
   onButtonTouch() {
     if (this.mode === "result") {
-      this._updateResult({ isFinish: true })
+      this.finish()
       return
     }
 
