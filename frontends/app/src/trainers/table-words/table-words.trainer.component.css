@@ -1,9 +1,4 @@
 :host {
-  --item-text-color: rgb(119, 110, 101);
-  --item-background-color: rgba(238, 228, 218, .7);
-  --item-border-color: rgb(187, 173, 160);
-  --item-selected-color: #0273d4;
-
   --rune-size: 50px;
   --column-width: 200px;
   --gap: 1px;
@@ -22,35 +17,16 @@
   position: relative;
 }
 
-.h1 {
-  display: block;
-
-  margin: 0;
-  margin-top: 34px;
-  margin-bottom: auto;
-  text-indent: 30px;
-
-  padding-left: 20px;
-  padding-right: 20px;
-
-  font-size: 16px;
-  line-height: 1.2;
-  text-align: center;
-  font-weight: 600;
-}
-
-.article {
-  margin-top: 32px;
-  margin-bottom: 16px;
-}
-
 .matrix {
   display: block;
   width: auto;
   max-width: 100%;
   height: auto;
 
-  margin-top: auto;
+  margin-top: var(--trainer-block-margin);
+
+  font-family: inherit;
+  font-size: 18px;
 }
 
 .item {
@@ -59,7 +35,7 @@
 
 .header__path,
 .item__path {
-  stroke: var(--item-border-color);
+  stroke: var(--trainer-border-color);
   stroke-width: 1;
   fill: none;
 
@@ -72,7 +48,7 @@
 }
 
 .item--selected .item__path {
-  stroke: var(--item-selected-color);
+  stroke: var(--trainer-selected-color);
   stroke-width: 2;
 }
 
@@ -83,7 +59,7 @@
 }
 
 .header__fill-path {
-  fill: var(--item-background-color);
+  fill: var(--trainer-background-color);
 }
 
 .item__fill-path {
@@ -94,10 +70,10 @@
 .header__text,
 .item__text {
   font-family: inherit;
-  font-size: 24px;
-  font-weight: 500;
+  font-size: inherit;
+  font-weight: 600;
   line-height: 1;
-  color: var(--item-text-color);
+  color: var(--trainer-text-color);
   fill: currentColor;
 }
 
@@ -106,27 +82,7 @@
   font-weight: 400;
 }
 
-.item__cursor {
-  opacity: 0;
-}
-
-.item--selected .item__cursor {
-  animation-name: trainer-table-words__cursor;
-  animation-duration: 1s;
-  animation-iteration-count:infinite;
-}
-
-@keyframes trainer-table-words__cursor {
-  0% { opacity: 0; }
-  50% { opacity: .7; }
-  100% { opacity: 0; }
-}
-
 .button {
-  margin-top: 32px;
-  margin-bottom: 32px;
-}
-
-.keypad {
-  margin-top: auto;
+  margin-top: var(--trainer-block-margin);
+  margin-bottom: auto;
 }

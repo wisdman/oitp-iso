@@ -1,6 +1,6 @@
 import { Point, Segment, Line } from '../geometry';
 import { ResolvedOptions } from '../core';
-import { HachureIterator } from '../utils/hachure';
+import { HachureIterator } from './hachure';
 import { RenderHelper } from './filler-interface';
 
 export function lineLength(line: Line): number {

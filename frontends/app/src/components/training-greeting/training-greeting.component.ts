@@ -1,4 +1,15 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter } from "@angular/core"
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+} from "@angular/core"
+
+import { Subscription } from "rxjs"
+
+import { KeypadService } from "../../services"
 
 @Component({
   selector: "training-greeting",
@@ -6,11 +17,25 @@ import { Component, ChangeDetectionStrategy, Output, EventEmitter } from "@angul
   styleUrls: [ "./training-greeting.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TrainingGreetingComponent {
-  @Output("buttonClick")
-  buttonClickValueChange = new EventEmitter<true>()
+export class TrainingGreetingComponent implements OnInit, OnDestroy {
+  constructor(
+    private _keypadService: KeypadService
+  ){}
 
-  onClick() {
-    this.buttonClickValueChange.emit(true)
+  @Output("touch")
+  touchValueChange = new EventEmitter<undefined>()
+
+  private _keypadSubscriber!: Subscription
+
+  ngOnInit() {
+    this._keypadSubscriber = this._keypadService.enter.subscribe(() => this.onTouch())
+  }
+
+  ngOnDestroy() {
+    if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()
+  }
+
+  onTouch() {
+    this.touchValueChange.emit()
   }
 }

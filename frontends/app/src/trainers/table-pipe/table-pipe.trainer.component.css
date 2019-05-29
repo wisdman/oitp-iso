@@ -1,11 +1,4 @@
 :host {
-  --item-text-color: var(--color-text);
-  --item-background-color: #eee4da;
-  --item-border-color: #bbada0;
-  --item-current-color: #0273d4;
-  --item-success-color: rgb(45, 169, 79);
-  --item-error-color: #f65e3b;
-
   --item-size: 50px;
   --gap: 8px;
   --columns: 10;
@@ -36,26 +29,6 @@
   }
 }
 
-.h1 {
-  display: block;
-
-  margin: 0;
-  margin-top: 34px;
-  margin-bottom: auto;
-  text-indent: 30px;
-
-  padding-left: 20px;
-  padding-right: 20px;
-
-  font-size: 16px;
-  line-height: 1.2;
-  text-align: center;
-  font-weight: 600;
-
-  grid-column-start: 1;
-  grid-column-end: -1;
-}
-
 /* Items */
 
 .item {
@@ -71,20 +44,20 @@
 
 
 .path {
-  stroke: var(--item-border-color);
+  stroke: var(--trainer-border-color);
   stroke-width: 1;
   fill: none;
 }
 
 .item--current .path {
-  stroke: var(--item-current-color);
+  stroke: var(--trainer-selected-color);
   stroke-width: 2;
 }
 
 .fill-path {
   stroke: none;
   stroke-width: 0;
-  fill: var(--item-background-color);
+  fill: var(--trainer-background-color);
 }
 
 .text {
@@ -92,7 +65,8 @@
   font-size: 22px;
   font-weight: 600;
   line-height: 1;
-  color: var(--item-text-color);
+
+  color: var(--trainer-text-color);
   fill: currentColor;
 
   transform: rotateY(0);
@@ -109,15 +83,15 @@
 }
 
 .item--current .text {
-  color: var(--item-current-color);
+  color: var(--trainer-selected-color);
 }
 
 .success {
-  fill: var(--item-success-color);
+  fill: var(--trainer-success-color);
 }
 
 .error {
-  fill: var(--item-error-color);
+  fill: var(--trainer-error-color);
 }
 
 .success,

@@ -4,16 +4,12 @@ import { HttpClient } from  "@angular/common/http"
 import {
   from,
   Observable,
-  Subject,
-  timer,
   concat,
   of,
 } from "rxjs"
 
 import {
-  map,
   switchMap,
-  tap,
 } from "rxjs/operators"
 
 import {
@@ -26,23 +22,17 @@ import {
   ITrainerConfigs,
 } from "../trainers"
 
+import {
+  TimerService,
+} from "./timer.service"
+
 @Injectable({ providedIn: "root" })
 export class TrainingService {
 
-  constructor(private _httpClient:HttpClient) {}
-
-  private _globalTimerSubject = new Subject<number>()
-  private _globalTimerValue = 0
-  isGlobalTimerEnabled: boolean = false
-
-  globalTimer = this._globalTimerSubject.pipe(
-    tap(value => this._globalTimerValue = value),
-    switchMap(() => timer(0, 1000).pipe(
-                           map(() => this.isGlobalTimerEnabled ? this._globalTimerValue-- : this._globalTimerValue),
-                         )
-    ),
-    map(v => v > 0 ? v : 0),
-  )
+  constructor(
+    private _httpClient:HttpClient,
+    private _timerService: TimerService,
+  ) {}
 
   getTraining(type: "everyday" | "once"): Observable<ITrainerConfigs | undefined> {
     var config: Observable<ITraining>
@@ -60,8 +50,7 @@ export class TrainingService {
 
     return config.pipe(
       switchMap(training => {
-        this.isGlobalTimerEnabled = false
-        this._globalTimerSubject.next(training.timeLimit || Number.MAX_SAFE_INTEGER)
+        this._timerService.setGlobalTimeout(training.timeLimit || 0)
         return concat(from(training.trainers), of(undefined))
       })
     )

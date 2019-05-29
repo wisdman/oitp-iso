@@ -8,7 +8,7 @@ import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from 
 })
 export class TrainingResultComponent {
   @Input("result")
-  result: number = 83
+  result: number = 70 + Math.ceil(Math.random()*20)
 
   @Output("buttonClick")
   buttonClickValueChange = new EventEmitter<true>()

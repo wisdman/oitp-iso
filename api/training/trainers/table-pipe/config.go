@@ -17,10 +17,10 @@ type Parameters struct {
 type IAction string
 
 const (
-	actionUp    IAction = "up"
-	actionDown  IAction = "down"
-	actionLeft  IAction = "left"
-	actionRight IAction = "right"
+	actionUp    IAction = "UP"
+	actionDown  IAction = "DOWN"
+	actionLeft  IAction = "LEFT"
+	actionRight IAction = "RIGHT"
 )
 
 var actions = [...]IAction{actionUp, actionDown, actionLeft, actionRight}

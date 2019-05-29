@@ -5,7 +5,11 @@ import {
 } from "../interfaces"
 
 export type IImageExpressionsTrainer = "image-expressions"
-export const ImageExpressionsTrainerID: IImageExpressionsTrainer = "image-expressions"
+
+export interface IImageExpressionsTrainerPage {
+  image: number
+  data: string
+}
 
 export interface IImageExpressionsTrainerConfig extends ITrainerConfig {
   id: IImageExpressionsTrainer
@@ -13,10 +17,7 @@ export interface IImageExpressionsTrainerConfig extends ITrainerConfig {
   showTimeLimit: number
   playTimeLimit: number
 
-  pages: Array<{
-    image: number
-    data: string
-  }>
+  pages: Array<IImageExpressionsTrainerPage>
 }
 
 export interface IImageExpressionsTrainerResult extends ITrainerResult {

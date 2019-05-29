@@ -1,4 +1,5 @@
 export * from "./interfaces"
+export * from "./abstract"
 
 export * from "./classification"
 export * from "./image-carpet"

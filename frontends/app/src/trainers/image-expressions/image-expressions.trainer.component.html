@@ -1,16 +1,21 @@
 <!-- Горманизация работы полушарийй -->
-<h1 class="h1" *ngIf="mode==='show'">Запомните название</h1>
-<h1 class="h1" *ngIf="mode==='play'">Восстановите название по памяти</h1>
+<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните название</h1>
+<h1 *ngIf="mode==='play' || mode==='result'" class="trainer-h1">Восстановите название по памяти</h1>
 
-<img class="image" [src]="srcSanitize(image)">
-<div *ngIf="mode==='show'" class="h2-text">{{ data }}</div>
-<div *ngIf="mode==='play'" class="h2-input">{{ userData }}<span class="cursor">|</span></div>
+<ng-container *ngIf="page">
+  <picture class="image">
+    <source [srcset]="'/assets/expressions/' + page.image + '.webp'">
+    <img [src]="'/assets/expressions/' + page.image + '.jpg'">
+  </picture>
+
+  <div class="input">
+    <trainer-input [active]="true" (value)="page.userData"></trainer-input>
+  </div>
+  <div class="text">{{page.data}}</div>
+</ng-container>
 
 <trainer-button
-  *ngIf="mode === 'play'"
   class="button"
   text="Продолжить"
   (touch)="onButtonTouch()"
 ></trainer-button>
-
-<keypad *ngIf="mode === 'play'" class="keypad" type="ru" (key)="onKey($event)"></keypad>

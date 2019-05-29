@@ -1,4 +1,4 @@
-<h1 class="h1">Используйте жесты или стрелочки</h1>
+<h1 class="trainer-h1">Используйте жесты или стрелочки</h1>
 <div class="rules">
   <div
     *ngFor="let item of rules"
@@ -6,9 +6,9 @@
   >
     <svg
       class="item"
-      [attr.viewBox]="item.viewBox"
-      [attr.width]="item.width"
-      [attr.height]="item.height"
+      [attr.viewBox]="viewBox"
+      [attr.width]="itemSize"
+      [attr.height]="itemSize"
     >
       <path
         class="fill-path"
@@ -20,16 +20,16 @@
       ></path>
       <text
         class="text"
-        [attr.x]="item.width / 2 + 2"
-        [attr.y]="item.height / 2 + 2"
+        [attr.x]="item.x + item.width / 2"
+        [attr.y]="item.y + item.height / 2 + 2"
         text-anchor="middle"
         dominant-baseline="middle"
       >{{ item.data }}</text>
     </svg>
-    <span *ngIf="item.action ==='up'">&#8194;&#8212;&#8194;Вверх</span>
-    <span *ngIf="item.action ==='down'">&#8194;&#8212;&#8194;Вниз</span>
-    <span *ngIf="item.action ==='left'">&#8194;&#8212;&#8194;Влево</span>
-    <span *ngIf="item.action ==='right'">&#8194;&#8212;&#8194;Вправо</span>
+    <span *ngIf="item.action ==='UP'">&#8194;&#8212;&#8194;Вверх</span>
+    <span *ngIf="item.action ==='DOWN'">&#8194;&#8212;&#8194;Вниз</span>
+    <span *ngIf="item.action ==='LEFT'">&#8194;&#8212;&#8194;Влево</span>
+    <span *ngIf="item.action ==='RIGHT'">&#8194;&#8212;&#8194;Вправо</span>
   </div>
 </div>
 
@@ -39,9 +39,9 @@
   [class.item--current]="i === current"
   [class.item--success]="item.isSuccess"
   [class.item--error]="item.isError"
-  [attr.viewBox]="item.viewBox"
-  [attr.width]="item.width"
-  [attr.height]="item.height"
+  [attr.viewBox]="viewBox"
+  [attr.width]="itemSize"
+  [attr.height]="itemSize"
   preserveAspectRatio="xMidYMid meet"
 >
   <path
@@ -54,8 +54,8 @@
   ></path>
   <text
     class="text"
-    [attr.x]="item.width / 2 + 2"
-    [attr.y]="item.height / 2 + 2"
+    [attr.x]="item.x + item.width / 2"
+    [attr.y]="item.y + item.height / 2 + 2"
     text-anchor="middle"
     dominant-baseline="middle"
   >{{ item.data }}</text>

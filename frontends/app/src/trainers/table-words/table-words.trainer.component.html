@@ -1,5 +1,5 @@
 <!-- Вариативность мышления -->
-<h1 class="h1">Заполните таблицу, орентируясь на тематическую группу и буквы</h1>
+<h1 class="trainer-h1">Заполните таблицу, орентируясь на тематическую группу и буквы</h1>
 
 <svg
   *ngIf="headers && headers.length > 0 && items && items.length > 0"
@@ -8,6 +8,7 @@
   [attr.width]="matrixWidth"
   [attr.height]="matrixHeight"
   preserveAspectRatio="xMidYMid meet"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
   <g
     *ngFor="let item of headers"
@@ -23,8 +24,8 @@
     ></path>
     <text
       class="header__text"
-      [attr.x]="item.x"
-      [attr.y]="item.y"
+      [attr.x]="item.x + item.width / 2"
+      [attr.y]="item.y + item.height / 2 + 2"
       dominant-baseline="middle"
       text-anchor="middle"
     >{{ item.data }}</text>
@@ -34,7 +35,7 @@
     *ngFor="let item of items"
     class="item"
     [class.item--selected]="mode === 'play' && item === currentItem"
-    fastTouch (touch)="onTouch(item)"
+    fastTouch propagation="true" (touch)="onTouch(item)"
   >
     <path
       class="item__fill-path"
@@ -44,13 +45,14 @@
       class="item__path"
       [attr.d]="item.path"
     ></path>
-    <text
-      class="item__text"
+    <foreignObject
       [attr.x]="item.x"
       [attr.y]="item.y"
-      dominant-baseline="middle"
-      text-anchor="middle"
-    >{{ item.data }}<tspan class="item__cursor">|</tspan></text>
+      [attr.width]="item.width"
+      [attr.height]="item.height"
+    >
+      <xhtml:trainer-input [active]="mode === 'play' && item === currentItem"></trainer-input>
+    </foreignObject>
   </g>
 </svg>
 
@@ -58,13 +60,13 @@
   *ngIf="mode === 'play'"
   class="button"
   text="Проверить"
+  [active]="currentItem === undefined"
   (touch)="onButtonTouch()"
 ></trainer-button>
 <trainer-button
   *ngIf="mode === 'result'"
   class="button"
   text="Продолжить"
+  [active]="currentItem === undefined"
   (touch)="onButtonTouch()"
 ></trainer-button>
-
-<keypad class="keypad" type="ru" (key)="onKey($event)"></keypad>

@@ -18,7 +18,7 @@ interface IEventData {
   y: number
 }
 
-type ISwipe = "up" | "down" | "left" | "right"
+export type ISwipe = "UP" | "DOWN" | "LEFT" | "RIGHT"
 
 const SWIPE_DELTA = 40
 
@@ -41,9 +41,11 @@ export class FullscreenService {
     this._events.next(data)
   }
 
-  pointerdown = this._events.pipe(filter(({type}) => type === "down"), share())
-  pointermove = this._events.pipe(filter(({type}) => type === "move"), share())
-  pointerup = this._events.pipe(filter(({type}) => type === "up"), share())
+  events = this._events.pipe(share())
+
+  pointerdown = this.events.pipe(filter(({type}) => type === "down"), share())
+  pointermove = this.events.pipe(filter(({type}) => type === "move"), share())
+  pointerup = this.events.pipe(filter(({type}) => type === "up"), share())
 
   swipe: Observable<ISwipe> = this.pointerup.pipe(
             withLatestFrom(this.pointerdown, (up, down) => {
@@ -52,14 +54,14 @@ export class FullscreenService {
 
               if (Math.abs(deltaX) > Math.abs(deltaY)) {
                 if (deltaX > SWIPE_DELTA)
-                  return "left"
+                  return "LEFT"
                 else if (deltaX < SWIPE_DELTA * -1)
-                  return "right"
+                  return "RIGHT"
               } else {
                 if (deltaY > SWIPE_DELTA)
-                  return "up"
+                  return "UP"
                 else if (deltaY < SWIPE_DELTA * -1)
-                  return "down"
+                  return "DOWN"
               }
 
               return undefined

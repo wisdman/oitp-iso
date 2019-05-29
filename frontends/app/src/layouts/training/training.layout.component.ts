@@ -16,9 +16,10 @@ import {
 import { zip } from "rxjs/operators"
 
 import {
-  TimerLapService,
-  TrainingService,
   FullscreenService,
+  KeypadService,
+  TrainingService,
+  TimerService,
 } from "../../services"
 
 import {
@@ -37,10 +38,11 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private _cdr: ChangeDetectorRef,
     private _fullscreenService: FullscreenService,
-    private _timerLapService: TimerLapService,
+    private _keypadService: KeypadService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _trainingService: TrainingService,
+    private _timerService: TimerService
   ) {}
 
   private _stepSubject!: Subject<true>
@@ -59,13 +61,12 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   mode: "greeting" | "game" | "result" = "greeting"
   onStart() {
     this.mode = "game"
-    this._trainingService.isGlobalTimerEnabled = true
     this._stepSubject.next(true)
+    this._timerService.continue()
   }
 
   onFinish() {
      this.mode = "result"
-     this._trainingService.isGlobalTimerEnabled = false
   }
 
   private _routeParamsSubscriber!: Subscription
@@ -73,6 +74,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._fullscreenService.lockScroll()
+    this._keypadService.lockKeypad()
     this._fullscreenService.updateHeight()
     this.mode = "greeting"
     this._stepSubject = new Subject<true>()
@@ -84,7 +86,6 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
                                         zip(this._stepSubject, value => value)
                                       ).subscribe(
                                         config => {
-                                          this._timerLapService.setTimeout(0)
                                           this.config = config
                                           this._cdr.markForCheck()
                                           console.log(this.config)
@@ -98,6 +99,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._trainingSubscriber) this._trainingSubscriber.unsubscribe()
     if (this._routeParamsSubscriber) this._routeParamsSubscriber.unsubscribe()
+    this._keypadService.unlockKeypad()
     this._fullscreenService.unlockScroll()
   }
 

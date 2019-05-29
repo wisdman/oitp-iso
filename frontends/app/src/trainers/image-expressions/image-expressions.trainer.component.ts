@@ -1,25 +1,16 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
 } from "@angular/core"
 
-import { DomSanitizer } from "@angular/platform-browser"
-
-import { Subscription } from "rxjs"
-import { TimerLapService } from "../../services"
+import {
+  AbstractTrainerComponent,
+} from "../abstract"
 
 import {
   IImageExpressionsTrainerConfig,
+  IImageExpressionsTrainerPage,
   IImageExpressionsTrainerResult,
-  ImageExpressionsTrainerID,
 } from "./image-expressions.trainer.interfaces"
 
 @Component({
@@ -28,102 +19,51 @@ import {
   styleUrls: [ "./image-expressions.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageExpressionsTrainerComponent implements OnInit, OnChanges, OnDestroy {
-  constructor(
-    private _cdr: ChangeDetectorRef,
-    private _sanitizer: DomSanitizer,
-    private _timerLapService: TimerLapService,
-  ){}
+export class ImageExpressionsTrainerComponent
+  extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult> {
 
-  @Input()
-  config!: IImageExpressionsTrainerConfig
-
-  result: IImageExpressionsTrainerResult = {
-    id: ImageExpressionsTrainerID,
-    config: this.config,
-    success: 0,
-    error: 0,
-  }
-
-  @Output("result")
-  resultValueChange = new EventEmitter<IImageExpressionsTrainerResult>()
-
-  private _updateResult(result: Partial<IImageExpressionsTrainerResult>) {
-    this.result = {...this.result, config: this.config, ...result}
-    this.resultValueChange.emit(this.result)
-  }
-
-  private _lapTimerSubscriber!: Subscription
-
-  ngOnInit() {
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(0)
-    this._init()
-  }
-
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
-
-  ngOnDestroy() {
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-  }
-
-  srcSanitize(value: string) {
-    return this._sanitizer.bypassSecurityTrustUrl(value)
-  }
-
-  mode: "show" | "play" = "show"
-  pages!: Array<{
-    image: number
-    data: string
-  }>
+  pages!: Array<IImageExpressionsTrainerPage & {userData: string}>
   currentPage: number = -1
 
-  get image() {
+  get page() {
     if (this.currentPage < 0) {
-      return ""
+      return undefined
     }
-    return `/expressions/${this.pages[this.currentPage].image}.jpg`
+    return this.pages[this.currentPage]
   }
 
-  get data() {
-    if (this.currentPage < 0) {
-      return ""
-    }
-    return this.pages[this.currentPage].data
-  }
+  init() {
+    this.keypadService.show("RU")
 
-  userData: string = ""
-
-  private _init() {
-    this.mode = "show"
-    this.pages = this.config.pages
     this.currentPage = -1
+    this.pages = this.config.pages
+                            .sort(() => Math.random() - 0.5)
+                            .map(value => ({...value, userData: ""}))
+    this.mode = "show"
     this._step()
   }
 
+  destroy() {
+    this.keypadService.hide()
+  }
+
   private _play() {
-    this.mode = "play"
-    this.pages = this.config.pages // TODO: Random
     this.currentPage = -1
+    this.pages = this.pages.sort(() => Math.random() - 0.5)
+    this.mode = "play"
     this._step()
   }
 
   private _step() {
     this.currentPage++
-    this._timerLapService.setTimeout(this.mode === "show" ? this.config.showTimeLimit : this.config.playTimeLimit)
+    // if (this.mode === "show"){
+    //   this.setTimeout(this.config.showTimeLimit)
+    // } else if (this.mode === "play"){
+    //   this.setTimeout(this.config.playTimeLimit)
+    // }
   }
 
-  private _timeout() {
+  timeout() {
     switch (this.mode) {
       case "show":
         if (this.currentPage >= this.pages.length - 1) {
@@ -135,38 +75,34 @@ export class ImageExpressionsTrainerComponent implements OnInit, OnChanges, OnDe
 
       case "play":
         if (this.currentPage >= this.pages.length - 1) {
-          this._updateResult({ isFinish: true })
+          super.timeout()
         } else {
           this._step()
         }
         break
     }
-    this._cdr.markForCheck()
-  }
-
-  onKey(key: string) {
-    if (this.mode !== "play") {
-      return
-    }
-
-    switch (key) {
-      case "BACKSPACE":
-        this.userData = this.userData.slice(0,-1);
-        return
-
-      default:
-        this.userData += key
-        return
-    }
+    this.markForCheck()
   }
 
   onButtonTouch() {
-    if (this.currentPage >= this.pages.length - 1) {
-      this._updateResult({ isFinish: true })
-    } else {
-      this._step()
+    switch (this.mode) {
+      case "show":
+        if (this.currentPage >= this.pages.length - 1) {
+          this._play()
+        } else {
+          this._step()
+        }
+        break
+
+      case "play":
+        if (this.currentPage >= this.pages.length - 1) {
+          this.finish()
+        } else {
+          this._step()
+        }
+        break
     }
-    this._cdr.markForCheck()
+    this.markForCheck()
   }
 
 }

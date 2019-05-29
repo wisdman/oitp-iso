@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, LOCALE_ID, CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core"
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from "@angular/core"
 import { APP_BASE_HREF } from "@angular/common"
 import { BrowserModule } from "@angular/platform-browser"
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http"
@@ -18,18 +18,19 @@ import {
   CardChargerComponent,
   CardEverydayComponent,
   CardRecommendationsComponent,
-  GlobalTimerComponent,
   HeaderNotificationsComponent,
   HeaderUserComponent,
   IndicatorBrainComponent,
   IndicatorChartsComponent,
   IndicatorSpeedComponent,
   KeypadComponent,
-  LapTimerComponent,
   ProgressListComponent,
   SidebarUserComponent,
   SocialBbuttonsComponent,
+  TimerGlobalComponent,
+  TimerLapComponent,
   TrainerButtonComponent,
+  TrainerInputComponent,
   TrainingGreetingComponent,
   TrainingResultComponent,
 } from "./components"
@@ -53,6 +54,7 @@ import {
 } from "./layouts"
 
 import {
+  AbstractTrainerComponent,
   ClassificationTrainerComponent,
   ImageCarpetTrainerComponent,
   ImageDifferencesTrainerComponent,
@@ -82,13 +84,16 @@ import {
   FullscreenService,
   FullscreenServiceFactory,
 
+  KeypadService,
+  KeypadServiceFactory,
+
   NotificationService,
   NotificationServiceFactory,
 
   ProgressService,
   RecommendationService,
-  TimerGlobalService,
   TimerLapService,
+  TimerService,
   TrainingService,
   UserService,
 } from "./services"
@@ -116,18 +121,19 @@ import { ROUTES } from "./app.routing"
     CardChargerComponent,
     CardEverydayComponent,
     CardRecommendationsComponent,
-    GlobalTimerComponent,
     HeaderNotificationsComponent,
     HeaderUserComponent,
     IndicatorBrainComponent,
     IndicatorChartsComponent,
     IndicatorSpeedComponent,
     KeypadComponent,
-    LapTimerComponent,
     ProgressListComponent,
     SidebarUserComponent,
     SocialBbuttonsComponent,
+    TimerGlobalComponent,
+    TimerLapComponent,
     TrainerButtonComponent,
+    TrainerInputComponent,
     TrainingGreetingComponent,
     TrainingResultComponent,
 
@@ -145,8 +151,7 @@ import { ROUTES } from "./app.routing"
     SupportLayoutComponent,
     TrainingLayoutComponent,
 
-    TablePipeTrainerComponent,
-
+    AbstractTrainerComponent,
     ClassificationTrainerComponent,
     ImageCarpetTrainerComponent,
     ImageDifferencesTrainerComponent,
@@ -158,6 +163,7 @@ import { ROUTES } from "./app.routing"
     MatrixSequenceTrainerComponent,
     QuestionTrainerComponent,
     RelaxTrainerComponent,
+    TablePipeTrainerComponent,
     TablePipeTrainerComponent,
     TableWordsTrainerComponent,
     TextLettersTrainerComponent,
@@ -190,19 +196,10 @@ import { ROUTES } from "./app.routing"
 
     ProgressService,
     RecommendationService,
-    TimerGlobalService,
     TimerLapService,
+    TimerService,
     TrainingService,
     UserService,
-
-    // Notification services
-    NotificationService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: NotificationServiceFactory,
-      deps: [ NotificationService ],
-      multi: true
-    },
 
     // Fullscreen services
     FullscreenService,
@@ -210,6 +207,24 @@ import { ROUTES } from "./app.routing"
       provide: APP_INITIALIZER,
       useFactory: FullscreenServiceFactory,
       deps: [ FullscreenService ],
+      multi: true
+    },
+
+    // Fullscreen services
+    KeypadService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: KeypadServiceFactory,
+      deps: [ KeypadService ],
+      multi: true
+    },
+
+    // Notification services
+    NotificationService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: NotificationServiceFactory,
+      deps: [ NotificationService ],
       multi: true
     },
 
@@ -231,10 +246,6 @@ import { ROUTES } from "./app.routing"
       provide: APP_BASE_HREF,
       useValue: "/",
     },
-  ],
-
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
   ],
 })
 export class AppModule {}

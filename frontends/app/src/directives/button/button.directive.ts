@@ -5,6 +5,7 @@ import {
   OnInit,
   Renderer2,
 } from "@angular/core"
+
 import STYLE from "./button.directive.css"
 
 @Directive({
@@ -15,18 +16,18 @@ export class ButtonDirective implements OnInit {
   color: string = ""
 
   constructor(
-    private _el: ElementRef<HTMLButtonElement>,
+    private _elRef: ElementRef<HTMLButtonElement>,
     private _renderer: Renderer2,
   ) {
-    this._renderer.addClass(this._el.nativeElement, STYLE.button)
+    this._renderer.addClass(this._elRef.nativeElement, STYLE.button)
   }
 
   ngOnInit() {
-    this._el.nativeElement
+    this._elRef.nativeElement
         .classList
         .forEach(className => {
           if (className in STYLE) {
-            this._renderer.addClass(this._el.nativeElement, STYLE[className])
+            this._renderer.addClass(this._elRef.nativeElement, STYLE[className])
           }
         })
   }

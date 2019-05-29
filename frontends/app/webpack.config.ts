@@ -321,6 +321,8 @@ export default {
     progress: true,
     stats: "minimal",
 
+    contentBase: PATH("../../nginx"),
+
     proxy: {
       "/api/training": {
         target: "http://localhost",

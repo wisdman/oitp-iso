@@ -5,17 +5,10 @@ import {
 } from "../interfaces"
 
 export type IClassificationTrainer = "classification"
-export const ClassificationTrainerID: IClassificationTrainer = "classification"
 
-export type IClassificationTrainerItem = {
+export interface IClassificationTrainerItem {
   data: string
   group: string
-}
-
-export type IClassificationTrainerGroup = {
-  data: string
-  isSuccess?: boolean
-  isError?: boolean
 }
 
 export interface IClassificationTrainerConfig extends ITrainerConfig {

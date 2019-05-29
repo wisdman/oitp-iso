@@ -1,38 +1,51 @@
 <!-- Активизация лексиклна -->
-<h1 class="h1" *ngIf="config.type === 'colors'">Укажите соответствующий цвет</h1>
-<h1 class="h1" *ngIf="config.type === 'definitions'">По лексическому значению узнайте слово</h1>
-<h1 class="h1" *ngIf="config.type === 'words'">Определите тематическую группу</h1>
+<h1 class="trainer-h1" *ngIf="config.type === 'colors'">Укажите соответствующий цвет</h1>
+<h1 class="trainer-h1" *ngIf="config.type === 'definitions'">По лексическому значению узнайте слово</h1>
+<h1 class="trainer-h1" *ngIf="config.type === 'words'">Определите тематическую группу</h1>
 
 <h1 class="word">
-  <span #dataNode class="word-text animate">{{ item && item.data }}</span>
+  <span
+    #dataNode
+    class="word-text animate"
+    [class.word-text--definitions]="config.type === 'definitions'"
+  >{{ item && item.data }}</span>
 </h1>
 
-<div
-  class="groups"
-  [class.groups--border]="config.type !== 'colors'"
+<svg
+  *ngIf="matrix && matrix.length > 0"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  preserveAspectRatio="xMidYMid meet"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
-  <div
-    *ngFor="let group of groups"
-    class="group"
-    [class.group--border]="config.type !== 'colors'"
-    [class.group--success]="group.isSuccess"
-    [class.group--error]="group.isError"
-    [style.backgroundColor]="config.type === 'colors' && group.data || 'transparent'"
-    fastTouch (touch)="onTouch(group)"
+  <g
+    *ngFor="let item of matrix"
+    class="item"
+    [class.item--success]="item.isSuccess"
+    [class.item--error]="item.isError"
+    [class.item--colors]="config.type === 'colors'"
+    [class.item--definitions]="config.type === 'definitions'"
+    [class.item--words]="config.type === 'words'"
+    fastTouch (touch)="onTouch(item)"
   >
-    <svg
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+      [attr.fill]="item.data"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <text
       *ngIf="config.type !== 'colors'"
-      class="group-text"
-      width="100%" height="100%"
-      viewBox="0 0 300 50"
-      preserveAspectRatio="xMidYMid meet"
-    >
-      <text
-        class="group-text__text"
-        x="50%" y="50%"
-        dominant-baseline="middle"
-        text-anchor="middle"
-      >{{ group.data }}</text>
-    </svg>
-  </div>
-</div>
+      class="text"
+      [attr.x]="item.x + item.width / 2"
+      [attr.y]="item.y + item.height / 2 + 2"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}</text>
+  </g>
+</svg>

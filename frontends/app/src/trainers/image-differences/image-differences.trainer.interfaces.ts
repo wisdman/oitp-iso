@@ -11,8 +11,8 @@ export interface IImageDifferencesTrainerConfig extends ITrainerConfig {
 
   timeLimit: number
 
-  imageA: number,
-  imageB: number,
+  A: number,
+  B: number,
   differences?: Array<string>
 }
 

@@ -1,4 +1,6 @@
 :host {
+  --value: 0;
+
   display: block;
   position: relative;
   width: 100%;
@@ -9,9 +11,6 @@
 
   border-radius: 0 0 8px 8px;
   overflow: hidden;
-
-  --limit: 0;
-  --animation: none;
 }
 
 :host::before {
@@ -27,21 +26,10 @@
   background-size: 100%;
   background-repeat: no-repeat;
 
-  transform: scale(0, 1);
+  transform: scale(var(--value), 1);
   transform-origin: left bottom;
 
-  animation-duration: calc(var(--limit) * 1s);
-  animation-fill-mode: forwards;
-  animation-iteration-count: 1;
-  animation-name: var(--animation);
-  animation-timing-function: linear;
-}
-
-@keyframes lapProgress {
-  from {
-    transform: scale(0, 1);
-  }
-  to {
-    transform: scale(1, 1);
-  }
+  transition-duration: 1s;
+  transition-property: transform;
+  transition-timing-function: linear;
 }

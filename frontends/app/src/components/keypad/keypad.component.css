@@ -4,7 +4,7 @@
   --item-border-color: rgb(187, 173, 160);
   --item-selected-color: #0273d4;
 
-  --item-size: 40px;
+  --item-size: 50px;
   --gap: 1px;
   --padding: 2px;
 
@@ -23,6 +23,8 @@
   width: auto;
   max-width: 100%;
   height: auto;
+
+  margin-top: 16px;
 }
 
 .item {

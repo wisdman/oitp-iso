@@ -5,7 +5,6 @@ import {
 } from "../interfaces"
 
 export type ITableWordsTrainer = "table-words"
-export const TableWordsTrainerID: ITableWordsTrainer = "table-words"
 
 export interface ITableWordsTrainerConfig extends ITrainerConfig {
   id: ITableWordsTrainer

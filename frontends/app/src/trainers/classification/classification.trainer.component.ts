@@ -2,29 +2,44 @@ import {
   Component,
   ChangeDetectionStrategy,
   ElementRef,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
   ViewChild,
-  OnDestroy,
-  ChangeDetectorRef,
 } from "@angular/core"
 
-import { Subscription, from, timer, Subject, zip } from "rxjs"
-import { switchMap } from "rxjs/operators"
-
-import { TimerLapService } from "../../services"
+import {
+  concat,
+  from,
+  of,
+  Subject,
+  Subscription,
+  timer,
+  zip,
+} from "rxjs"
 
 import {
-  ClassificationTrainerID,
+  switchMap,
+  filter,
+} from "rxjs/operators"
+
+import {
+  notUndefined
+} from "../../lib/util"
+
+import {
+  AbstractTrainerComponent,
+  SVGRectangle,
+} from "../abstract"
+
+import {
   IClassificationTrainerConfig,
   IClassificationTrainerItem,
-  IClassificationTrainerGroup,
   IClassificationTrainerResult,
 } from "./classification.trainer.interfaces"
+
+interface IGroup extends SVGRectangle {
+  data: string
+  isSuccess?: boolean
+  isError?: boolean
+}
 
 @Component({
   selector: "trainer-classification",
@@ -32,98 +47,122 @@ import {
   styleUrls: [ "./classification.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClassificationTrainerComponent implements OnInit, OnChanges, OnDestroy {
+export class ClassificationTrainerComponent
+  extends AbstractTrainerComponent<IClassificationTrainerConfig, IClassificationTrainerResult> {
 
-  constructor(
-    private _el: ElementRef,
-    private _cdr: ChangeDetectorRef,
-    private _timerLapService: TimerLapService,
-  ){}
-
-  @Input()
-  config!: IClassificationTrainerConfig
-
-  result: IClassificationTrainerResult = {
-    id: ClassificationTrainerID,
-    config: this.config,
-    success: 0,
-    error: 0,
-  }
-
-  @Output("result")
-  resultValueChange = new EventEmitter<IClassificationTrainerResult>()
-
-  private _updateResult(result: Partial<IClassificationTrainerResult>) {
-    this.result = {...this.result, config: this.config, ...result}
-    this.resultValueChange.emit(this.result)
-  }
-
-  private _lapTimerSubscriber!: Subscription
-
-  ngOnInit() {
-    this._init()
-    this._updateResult({
-      isFinish: false,
-      success: 0,
-      error: 0,
-    })
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._timerLapService.timeout.subscribe(() => this._timeout())
-    this._timerLapService.setTimeout(this.config.itemTimeLimit * this.config.items.length)
-  }
-
-  ngOnChanges(sc: SimpleChanges ) {
-    if (sc.config !== undefined && !sc.config.firstChange) {
-      this.ngOnInit()
-    }
-  }
-
-  ngOnDestroy() {
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    if (this._itemsSubscription) this._itemsSubscription.unsubscribe()
-  }
-
-  private _stepSubject!: Subject<true>
+  private _stepSubject!: Subject<undefined>
   private _itemsSubscription!: Subscription
 
-  groups: Array<IClassificationTrainerGroup> = []
+  matrix!: Array<IGroup>
   item!: IClassificationTrainerItem
 
-  private _init() {
-    this.groups = [...new Set(this.config.items.map(({group}) => group))].map(data =>({data}))
+  matrixWidth: number = 0
+  matrixHeight: number = 0
 
+  get matrixViewBox(): string {
+    return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
+  }
+
+  resultAnimationDuration!: number
+
+  init() {
     const itemMsTimeLimit = this.config.itemTimeLimit * 1000
+    this.setCSSProperty("--animation-duration", `${itemMsTimeLimit}ms`)
 
-    this._stepSubject = new Subject<true>()
+    this.resultAnimationDuration = this.getCSSPropertyIntValue("--result-animation-duration")
+
+    this._stepSubject = new Subject<undefined>()
+
     this._itemsSubscription = zip(
-      from(this.config.items),
+      concat(from(this.config.items), of(undefined)),
       this._stepSubject.pipe(switchMap(() => timer(0, itemMsTimeLimit))),
       value => value,
-    ).subscribe(
+    ).pipe(filter(notUndefined))
+     .subscribe(
       item => {
         this.item = item
-        this._cdr.markForCheck()
+        this.markForCheck()
         this._resetAnimation()
       },
       error => console.error(error),
-      () => this._updateResult({ isFinish: true })
+      () => this._finish(),
     )
 
-    this._el.nativeElement.style.setProperty("--animation-duration", `${itemMsTimeLimit * 1.3}ms`)
+    const groups = [...new Set(this.config.items.map(({group}) => group))]
+                    .sort(() => Math.random() - 0.5)
 
-    if (this.config.type === 'colors') {
-      this._el.nativeElement.style.setProperty("--columns", `${this.groups.length}`)
-    } else if (this.groups.length % 5 === 0) {
-      this._el.nativeElement.style.setProperty("--columns", `5`)
-    } else if (this.groups.length % 4 === 0) {
-      this._el.nativeElement.style.setProperty("--columns", `4`)
-    } else if (this.groups.length % 3 === 0) {
-      this._el.nativeElement.style.setProperty("--columns", `3`)
-    } else if (this.groups.length % 2 === 0) {
-      this._el.nativeElement.style.setProperty("--columns", `2`)
+    if (this.config.type === "colors") {
+      this._initColorMatrix(groups)
+    } else {
+      this._initTextMatrix(groups)
     }
 
-    this._stepSubject.next(true)
+    this.mode = "play"
+    this._stepSubject.next()
+    this.setTimeout(this.config.itemTimeLimit * this.matrix.length)
+  }
+
+  destroy() {
+    if (this._itemsSubscription) this._itemsSubscription.unsubscribe()
+  }
+
+  private _initColorMatrix(groups: Array<string>) {
+    const gap = this.getCSSPropertyIntValue("--gap")
+    const padding = this.getCSSPropertyIntValue("--padding")
+
+    const columns = groups.length
+    const itemWidth = Math.floor((this.width - padding * 2 - (columns - 1) * gap) / columns)
+    const itemHeight = this.getCSSPropertyIntValue("--trainer-text-item-height")
+
+    this.matrixWidth = padding
+                     + itemWidth * columns + gap * (columns - 1)
+                     + padding
+
+    this.matrixHeight = padding
+                      + itemHeight
+                      + padding
+
+    this.matrix = groups.map((data, i) =>
+      ({...this.genSVGRectangle(padding + (itemWidth + gap) * i, padding, itemWidth, itemHeight), data})
+    )
+  }
+
+  private _initTextMatrix(groups: Array<string>) {
+    const gap = this.getCSSPropertyIntValue("--gap")
+    const padding = this.getCSSPropertyIntValue("--padding")
+
+    const maxTextWidth = Math.max(...this.getTextWidth(groups))
+    const textPadding = this.getCSSPropertyIntValue("--text-padding")
+
+    let itemWidth = textPadding + maxTextWidth + textPadding
+
+    let columns = (() => {
+      const best = Math.floor(this.width / itemWidth)
+      for (let i = 5; i > 0; i--) {
+        if (groups.length % i === 0 && i < best){
+          return i
+        }
+      }
+      return 1
+    })()
+    const row = Math.ceil(groups.length / columns)
+
+    itemWidth = Math.floor(this.width / columns)
+    const itemHeight = this.getCSSPropertyIntValue("--trainer-text-item-height");
+
+    this.matrixWidth = padding
+                     + itemWidth * columns + gap * (columns - 1)
+                     + padding
+
+    this.matrixHeight = padding
+                      + itemHeight * row + gap * (row - 1)
+                      + padding
+
+    this.matrix = groups.map((data, i) => {
+      const x = padding + (itemWidth + gap) * (i % columns)
+      const y = padding + (itemHeight + gap) * Math.floor(i/columns)
+      return {...this.genSVGRectangle(x, y, itemWidth, itemHeight), data}
+    })
   }
 
   @ViewChild("dataNode", { static: true }) dataNodeRef!: ElementRef<HTMLSpanElement>
@@ -137,30 +176,28 @@ export class ClassificationTrainerComponent implements OnInit, OnChanges, OnDest
     })
   }
 
-  private _timeout() {
-    this._updateResult({ isTimeout: true, isFinish: true })
+  private _finish() {
+    setTimeout(() => this.finish(), this.resultAnimationDuration)
   }
 
-  onTouch(group: IClassificationTrainerGroup) {
+  onTouch(group: IGroup) {
     let { success, error } = this.result
     if (this.item.group === group.data) {
       success++
-
       group.isSuccess = true
       setTimeout(() => {
         group.isSuccess = false
-        this._cdr.markForCheck()
-      }, 250)
+        this.markForCheck()
+      }, this.resultAnimationDuration)
     } else {
       error++
-
       group.isError = true
       setTimeout(() => {
         group.isError = false
-        this._cdr.markForCheck()
-      }, 250)
+        this.markForCheck()
+      }, this.resultAnimationDuration)
     }
-    this._updateResult({ success, error })
-    this._stepSubject.next(true)
+    this.updateResult({ success, error })
+    this._stepSubject.next()
   }
 }

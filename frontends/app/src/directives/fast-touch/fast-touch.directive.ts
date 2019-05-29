@@ -1,10 +1,11 @@
 import {
   Directive,
   ElementRef,
+  EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
-  EventEmitter,
 } from "@angular/core"
 
 type IEvents = "pointerdown"
@@ -32,11 +33,14 @@ export class FastTouchDirective implements OnInit, OnDestroy {
   @Output("touch")
   touchValueChange = new EventEmitter()
 
+  @Input("propagation")
+  propagation: boolean = false
+
   private _getOnTouch() {
     const self = this
     return function(event: Event){
       event.preventDefault()
-      event.stopPropagation()
+      if (!self.propagation) event.stopPropagation()
       self.touchValueChange.emit()
     }
   }
