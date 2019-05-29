@@ -112,6 +112,11 @@
   }
 }
 
+.close-icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* === Keypad === */
 .keypad {
   margin-top: auto;

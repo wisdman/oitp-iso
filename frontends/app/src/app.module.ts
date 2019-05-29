@@ -28,6 +28,7 @@ import {
   TimerLapComponent,
   TrainerButtonComponent,
   TrainerInputComponent,
+  TrainerInputWrapperComponent,
   TrainingGreetingComponent,
   TrainingResultComponent,
 } from "./components"
@@ -126,6 +127,7 @@ import { ROUTES } from "./app.routing"
     TimerLapComponent,
     TrainerButtonComponent,
     TrainerInputComponent,
+    TrainerInputWrapperComponent,
     TrainingGreetingComponent,
     TrainingResultComponent,
 

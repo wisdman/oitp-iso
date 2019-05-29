@@ -110,11 +110,11 @@ export class KeypadComponent implements OnInit, OnDestroy {
 
     const maxWidth = this._elRef.nativeElement.getBoundingClientRect().width
 
-    const itemSize = this._getCSSPropertyIntValue("--item-size");
+    const itemSize = this._getCSSPropertyIntValue("--trainer-svg-height");
     const itemWidth = Math.max(itemSize, Math.ceil(maxWidth / maxLineCount))
     const itemHeight = itemSize
 
-    const padding = this._getCSSPropertyIntValue("--padding")
+    const padding = this._getCSSPropertyIntValue("--trainer-svg-padding")
     const gap = this._getCSSPropertyIntValue("--gap")
 
     const width = padding

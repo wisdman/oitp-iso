@@ -1,15 +1,13 @@
 :host {
-  --item-padding: 2px;
   --text-padding: 24px;
 
   display: flex;
-
   width: auto;
   max-width: 100%;
   height: auto;
   max-height: 100%;
 
-  font-size: var(--trainer-font-size);
+  font-size: inherit;
   font-weight: 600;
 }
 
@@ -17,6 +15,10 @@
   display: block;
   width: auto;
   height: auto;
+
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .item {
@@ -27,9 +29,6 @@
   stroke: var(--trainer-border-color);
   stroke-width: 1;
   fill: none;
-
-  position: relative;
-  z-index: 999;
 }
 
 .item--active .path {

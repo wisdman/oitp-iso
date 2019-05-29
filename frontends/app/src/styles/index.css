@@ -2,10 +2,8 @@
 @import "theme.css";
 
 @import "page.css";
-@import "trainer.css";
 
-@import "article.css";
-@import "input.css";
+@import "trainer.css";
 
 @import "fixture.css";
 @import "utils.css";

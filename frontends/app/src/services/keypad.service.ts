@@ -14,11 +14,13 @@ import {
 export type IKeypadType = "RU" | "EN" | "NUMBERS"
 export type IArrow = "DOWN" | "UP" | "LEFT" | "RIGHT"
 
+import { RU, EN, NUMBERS } from "../lib/runes"
+
 const ARROW: Array<IArrow> = ["DOWN", "UP", "LEFT", "RIGHT"]
-const RU = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ".split("")
-const EN = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
-const NUMBERS = "1234567890".split("")
-const SYMBOLS = "-!,.".split("")
+const ARR_RU = RU.split("")
+const ARR_EN = EN.split("")
+const ARR_NUMBERS = NUMBERS.split("")
+const ARR_SYMBOLS = "-!,.".split("")
 
 @Injectable({ providedIn: "root" })
 export class KeypadService {
@@ -58,11 +60,11 @@ export class KeypadService {
   dot       = this.events.pipe(filter(value => value === "."), share())
   space     = this.events.pipe(filter(value => value === " "), share())
 
-  en      = this.events.pipe(filter(value => EN.includes(value)), share())
-  ru      = this.events.pipe(filter(value => RU.includes(value)), share())
-  symbols = this.events.pipe(filter(value => SYMBOLS.includes(value)), share())
+  en      = this.events.pipe(filter(value => ARR_EN.includes(value)), share())
+  ru      = this.events.pipe(filter(value => ARR_RU.includes(value)), share())
+  symbols = this.events.pipe(filter(value => ARR_SYMBOLS.includes(value)), share())
 
-  numbers = this.events.pipe(filter(value => NUMBERS.includes(value)),share())
+  numbers = this.events.pipe(filter(value => ARR_NUMBERS.includes(value)),share())
 
   private _initKeydownListener() {
     window.addEventListener("keydown", (event: KeyboardEvent) => {

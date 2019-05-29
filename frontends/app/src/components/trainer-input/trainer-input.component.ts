@@ -2,7 +2,6 @@ import {
   Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  ElementRef,
   EventEmitter,
   HostBinding,
   Input,
@@ -11,13 +10,10 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ElementRef,
 } from "@angular/core"
 
 import { Subscription, merge } from "rxjs"
-
-import {
-  genSVGRectangle,
-} from "../../lib/svg"
 
 import { KeypadService, IKeypadType, IArrow } from "../../services"
 
@@ -29,16 +25,27 @@ import { KeypadService, IKeypadType, IArrow } from "../../services"
 })
 export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
-    private _elRef:ElementRef<HTMLElement>,
+    private _elRef: ElementRef<HTMLElement>,
     private _cdr: ChangeDetectorRef,
     private _keypadService: KeypadService,
   ){}
 
   private _style = getComputedStyle(this._elRef.nativeElement)
 
-  private _getCSSPropertyIntValue(property: string): number {
-    const value = this._style.getPropertyValue(property)
-    return Number.parseInt(value)
+  @HostBinding("style.font-size.px")
+  get fontSize() {
+    const context = document.createElement("canvas").getContext("2d")
+    if (context === null) return 16
+
+    const { width } = this._elRef.nativeElement.getBoundingClientRect()
+
+    for (let fontSize = 16; fontSize >= 8; fontSize--) {
+      context.font = `${this._style.fontWeight} ${fontSize}px ${this._style.fontFamily}`
+      const textWidth = context.measureText(this._value).width + 20
+      if (textWidth < width) {
+        return fontSize
+      }
+    }
   }
 
   valueList: Array<string> = [""]
@@ -65,53 +72,19 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
   @Input("type")
   type: IKeypadType = "RU"
 
-  @Input("embedded")
-  @HostBinding("class.embedded")
-  isEmbedded: boolean = false
-
   @Input("success")
-  @HostBinding("class.embedded--success")
+  @HostBinding("class.success")
   isSuccess: boolean = false
 
   @Input("error")
-  @HostBinding("class.embedded--error")
+  @HostBinding("class.error")
   isError: boolean = false
-
-  matrix!:{
-    padding: number
-    width: number
-    height: number
-    path: string
-  }
-
-  get matrixWidth() {
-    return this.matrix && this.matrix.width || 0
-  }
-
-  get matrixHeight() {
-    return this.matrix && this.matrix.height || 0
-  }
-
-  get matrixViewBox(): string {
-    return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
-  }
 
   private _keypadDataSubscriber!: Subscription
   private _keypadBackspaceSubscriber!: Subscription
   private _keypadArrowSubscriber!: Subscription
 
   ngOnInit() {
-    if (!this.isEmbedded) {
-      const padding = this._getCSSPropertyIntValue("--padding");
-
-      const {width, height} = this._elRef.nativeElement.getBoundingClientRect()
-
-      this.matrix = {
-        ...genSVGRectangle(padding, padding, width - padding * 2, height - padding * 2),
-        padding,
-      }
-    }
-
     if (this._keypadDataSubscriber) this._keypadDataSubscriber.unsubscribe()
     switch (this.type) {
       case "RU":
@@ -152,6 +125,8 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
       this._cdr.markForCheck()
     }
   }
+
+
 
   private _onInput(key: string) {
     if (!this.isActive) {

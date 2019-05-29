@@ -42,8 +42,17 @@ export class TrainerButtonComponent implements OnInit, OnChanges, OnDestroy {
     return Number.parseInt(value)
   }
 
+  private _getTextWidth(value: string): number {
+    const context = document.createElement("canvas").getContext("2d")
+    if (context === null) {
+      return 0
+    }
+    context.font = `${this._style.fontWeight} ${this._style.fontSize} ${this._style.fontFamily}`
+    return context.measureText(value).width
+  }
+
   @Input()
-  text: string = ""
+  value: string = ""
 
   @Output("touch")
   touchValueChange = new EventEmitter()
@@ -53,7 +62,6 @@ export class TrainerButtonComponent implements OnInit, OnChanges, OnDestroy {
 
   matrixWidth: number = 0
   matrixHeight: number = 0
-
   get matrixViewBox(): string {
     return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
   }
@@ -63,31 +71,18 @@ export class TrainerButtonComponent implements OnInit, OnChanges, OnDestroy {
   private _keypadSubscriber!: Subscription
 
   ngOnInit() {
-    const context = document.createElement("canvas").getContext("2d")
-    if (context === null) {
-      return []
-    }
+    const textWidth = this._getTextWidth(this.value)
+    const textPadding = this._getCSSPropertyIntValue("--text-padding")
 
-    context.font = `${this._style.fontWeight} ${this._style.fontSize} ${this._style.fontFamily}`
-
-    const textWidth = context.measureText(this.text).width
-
-    const itemHeight = this._getCSSPropertyIntValue("--trainer-text-item-height");
-    const itemPadding = this._getCSSPropertyIntValue("--item-padding");
-    const textPadding = this._getCSSPropertyIntValue("--text-padding");
+    const itemPadding = this._getCSSPropertyIntValue("--trainer-svg-padding")
 
     const itemWidth = textPadding + textWidth + textPadding
+    const itemHeight = this._getCSSPropertyIntValue("--trainer-svg-height")
 
-    const width = itemPadding + itemWidth + itemPadding
-    const height = itemPadding + itemHeight + itemPadding
+    this.matrixWidth = itemPadding + itemWidth + itemPadding
+    this.matrixHeight = itemPadding + itemHeight + itemPadding
 
-    this.matrixWidth = width
-    this.matrixHeight = height
-
-    this.item = {
-      ...genSVGRectangle(itemPadding, itemPadding, itemWidth, itemHeight),
-      data: this.text,
-    }
+    this.item = {...genSVGRectangle(itemPadding, itemPadding, itemWidth, itemHeight), data: this.value}
 
     if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()
     this._keypadSubscriber = merge(this._keypadService.enter, this._keypadService.space)

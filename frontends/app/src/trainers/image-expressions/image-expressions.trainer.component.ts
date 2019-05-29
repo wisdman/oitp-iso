@@ -16,7 +16,7 @@ import {
   mergeMap,
 } from "rxjs/operators"
 
-import { compareRuneString } from "../../lib/util"
+import { compareRuneString } from "../../lib/runes"
 
 import {
   AbstractTrainerComponent,
@@ -69,7 +69,7 @@ export class ImageExpressionsTrainerComponent
       item => {
         this.item = item
         this.markForCheck()
-        this.setTimeout(this.config.showTimeLimit)
+        // this.setTimeout(this.config.showTimeLimit)
       },
       error => console.error(error),
       () => this._paly(),

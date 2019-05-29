@@ -3,30 +3,34 @@
 
   --trainer-text-color: rgb(119, 110, 101);
 
-  --trainer-background-color: rgba(238, 228, 218, 0.7);
+  --trainer-background-color: rgba(238, 228, 218, 0.72);
   --trainer-border-color: rgb(187, 173, 160);
 
   --trainer-selected-color: rgb(2, 115, 212);
 
   --trainer-success-color: rgb(45, 169, 79);
-  --trainer-success-background-color: rgba(45, 169, 79, 0.5);
+  --trainer-success-background-color: rgba(45, 169, 79, 0.32);
 
   --trainer-error-color: rgb(237, 63, 44);
-  --trainer-error-background-color: rgba(237, 63, 44, 0.5);
+  --trainer-error-background-color: rgba(237, 63, 44, 0.32);
 
-  --trainer-text-item-height: 50px;
+  --trainer-svg-height: 50px;
+  --trainer-svg-padding: 2px;
+  --trainer-box-size: 100px;
 }
 
 @media (max-width: 400px) {
   :root {
-    --trainer-text-item-height: 40px;
+    --trainer-svg-height: 40px;
   }
 }
 
 .trainer {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   width: 100%;
   min-width: 100%;
@@ -35,15 +39,28 @@
 
   margin: 0;
   padding: 4px;
+  padding-top: 34px;
+  padding-bottom: 16px;
 
   font-family: inherit;
   font-size: 16px;
   font-weight: 400;
+  line-height: 1;
+  text-align: left;
 
   overflow: hidden;
 }
 
-.trainer-h1 {
+@media (max-width: 400px) {
+  .trainer {
+    font-size: 14px;
+  }
+}
+
+.trainer h1, .trainer-h1,
+.trainer h2, .trainer-h2,
+.trainer h3, .trainer-h3,
+.trainer p, .trainer-p {
   display: block;
 
   grid-column-start: 1;
@@ -57,11 +74,63 @@
   max-width: 700px;
 
   margin: 0;
-  margin-bottom: auto;
+  padding: 0;
 
   font-family: inherit;
-  font-size: inherit;
+}
+
+.trainer h1, .trainer-h1, {
+  margin-bottom: auto;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.2;
   text-align: center;
+}
+
+@media (max-width: 400px) {
+  .trainer h1, .trainer-h1 {
+    font-size: 16px;
+  }
+}
+
+.trainer h2, .trainer-h2 {
+  margin-top: 16px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+}
+
+@media (max-width: 400px) {
+  .trainer h2, .trainer-h2 {
+    font-size: 16px;
+  }
+}
+
+.trainer h3, .trainer-h3 {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+}
+
+@media (max-width: 400px) {
+  .trainer h3, .trainer-h3 {
+    font-size: 14px;
+  }
+}
+
+.trainer p, .trainer-p {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: left;
+}
+
+@media (max-width: 400px) {
+  .trainer p .trainer-p {
+    font-size: 14px;
+  }
 }

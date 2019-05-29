@@ -1,21 +1,11 @@
-:host {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  min-width: 100%;
-  flex: 1 1 100%;
-  max-height: 100%;
-}
-
 .image {
   display: block;
   width: 100%;
-  max-width: 400px;
+  max-width: 700px;
   flex: 1 1 auto;
-  max-height: 300px;
+  max-height: 500px;
+
+  margin-top: 32px;
 
   position: relative;
   overflow: hidden;
@@ -28,39 +18,25 @@
   top: 0;
   width: 100%;
   height: 100%;
+
   object-fit: contain;
-}
-
-@media (max-width: 400px) {
-  .image {
-    max-height: 200px;
-  }
-}
-
-.text-input {
-  margin: 0;
-  margin-top: 16px;
-
-  max-width: 400px;
-  max-height: 50px;
+  object-position: bottom;
 }
 
 .text {
-  display: block;
-
   margin: 0;
   margin-top: 16px;
+  max-width: 400px;
+}
 
-  padding-left: 8px;
-  padding-right: 8px;
-
-  font-size: 18px;
-  line-height: 1.2;
-  text-align: center;
-  font-weight: 600;
+.input {
+  margin: 0;
+  margin-top: 16px;
+  max-width: 400px;
 }
 
 .button {
+  margin: 0;
   margin-top: 32px;
   margin-bottom: auto;
 }

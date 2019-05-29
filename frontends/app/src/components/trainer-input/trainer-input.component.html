@@ -1,48 +1,7 @@
-<ng-container *ngIf="isEmbedded">
-  <span
-    *ngFor="let item of valueList; let i = index"
-    class="item"
-    [class.item--cursor]="isActive && i === cursor"
-    [class.item--space]="item === ' '"
-    fastTouch (touch)="onTouch(i)"
-  >{{item}}</span>
-</ng-container>
-
-<ng-container *ngIf="!isEmbedded">
-  <svg
-    class="matrix"
-    [attr.viewBox]="matrixViewBox"
-    [attr.width]="matrixWidth"
-    [attr.height]="matrixHeight"
-    preserveAspectRatio="xMidYMid meet"
-    xmlns:xhtml="http://www.w3.org/1999/xhtml"
-  >
-    <g>
-      <path
-        class="path"
-        [attr.d]="matrix.path"
-        [class.path--active]="isActive"
-      ></path>
-      <foreignObject
-        [attr.x]="matrix.padding"
-        [attr.y]="matrix.padding"
-        [attr.width]="matrixWidth - matrix.padding * 2"
-        [attr.height]="matrixHeight - matrix.padding * 2"
-      >
-        <xhtml:div
-          class="wrapper"
-          [class.wrapper--error]="isError"
-          [class.wrapper--success]="isSuccess"
-        >
-          <span
-            *ngFor="let item of valueList; let i = index"
-            class="item"
-            [class.item--cursor]="isActive && i === cursor"
-            [class.item--space]="item === ' '"
-            fastTouch (touch)="onTouch(i)"
-          >{{item}}</span>
-        </div>
-      </foreignObject>
-    </g>
-  </svg>
-</ng-container>
+<span
+  *ngFor="let item of valueList; let i = index"
+  class="item"
+  [class.item--cursor]="isActive && i === cursor"
+  [class.item--space]="item === ' '"
+  fastTouch (touch)="onTouch(i)"
+>{{item}}</span>

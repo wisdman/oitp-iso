@@ -1,32 +1,38 @@
 <!-- Горманизация работы полушарийй -->
 <ng-container *ngIf="item">
-  <h1 *ngIf="item.mode==='show'" class="trainer-h1">Запомните название</h1>
-  <h1 *ngIf="item.mode==='play' || item.mode==='result'" class="trainer-h1">Восстановите название по памяти</h1>
+  <h1 *ngIf="item.mode==='show'" class="trainer-h1">Запомните&nbsp;название</h1>
+  <h1 *ngIf="item.mode==='play' || item.mode==='result'" class="trainer-h1">Восстановите<br>название&nbsp;по&nbsp;памяти</h1>
 
   <picture
     *ngIf="item.image"
     class="image"
   >
+    <source [srcset]="'/assets/expressions/' + item.image + '.jpg'">
     <source [srcset]="'/assets/expressions/' + item.image + '.webp'">
     <img [src]="'/assets/expressions/' + item.image + '.jpg'">
   </picture>
 
-  <div
+  <h2
     *ngIf="item.mode === 'show' || item.mode === 'result'"
-    class="text"
-  >{{item.data}}</div>
-  <trainer-input
+    class="trainer-h2 text"
+  >{{item.data}}</h2>
+
+  <trainer-input-wrapper
     *ngIf="item.mode === 'play' || item.mode === 'result'"
-    class="text-input"
+    class="input"
     [active]="item.mode === 'play'"
-    [success]="item.mode === 'result' && isSucess"
-    [error]="item.mode === 'result' && !isSucess"
-    [(value)]="userData"
-  ></trainer-input>
+  >
+    <xhtml:trainer-input
+      [active]="item.mode === 'play'"
+      [success]="item.mode === 'result' && isSucess"
+      [error]="item.mode === 'result' && !isSucess"
+      [(value)]="userData"
+    ></trainer-input>
+  </trainer-input-wrapper>
 
   <trainer-button
     class="button"
-    text="Продолжить"
+    value="Продолжить"
     (touch)="onButtonTouch()"
   ></trainer-button>
 </ng-container>
