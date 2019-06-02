@@ -8,20 +8,24 @@
 
   --trainer-selected-color: rgb(2, 115, 212);
 
-  --trainer-success-color: rgb(45, 169, 79);
-  --trainer-success-background-color: rgba(45, 169, 79, 0.32);
-
   --trainer-error-color: rgb(237, 63, 44);
-  --trainer-error-background-color: rgba(237, 63, 44, 0.32);
+  --trainer-error-background-color: rgba(237, 63, 44, 0.3);
+
+  --trainer-success-color: rgb(45, 169, 79);
+  --trainer-success-background-color: rgba(45, 169, 79, 0.3);
 
   --trainer-svg-height: 50px;
   --trainer-svg-padding: 2px;
   --trainer-box-size: 100px;
+  --trainer-icon-size: 80px;
+
+  --trainer-margin: 8px;
 }
 
 @media (max-width: 400px) {
   :root {
     --trainer-svg-height: 40px;
+    --trainer-margin: 4px;
   }
 }
 
@@ -71,7 +75,7 @@
   flex-basis: auto;
 
   width: 100%;
-  max-width: 700px;
+  max-width: 666px;
 
   margin: 0;
   padding: 0;
@@ -94,7 +98,7 @@
 }
 
 .trainer h2, .trainer-h2 {
-  margin-top: 16px;
+  margin-top: calc(var(--trainer-margin) * 2);
   font-size: 18px;
   font-weight: 600;
   line-height: 1.2;
@@ -108,7 +112,7 @@
 }
 
 .trainer h3, .trainer-h3 {
-  margin-top: 16px;
+  margin-top: calc(var(--trainer-margin) * 2);
   font-size: 16px;
   font-weight: 600;
   line-height: 1.35;
@@ -122,7 +126,7 @@
 }
 
 .trainer p, .trainer-p {
-  margin-top: 8px;
+  margin-top: var(--trainer-margin);
   font-size: 16px;
   font-weight: 400;
   line-height: 1.35;

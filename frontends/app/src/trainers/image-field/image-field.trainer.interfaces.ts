@@ -1,4 +1,3 @@
-
 import {
   ITrainerConfig,
   ITrainerResult,
@@ -6,15 +5,18 @@ import {
 
 export type IImageFieldTrainer = "image-field"
 
-export interface IImageFieldItem {
-  data: string,
-  transform: string,
-}
-
 export interface IImageFieldTrainerConfig extends ITrainerConfig {
   id: IImageFieldTrainer
-  items: Array<string>
-  timeLimit: number
+
+  items: Array<number>
+  pages: Array<Array<number>>
+  answers: Array<{
+    icon: number,
+    correct: boolean,
+  }>
+
+  pageTimeLimit: number
+  playTimeLimit: number
 }
 
 export interface IImageFieldTrainerResult extends ITrainerResult {

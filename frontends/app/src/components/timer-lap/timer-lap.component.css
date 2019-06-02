@@ -28,7 +28,9 @@
 
   transform: scale(var(--value), 1);
   transform-origin: left bottom;
+}
 
+:host.animate::before {
   transition-duration: 1s;
   transition-property: transform;
   transition-timing-function: linear;

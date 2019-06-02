@@ -1,0 +1,39 @@
+.wrapper {
+  display: grid;
+
+  grid-template-columns: repeat(5, min-content);
+  grid-auto-rows: min-content;
+  gap: 16px;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.item-box {
+  font-size: 140%;
+  font-weight: 400;
+}
+
+.item-answer {
+  grid-column-start: 1;
+  grid-column-end: -1;
+  justify-self: center;
+
+  white-space: nowrap;
+}
+
+.input {
+  padding: 0;
+}
+
+.button {
+  margin: 0;
+  margin-top: calc(var(--trainer-margin) * 4);
+  margin-bottom: auto;
+}
+
+.button--answer {
+   margin-bottom: 0;
+}

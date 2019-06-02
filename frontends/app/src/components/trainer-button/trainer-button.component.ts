@@ -28,8 +28,6 @@ import { KeypadService } from "../../services"
 })
 export class TrainerButtonComponent implements OnInit, OnChanges, OnDestroy {
 
-  isTouchDivice = "ontouchstart" in window || navigator.maxTouchPoints
-
   constructor(
     private _elRef:ElementRef<HTMLElement>,
     private _keypadService: KeypadService,

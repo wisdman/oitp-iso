@@ -1,0 +1,21 @@
+<!-- Активизация лексиклна -->
+<h1 class="trainer-h1">Укажите<br>соответствующий&nbsp;цвет</h1>
+
+<h2
+  class="trainer-h2 item"
+  [class.item--error]="isError"
+  [class.item--success]="isSuccess"
+>
+  <svg class="item-icon item-icon--success" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M0 12l2-2 7 4c5-6 8-8 14-12l1 1c-5 5-9 10-14 19L0 12z"></path>
+  </svg>
+  <svg class="item-icon item-icon--error" width="24" height="24" viewBox="0 0 24 24">
+    <path d="M24 4l-4-4-8 9-8-9-4 4 8 9-8 9 2 2 10-8 10 8 1-1-8-10 9-9z"></path>
+  </svg>
+  <span
+    #textNode
+    class="item-text animate"
+  >{{ item && item.data || "" }}</span>
+</h2>
+
+<trainer-selector class="selector" type="color" [items]="groups" (touch)="onTouch($event)"></trainer-selector>

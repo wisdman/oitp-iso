@@ -3,7 +3,9 @@ package trainers
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"
 
-	"github.com/wisdman/oitp-isov/api/training/trainers/classification"
+	"github.com/wisdman/oitp-isov/api/training/trainers/classification-colors"
+	"github.com/wisdman/oitp-isov/api/training/trainers/classification-definitions"
+	"github.com/wisdman/oitp-isov/api/training/trainers/classification-words"
 	"github.com/wisdman/oitp-isov/api/training/trainers/image-carpets"
 	"github.com/wisdman/oitp-isov/api/training/trainers/image-differences"
 	"github.com/wisdman/oitp-isov/api/training/trainers/image-expressions"
@@ -28,40 +30,41 @@ import (
 type ITrainer string
 
 const (
-	ClassificationColors      ITrainer = "classification-colors"      // Классификация цветов
-	ClassificationDefinitions ITrainer = "classification-definitions" // Дифиниции к словам
-	ClassificationWords       ITrainer = "classification-words"       // Классификация слов
-	ImageCarpets              ITrainer = "image-carpets"              // Коврики
-	ImageDifferences          ITrainer = "image-differences"          // Поиск отличий
-	ImageExpressions          ITrainer = "image-expressions"          // Запомнить фразу к картинке
-	ImageFields               ITrainer = "image-fields"               // Запомнить картинки
-	MathEquation              ITrainer = "math-equation"              // Формула
+	ClassificationColors      ITrainer = "classification-colors"      // Активизация лексиклна
+	ClassificationDefinitions ITrainer = "classification-definitions" // Активизация лексиклна
+	ClassificationWords       ITrainer = "classification-words"       // Активизация лексиклна
+	ImageCarpets              ITrainer = "image-carpets"              // Наглядно-образная память
+	ImageDifferences          ITrainer = "image-differences"          // Наглядно-образная память
+	ImageExpressions          ITrainer = "image-expressions"          // Гармонизация работы полушарий
+	ImageFields               ITrainer = "image-fields"               // Скорость зрительного восприятия
+	MathEquation              ITrainer = "math-equation"              // Арифметико-практическое мышление
 	MathMiddle                ITrainer = "math-middle"                // Среднее число в скобках
 	MathSequence              ITrainer = "math-sequence"              // Числовой ряд
 	MathWaste                 ITrainer = "math-waste"                 // Лишнее число
-	MatrixFillingPattern      ITrainer = "matrix-filling-pattern"     // Запомнить таблицу на основе паттерна
-	MatrixFillingRandom       ITrainer = "matrix-filling-random"      // Запомнить случайную таблицу
-	MatrixFillingUnique       ITrainer = "matrix-filling-unique"      // Запомнить уникальную таблицу
-	MatrixSequencePattern     ITrainer = "matrix-sequence-pattern"    // Числовая таблица на основе паттерна
-	MatrixSequenceRandom      ITrainer = "matrix-sequence-random"     // Случайная числовая таблица
-	Relax                     ITrainer = "relax"                      // Расслабление
-	SpaceQuestionsPart        ITrainer = "space-part"                 // Меньшее в большем
-	SpaceQuestionsWaste2D     ITrainer = "space-waste-2d"             // Лишняя фигура, 2d поворот
-	SpaceQuestionsWaste3D     ITrainer = "space-waste-3d"             // Лишняя фигура, 3d поворот
-	TablePipeEN               ITrainer = "table-pipe-en"              // Разминка EN
-	TablePipeNumber           ITrainer = "table-pipe-number"          // Разминка Цифры
-	TablePipeRU               ITrainer = "table-pipe-ru"              // Разминка RU
-	TableWords                ITrainer = "table-words"                // Заполнение таблицы словами
-	TextLetters               ITrainer = "text-letters"               // Первые буквы слов фразы
-	TextReadingRO             ITrainer = "text-reading-ro"            // Текст для чтения и вопросы
-	TextReadingTezirovanie    ITrainer = "text-reading-tezirovanie"   // Тезирование
-	WordsColumnsPairs         ITrainer = "words-columns-pairs"        // Два столбика слов
-	WordsColumnsWords         ITrainer = "words-columns-words"        // Востановить список слов по памяти
-	WordsPairsAntonyms        ITrainer = "words-pairs-antonyms"       // Два столбика слов, антинимы
-	WordsPairsParonyms        ITrainer = "words-pairs-paronyms"       // Два столбика слов, паронимы
-	WordsPairsSynonyms        ITrainer = "words-pairs-synonyms"       // Два столбика слов, синонимы
-	WordsQuestionsClose       ITrainer = "words-questions-close"      // Выбрать наиболее близкое слово
-	WordsQuestionsWaste       ITrainer = "words-questions-waste"      // Выбрать лишнее слово
+
+	MatrixFillingPattern   ITrainer = "matrix-filling-pattern"   // Запомнить таблицу на основе паттерна
+	MatrixFillingRandom    ITrainer = "matrix-filling-random"    // Запомнить случайную таблицу
+	MatrixFillingUnique    ITrainer = "matrix-filling-unique"    // Запомнить уникальную таблицу
+	MatrixSequencePattern  ITrainer = "matrix-sequence-pattern"  // Числовая таблица на основе паттерна
+	MatrixSequenceRandom   ITrainer = "matrix-sequence-random"   // Случайная числовая таблица
+	Relax                  ITrainer = "relax"                    // Расслабление
+	SpaceQuestionsPart     ITrainer = "space-part"               // Меньшее в большем
+	SpaceQuestionsWaste2D  ITrainer = "space-waste-2d"           // Лишняя фигура, 2d поворот
+	SpaceQuestionsWaste3D  ITrainer = "space-waste-3d"           // Лишняя фигура, 3d поворот
+	TablePipeEN            ITrainer = "table-pipe-en"            // Разминка EN
+	TablePipeNumber        ITrainer = "table-pipe-number"        // Разминка Цифры
+	TablePipeRU            ITrainer = "table-pipe-ru"            // Разминка RU
+	TableWords             ITrainer = "table-words"              // Заполнение таблицы словами
+	TextLetters            ITrainer = "text-letters"             // Первые буквы слов фразы
+	TextReadingRO          ITrainer = "text-reading-ro"          // Текст для чтения и вопросы
+	TextReadingTezirovanie ITrainer = "text-reading-tezirovanie" // Тезирование
+	WordsColumnsPairs      ITrainer = "words-columns-pairs"      // Два столбика слов
+	WordsColumnsWords      ITrainer = "words-columns-words"      // Востановить список слов по памяти
+	WordsPairsAntonyms     ITrainer = "words-pairs-antonyms"     // Два столбика слов, антинимы
+	WordsPairsParonyms     ITrainer = "words-pairs-paronyms"     // Два столбика слов, паронимы
+	WordsPairsSynonyms     ITrainer = "words-pairs-synonyms"     // Два столбика слов, синонимы
+	WordsQuestionsClose    ITrainer = "words-questions-close"    // Выбрать наиболее близкое слово
+	WordsQuestionsWaste    ITrainer = "words-questions-waste"    // Выбрать лишнее слово
 )
 
 type ITrainerBuilder func(
@@ -73,9 +76,9 @@ type ITrainerBuilder func(
 )
 
 var BuildFunctions = map[ITrainer]ITrainerBuilder{
-	ClassificationColors:      classification.BuildColors,
-	ClassificationDefinitions: classification.BuildDefinitions,
-	ClassificationWords:       classification.BuildWords,
+	ClassificationColors:      classificationColors.Build,
+	ClassificationDefinitions: classificationDefinitions.Build,
+	ClassificationWords:       classificationWords.Build,
 	ImageCarpets:              imageCarpets.Build,
 	ImageDifferences:          imageDifferences.Build,
 	ImageExpressions:          imageExpressions.Build,

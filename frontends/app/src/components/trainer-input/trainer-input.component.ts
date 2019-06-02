@@ -32,10 +32,14 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
 
   private _style = getComputedStyle(this._elRef.nativeElement)
 
-  @HostBinding("style.font-size.px")
+  @HostBinding("style.font-size")
   get fontSize() {
+    if (!this.autoFontSize) {
+      return "inherit"
+    }
+
     const context = document.createElement("canvas").getContext("2d")
-    if (context === null) return 16
+    if (context === null) return "16px"
 
     const { width } = this._elRef.nativeElement.getBoundingClientRect()
 
@@ -43,7 +47,7 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
       context.font = `${this._style.fontWeight} ${fontSize}px ${this._style.fontFamily}`
       const textWidth = context.measureText(this._value).width + 20
       if (textWidth < width) {
-        return fontSize
+        return `${fontSize}px`
       }
     }
   }
@@ -79,6 +83,9 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
   @Input("error")
   @HostBinding("class.error")
   isError: boolean = false
+
+  @Input("autoFontSize")
+  autoFontSize: boolean = true
 
   private _keypadDataSubscriber!: Subscription
   private _keypadBackspaceSubscriber!: Subscription
@@ -130,6 +137,10 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
 
   private _onInput(key: string) {
     if (!this.isActive) {
+      return
+    }
+
+    if (this.type === "NUMBERS" && key === "." && this.valueList.includes(".")) {
       return
     }
 

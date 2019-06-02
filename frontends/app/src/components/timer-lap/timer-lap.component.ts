@@ -33,16 +33,21 @@ export class TimerLapComponent implements OnInit, OnDestroy {
   }
 
   private _setValue([limit, value]: [number, number]) {
+    const element = this._elRef.nativeElement
     if (limit <= 0) {
       window.requestAnimationFrame(() => {
-        this._elRef.nativeElement.style.setProperty("--value", "0")
+        element.classList.remove("animate")
+        element.style.setProperty("--value", "0")
+        window.requestAnimationFrame(() => {
+          element.classList.add("animate")
+        })
       })
       return
     }
 
     value = Math.round(value / (limit - 1) * 100000) / 100000
     window.requestAnimationFrame(() => {
-      this._elRef.nativeElement.style.setProperty("--value", String(value))
+      element.style.setProperty("--value", String(value))
     })
   }
 }

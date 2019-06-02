@@ -1,25 +1,23 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
 } from "@angular/core"
 
-import {
-  AbstractTrainerComponent,
-} from "../abstract"
+import { AbstractTrainerComponent } from "../abstract"
 
 import {
-  IMathPuzzleTrainerConfig,
-  IMathPuzzleTrainerResult,
-} from "./math-puzzle.trainer.interfaces"
+  IMathWasteTrainerConfig,
+  IMathWasteTrainerResult,
+} from "./math-waste.trainer.interfaces"
 
 @Component({
-  selector: "trainer-math-puzzle",
-  templateUrl: "./math-puzzle.trainer.component.html",
-  styleUrls: [ "./math-puzzle.trainer.component.css" ],
+  selector: "trainer-math-waste",
+  templateUrl: "./math-waste.trainer.component.html",
+  styleUrls: [ "./math-waste.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MathPuzzleTrainerComponent
-extends AbstractTrainerComponent<IMathPuzzleTrainerConfig, IMathPuzzleTrainerResult> {
+export class MathWasteTrainerComponent
+extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResult> {
 
   mode: "play" | "result" = "play"
 

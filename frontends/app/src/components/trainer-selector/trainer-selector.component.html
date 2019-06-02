@@ -1,0 +1,53 @@
+<svg
+  *ngIf="matrix && matrix.length > 0"
+  class="matrix"
+  [class.matrix--readonly]="readonly"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <g
+    *ngFor="let item of matrix; let i = index"
+    class="item"
+    [class.item--active]="item.isActive"
+    [class.item--error]="item.isError"
+    [class.item--mark]="item.isMark"
+    [class.item--success]="item.isSuccess"
+    fastTouch (touch)="onTouch(item)"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+      [style.fill]="type === 'color' ? item.data : null"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <image
+      *ngIf="type === 'icon'"
+      class="image"
+      [attr.x]="item.x + (item.width - imageSize) / 2"
+      [attr.y]="item.y + (item.height - imageSize) / 2"
+      [attr.width]="imageSize"
+      [attr.height]="imageSize"
+      [attr.xlink:href]="item.data"
+      preserveAspectRatio="xMinYMin slice"
+    ></image>
+    <text
+      *ngIf="type === 'text'"
+      class="text"
+      [attr.x]="item.x + item.width / 2"
+      [attr.y]="item.y + item.height / 2"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}</text>
+    <path
+      class="ellipse"
+      [attr.d]="item.ellipse"
+    ></path>
+  </g>
+</svg>

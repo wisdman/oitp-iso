@@ -9,8 +9,7 @@ type Parameters struct {
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	Complexity int `json:"complexity"`
-
-	Quantity int `json:"quantity"`
+	Quantity   int `json:"quantity"`
 }
 
 type Item struct {

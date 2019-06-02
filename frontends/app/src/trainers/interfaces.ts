@@ -1,11 +1,17 @@
 
-import { IClassificationTrainer, IClassificationTrainerConfig, IClassificationTrainerResult } from "./classification"
+import { IClassificationColorsTrainer, IClassificationColorsTrainerConfig, IClassificationColorsTrainerResult } from "./classification-colors"
+import { IClassificationDefinitionsTrainer, IClassificationDefinitionsTrainerConfig, IClassificationDefinitionsTrainerResult } from "./classification-definitions"
+import { IClassificationWordsTrainer, IClassificationWordsTrainerConfig, IClassificationWordsTrainerResult } from "./classification-words"
 import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
 import { IImageExpressionsTrainer, IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult } from "./image-expressions"
 import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
 import { IMathEquationTrainer, IMathEquationTrainerConfig, IMathEquationTrainerResult } from "./math-equation"
-import { IMathPuzzleTrainer, IMathPuzzleTrainerConfig, IMathPuzzleTrainerResult } from "./math-puzzle"
+
+import { IMathMiddleTrainer, IMathMiddleTrainerConfig, IMathMiddleTrainerResult } from "./math-middle"
+import { IMathSequenceTrainer, IMathSequenceTrainerConfig, IMathSequenceTrainerResult } from "./math-sequence"
+import { IMathWasteTrainer, IMathWasteTrainerConfig, IMathWasteTrainerResult } from "./math-waste"
+
 import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
 import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
@@ -17,13 +23,17 @@ import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResu
 import { IWordsColumnsTrainer, IWordsColumnsTrainerConfig, IWordsColumnsTrainerResult } from "./words-columns"
 import { IWordsPairsTrainer, IWordsPairsTrainerConfig, IWordsPairsTrainerResult } from "./words-pairs"
 
-export type ITrainer = IClassificationTrainer
+export type ITrainer = IClassificationColorsTrainer
+                     | IClassificationDefinitionsTrainer
+                     | IClassificationWordsTrainer
                      | IImageCarpetTrainer
                      | IImageDifferencesTrainer
                      | IImageExpressionsTrainer
                      | IImageFieldTrainer
-                     | IMathPuzzleTrainer
                      | IMathEquationTrainer
+                     | IMathMiddleTrainer
+                     | IMathSequenceTrainer
+                     | IMathWasteTrainer
                      | IMatrixFillingTrainer
                      | IMatrixSequenceTrainer
                      | IQuestionTrainer
@@ -36,13 +46,17 @@ export type ITrainer = IClassificationTrainer
                      | IWordsPairsTrainer
 
 
-export type ITrainerConfigs = IClassificationTrainerConfig
+export type ITrainerConfigs = IClassificationColorsTrainerConfig
+                            | IClassificationDefinitionsTrainerConfig
+                            | IClassificationWordsTrainerConfig
                             | IImageCarpetTrainerConfig
                             | IImageDifferencesTrainerConfig
                             | IImageExpressionsTrainerConfig
                             | IImageFieldTrainerConfig
                             | IMathEquationTrainerConfig
-                            | IMathPuzzleTrainerConfig
+                            | IMathMiddleTrainerConfig
+                            | IMathSequenceTrainerConfig
+                            | IMathWasteTrainerConfig
                             | IMatrixFillingTrainerConfig
                             | IMatrixSequenceTrainerConfig
                             | IQuestionTrainerConfig
@@ -54,13 +68,17 @@ export type ITrainerConfigs = IClassificationTrainerConfig
                             | IWordsColumnsTrainerConfig
                             | IWordsPairsTrainerConfig
 
-export type ITrainerResults = IClassificationTrainerResult
+export type ITrainerResults = IClassificationColorsTrainerResult
+                            | IClassificationDefinitionsTrainerResult
+                            | IClassificationWordsTrainerResult
                             | IImageCarpetTrainerResult
                             | IImageDifferencesTrainerResult
                             | IImageExpressionsTrainerResult
                             | IImageFieldTrainerResult
                             | IMathEquationTrainerResult
-                            | IMathPuzzleTrainerResult
+                            | IMathMiddleTrainerResult
+                            | IMathSequenceTrainerResult
+                            | IMathWasteTrainerResult
                             | IMatrixFillingTrainerResult
                             | IMatrixSequenceTrainerResult
                             | IQuestionTrainerResult

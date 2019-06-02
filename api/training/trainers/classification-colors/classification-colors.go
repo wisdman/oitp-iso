@@ -1,7 +1,4 @@
-// Активизация лексиклна
-// Укажите соответствующий цвет
-
-package classification
+package classificationColors
 
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"
@@ -9,20 +6,38 @@ import (
 
 var complexityColorsData = [...]Parameters{
 	Parameters{
-		ItemTimeLimit: 10,
-		Quantity:      5,
+		ItemTimeLimit: 20,
+		MinItems:      5,
+		MaxItems:      7,
+	},
+	Parameters{
+		ItemTimeLimit: 20,
+		MinItems:      7,
+		MaxItems:      9,
+	},
+	Parameters{
+		ItemTimeLimit: 15,
+		MinItems:      7,
+		MaxItems:      9,
 	},
 	Parameters{
 		ItemTimeLimit: 10,
-		Quantity:      7,
+		MinItems:      7,
+		MaxItems:      9,
 	},
 	Parameters{
 		ItemTimeLimit: 8,
-		Quantity:      7,
+		MinItems:      7,
+		MaxItems:      9,
+	},
+	Parameters{
+		ItemTimeLimit: 5,
+		MinItems:      10,
+		MaxItems:      10,
 	},
 }
 
-func BuildColors(
+func Build(
 	sql *db.Transaction,
 	complexity uint8,
 ) (
@@ -32,23 +47,24 @@ func BuildColors(
 	params := complexityColorsData[complexity]
 
 	rows, err := sql.Query(`
-    SELECT "word", "color"
+    SELECT "color", "word"
     FROM public.trainers_lexicon
     WHERE "color" IS NOT NULL
     ORDER BY random()
-    LIMIT $1`,
-		params.Quantity,
+    LIMIT public.random_range($1,$2)`,
+		params.MinItems,
+		params.MaxItems,
 	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	config := newConfig(params, TypeColors)
+	config := newConfig(params)
 
 	for rows.Next() {
 		item := &Item{}
-		if err = rows.Scan(&item.Data, &item.Group); err != nil {
+		if err = rows.Scan(&item.Color, &item.Data); err != nil {
 			return nil, err
 		}
 		config.Items = append(config.Items, item)

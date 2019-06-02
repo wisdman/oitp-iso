@@ -1,4 +1,4 @@
-package classification
+package classificationWords
 
 import (
 	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
@@ -7,29 +7,18 @@ import (
 type Parameters struct {
 	ItemTimeLimit uint16 `json:"itemTimeLimit"`
 
-	MaxItems int `json:"maxItems"`
 	MinItems int `json:"minItems"`
-
+	MaxItems int `json:"maxItems"`
 	Quantity int `json:"quantity"`
 }
 
-type IType string
-
-const (
-	TypeColors      IType = "colors"
-	TypeDefinitions IType = "definitions"
-	TypeWords       IType = "words"
-)
-
 type Item struct {
-	Group string `json:"group"`
-	Data  string `json:"data"`
+	Word string `json:"word"`
+	Data string `json:"data"`
 }
 
 type Config struct {
 	*abstract.Config
-
-	Type IType `json:"type"`
 
 	ItemTimeLimit uint16  `json:"itemTimeLimit"`
 	Items         []*Item `json:"items"`
@@ -37,11 +26,9 @@ type Config struct {
 
 func newConfig(
 	params Parameters,
-	gameType IType,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIClassification),
-		Type:          gameType,
+		Config:        abstract.NewConfig(abstract.UIClassificationWords),
 		ItemTimeLimit: params.ItemTimeLimit,
 	}
 }

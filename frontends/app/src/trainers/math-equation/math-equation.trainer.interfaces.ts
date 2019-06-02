@@ -9,7 +9,8 @@ export type IMathEquationTrainer = "math-equation"
 export interface IMathEquationTrainerConfig extends ITrainerConfig {
   id: IMathEquationTrainer
 
-  timeLimit: number
+  playTimeLimit: number
+  equation: string
 }
 
 export interface IMathEquationTrainerResult extends ITrainerResult {

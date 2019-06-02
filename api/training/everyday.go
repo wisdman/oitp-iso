@@ -15,13 +15,14 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
 
 	var trainersList = []trainers.ITrainer{
-		"image-expressions", "table-pipe-ru", "table-pipe-number",
+		"math-waste", "table-pipe-ru", "table-pipe-number",
 	}
 
 	var trainersRandom = [][]trainers.ITrainer{
 		{"classification-colors", "classification-definitions", "classification-words"},
 		{"image-expressions"},
 		{"image-fields"},
+		{"math-equation"},
 		{"math-middle", "math-sequence", "math-waste"},
 		{"matrix-filling-pattern"},
 		{"matrix-sequence-pattern"},

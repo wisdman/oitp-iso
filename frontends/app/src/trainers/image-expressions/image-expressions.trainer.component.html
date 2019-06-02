@@ -1,4 +1,4 @@
-<!-- Горманизация работы полушарийй -->
+<!-- Гармонизация работы полушарий -->
 <ng-container *ngIf="item">
   <h1 *ngIf="item.mode==='show'" class="trainer-h1">Запомните&nbsp;название</h1>
   <h1 *ngIf="item.mode==='play' || item.mode==='result'" class="trainer-h1">Восстановите<br>название&nbsp;по&nbsp;памяти</h1>
@@ -7,9 +7,9 @@
     *ngIf="item.image"
     class="image"
   >
-    <source [srcset]="'/assets/expressions/' + item.image + '.jpg'">
-    <source [srcset]="'/assets/expressions/' + item.image + '.webp'">
-    <img [src]="'/assets/expressions/' + item.image + '.jpg'">
+    <source [srcset]="getSrcset(item.image, 'jpg')">
+    <source [srcset]="getSrcset(item.image, 'webp')">
+    <img [src]="getSrcset(item.image, 'jpg')">
   </picture>
 
   <h2

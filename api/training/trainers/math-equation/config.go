@@ -1,5 +1,3 @@
-// Формула
-
 package mathEquation
 
 import (

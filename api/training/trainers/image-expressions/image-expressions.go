@@ -1,7 +1,3 @@
-// Горманизация работы полушарийй
-// Запомните название
-// Восстановите название по памяти
-
 package imageExpressions
 
 import (
@@ -13,17 +9,38 @@ var complexityData = [...]Parameters{
 	Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 30,
-		Quantity:      3,
+		MinItems:      3,
+		MaxItems:      5,
 	},
 	Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 30,
-		Quantity:      5,
+		MinItems:      5,
+		MaxItems:      7,
 	},
 	Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 30,
-		Quantity:      7,
+		MinItems:      7,
+		MaxItems:      9,
+	},
+	Parameters{
+		ShowTimeLimit: 4,
+		PlayTimeLimit: 30,
+		MinItems:      7,
+		MaxItems:      9,
+	},
+	Parameters{
+		ShowTimeLimit: 3,
+		PlayTimeLimit: 30,
+		MinItems:      7,
+		MaxItems:      9,
+	},
+	Parameters{
+		ShowTimeLimit: 2,
+		PlayTimeLimit: 30,
+		MinItems:      7,
+		MaxItems:      9,
 	},
 }
 
@@ -40,8 +57,9 @@ func Build(
     SELECT "id", "data"
     FROM public.trainers_image_expressions
     ORDER BY random()
-    LIMIT $1`,
-		params.Quantity,
+    LIMIT public.random_range($1,$2)`,
+		params.MinItems,
+		params.MaxItems,
 	)
 	if err != nil {
 		return nil, err

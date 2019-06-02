@@ -10,11 +10,23 @@
     *ngIf="mode === 'game' && config"
     class="game"
   >
-    <trainer-classification
-      *ngIf="config.id === 'classification'"
+    <trainer-classification-colors
+      *ngIf="config.id === 'classification-colors'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-classification>
+    ></trainer-classification-colors>
+
+    <trainer-classification-definitions
+      *ngIf="config.id === 'classification-definitions'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-classification-definitions>
+
+    <trainer-classification-words
+      *ngIf="config.id === 'classification-words'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-classification-words>
 
     <trainer-image-carpet
       *ngIf="config.id === 'image-carpet'"
@@ -46,11 +58,23 @@
       (result)="onResult($event)"
     ></trainer-math-equation>
 
-    <trainer-math-puzzle
-      *ngIf="config.id === 'math-puzzle'"
+    <trainer-math-middle
+      *ngIf="config.id === 'math-middle'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-math-puzzle>
+    ></trainer-math-middle>
+
+    <trainer-math-sequence
+      *ngIf="config.id === 'math-sequence'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-math-sequence>
+
+    <trainer-math-waste
+      *ngIf="config.id === 'math-waste'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-math-waste>
 
     <trainer-matrix-filling
       *ngIf="config.id === 'matrix-filling'"

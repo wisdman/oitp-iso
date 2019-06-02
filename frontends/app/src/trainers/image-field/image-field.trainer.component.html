@@ -1,10 +1,40 @@
 <!-- Скорость зрительного восприятия -->
-<h1 class="h1">Запомните картинки</h1>
+<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните&nbsp;картинки</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Отметьте&nbsp;картинки<br>показанные&nbsp;ранее</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
-<img
-  #ImageNode
-  *ngFor="let item of items"
-  class="image"
-  [style.transform]="item.transform"
-  [src]="srcSanitize(item.data)"
+<svg
+  *ngIf="mode==='show'"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  preserveAspectRatio="xMidYMid meet"
 >
+  <image
+    *ngFor="let item of matrix"
+    class="image"
+    [attr.x]="item.x - itemWidth / 2"
+    [attr.y]="item.y - itemHeight / 2"
+    [attr.width]="itemWidth"
+    [attr.height]="itemHeight"
+    [attr.xlink:href]="getIconHref(item.item)"
+    preserveAspectRatio="xMinYMin slice"
+  ></image>
+</svg>
+
+<trainer-selector
+  *ngIf="mode==='play' || mode==='result'"
+  class="selector"
+  type="icon"
+  [readonly]="mode==='result'"
+  [items]="answers"
+></trainer-selector>
+
+<trainer-button
+  class="button"
+  value="Продолжить"
+  (touch)="onButtonTouch()"
+></trainer-button>

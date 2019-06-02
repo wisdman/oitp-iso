@@ -1,7 +1,4 @@
-// Активизация лексиклна
-// По лексическому значению узнайте слово
-
-package classification
+package classificationDefinitions
 
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"
@@ -9,20 +6,38 @@ import (
 
 var complexityDefinitionsData = [...]Parameters{
 	Parameters{
-		ItemTimeLimit: 10,
-		Quantity:      6,
+		TimeLimit: 60,
+		MinItems:  4,
+		MaxItems:  5,
 	},
 	Parameters{
-		ItemTimeLimit: 10,
-		Quantity:      8,
+		TimeLimit: 60,
+		MinItems:  5,
+		MaxItems:  6,
 	},
 	Parameters{
-		ItemTimeLimit: 8,
-		Quantity:      8,
+		TimeLimit: 60,
+		MinItems:  6,
+		MaxItems:  7,
+	},
+	Parameters{
+		TimeLimit: 60,
+		MinItems:  7,
+		MaxItems:  8,
+	},
+	Parameters{
+		TimeLimit: 60,
+		MinItems:  8,
+		MaxItems:  9,
+	},
+	Parameters{
+		TimeLimit: 60,
+		MinItems:  9,
+		MaxItems:  10,
 	},
 }
 
-func BuildDefinitions(
+func Build(
 	sql *db.Transaction,
 	complexity uint8,
 ) (
@@ -48,24 +63,25 @@ func BuildDefinitions(
 		    	FROM public.trainers_lexicon
 		    	WHERE array_length("definitions", 1) > 0
 		    	ORDER BY random()
-		    	LIMIT $1
+		    	LIMIT public.random_range($1,$2)
 		    ) t1
 		    ORDER BY random()
 		  ) t2
 		) t3
 		WHERE t3.cnt = 1`,
-		params.Quantity,
+		params.MinItems,
+		params.MaxItems,
 	)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	config := newConfig(params, TypeDefinitions)
+	config := newConfig(params)
 
 	for rows.Next() {
 		item := &Item{}
-		if err = rows.Scan(&item.Data, &item.Group); err != nil {
+		if err = rows.Scan(&item.Definition, &item.Data); err != nil {
 			return nil, err
 		}
 		config.Items = append(config.Items, item)

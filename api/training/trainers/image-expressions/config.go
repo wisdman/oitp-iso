@@ -8,7 +8,8 @@ type Parameters struct {
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Quantity int `json:"quantity"`
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
 }
 
 type Item struct {

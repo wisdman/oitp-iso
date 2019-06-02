@@ -18,9 +18,9 @@ import {
 
 import { compareRuneString } from "../../lib/runes"
 
-import {
-  AbstractTrainerComponent,
-} from "../abstract"
+import { ASSETS_EXPRESSIONS } from "../../app.config"
+
+import { AbstractTrainerComponent } from "../abstract"
 
 import {
   IImageExpressionsTrainerConfig,
@@ -39,7 +39,11 @@ interface IItem extends Partial<IImageExpressionsTrainerItem> {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageExpressionsTrainerComponent
-  extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult> {
+extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult> {
+
+  getSrcset(id: number, type: "jpg" | "webp" = "jpg") {
+    return `${ASSETS_EXPRESSIONS}/${id}.${type}`
+  }
 
   item!: IItem
   userData:string = ""
@@ -69,7 +73,7 @@ export class ImageExpressionsTrainerComponent
       item => {
         this.item = item
         this.markForCheck()
-        // this.setTimeout(this.config.showTimeLimit)
+        this.setTimeout(this.config.showTimeLimit)
       },
       error => console.error(error),
       () => this._paly(),
@@ -133,45 +137,4 @@ export class ImageExpressionsTrainerComponent
   onButtonTouch() {
     this._stepSubject.next()
   }
-
-  // private _step() {
-  //   if (this.mode === "play") {
-  //     this.setTimeout(0)
-  //     this.mode = "result"
-  //     this.markForCheck()
-  //     return
-  //   }
-
-  //   let idx = this.page === undefined ? 0 : (this.pages.indexOf(this.page) + 1)
-
-  //   if (this.mode === "show") {
-  //     if (idx >= this.pages.length) {
-  //       this.mode = "play"
-  //       idx = 0
-  //     }
-  //   }
-
-  //   if (this.mode === "result") {
-  //     if (idx >= this.pages.length) {
-  //       this.finish()
-  //       return
-  //     }
-  //     this.mode = "play"
-  //   }
-
-  //   this.page = this.pages[idx]
-  //   this.markForCheck()
-
-  //   if (this.mode === "show"){
-  //     this.setTimeout(this.config.showTimeLimit)
-  //   } else if (this.mode === "play"){
-  //     this.setTimeout(this.config.playTimeLimit)
-  //   }
-  // }
-
-  // timeout() {
-  //   this._step()
-  // }
-
-
 }

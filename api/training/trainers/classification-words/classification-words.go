@@ -1,7 +1,4 @@
-// Активизация лексиклна
-// Определите тематическую группу
-
-package classification
+package classificationWords
 
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"
@@ -10,26 +7,44 @@ import (
 
 var complexityWordsData = [...]Parameters{
 	Parameters{
-		ItemTimeLimit: 10,
+		ItemTimeLimit: 20,
+		MinItems:      2,
+		MaxItems:      3,
+		Quantity:      3,
+	},
+	Parameters{
+		ItemTimeLimit: 20,
 		MinItems:      3,
 		MaxItems:      5,
 		Quantity:      3,
 	},
 	Parameters{
-		ItemTimeLimit: 10,
+		ItemTimeLimit: 20,
+		MinItems:      5,
+		MaxItems:      7,
+		Quantity:      3,
+	},
+	Parameters{
+		ItemTimeLimit: 20,
 		MinItems:      3,
 		MaxItems:      5,
 		Quantity:      4,
 	},
 	Parameters{
-		ItemTimeLimit: 8,
-		MinItems:      5,
-		MaxItems:      7,
+		ItemTimeLimit: 15,
+		MinItems:      3,
+		MaxItems:      5,
+		Quantity:      6,
+	},
+	Parameters{
+		ItemTimeLimit: 10,
+		MinItems:      3,
+		MaxItems:      5,
 		Quantity:      6,
 	},
 }
 
-func BuildWords(
+func Build(
 	sql *db.Transaction,
 	complexity uint8,
 ) (
@@ -80,17 +95,15 @@ func BuildWords(
 	}
 	defer rows.Close()
 
-	config := newConfig(params, TypeWords)
+	config := newConfig(params)
 
 	for rows.Next() {
 		item := &Item{}
-		if err = rows.Scan(&item.Data, &item.Group); err != nil {
+		if err = rows.Scan(&item.Word, &item.Data); err != nil {
 			return nil, err
 		}
 		config.Items = append(config.Items, item)
 	}
-
-	wRand.Shuffle(len(config.Items), func(i, j int) { config.Items[i], config.Items[j] = config.Items[j], config.Items[i] })
 
 	configs = append(configs, config)
 	return configs, nil

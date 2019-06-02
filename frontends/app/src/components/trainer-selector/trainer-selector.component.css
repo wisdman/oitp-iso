@@ -1,0 +1,98 @@
+:host {
+  --gap: 6px;
+  --max-columns: 5;
+  --text-padding: 16px;
+
+  display: block;
+  width: auto;
+  max-width: 100%;
+
+  flex: 0 1 auto;
+  height: auto;
+  max-height: 100%;
+}
+
+.matrix {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.matrix--readonly .item {
+  cursor: default;
+}
+
+.path {
+  stroke: var(--trainer-border-color);
+  stroke-width: 1;
+  fill: none;
+}
+
+.item--active .path {
+  stroke: var(--trainer-selected-color);
+  stroke-width: 2;
+}
+
+.item--error .path {
+  stroke: var(--trainer-error-color);
+  stroke-width: 2;
+}
+
+.item--success .path {
+  stroke: var(--trainer-success-color);
+  stroke-width: 2;
+}
+
+.fill-path {
+  stroke: none;
+  stroke-width: 0;
+  fill: var(--trainer-background-color);
+}
+
+.item--error .fill-path {
+  fill: var(--trainer-error-background-color);
+}
+
+.item--success .fill-path {
+  fill: var(--trainer-success-background-color);
+}
+
+.image {
+
+}
+
+.text {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1;
+
+  color: var(--trainer-text-color);
+  fill: currentColor;
+
+  transition: color .25s;
+}
+
+.matrix--active .item:hover .text {
+  color: var(--trainer-selected-color);
+}
+
+.ellipse {
+  stroke: none;
+  stroke-width: 0;
+  fill: none;
+}
+
+.item--mark .ellipse {
+  stroke: var(--trainer-error-color);
+  stroke-width: 2;
+}

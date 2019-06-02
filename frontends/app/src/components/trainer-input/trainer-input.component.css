@@ -13,17 +13,20 @@
 
   padding: 4px;
 
+  color: inherit;
+  background-color: transparent;
+
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
 }
 
 :host.success {
-  background-color: var(--trainer-success-background-color);
+  color: var(--trainer-success-color);
 }
 
 :host.error {
-  background-color: var(--trainer-error-background-color);
+  color: var(--trainer-error-color);
 }
 
 .item {

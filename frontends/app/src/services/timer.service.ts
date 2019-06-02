@@ -4,6 +4,7 @@ import {
   BehaviorSubject,
   Subject,
   timer,
+  of,
 } from "rxjs"
 
 import {
@@ -13,7 +14,6 @@ import {
   scan,
   share,
   switchMap,
-  takeWhile,
   withLatestFrom,
 } from "rxjs/operators"
 
@@ -48,12 +48,15 @@ export class TimerService {
 
   private _lapTimerSubject = new Subject<number>()
   setLapTimeout(value: number) {
+    this._lapTimerSubject.next(0)
     this._lapTimerSubject.next(value)
   }
 
   lapTimer = this._lapTimerSubject
                  .pipe(
                    switchMap(limit => {
+                     if (limit <= 0) return of([0,0] as [number, number])
+
                      return this.globalTimer.pipe(
                        scan(current => ++current, 0),
                        map(value => (value > limit ? [limit, limit] : [limit, value]) as [number, number]),
@@ -64,11 +67,4 @@ export class TimerService {
                  )
 
   lapTimeout = this.lapTimer.pipe(filter(([limit, value]) => limit > 0 && value === limit), share())
-
-  getCustomTimer(limit: number) {
-    return this.globalTimer.pipe(
-      scan(current => --current, limit),
-      takeWhile(value => value >= 0),
-    )
-  }
 }

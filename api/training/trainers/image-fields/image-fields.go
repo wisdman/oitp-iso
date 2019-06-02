@@ -1,45 +1,43 @@
-// Скорость зрительного восприятия
-// Запомните картинки
-// Восстановите картинки по памяти
-
 package imageFields
 
 import (
-	"strconv"
+	"math/rand"
 
 	"github.com/wisdman/oitp-isov/api/lib/db"
 
 	"github.com/wisdman/oitp-isov/api/training/trainers/icons"
-	"github.com/wisdman/oitp-isov/api/training/trainers/question"
 )
 
 var complexityData = [...]Parameters{
 	Parameters{
-		ShowTimeLimit:     5,
-		QuestionTimeLimit: 30,
-		MinItems:          3,
-		MaxItems:          4,
-		AnswersCount:      10,
-		FakeAnswersCount:  5,
-		Quantity:          3,
+		ShowTimeLimit: 5,
+		PlayTimeLimit: 30,
+
+		PagesCount: 3,
+		MinItems:   3,
+		MaxItems:   4,
+
+		AnswersCount: 10,
 	},
 	Parameters{
-		ShowTimeLimit:     5,
-		QuestionTimeLimit: 30,
-		MinItems:          4,
-		MaxItems:          5,
-		AnswersCount:      10,
-		FakeAnswersCount:  5,
-		Quantity:          3,
+		ShowTimeLimit: 5,
+		PlayTimeLimit: 30,
+
+		PagesCount: 5,
+		MinItems:   3,
+		MaxItems:   4,
+
+		AnswersCount: 10,
 	},
 	Parameters{
-		ShowTimeLimit:     5,
-		QuestionTimeLimit: 30,
-		MinItems:          4,
-		MaxItems:          5,
-		AnswersCount:      10,
-		FakeAnswersCount:  5,
-		Quantity:          5,
+		ShowTimeLimit: 5,
+		PlayTimeLimit: 30,
+
+		PagesCount: 5,
+		MinItems:   4,
+		MaxItems:   5,
+
+		AnswersCount: 15,
 	},
 }
 
@@ -50,44 +48,46 @@ func Build(
 	configs []interface{},
 	err error,
 ) {
-
 	params := complexityData[complexity]
+	config := newConfig(params)
+	icons := icons.GetIcons(params.PagesCount*params.MaxItems + params.AnswersCount)
+	var offset int
 
-	var answers []*question.Item
-	var fieldsConfigs []*Config = make([]*Config, params.Quantity)
+	// Generate pages
+	for i, max := 0, len(config.Pages); i < max; i++ {
+		length := rand.Intn(params.MaxItems-params.MinItems+1) + params.MinItems
 
-	var iconsCount int = params.FakeAnswersCount
-	for i := 0; i < params.Quantity; i++ {
-		fieldsConfigs[i] = newConfig(params)
-		iconsCount += len(fieldsConfigs[i].Items)
-	}
+		config.Pages[i] = make([]int, length)
 
-	iconsList := icons.GetIcons(iconsCount)
+		for j := 0; j < length; j++ {
+			icon := icons[offset]
+			config.Pages[i][j] = icon
 
-	for i := 0; i < params.FakeAnswersCount; i++ {
-		answerIcon := strconv.Itoa(iconsList[i])
-		answers = append(answers, &question.Item{
-			Data:    &answerIcon,
-			Correct: false,
-		})
-	}
+			if rand.Intn(2) == 1 {
+				config.Answers = append(config.Answers, &Answer{
+					Icon:    icon,
+					Correct: true,
+				})
+			}
 
-	offset := params.FakeAnswersCount
-	for i, maxI := 0, len(fieldsConfigs); i < maxI; i++ {
-		for j, maxJ := 0, len(fieldsConfigs[i].Items); j < maxJ; j++ {
-			icon := iconsList[offset]
-			fieldsConfigs[i].Items[j] = icon
-			answerIcon := strconv.Itoa(icon)
-			answers = append(answers, &question.Item{
-				Data:    &answerIcon,
-				Correct: true,
-			})
 			offset++
 		}
-		configs = append(configs, fieldsConfigs[i])
 	}
 
-	configs = append(configs, newQuestionConfig(params, answers))
+	// Generate fake answers
+	for i, max := 0, params.AnswersCount-len(config.Answers); i < max; i++ {
+		config.Answers = append(config.Answers, &Answer{
+			Icon:    icons[offset],
+			Correct: false,
+		})
 
+		offset++
+	}
+
+	rand.Shuffle(len(config.Answers), func(i, j int) {
+		config.Answers[i], config.Answers[j] = config.Answers[j], config.Answers[i]
+	})
+
+	configs = append(configs, config)
 	return configs, nil
 }

@@ -38,10 +38,10 @@ implements OnInit, OnDestroy, OnChanges {
     private _cdr: ChangeDetectorRef,
     private _elRef:ElementRef<HTMLElement>,
     private _sanitizer: DomSanitizer,
-    private _timerService: TimerService,
 
-    public pointerService: PointerService,
     public keypadService: KeypadService,
+    public pointerService: PointerService,
+    public timerService: TimerService,
   ){
     // Add global class
     this._elRef.nativeElement.classList.add("trainer")
@@ -123,11 +123,9 @@ implements OnInit, OnDestroy, OnChanges {
 
   // === Timer ===
   setTimeout(value: number) {
-    this._timerService.setLapTimeout(value)
+    this.timerService.setLapTimeout(value)
   }
-  getTimer(limit: number) {
-    return this._timerService.getCustomTimer(limit)
-  }
+
 
   // === Matrix size ===
   matrixWidth: number = 0
@@ -165,9 +163,9 @@ implements OnInit, OnDestroy, OnChanges {
     this.loading = true
 
     // Lap timer subscribe
-    this._timerService.setLapTimeout(0)
+    this.timerService.setLapTimeout(0)
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
-    this._lapTimerSubscriber = this._timerService.lapTimeout.subscribe(() => this.timeout())
+    this._lapTimerSubscriber = this.timerService.lapTimeout.subscribe(() => this.timeout())
 
     // Reset results
     this.updateResult({
