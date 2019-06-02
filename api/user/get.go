@@ -13,12 +13,12 @@ func (api *API) GetUser(w http.ResponseWriter, r *http.Request) {
 
 		Premium: 30,
 
-		Charge:       50,
-		Intelligence: 50,
-		Knowledge:    50,
-		Memory:       50,
+		Charge:       72,
+		Intelligence: 57,
+		Knowledge:    43,
+		Memory:       84,
 
-		Speed: []uint{50, 50, 50, 50},
+		Speed: []uint{50, 62, 73, 61},
 	}
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
