@@ -51,13 +51,13 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
   items!: Array<SVGRectangle & { data: number }>
 
   imageSize!: number
+  itemsHeight!: number
 
   private _keypadSubscriber!: Subscription
   private _pointerupSubscriber!: Subscription
   private _pointermoveSubscriber!: Subscription
 
   init() {
-    this.mode = "show"
     this.isUnique = [...new Set(this.config.matrix)].length === this.config.matrix.length
 
     this.current = undefined
@@ -92,14 +92,13 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     const matrixHeight = itemHeight * rows + gap * (rows - 1)
 
     const itemsWidth = itemWidth * itemsColumns + gap * (itemsColumns - 1)
+    this.itemsHeight = itemHeight * itemsRows + gap * (itemsRows - 1)
 
     const maxWidth = Math.max(matrixWidth, itemsWidth)
 
     this.matrixWidth = maxWidth
                      + padding * 2
     this.matrixHeight = matrixHeight
-                      + gap * 4
-                      + itemHeight * itemsRows + gap * (itemsRows - 1)
                       + padding * 2
 
     const matrixOffset = Math.round((maxWidth - matrixWidth) / 2)
@@ -140,6 +139,7 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     if (this._pointermoveSubscriber) this._pointermoveSubscriber.unsubscribe()
     this._pointermoveSubscriber = this.pointerService.pointermove.subscribe(event => this.onpointermMove(event))
 
+    this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
   }
 
@@ -150,6 +150,10 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
   startPlay() {
     this.mode = "play"
     this.current = undefined
+
+    const gap = this.getCSSPropertyIntValue("--gap")
+    this.matrixHeight += gap*4 + this.itemsHeight
+
     this.markForCheck()
 
     this.setTimeout(this.config.playTimeLimit)

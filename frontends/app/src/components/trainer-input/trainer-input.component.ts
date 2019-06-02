@@ -70,6 +70,9 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
     this.valueChange.emit(this._value)
   }
 
+  @Output("touch")
+  touchChange: EventEmitter<undefined> = new EventEmitter<undefined>()
+
   @Input("active")
   isActive: boolean = false
 
@@ -188,5 +191,6 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
 
   onTouch(i: number) {
     this.cursor = i
+    this.touchChange.emit()
   }
 }

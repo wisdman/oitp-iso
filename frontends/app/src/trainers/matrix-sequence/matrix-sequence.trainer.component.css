@@ -44,7 +44,7 @@
   font-size: 32px;
   font-weight: 500;
   line-height: 1;
-  color: var(--trainer-matrix-text-color);
+  color: var(--trainer-text-color);
 
   opacity: 1;
   transition: opacity .15s linear;

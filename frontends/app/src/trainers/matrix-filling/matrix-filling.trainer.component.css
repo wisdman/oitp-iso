@@ -7,6 +7,7 @@
   display: block;
   width: auto;
   max-width: 100%;
+  flex: 1 1 auto;
   height: auto;
 
   margin: 0;

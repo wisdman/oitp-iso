@@ -35,7 +35,6 @@
     *ngFor="let item of items"
     class="item"
     [class.item--selected]="mode === 'play' && item === currentItem"
-    fastTouch (touch)="onTouch(item)"
   >
     <path
       class="item__fill-path"
@@ -56,6 +55,7 @@
         [success]="mode === 'result' && item.isSucess"
         [error]="mode === 'result' && !item.isSucess"
         [(value)]="item.data"
+        (touch)="onTouch(item)"
       ></trainer-input>
     </foreignObject>
   </g>

@@ -1,7 +1,7 @@
 :root {
   /* === Trainers theme === */
 
-  --trainer-text-color: rgb(119, 110, 101);
+  --trainer-text-color: rgba(119, 110, 101);
 
   --trainer-background-color: rgba(238, 228, 218, 0.72);
   --trainer-border-color: rgb(187, 173, 160);
