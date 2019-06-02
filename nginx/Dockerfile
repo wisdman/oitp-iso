@@ -13,7 +13,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY conf.d /etc/nginx/conf.d
 COPY ssl /etc/nginx/ssl
 
-COPY assets /assets
+COPY assets /www/assets
 
 EXPOSE 80 443
 STOPSIGNAL SIGTERM
