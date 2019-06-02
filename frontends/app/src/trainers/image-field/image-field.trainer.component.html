@@ -1,10 +1,7 @@
 <!-- Скорость зрительного восприятия -->
-<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните&nbsp;картинки</h1>
-<h1 *ngIf="mode==='play'" class="trainer-h1">Отметьте&nbsp;картинки<br>показанные&nbsp;ранее</h1>
-<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+<h1 class="trainer-h1">Запомните&nbsp;картинки</h1>
 
 <svg
-  *ngIf="mode==='show'"
   class="matrix"
   [attr.viewBox]="matrixViewBox"
   [attr.width]="matrixWidth"
@@ -25,16 +22,8 @@
   ></image>
 </svg>
 
-<trainer-selector
-  *ngIf="mode==='play' || mode==='result'"
-  class="selector"
-  type="icon"
-  [readonly]="mode==='result'"
-  [items]="answers"
-></trainer-selector>
-
 <trainer-button
   class="button"
   value="Продолжить"
-  (touch)="onButtonTouch()"
+  (touch)="finish()"
 ></trainer-button>

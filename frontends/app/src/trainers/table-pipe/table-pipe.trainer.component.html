@@ -1,4 +1,6 @@
-<h1 class="trainer-h1">Используйте жесты или стрелочки</h1>
+<!-- Расприделение внимания -->
+<h1 class="trainer-h1">Используйте&nbsp;жесты<br>или&nbsp;стрелки&nbsp;управления&nbsp;курсором</h1>
+
 <div class="rules">
   <div
     *ngFor="let item of rules"
@@ -6,9 +8,12 @@
   >
     <svg
       class="item"
-      [attr.viewBox]="viewBox"
-      [attr.width]="itemSize"
-      [attr.height]="itemSize"
+      [attr.viewBox]="matrixViewBox"
+      [attr.width]="matrixWidth"
+      [attr.height]="matrixHeight"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      preserveAspectRatio="xMidYMid meet"
     >
       <path
         class="fill-path"
@@ -33,38 +38,50 @@
   </div>
 </div>
 
-<svg
-  *ngFor="let item of matrix; let i = index"
-  class="item"
-  [class.item--current]="i === current"
-  [class.item--success]="item.isSuccess"
-  [class.item--error]="item.isError"
-  [attr.viewBox]="viewBox"
-  [attr.width]="itemSize"
-  [attr.height]="itemSize"
-  preserveAspectRatio="xMidYMid meet"
->
-  <path
-    class="fill-path"
-    [attr.d]="item.fillPath"
-  ></path>
-  <path
-    class="path"
-    [attr.d]="item.path"
-  ></path>
-  <text
-    class="text"
-    [attr.x]="item.x + item.width / 2"
-    [attr.y]="item.y + item.height / 2 + 2"
-    text-anchor="middle"
-    dominant-baseline="middle"
-  >{{ item.data }}</text>
-  <path
-    class="success"
-    d="M13 25l2-2 7 4c5-6 8-8 14-12l1 1c-5 5-9 10-14 19L13 25z"
-  ></path>
-  <path
-    class="error"
-    d="M37 17l-4-4-8 9-8-9-4 4 8 9-8 9 1 2 11-8 10 8 1-1-8-10 9-9z"
-  ></path>
-</svg>
+<div class="matrix">
+  <svg
+    *ngFor="let item of matrix; let i = index"
+    class="item"
+    [class.item--current]="i === current"
+    [class.item--success]="item.isSuccess"
+    [class.item--error]="item.isError"
+    [attr.viewBox]="matrixViewBox"
+    [attr.width]="matrixWidth"
+    [attr.height]="matrixHeight"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <defs>
+      <path id="error" d="M24 4l-4-4-8 9-8-9-4 4 8 9-8 9 2 2 10-8 10 8 1-1-8-10 9-9z"></path>
+      <path id="success" d="M0 12l2-2 7 4c5-6 8-8 14-12l1 1c-5 5-9 10-14 19L0 12z"></path>
+    </defs>
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      class="text"
+      [attr.x]="item.x + item.width / 2"
+      [attr.y]="item.y + item.height / 2 + 2"
+      text-anchor="middle"
+      dominant-baseline="middle"
+    >{{ item.data }}</text>
+    <use
+      class="error"
+      href="#error"
+      [attr.x]="item.x + (item.width - 24) / 2"
+      [attr.y]="item.y + (item.height - 24) / 2"
+    ></use>
+    <use
+      class="success"
+      href="#success"
+      [attr.x]="item.x + (item.width - 24) / 2"
+      [attr.y]="item.y + (item.height - 24) / 2"
+    ></use>
+  </svg>
+</div>

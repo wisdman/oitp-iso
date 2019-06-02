@@ -6,11 +6,6 @@
   gap: 16px;
 }
 
-.invisible {
-  opacity: 0;
-  visibility: hidden;
-}
-
 .item-box {
   font-size: 140%;
   font-weight: 400;

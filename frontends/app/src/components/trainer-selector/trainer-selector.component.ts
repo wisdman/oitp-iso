@@ -7,8 +7,10 @@ import {
   Input,
   KeyValueDiffer,
   KeyValueDiffers,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from "@angular/core"
 
 import {
@@ -31,7 +33,7 @@ export interface ISelectorItem {
   styleUrls: [ "./trainer-selector.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TrainerSelectorComponent implements OnInit {
+export class TrainerSelectorComponent implements OnInit, OnChanges {
 
   constructor(
     private _cdr: ChangeDetectorRef,
@@ -145,6 +147,13 @@ export class TrainerSelectorComponent implements OnInit {
       Object.assign(item, { ...rectangle, ellipse: ellipse.path } )
       this._itemsDiffer.set(item, this._differs.find(item).create<string, any>())
     })
+  }
+
+  ngOnChanges(sc: SimpleChanges) {
+    if (sc.matrix && !sc.matrix.firstChange) {
+      this.ngOnInit()
+      this._cdr.markForCheck()
+    }
   }
 
   ngDoCheck() {

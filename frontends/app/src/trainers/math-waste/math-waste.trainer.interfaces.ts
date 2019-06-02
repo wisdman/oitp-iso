@@ -9,10 +9,9 @@ export type IMathWasteTrainer = "math-waste"
 export interface IMathWasteTrainerConfig extends ITrainerConfig {
   id: IMathWasteTrainer
 
-  timeLimit: number
+  playTimeLimit: number
 
-  type: "middle" | "sequence"
-  items: Array<Array<number>> | Array<number>
+  items: Array<number>
 }
 
 export interface IMathWasteTrainerResult extends ITrainerResult {

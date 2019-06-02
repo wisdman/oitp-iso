@@ -50,7 +50,7 @@ func Build(
 		length := len(levels[params.Level])
 		fn := levels[params.Level][rand.Intn(length)]
 
-		config.Data = fn()
+		config.Items = fn()
 		configs = append(configs, config)
 	}
 

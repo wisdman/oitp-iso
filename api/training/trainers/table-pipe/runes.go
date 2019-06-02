@@ -2,7 +2,6 @@ package tablePipe
 
 import (
 	"math/rand"
-	"time"
 )
 
 type IRunes uint8
@@ -20,8 +19,6 @@ var arr_ALPHABET_RU = [...]rune{'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 
 var arr_NUMBERS = [...]rune{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
 
 func getRunes(itemsType IRunes) []rune {
-	rand.Seed(time.Now().UnixNano())
-
 	switch itemsType {
 	case RunesEN:
 		length := len(arr_ALPHABET_EN)

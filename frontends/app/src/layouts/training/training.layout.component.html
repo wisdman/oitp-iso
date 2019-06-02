@@ -52,6 +52,12 @@
       (result)="onResult($event)"
     ></trainer-image-field>
 
+    <trainer-image-field-question
+      *ngIf="config.id === 'image-field-question'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-image-field-question>
+
     <trainer-math-equation
       *ngIf="config.id === 'math-equation'"
       [config]="config"
@@ -82,17 +88,17 @@
       (result)="onResult($event)"
     ></trainer-matrix-filling>
 
+    <trainer-matrix-filling-question
+      *ngIf="config.id === 'matrix-filling-question'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-matrix-filling-question>
+
     <trainer-matrix-sequence
       *ngIf="config.id === 'matrix-sequence'"
       [config]="config"
       (result)="onResult($event)"
     ></trainer-matrix-sequence>
-
-    <trainer-question
-      *ngIf="config.id === 'question'"
-      [config]="config"
-      (result)="onResult($event)"
-    ></trainer-question>
 
     <trainer-relax
       *ngIf="config.id === 'relax'"

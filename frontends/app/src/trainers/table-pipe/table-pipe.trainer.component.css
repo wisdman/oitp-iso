@@ -1,20 +1,6 @@
 :host {
-  --item-size: 50px;
-  --gap: 8px;
+  --gap: 6px;
   --columns: 10;
-
-  width: 100%;
-  max-width: calc(var(--item-size) * var(--columns) + var(--gap) * (var(--columns) - 1) );
-
-  display: grid;
-  grid-template-columns: repeat(auto-fit, var(--item-size));
-  grid-template-rows: min-content repeat(auto-fit, var(--item-size));
-  justify-content: center;
-  align-content: center;
-
-  gap: var(--gap);
-
-  margin: auto;
 }
 
 @media (max-width: 650px) {
@@ -23,25 +9,70 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 350px) {
   :host {
     --columns: 5;
   }
 }
 
+/* Rules area */
+
+.rules {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 8px;
+  column-gap: 16px;
+
+  margin-top: calc(var(--trainer-margin) * 2);
+}
+
+.rule {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.rule .item {
+  width: 32px;
+  height: 32px;
+}
+
+.rule span {
+  margin-top: -2px;
+  font-size: 16px;
+}
+
+/* Matrix */
+
+.matrix {
+  width: 100%;
+  max-width: calc(var(--trainer-svg-height) * var(--columns) + var(--gap) * (var(--columns) - 1) );
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, var(--trainer-svg-height));
+  grid-template-rows: min-content repeat(auto-fit, var(--trainer-svg-height));
+  justify-content: center;
+  align-content: center;
+
+  gap: var(--gap);
+
+  margin: auto;
+  margin-top: calc(var(--trainer-margin) * 2);
+}
+
+
 /* Items */
 
 .item {
   display: block;
-  width: var(--item-size);
-  height: var(--item-size);
+  width: var(--trainer-svg-height);
+  height: var(--trainer-svg-height);
 }
 
 .item--success,
 .item--error {
   opacity: .7;
 }
-
 
 .path {
   stroke: var(--trainer-border-color);
@@ -107,36 +138,4 @@
 .item--error .error {
   transform: rotateY(0deg);
   opacity: 1;
-}
-
-
-/* Rules area */
-
-.rules {
-  justify-self: center;
-  grid-column-start: 1;
-  grid-column-end: -1;
-
-  display: grid;
-  grid-template-columns: max-content max-content;
-  gap: 8px;
-  column-gap: 16px;
-
-  padding-bottom: 24px;
-}
-
-.rule {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.rule .item {
-  width: 32px;
-  height: 32px;
-}
-
-.rule span {
-  margin-top: -2px;
-  font-size: 18px;
 }

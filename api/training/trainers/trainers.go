@@ -38,19 +38,17 @@ const (
 	ImageExpressions          ITrainer = "image-expressions"          // Гармонизация работы полушарий
 	ImageFields               ITrainer = "image-fields"               // Скорость зрительного восприятия
 	MathEquation              ITrainer = "math-equation"              // Арифметико-практическое мышление
-	MathMiddle                ITrainer = "math-middle"                // Среднее число в скобках
-	MathSequence              ITrainer = "math-sequence"              // Числовой ряд
-	MathWaste                 ITrainer = "math-waste"                 // Лишнее число
+	MathMiddle                ITrainer = "math-middle"                // Арифметико-практическое мышление
+	MathSequence              ITrainer = "math-sequence"              // Арифметико-практическое мышление
+	MathWaste                 ITrainer = "math-waste"                 // Арифметико-практическое мышление
+	MatrixFillingPattern      ITrainer = "matrix-filling-pattern"     // Индуктивность
+	MatrixFillingUnique       ITrainer = "matrix-filling-unique"      // Мнемотехника
+	MatrixSequencePattern     ITrainer = "matrix-sequence-pattern"    // Индуктивность мышления
+	MatrixSequenceRandom      ITrainer = "matrix-sequence-random"     // Таблицы с произвольным рассположением чисел
+	Relax                     ITrainer = "relax"                      // Расслабление
+	SpaceQuestionsWaste2D     ITrainer = "space-waste-2d"             // Пространство и логика
+	SpaceQuestionsWaste3D     ITrainer = "space-waste-3d"             // Пространство и логика
 
-	MatrixFillingPattern   ITrainer = "matrix-filling-pattern"   // Запомнить таблицу на основе паттерна
-	MatrixFillingRandom    ITrainer = "matrix-filling-random"    // Запомнить случайную таблицу
-	MatrixFillingUnique    ITrainer = "matrix-filling-unique"    // Запомнить уникальную таблицу
-	MatrixSequencePattern  ITrainer = "matrix-sequence-pattern"  // Числовая таблица на основе паттерна
-	MatrixSequenceRandom   ITrainer = "matrix-sequence-random"   // Случайная числовая таблица
-	Relax                  ITrainer = "relax"                    // Расслабление
-	SpaceQuestionsPart     ITrainer = "space-part"               // Меньшее в большем
-	SpaceQuestionsWaste2D  ITrainer = "space-waste-2d"           // Лишняя фигура, 2d поворот
-	SpaceQuestionsWaste3D  ITrainer = "space-waste-3d"           // Лишняя фигура, 3d поворот
 	TablePipeEN            ITrainer = "table-pipe-en"            // Разминка EN
 	TablePipeNumber        ITrainer = "table-pipe-number"        // Разминка Цифры
 	TablePipeRU            ITrainer = "table-pipe-ru"            // Разминка RU
@@ -88,12 +86,10 @@ var BuildFunctions = map[ITrainer]ITrainerBuilder{
 	MathSequence:              mathSequence.Build,
 	MathWaste:                 mathWaste.Build,
 	MatrixFillingPattern:      matrixFilling.BuildPattern,
-	MatrixFillingRandom:       matrixFilling.BuildRandom,
 	MatrixFillingUnique:       matrixFilling.BuildUnique,
 	MatrixSequencePattern:     matrixSequence.BuildPattern,
 	MatrixSequenceRandom:      matrixSequence.BuildRandom,
 	Relax:                     relax.Build,
-	SpaceQuestionsPart:        spaceQuestions.BuildPart,
 	SpaceQuestionsWaste2D:     spaceQuestions.BuildWaste2D,
 	SpaceQuestionsWaste3D:     spaceQuestions.BuildWaste3D,
 	TablePipeEN:               tablePipe.BuildEN,

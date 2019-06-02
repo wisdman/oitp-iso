@@ -9,11 +9,6 @@
   row-gap: calc(var(--trainer-margin) * 2);
 }
 
-.invisible {
-  opacity: 0;
-  visibility: hidden;
-}
-
 .item-box {
   display: flex;
   flex-direction: column;

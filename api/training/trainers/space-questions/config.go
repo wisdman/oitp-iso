@@ -6,31 +6,32 @@
 package spaceQuestions
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/w-rand"
-
 	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
-	"github.com/wisdman/oitp-isov/api/training/trainers/question"
 )
 
 type Parameters struct {
-	TimeLimit uint16 `json:"timeLimit"`
-	Quantity  int    `json:"quantity"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+	Quantity      int    `json:"quantity"`
 }
 
-func newQuestionConfig(
+type Answer struct {
+	Icon    int  `json:"icon"`
+	Correct bool `json:"correct"`
+}
+
+type Config struct {
+	*abstract.Config
+
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	Items []*Answer `json:"items"`
+}
+
+func newConfig(
 	params Parameters,
-	items []*question.Item,
-) *question.Config {
-	wRand.Shuffle(len(items), func(i, j int) { items[i], items[j] = items[j], items[i] })
-
-	return &question.Config{
-		Config: abstract.NewConfig(abstract.UIQuestion),
-
-		Body: "Оприделите лишнюю фигуру",
-
-		ItemsType: question.Image,
-		Items:     items,
-
-		TimeLimit: params.TimeLimit,
+) *Config {
+	return &Config{
+		Config:        abstract.NewConfig(abstract.UIImageFieldQuestion),
+		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

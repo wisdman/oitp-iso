@@ -9,10 +9,10 @@ export type IRelaxTrainer = "relax"
 export interface IRelaxTrainerConfig extends ITrainerConfig {
   id: IRelaxTrainer
 
+  showTimeLimit: number
+
   image: number
   text: string
-
-  timeLimit: number
 }
 
 export interface IRelaxTrainerResult extends ITrainerResult {

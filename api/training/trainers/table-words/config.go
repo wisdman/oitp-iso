@@ -5,27 +5,26 @@ import (
 )
 
 type Parameters struct {
-	ColumnsCount int    `json:"columnsCount"`
-	RunesCount   int    `json:"runesCount"`
-	TimeLimit    uint16 `json:"timeLimit"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+	RunesCount    int    `json:"runesCount"`
 }
 
 type Config struct {
 	*abstract.Config
 
-	TimeLimit uint16 `json:"timeLimit"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Runes   []string `json:"runes"`
-	Columns []string `json:"columns"`
+	Runes []string `json:"runes"`
+	Title string   `json:"title"`
 }
 
 func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:    abstract.NewConfig(abstract.UITableWords),
-		TimeLimit: params.TimeLimit,
-		Runes:     make([]string, params.RunesCount),
-		Columns:   make([]string, params.ColumnsCount),
+		Config:        abstract.NewConfig(abstract.UITableWords),
+		PlayTimeLimit: params.PlayTimeLimit,
+
+		Runes: make([]string, params.RunesCount),
 	}
 }

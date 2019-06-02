@@ -1,12 +1,10 @@
 <picture
-  *ngIf="config.image"
+  *ngIf="config.image >= 0"
   class="image"
 >
-  <source [srcset]="sanitizeUrl('/relax/' + this.config.image + '.webp')">
-  <img [src]="sanitizeUrl('/relax/' + this.config.image + '.jpg')">
+  <source [srcset]="getSrcset(config.image, 'jpg')">
+  <source [srcset]="getSrcset(config.image, 'webp')">
+  <img [src]="getSrcset(config.image, 'jpg')">
 </picture>
 
-<h1
-  #h1Node
-  class="h1"
->{{ config.text }}</h1>
+<h1 #h1Node class="h1">{{ config.text }}</h1>

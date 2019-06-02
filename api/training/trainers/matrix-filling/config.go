@@ -1,10 +1,7 @@
 package matrixFilling
 
 import (
-	"math/rand"
-
 	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
-	"github.com/wisdman/oitp-isov/api/training/trainers/question"
 )
 
 type Parameters struct {
@@ -13,11 +10,10 @@ type Parameters struct {
 	QuestionTimeLimit uint16 `json:"questionTimeLimit"`
 
 	Quantity   int `json:"quantity"`
-	ItemsSize  int `json:"itemsSize"`
 	MatrixSize int `json:"matrixSize"`
+	ItemsCount int `json:"itemsSize"`
 
-	AnswersCount     int `json:"answersCount"`
-	FakeAnswersCount int `json:"fakeAnswersCount"`
+	AnswersCount int `json:"answersCount"`
 }
 
 type Config struct {
@@ -36,29 +32,31 @@ func newConfig(
 	return &Config{
 		Config: abstract.NewConfig(abstract.UIMatrixFilling),
 
-		Items:  make([]int, params.ItemsSize),
-		Matrix: make([]uint16, params.MatrixSize),
+		Items: make([]int, params.ItemsCount),
 
 		ShowTimeLimit: params.ShowTimeLimit,
 		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }
 
+type Answer struct {
+	Icon    int  `json:"icon"`
+	Correct bool `json:"correct"`
+}
+
+type QuestionConfig struct {
+	*abstract.Config
+
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	Items []*Answer `json:"items"`
+}
+
 func newQuestionConfig(
 	params Parameters,
-	items []*question.Item,
-) *question.Config {
-	rand.Shuffle(len(items), func(i, j int) { items[i], items[j] = items[j], items[i] })
-
-	return &question.Config{
-		Config: abstract.NewConfig(abstract.UIQuestion),
-
-		Body: "<h1>Отметьте фигуры встретившиеся вам в таблицах</h1>",
-
-		ItemsType: question.Icon,
-		Items:     items[0:params.AnswersCount],
-		Multiple:  true,
-
-		TimeLimit: params.QuestionTimeLimit,
+) *QuestionConfig {
+	return &QuestionConfig{
+		Config:        abstract.NewConfig(abstract.UIMatrixFillingQuestion),
+		PlayTimeLimit: params.QuestionTimeLimit,
 	}
 }

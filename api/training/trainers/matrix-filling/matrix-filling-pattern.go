@@ -1,50 +1,45 @@
-// Индуктивность
-//
-// Запомните таблицу
-// Востановите таблицу по памяти
-//
-
 package matrixFilling
 
 import (
-	"strconv"
+	"math/rand"
 
 	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/training/trainers/question"
-
 	"github.com/wisdman/oitp-isov/api/training/trainers/icons"
 )
 
 var complexityPatternData = [...]Parameters{
 	Parameters{
-		ShowTimeLimit:     5,
-		PlayTimeLimit:     30,
-		QuestionTimeLimit: 30,
-		Quantity:          3,
-		ItemsSize:         5,
-		MatrixSize:        9,
-		AnswersCount:      10,
-		FakeAnswersCount:  5,
+		ShowTimeLimit:     7,
+		PlayTimeLimit:     60,
+		QuestionTimeLimit: 60,
+
+		Quantity:   3,
+		MatrixSize: 9,
+		ItemsCount: 8,
+
+		AnswersCount: 10,
 	},
 	Parameters{
 		ShowTimeLimit:     5,
 		PlayTimeLimit:     30,
 		QuestionTimeLimit: 30,
-		Quantity:          3,
-		ItemsSize:         5,
-		MatrixSize:        16,
-		AnswersCount:      10,
-		FakeAnswersCount:  5,
+
+		Quantity:   3,
+		MatrixSize: 16,
+		ItemsCount: 8,
+
+		AnswersCount: 10,
 	},
 	Parameters{
 		ShowTimeLimit:     5,
 		PlayTimeLimit:     30,
 		QuestionTimeLimit: 30,
-		Quantity:          3,
-		ItemsSize:         7,
-		MatrixSize:        16,
-		AnswersCount:      10,
-		FakeAnswersCount:  5,
+
+		Quantity:   3,
+		MatrixSize: 16,
+		ItemsCount: 10,
+
+		AnswersCount: 10,
 	},
 }
 
@@ -56,18 +51,10 @@ func BuildPattern(
 	err error,
 ) {
 	params := complexityPatternData[complexity]
+	questionConfig := newQuestionConfig(params)
 
-	var iconsCount int = params.FakeAnswersCount + params.ItemsSize*params.Quantity
-	iconsList := icons.GetIcons(iconsCount)
-
-	var answers []*question.Item
-	for i := 0; i < params.FakeAnswersCount; i++ {
-		answerIcon := strconv.Itoa(iconsList[i])
-		answers = append(answers, &question.Item{
-			Data:    &answerIcon,
-			Correct: false,
-		})
-	}
+	icons := icons.GetIcons(params.Quantity*params.ItemsCount + params.AnswersCount)
+	var offset int
 
 	rows, err := sql.Query(`
     SELECT
@@ -88,26 +75,49 @@ func BuildPattern(
 	}
 	defer rows.Close()
 
-	offset := params.FakeAnswersCount
 	for rows.Next() {
 		config := newConfig(params)
 		if err = rows.Scan(&config.Matrix); err != nil {
 			return nil, err
 		}
-		for i, max := 0, len(config.Items); i < max; i++ {
-			icon := iconsList[offset]
-			config.Items[i] = icon
-			answerIcon := strconv.Itoa(icon)
-			answers = append(answers, &question.Item{
-				Data:    &answerIcon,
-				Correct: true,
-			})
-			offset++
+
+		var maxIdx uint16
+		for i, e := range config.Matrix {
+			if i == 0 || e > maxIdx {
+				maxIdx = e
+			}
 		}
+
+		for i, max := 0, len(config.Items); i < max; i++ {
+			icon := icons[offset]
+			offset++
+
+			config.Items[i] = icon
+
+			if i > int(maxIdx) {
+				continue
+			}
+
+			if rand.Intn(2) == 1 {
+				questionConfig.Items = append(questionConfig.Items, &Answer{
+					Icon:    icon,
+					Correct: true,
+				})
+			}
+		}
+
 		configs = append(configs, config)
 	}
 
-	configs = append(configs, newQuestionConfig(params, answers))
+	// Generate fake answers
+	for i, max := 0, params.AnswersCount-len(questionConfig.Items); i < max; i++ {
+		questionConfig.Items = append(questionConfig.Items, &Answer{
+			Icon:    icons[offset],
+			Correct: false,
+		})
+		offset++
+	}
 
+	configs = append(configs, questionConfig)
 	return configs, nil
 }

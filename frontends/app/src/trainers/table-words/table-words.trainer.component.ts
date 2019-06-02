@@ -1,26 +1,26 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
 } from "@angular/core"
 
 import { Subscription } from "rxjs"
-
-import {
-  AbstractTrainerComponent,
-} from "../abstract"
 
 import {
   SVGRectangle,
   genSVGRectangle,
 } from "../../lib/svg"
 
+import { AbstractTrainerComponent } from "../abstract"
+
 import {
   ITableWordsTrainerConfig,
   ITableWordsTrainerResult,
 } from "./table-words.trainer.interfaces"
 
-interface IItem extends SVGRectangle { data: string }
-type IActiveItem = IItem & {column: string}
+interface IItem extends SVGRectangle {
+  data: string
+  isSucess?: boolean
+}
 
 @Component({
   selector: "trainer-table-words",
@@ -31,35 +31,28 @@ type IActiveItem = IItem & {column: string}
 export class TableWordsTrainerComponent
 extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerResult> {
 
-  mode: "show" | "play" | "result" = "show"
-
-  matrixWidth: number = 0
-  matrixHeight: number = 0
-
-  get matrixViewBox(): string {
-    return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
-  }
+  mode: "play" | "result" = "play"
 
   headers!: Array<IItem>
-  items!: Array<IActiveItem>
-  currentItem?: IActiveItem
+  items!: Array<IItem>
+  currentItem?: IItem
 
   private _keypadTabSubscriber!: Subscription
 
   init() {
     this.keypadService.show("RU")
 
-    const runeSize = this.getCSSPropertyIntValue("--trainer-text-item-height");
-    const columnWidth = this.getCSSPropertyIntValue("--column-width");
-    const gap = this.getCSSPropertyIntValue("--gap");
-    const padding = this.getCSSPropertyIntValue("--padding");
+    const runeSize = this.getCSSPropertyIntValue("--trainer-svg-height")
+    const columnWidth = this.getCSSPropertyIntValue("--column-width")
+    const padding = this.getCSSPropertyIntValue("--trainer-svg-padding")
+    const gap = this.getCSSPropertyIntValue("--gap")
 
-    const columns = this.config.columns.length
     const rows = this.config.runes.length
 
     this.matrixWidth = padding
                      + runeSize
-                     + columnWidth * columns + gap * columns
+                     + gap
+                     + columnWidth
                      + padding
 
     this.matrixHeight = padding
@@ -68,29 +61,31 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
                       + padding
 
     this.headers = [
-      ...["", ...this.config.runes].map((data, i) =>
-          ({...genSVGRectangle(padding, padding + runeSize * i + gap * i, runeSize, runeSize), data})
-      ),
-      ...this.config.columns.map((data, i) =>
-          ({...genSVGRectangle(padding + runeSize + columnWidth * i + gap * i, padding, columnWidth, runeSize), data})
-      ),
+      ...this.config.runes.map((data, i) =>
+          ({...genSVGRectangle(padding, padding + runeSize + (runeSize + gap) * i, runeSize, runeSize), data})
+      ),{
+        ...genSVGRectangle(padding, padding, runeSize + gap + columnWidth, runeSize),
+        data: this.config.title,
+      }
     ]
 
-    this.items = this.config.columns.map((column, i) => {
-      const x = padding + runeSize + columnWidth * i + gap * i
-      return this.config.runes.map((_, j) =>
-        ({...genSVGRectangle(x, padding + runeSize + runeSize * j + gap * j, columnWidth, runeSize), column, data: ""})
-      )
-    }).flat()
+    this.items = this.config.runes.map((_, i) => {
+      const x = padding + runeSize + gap
+      const y = padding + runeSize + (runeSize + gap) * i
+      return {
+        ...genSVGRectangle(x, y, columnWidth, runeSize),
+        data: "",
+      }
+    })
 
-    this.currentItem = this.items.length > 0 ? this.items[0] : undefined
+    this.currentItem = this.items[0]
 
     if (this._keypadTabSubscriber) this._keypadTabSubscriber.unsubscribe()
     this._keypadTabSubscriber = this.keypadService.tab
                                 .subscribe(() => this._onTab())
 
-    this.setTimeout(10)
-    // this.setTimeout(10 || this.config.timeLimit)
+    this.mode = "play"
+    this.setTimeout(this.config.playTimeLimit)
   }
 
   destroy() {
@@ -99,12 +94,17 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
   }
 
   timeout() {
-    console.log("TIMEOUT")
+    this.showResult()
+  }
+
+  showResult() {
+    this.setTimeout(0)
+    this.mode = "result"
   }
 
   private _onTab() {
     if (!this.currentItem) {
-      this.currentItem = this.items.length > 0 ? this.items[0] : undefined
+      this.currentItem = this.items[0]
       this.markForCheck()
       return
     }
@@ -119,12 +119,7 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
     this.markForCheck()
   }
 
-  onTouch(item: IActiveItem) {
+  onTouch(item: IItem) {
     this.currentItem = item
   }
-
-  onButtonTouch() {
-
-  }
-
 }

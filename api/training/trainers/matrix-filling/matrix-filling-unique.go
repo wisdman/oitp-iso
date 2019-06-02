@@ -1,37 +1,34 @@
-// Мнемотехника
-//
-// Соедините картинки по горизонтали ассоциотивной связью.
-// Не повторять.
-//
-// Востановите таблицу по памяти
-//
-
 package matrixFilling
 
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"
-
 	"github.com/wisdman/oitp-isov/api/training/trainers/icons"
 )
 
 var complexityUniqueData = [...]Parameters{
 	Parameters{
-		ShowTimeLimit: 20,
-		PlayTimeLimit: 30,
-		Quantity:      3,
-		MatrixSize:    9,
+		ShowTimeLimit: 30,
+		PlayTimeLimit: 60,
+
+		Quantity:   3,
+		MatrixSize: 9,
+		ItemsCount: 15,
 	},
 	Parameters{
 		ShowTimeLimit: 60,
 		PlayTimeLimit: 40,
-		Quantity:      3,
-		MatrixSize:    16,
+
+		Quantity:   3,
+		MatrixSize: 16,
+		ItemsCount: 15,
 	},
 	Parameters{
 		ShowTimeLimit: 60,
 		PlayTimeLimit: 40,
-		Quantity:      3,
-		MatrixSize:    16,
+
+		Quantity:   3,
+		MatrixSize: 16,
+		ItemsCount: 15,
 	},
 }
 
@@ -43,18 +40,23 @@ func BuildUnique(
 	err error,
 ) {
 	params := complexityUniqueData[complexity]
-	params.ItemsSize = params.MatrixSize
 
-	var iconsCount int = params.ItemsSize * params.Quantity
-	iconsList := icons.GetIcons(iconsCount)
-
+	icons := icons.GetIcons(params.Quantity*params.ItemsCount + params.AnswersCount)
 	var offset int
+
 	for i := 0; i < params.Quantity; i++ {
 		config := newConfig(params)
+
 		for j, max := 0, len(config.Items); j < max; j++ {
-			config.Items[j] = iconsList[offset]
-			config.Matrix[j] = uint16(j)
+			icon := icons[offset]
 			offset++
+
+			config.Items[j] = icon
+		}
+
+		config.Matrix = make([]uint16, params.MatrixSize)
+		for j, max := 0, len(config.Matrix); j < max; j++ {
+			config.Matrix[j] = uint16(j)
 		}
 
 		configs = append(configs, config)

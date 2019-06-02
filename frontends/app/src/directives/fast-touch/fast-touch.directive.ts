@@ -2,7 +2,6 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -18,6 +17,12 @@ const preventFunction = function(event: Event) {
   event.stopPropagation()
 }
 
+export interface ITouchData {
+  target: EventTarget | null
+  x: number
+  y: number
+}
+
 @Directive({
   selector: "[fastTouch]"
 })
@@ -31,19 +36,7 @@ export class FastTouchDirective implements OnInit, OnDestroy {
   ) {}
 
   @Output("touch")
-  touchValueChange = new EventEmitter()
-
-  @Input("propagation")
-  propagation: boolean = false
-
-  private _getOnTouch() {
-    const self = this
-    return function(event: Event){
-      event.preventDefault()
-      if (!self.propagation) event.stopPropagation()
-      self.touchValueChange.emit()
-    }
-  }
+  touchValueChange: EventEmitter<ITouchData> = new EventEmitter<ITouchData>()
 
   private _eventListeners!: Array<[IEvents, (event: Event) => void]>
 
@@ -63,7 +56,16 @@ export class FastTouchDirective implements OnInit, OnDestroy {
     if (!this._isPointerEvent) {
       return
     }
-    this._eventListeners.push(["pointerdown", this._getOnTouch()])
+    const self = this
+    this._eventListeners.push(["pointerdown", function(event: PointerEvent){
+      event.preventDefault()
+      event.stopPropagation()
+      self.touchValueChange.emit({
+        target: event.target,
+        x: event.clientX,
+        y: event.clientY,
+      })
+    } as (event: Event) => void])
   }
 
   private _initTouchEvents() {
@@ -76,7 +78,18 @@ export class FastTouchDirective implements OnInit, OnDestroy {
       return
     }
 
-    this._eventListeners.push(["touchstart", this._getOnTouch()])
+    const self = this
+    this._eventListeners.push(["touchstart", function(event: TouchEvent){
+      event.preventDefault()
+      event.stopPropagation()
+
+      const touch = event.changedTouches[0]
+      self.touchValueChange.emit({
+        target: touch.target,
+        x: touch.clientX,
+        y: touch.clientY,
+      })
+    } as (event: Event) => void])
   }
 
   private _initMouseEvents() {
@@ -87,7 +100,17 @@ export class FastTouchDirective implements OnInit, OnDestroy {
       return
     }
 
-    this._eventListeners.push(["mousedown", this._getOnTouch()])
+    const self = this
+    this._eventListeners.push(["mousedown", function(event: MouseEvent){
+      event.preventDefault()
+      event.stopPropagation()
+
+      self.touchValueChange.emit({
+        target: event.target,
+        x: event.clientX,
+        y: event.clientY,
+      })
+    } as (event: Event) => void])
   }
 
   ngOnInit() {

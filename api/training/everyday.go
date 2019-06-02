@@ -15,25 +15,26 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
 
 	var trainersList = []trainers.ITrainer{
-		"math-waste", "table-pipe-ru", "table-pipe-number",
+		"table-pipe-ru", "table-pipe-number",
 	}
 
 	var trainersRandom = [][]trainers.ITrainer{
 		{"classification-colors", "classification-definitions", "classification-words"},
+		{"image-carpets", "image-differences"},
 		{"image-expressions"},
 		{"image-fields"},
-		{"math-equation"},
+		//{"math-equation"},
 		{"math-middle", "math-sequence", "math-waste"},
 		{"matrix-filling-pattern"},
-		{"matrix-sequence-pattern"},
 		{"matrix-filling-unique"},
-		// {"space-part"},
+		{"matrix-sequence-pattern"},
+		{"space-waste-2d", "space-waste-3d"},
 		{"table-words"},
-		{"text-letters"},
-		{"text-reading-tezirovanie"},
-		{"words-columns-pairs"},
-		{"words-columns-words"},
-		{"words-pairs-antonyms", "words-pairs-paronyms", "words-pairs-synonyms", "words-questions-close", "words-questions-waste"},
+		// {"text-letters"},
+		// {"text-reading-tezirovanie"},
+		// {"words-columns-pairs"},
+		// {"words-columns-words"},
+		// {"words-pairs-antonyms", "words-pairs-paronyms", "words-pairs-synonyms", "words-questions-close", "words-questions-waste"},
 	}
 
 	rand.Shuffle(len(trainersRandom), func(i, j int) {

@@ -20,16 +20,16 @@
 </div>
 
 <trainer-button
+  *ngIf="mode === 'show'"
   class="button"
-  [class.hide]="mode==='play'"
-  text="Продолжить"
-  (touch)="onButtonTouch()"
+  value="Продолжить"
+  (touch)="startPlay()"
 ></trainer-button>
 
-<keypad
-  class="keypad"
-  [class.hide]="mode!=='play'"
-  type="ru"
-  force="true"
-  (key)="onKey($event)"
-></keypad>
+<trainer-button
+  *ngIf="mode === 'result'"
+  class="button"
+  value="Продолжить"
+  (touch)="finish()"
+></trainer-button>
+

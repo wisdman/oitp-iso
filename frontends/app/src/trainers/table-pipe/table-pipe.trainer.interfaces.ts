@@ -12,12 +12,14 @@ export type ITablePipeTrainerAction = ISwipe | IArrow
 
 export interface ITablePipeTrainerConfig extends ITrainerConfig {
   id: ITablePipeTrainer
+
+  playTimeLimit: number
+
   items: Array<{
     data: string
     action: ITablePipeTrainerAction
   }>
   matrix: Array<number>
-  timeLimit: number
 }
 
 export interface ITablePipeTrainerResult extends ITrainerResult {

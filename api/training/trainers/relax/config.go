@@ -9,7 +9,7 @@ const MAX_RELAX_ID = 45
 type Config struct {
 	*abstract.Config
 
-	TimeLimit uint16 `json:"timeLimit"`
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
 
 	Image int    `json:"image"`
 	Text  string `json:"text"`
@@ -17,7 +17,8 @@ type Config struct {
 
 func newConfig() *Config {
 	return &Config{
-		Config:    abstract.NewConfig(abstract.UIRelax),
-		TimeLimit: 10,
+		Config: abstract.NewConfig(abstract.UIRelax),
+
+		ShowTimeLimit: 10,
 	}
 }

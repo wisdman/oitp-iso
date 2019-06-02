@@ -5,9 +5,9 @@ import {
   ViewChild,
 } from "@angular/core"
 
-import {
-  AbstractTrainerComponent,
-} from "../abstract"
+import { ASSETS_RELAX } from "../../app.config"
+
+import { AbstractTrainerComponent } from "../abstract"
 
 import {
   IRelaxTrainerConfig,
@@ -23,17 +23,26 @@ import {
 export class RelaxTrainerComponent
 extends AbstractTrainerComponent<IRelaxTrainerConfig, IRelaxTrainerResult> {
 
-  @ViewChild('h1Node', { static: true }) h1NodeRef!: ElementRef<HTMLElement>
+  getSrcset(id: number, type: "jpg" | "webp" = "jpg") {
+    return `${ASSETS_RELAX}/${id}.${type}`
+  }
 
+  @ViewChild('h1Node', { static: true }) h1NodeRef!: ElementRef<HTMLElement>
   init() {
     const h1 = this.h1NodeRef.nativeElement
     window.requestAnimationFrame(() => {
       h1.style.transition = "none"
       h1.style.transform = "scale(0, 0)"
       window.requestAnimationFrame(() => {
-        h1.style.transition = "transform 9s"
+        h1.style.transition = `transform ${this.config.showTimeLimit}s`
         h1.style.transform = "scale(1, 1)"
       })
     })
+
+    this.setTimeout(this.config.showTimeLimit)
+  }
+
+  timeout() {
+    super.finish()
   }
 }

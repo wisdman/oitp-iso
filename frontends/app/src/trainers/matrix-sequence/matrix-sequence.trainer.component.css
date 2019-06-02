@@ -1,51 +1,15 @@
 :host {
-  --item-text-color: var(--color-text);
-  --item-background-color: #eee4da;
-  --item-border-color: #bbada0;
-  --item-success-color: rgb(45, 169, 79, 0.7);
-  --item-error-color: #f65e3b;
-
   --gap: 6px;
-  --box-size: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  min-width: 100%;
-  flex: 1 1 100%;
-  max-height: 100%;
-
-  padding: var(--gap);
-
-  position: relative;
-}
-
-.h1 {
-  display: block;
-
-  margin: 0;
-  margin-top: 34px;
-  margin-bottom: auto;
-  text-indent: 30px;
-
-  padding-left: 20px;
-  padding-right: 20px;
-
-  font-size: 16px;
-  line-height: 1.2;
-  text-align: center;
-  font-weight: 600;
 }
 
 .matrix {
   display: block;
   width: auto;
-  height: auto;
   max-width: 100%;
-  max-height: 100%;
-  margin-top: auto;
+  height: auto;
+
+  margin: 0;
+  margin-top: calc(var(--trainer-margin) * 4);
   margin-bottom: auto;
 }
 
@@ -54,7 +18,7 @@
 }
 
 .path {
-  stroke: var(--item-border-color);
+  stroke: var(--trainer-border-color);
   stroke-width: 1;
   fill: none;
 }
@@ -62,18 +26,17 @@
 .fill-path {
   stroke: none;
   stroke-width: 0;
-  fill: var(--item-background-color);
-  opacity: .7;
+  fill: var(--trainer-background-color);
 
   transition: fill .25s;
 }
 
-.active .fill-path {
-  fill: var(--item-success-color);
+.item-active .fill-path {
+  fill: var(--trainer-success-background-color);
 }
 
-.error .fill-path {
-  fill: var(--item-error-color);
+.item-error .fill-path {
+  fill: var(--trainer-error-background-color);
 }
 
 .text {
@@ -81,23 +44,23 @@
   font-size: 32px;
   font-weight: 500;
   line-height: 1;
-  color: var(--item-text-color);
+  color: var(--trainer-matrix-text-color);
 
   opacity: 1;
   transition: opacity .15s linear;
 }
 
-.success .text {
+.item-success .text {
   opacity: 0;
 }
 
 .success-icon {
-  fill: var(--item-success-color);
+  fill: var(--trainer-success-color-light);
 
   opacity: 0;
   transition: opacity .15s linear;
 }
 
-.success .success-icon {
+.item-success .success-icon {
   opacity: 1;
 }

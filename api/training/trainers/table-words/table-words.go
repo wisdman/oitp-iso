@@ -6,29 +6,27 @@
 package tableWords
 
 import (
+	"math/rand"
+
 	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/lib/w-rand"
 )
 
-var arr_ALPHABET_RU = [...]rune{'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ы', 'Э', 'Ю', 'Я'}
+var RUNES_RU = [...]string{"А", "Б", "В", "Г", "Д", "Е", "Ж", "З", "И", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ы", "Э", "Ю", "Я"}
 
 var groups = [...]string{"Моря", "Страны", "Животные", "Рыбы", "Птицы", "Столицы"}
 
 var complexityData = [...]Parameters{
 	Parameters{
-		TimeLimit:    120,
-		ColumnsCount: 1,
-		RunesCount:   5,
+		PlayTimeLimit: 120,
+		RunesCount:    5,
 	},
 	Parameters{
-		TimeLimit:    120,
-		ColumnsCount: 2,
-		RunesCount:   5,
+		PlayTimeLimit: 120,
+		RunesCount:    5,
 	},
 	Parameters{
-		TimeLimit:    120,
-		ColumnsCount: 3,
-		RunesCount:   5,
+		PlayTimeLimit: 120,
+		RunesCount:    5,
 	},
 }
 
@@ -42,19 +40,12 @@ func Build(
 	params := complexityData[complexity]
 	config := newConfig(params)
 
-	randRunes := wRand.NewUnique()
-	runeIDs := randRunes.MultiRange(0, len(arr_ALPHABET_RU)-1, params.RunesCount)
-
-	for i, max := 0, len(config.Runes); i < max; i++ {
-		config.Runes[i] = string(arr_ALPHABET_RU[runeIDs[i]])
+	ids := rand.Perm(len(RUNES_RU))
+	for i := 0; i < params.RunesCount; i++ {
+		config.Runes[i] = RUNES_RU[ids[i]]
 	}
 
-	randGroups := wRand.NewUnique()
-	groupsIDs := randGroups.MultiRange(0, len(groups)-1, params.ColumnsCount)
-
-	for i, max := 0, len(config.Columns); i < max; i++ {
-		config.Columns[i] = groups[groupsIDs[i]]
-	}
+	config.Title = groups[rand.Intn(len(groups))]
 
 	configs = append(configs, config)
 	return configs, nil

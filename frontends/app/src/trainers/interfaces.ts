@@ -6,15 +6,14 @@ import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResu
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
 import { IImageExpressionsTrainer, IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult } from "./image-expressions"
 import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
+import { IImageFieldQuestionTrainer, IImageFieldQuestionTrainerConfig, IImageFieldQuestionTrainerResult } from "./image-field-question"
 import { IMathEquationTrainer, IMathEquationTrainerConfig, IMathEquationTrainerResult } from "./math-equation"
-
 import { IMathMiddleTrainer, IMathMiddleTrainerConfig, IMathMiddleTrainerResult } from "./math-middle"
 import { IMathSequenceTrainer, IMathSequenceTrainerConfig, IMathSequenceTrainerResult } from "./math-sequence"
 import { IMathWasteTrainer, IMathWasteTrainerConfig, IMathWasteTrainerResult } from "./math-waste"
-
 import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
+import { IMatrixFillingQuestionTrainer, IMatrixFillingQuestionTrainerConfig, IMatrixFillingQuestionTrainerResult } from "./matrix-filling-question"
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
-import { IQuestionTrainer, IQuestionTrainerConfig, IQuestionTrainerResult } from "./question"
 import { IRelaxTrainer, IRelaxTrainerConfig, IRelaxTrainerResult } from "./relax"
 import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } from "./table-pipe"
 import { ITableWordsTrainer, ITableWordsTrainerConfig, ITableWordsTrainerResult } from "./table-words"
@@ -30,13 +29,14 @@ export type ITrainer = IClassificationColorsTrainer
                      | IImageDifferencesTrainer
                      | IImageExpressionsTrainer
                      | IImageFieldTrainer
+                     | IImageFieldQuestionTrainer
                      | IMathEquationTrainer
                      | IMathMiddleTrainer
                      | IMathSequenceTrainer
                      | IMathWasteTrainer
                      | IMatrixFillingTrainer
+                     | IMatrixFillingQuestionTrainer
                      | IMatrixSequenceTrainer
-                     | IQuestionTrainer
                      | IRelaxTrainer
                      | ITablePipeTrainer
                      | ITableWordsTrainer
@@ -53,13 +53,14 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | IImageDifferencesTrainerConfig
                             | IImageExpressionsTrainerConfig
                             | IImageFieldTrainerConfig
+                            | IImageFieldQuestionTrainerConfig
                             | IMathEquationTrainerConfig
                             | IMathMiddleTrainerConfig
                             | IMathSequenceTrainerConfig
                             | IMathWasteTrainerConfig
                             | IMatrixFillingTrainerConfig
+                            | IMatrixFillingQuestionTrainerConfig
                             | IMatrixSequenceTrainerConfig
-                            | IQuestionTrainerConfig
                             | IRelaxTrainerConfig
                             | ITablePipeTrainerConfig
                             | ITableWordsTrainerConfig
@@ -75,13 +76,14 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | IImageDifferencesTrainerResult
                             | IImageExpressionsTrainerResult
                             | IImageFieldTrainerResult
+                            | IImageFieldQuestionTrainerResult
                             | IMathEquationTrainerResult
                             | IMathMiddleTrainerResult
                             | IMathSequenceTrainerResult
                             | IMathWasteTrainerResult
                             | IMatrixFillingTrainerResult
+                            | IMatrixFillingQuestionTrainerResult
                             | IMatrixSequenceTrainerResult
-                            | IQuestionTrainerResult
                             | IRelaxTrainerResult
                             | ITablePipeTrainerResult
                             | ITableWordsTrainerResult

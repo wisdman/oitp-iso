@@ -4,18 +4,24 @@ import {
 } from "@angular/core"
 
 import {
-  AbstractTrainerComponent,
-} from "../abstract"
-
-import {
+  SVGRectangle,
   genSVGRectangle,
 } from "../../lib/svg"
 
+import { AbstractTrainerComponent } from "../abstract"
+
 import {
   IMatrixSequenceTrainerConfig,
-  IMatrixSequenceTrainerItem,
   IMatrixSequenceTrainerResult,
 } from "./matrix-sequence.trainer.interfaces"
+
+interface IMatrixItem extends SVGRectangle {
+  data: number,
+
+  isSuccess?: boolean
+  isError?: boolean
+  isActive?: boolean
+}
 
 @Component({
   selector: "trainer-matrix-sequence",
@@ -26,74 +32,77 @@ import {
 export class MatrixSequenceTrainerComponent
 extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult> {
 
-  matrix!: Array<IMatrixSequenceTrainerItem>
-  matrixViewBox: string = "0 0 0 0"
-  matrixWidth: number = 0
-  matrixHeight: number = 0
-
-  current: number = 0
+  matrix!: Array<IMatrixItem>
+  current: number = 1
 
   init() {
-    this.current = 0
+    this.current = 1
 
     const side = Math.sqrt(this.config.matrix.length)
     const columns = Math.ceil(side)
     const rows = Math.floor(side)
 
-    const boxSize = this.getCSSPropertyIntValue("--box-size")
+    const itemWidth = this.getCSSPropertyIntValue("--trainer-box-size")
+    const itemHeight = itemWidth
+
+    const padding = this.getCSSPropertyIntValue("--trainer-svg-padding")
     const gap = this.getCSSPropertyIntValue("--gap")
 
-    const width = boxSize * columns + gap * (columns + 1)
-    const height = boxSize * rows + gap * (rows + 1)
+    this.matrixWidth = itemWidth * columns + gap * (columns - 1)
+                     + padding * 2
 
-    this.matrixViewBox = `0 0 ${width} ${height}`
-    this.matrixWidth = width
-    this.matrixHeight = height
+    this.matrixHeight = itemHeight * rows + gap * (rows - 1)
+                      + padding * 2
 
     this.matrix = this.config.matrix.map((data, i) => {
-      const x = (boxSize + gap) * (i % columns) + gap
-      const y = (boxSize + gap) * Math.floor(i/columns) + gap
+      const x = padding + (itemWidth + gap) * (i % columns)
+      const y = padding + (itemHeight + gap) * Math.floor(i/columns)
 
       return {
-        ...genSVGRectangle(x, y, boxSize, boxSize),
+        ...genSVGRectangle(x, y, itemWidth, itemHeight),
         data,
-        color: "",
-        background: ""
       }
     })
+
+    this.setTimeout(this.config.playTimeLimit)
   }
 
-  private _step(item: IMatrixSequenceTrainerItem) {
-    if (item.data === (this.current + 1)) {
+  timeout() {
+    super.timeout()
+    this.finish()
+  }
+
+  onTouch(item: IMatrixItem) {
+    let { success, error } = this.result
+
+    if (item.data === this.current) {
       this.current++
-      this.updateResult({
-        success: this.result.success + 1,
-        isFinish: this.current >= this.matrix.length
-      })
+      success++
 
       if (this.config.showSucess) {
         item.isSuccess = true
-        return
+      } else {
+        item.isActive = true
+        setTimeout(() => {
+          item.isActive = false
+          this.markForCheck()
+        }, 250)
       }
 
-      item.isActive = true
+      if (this.current > this.matrix.length) {
+        this.finish()
+      }
+
+    } else {
+      error++
+
+      item.isError = true
       setTimeout(() => {
-        item.isActive = false
+        item.isError = false
         this.markForCheck()
       }, 250)
-      return
     }
 
-    this.updateResult({ error: this.result.error + 1 })
-
-    item.isError = true
-    setTimeout(() => {
-      item.isError = false
-      this.markForCheck()
-    }, 250)
-  }
-
-  onTouch(item: IMatrixSequenceTrainerItem) {
-    this._step(item)
+    this.updateResult({ success, error })
   }
 }

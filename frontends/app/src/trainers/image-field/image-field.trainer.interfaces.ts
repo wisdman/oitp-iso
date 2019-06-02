@@ -8,15 +8,9 @@ export type IImageFieldTrainer = "image-field"
 export interface IImageFieldTrainerConfig extends ITrainerConfig {
   id: IImageFieldTrainer
 
-  items: Array<number>
-  pages: Array<Array<number>>
-  answers: Array<{
-    icon: number,
-    correct: boolean,
-  }>
+  showTimeLimit: number
 
-  pageTimeLimit: number
-  playTimeLimit: number
+  items: Array<number>
 }
 
 export interface IImageFieldTrainerResult extends ITrainerResult {

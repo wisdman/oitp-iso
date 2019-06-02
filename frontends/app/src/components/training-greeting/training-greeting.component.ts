@@ -1,10 +1,10 @@
 import {
-  Component,
   ChangeDetectionStrategy,
-  Output,
+  Component,
   EventEmitter,
-  OnInit,
   OnDestroy,
+  OnInit,
+  Output,
 } from "@angular/core"
 
 import { Subscription } from "rxjs"

@@ -1,80 +1,19 @@
 <!-- Арифметико-практическое мышление -->
 <!-- Умение мыслить по аналогии -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Найдите<br>число-исключение</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
-число-исключение
-
-//
-// Логика
-//
-// Найдите число-исключение
-//
-// !!! Показать логику - кнопка
-
-
-
-<ng-container
-  *ngIf="config && config.type === 'middle'"
->
-  <h1 class="h1">Найдите ответ по аналогии с первым примером</h1>
-
-  <div class="middle-items">
-    <div class="item">{{ config.items[0][0] }}</div>
-    <div class="item">(</div>
-    <div class="item">{{ config.items[0][1] }}</div>
-    <div class="item">)</div>
-    <div class="item">{{ config.items[0][2] }}</div>
-
-    <div class="item">{{ config.items[1][0] }}</div>
-    <div class="item">(</div>
-    <div class="item">{{ config.items[1][1] }}</div>
-    <div class="item">)</div>
-    <div class="item">{{ config.items[1][2] }}</div>
-
-    <div class="item">{{ config.items[2][0] }}</div>
-    <div class="item">(</div>
-    <div
-      class="item item--input"
-      [class.item--success]="mode==='result' && isSuccess"
-      [class.item--error]="mode==='result' && !isSuccess"
-    >
-      {{ userResult }}
-      <span *ngIf="mode === 'play'" class="cursor">|</span>
-    </div>
-    <div class="item">)</div>
-    <div class="item">{{ config.items[2][2] }}</div>
-  </div>
-</ng-container>
-
-<!-- Ритм мысли -->
-<ng-container
-  *ngIf="config && config.type === 'sequence'"
->
-  <h1 class="h1">Найдите закономерность, продолжите числовой ряд</h1>
-
-  <div class="sequence-items">
-    <div *ngFor="let item of items" class="item">{{ item }},</div>
-    <div
-      class="item item--input"
-      [class.item--success]="mode==='result' && isSuccess"
-      [class.item--error]="mode==='result' && !isSuccess"
-    >
-      {{ userResult }}
-      <span *ngIf="mode === 'play'" class="cursor">|</span>
-    </div>
-  </div>
-</ng-container>
+<trainer-selector
+  class="selector"
+  type="text"
+  [readonly]="mode==='result'"
+  [items]="items"
+  (touch)="showResult()"
+></trainer-selector>
 
 <trainer-button
-  *ngIf="mode === 'play'"
   class="button"
-  text="Проверить"
-  (touch)="onButtonTouch()"
+  [class.invisible]="mode !== 'result'"
+  value="Продолжить"
+  (touch)="finish()"
 ></trainer-button>
-<trainer-button
-  *ngIf="mode === 'result'"
-  class="button"
-  text="Продолжить"
-  (touch)="onButtonTouch()"
-></trainer-button>
-
-<keypad class="keypad" type="number" (key)="onKey($event)"></keypad>

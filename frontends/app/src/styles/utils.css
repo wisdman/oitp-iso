@@ -9,6 +9,11 @@
   white-space: nowrap;
 }
 
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .display-none {
   display: none;
 }

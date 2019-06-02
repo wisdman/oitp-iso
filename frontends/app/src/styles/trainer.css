@@ -9,9 +9,11 @@
   --trainer-selected-color: rgb(2, 115, 212);
 
   --trainer-error-color: rgb(237, 63, 44);
+  --trainer-error-color-light: rgba(237, 63, 44, 0.7);
   --trainer-error-background-color: rgba(237, 63, 44, 0.3);
 
   --trainer-success-color: rgb(45, 169, 79);
+  --trainer-success-color-light: rgba(45, 169, 79, 0.7);
   --trainer-success-background-color: rgba(45, 169, 79, 0.3);
 
   --trainer-svg-height: 50px;

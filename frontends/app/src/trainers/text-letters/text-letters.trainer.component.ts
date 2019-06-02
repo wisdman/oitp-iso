@@ -4,18 +4,18 @@ import {
 } from "@angular/core"
 
 import {
-  AbstractTrainerComponent,
-} from "../abstract"
+  merge,
+  Subscription,
+} from "rxjs"
+
+import { getRuneString } from "../../lib/runes"
+
+import { AbstractTrainerComponent } from "../abstract"
 
 import {
   ITextLettersTrainerConfig,
   ITextLettersTrainerResult,
 } from "./text-letters.trainer.interfaces"
-
-const RUNES = [
-  ..."АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ".split(""),
-  ..."ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""),
-]
 
 @Component({
   selector: "trainer-text-letters",
@@ -28,80 +28,118 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
 
   mode: "show" | "play" | "result" = "show"
 
-  data: string = ""
-  runes: Array<{
-    rune: string,
-    user?: string,
-  }> = []
+  data!: string
+  runes!: Array<string>
+
+  private _keypadRuneSubscription!: Subscription
+  private _keypadSubscription!: Subscription
 
   init() {
-    this.mode = "show"
+    this.keypadService.show("RU")
+
     this.data = this.config.data
-    this.runes = this.data
-                     .split(/\s/)
-                     .map(word => word.slice(0,1).toUpperCase())
-                     .filter(rune => RUNES.includes(rune))
-                     .map(rune => ({rune}))
+    this.runes = getRuneString(this.config.data).split("").map(() => "")
+
+    this.mode = "show"
+    this.setTimeout(this.config.showTimeLimit)
+
+    if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
+    this._keypadRuneSubscription = this.keypadService.ru.subscribe(rune => this._step(rune))
+
+    if (this._keypadSubscription) this._keypadSubscription.unsubscribe()
+    this._keypadSubscription = merge(this.keypadService.enter, this.keypadService.space)
+                                .subscribe(() => this._next())
   }
 
-  private _play() {
+  destroy() {
+    if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
+    if (this._keypadSubscription) this._keypadSubscription.unsubscribe()
+    this.keypadService.hide()
+  }
+
+  timeout() {
+    switch (this.mode) {
+      case "show":
+        this.startPlay()
+        return
+
+      case "play":
+        super.timeout()
+        this.showResult()
+        return
+    }
+  }
+
+  startPlay() {
     this.mode = "play"
     this.markForCheck()
     this.setTimeout(this.config.playTimeLimit)
   }
 
-  private _result() {
+  showResult() {
+    this.setTimeout(0)
     this.mode = "result"
     this.markForCheck()
-    this.setTimeout(0)
-  }
-
-  timeout() {
-    if (this.mode === "play") {
-      this.updateResult({ isTimeout: true })
-      this._result()
-      return
-    }
-
-    this._play()
   }
 
   private _step(rune: string) {
-    const next = this.runes.find(item => !item.user)
-    if (next === undefined) {
-      this._result()
+    const idx = this.runes.findIndex(value => !value)
+    if (idx < 0) {
       return
     }
 
-    next.user = rune
+    this.runes[idx+1] = rune
+  }
 
-    const success =  this.runes.filter(({rune, user}) => rune === user).length
-    const error = this.runes.length - success
-    this.updateResult({ success, error })
+  private _next() {
+    switch (this.mode) {
+      case "show":
+        this.startPlay()
+        return
 
-    if (this.runes.every(({user}) => !!user)) {
-      this._result()
+      case "play":
+        super.timeout()
+        this.showResult()
+        return
     }
   }
 
-  onKey(rune: string) {
-    if (this.mode !== "play") {
-      return
-    }
+  // private _step(rune: string) {
+  //   const next = this.runes.find(item => !item.user)
+  //   if (next === undefined) {
+  //     this._result()
+  //     return
+  //   }
 
-    if (!RUNES.includes(rune)) {
-      return
-    }
+  //   next.user = rune
 
-    this._step(rune)
-  }
+  //   const success =  this.runes.filter(({rune, user}) => rune === user).length
+  //   const error = this.runes.length - success
+  //   this.updateResult({ success, error })
 
-  onButtonTouch() {
-    if (this.mode === "result") {
-      this.finish()
-      return
-    }
+  //   if (this.runes.every(({user}) => !!user)) {
+  //     this._result()
+  //   }
+  // }
 
-    this._play()
-  }
+  // onKey(rune: string) {
+  //   if (this.mode !== "play") {
+  //     return
+  //   }
+
+  //   if (!RUNES.includes(rune)) {
+  //     return
+  //   }
+
+  //   this._step(rune)
+  // }
+
+  // onButtonTouch() {
+  //   if (this.mode === "result") {
+  //     this.finish()
+  //     return
+  //   }
+
+  //   this._play()
+  // }
 }

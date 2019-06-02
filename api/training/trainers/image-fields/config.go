@@ -5,29 +5,22 @@ import (
 )
 
 type Parameters struct {
-	ShowTimeLimit uint16 `json:"pageTimeLimit"`
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	PagesCount int `json:"pagesCount"`
-	MinItems   int `json:"minItems"`
-	MaxItems   int `json:"maxItems"`
+	Quantity int `json:"quantity"`
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
 
 	AnswersCount int `json:"answersCount"`
-}
-
-type Answer struct {
-	Icon    int  `json:"icon"`
-	Correct bool `json:"correct"`
 }
 
 type Config struct {
 	*abstract.Config
 
-	ShowTimeLimit uint16 `json:"pageTimeLimit"`
-	PlayTimeLimit uint16 `json:"playTimeLimit"`
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
 
-	Pages   [][]int   `json:"pages"`
-	Answers []*Answer `json:"answers"`
+	Items []int `json:"items"`
 }
 
 func newConfig(
@@ -36,8 +29,27 @@ func newConfig(
 	return &Config{
 		Config:        abstract.NewConfig(abstract.UIImageField),
 		ShowTimeLimit: params.ShowTimeLimit,
-		PlayTimeLimit: params.PlayTimeLimit,
+	}
+}
 
-		Pages: make([][]int, params.PagesCount),
+type Answer struct {
+	Icon    int  `json:"icon"`
+	Correct bool `json:"correct"`
+}
+
+type QuestionConfig struct {
+	*abstract.Config
+
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	Items []*Answer `json:"items"`
+}
+
+func newQuestionConfig(
+	params Parameters,
+) *QuestionConfig {
+	return &QuestionConfig{
+		Config:        abstract.NewConfig(abstract.UIImageFieldQuestion),
+		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

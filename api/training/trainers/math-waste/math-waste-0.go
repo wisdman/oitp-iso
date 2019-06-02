@@ -13,7 +13,7 @@ var level_0 = [](func() []int){
 
 		generated := make(map[int]bool)
 
-		for i := 0; i < 10; i++ {
+		for i := 0; i < 11; i++ {
 			for {
 				X = rand.Intn(89) + 10
 				if X%2 != 0 {
@@ -43,7 +43,7 @@ var level_0 = [](func() []int){
 
 		generated := make(map[int]bool)
 
-		for i := 0; i < 10; i++ {
+		for i := 0; i < 11; i++ {
 			for {
 				X = rand.Intn(89) + 10
 				if X%2 == 0 {

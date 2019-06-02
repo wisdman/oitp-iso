@@ -25,3 +25,4 @@ export const API_TRAINING_ONCE = `${API_TRAINING}/once`
 export const ASSETS = "/assets"
 export const ASSETS_EXPRESSIONS = `${ASSETS}/expressions`
 export const ASSETS_ICONS = `${ASSETS}/icons`
+export const ASSETS_RELAX = `${ASSETS}/relax`

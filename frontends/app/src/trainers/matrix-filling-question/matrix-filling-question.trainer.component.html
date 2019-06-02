@@ -1,0 +1,24 @@
+<!-- Скорость зрительного восприятия -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Отметьте&nbsp;картинки<br>встретившиеся&nbsp;вам&nbsp;в&nbsp;таблицах</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<trainer-selector
+  class="selector"
+  type="icon"
+  [readonly]="mode==='result'"
+  [items]="items"
+></trainer-selector>
+
+<trainer-button
+  *ngIf="mode==='play'"
+  class="button"
+  value="Проверить"
+  (touch)="showResult()"
+></trainer-button>
+
+<trainer-button
+  *ngIf="mode==='result'"
+  class="button"
+  value="Продолжить"
+  (touch)="finish()"
+></trainer-button>

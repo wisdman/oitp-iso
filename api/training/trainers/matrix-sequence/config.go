@@ -5,7 +5,7 @@ import (
 )
 
 type Parameters struct {
-	TimeLimit uint16 `json:"timeLimit"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	Quantity int `json:"quantity"`
 
@@ -16,19 +16,19 @@ type Parameters struct {
 type Config struct {
 	*abstract.Config
 
-	TimeLimit uint16 `json:"timeLimit"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+	ShowSucess    bool   `json:"showSucess"`
 
-	Matrix     []uint16 `json:"matrix"`
-	ShowSucess bool     `json:"showSucess"`
+	Matrix []uint16 `json:"matrix"`
 }
 
 func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:     abstract.NewConfig(abstract.UIMatrixSequence),
-		Matrix:     make([]uint16, params.MatrixSize),
-		ShowSucess: params.ShowSuccess,
-		TimeLimit:  params.TimeLimit,
+		Config: abstract.NewConfig(abstract.UIMatrixSequence),
+
+		PlayTimeLimit: params.PlayTimeLimit,
+		ShowSucess:    params.ShowSuccess,
 	}
 }

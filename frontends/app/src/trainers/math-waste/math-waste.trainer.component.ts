@@ -3,6 +3,13 @@ import {
   Component,
 } from "@angular/core"
 
+import {
+  merge,
+  Subscription,
+} from "rxjs"
+
+import { ISelectorItem } from "../../components/trainer-selector"
+
 import { AbstractTrainerComponent } from "../abstract"
 
 import {
@@ -21,71 +28,46 @@ extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResul
 
   mode: "play" | "result" = "play"
 
-  items!: Array<Array<number>> | Array<number>
-  userResult: string = ""
-  correctResult: number = NaN
+  items!: Array<ISelectorItem & { correct: boolean }>
 
-  get isSuccess() {
-    return Number.parseFloat(this.userResult) === this.correctResult
-  }
+  private _keypadSubscription!: Subscription
 
   init() {
+    this.items = this.config.items
+                            .map((data, i) => ({
+                              data: String(data),
+                              correct: i === this.config.items.length - 1
+                            }))
+                            .sort(() => Math.random() - 0.5)
+
+    if (this._keypadSubscription) this._keypadSubscription.unsubscribe()
+    this._keypadSubscription = merge(this.keypadService.enter, this.keypadService.space)
+                                        .subscribe(() => this.mode === "result" && this.finish())
+
+
     this.mode = "play"
-    this.userResult = ""
-
-    switch (this.config.type) {
-      case "middle":
-        this.items = this.config.items as Array<Array<number>>
-        this.correctResult = this.items[2][1]
-        break;
-
-      case "sequence":
-        this.items = this.config.items.slice(0,-1) as Array<number>
-        this.correctResult = (this.config.items as Array<number>)[this.config.items.length - 1] || NaN
-        break;
-    }
-
-    this.setTimeout(this.config.timeLimit)
+    this.setTimeout(this.config.playTimeLimit)
   }
 
-  private _result() {
+  destroy() {
+    if (this._keypadSubscription) this._keypadSubscription.unsubscribe()
+  }
+
+  showResult() {
     this.setTimeout(0)
     this.mode = "result"
+
+    this.items.forEach(items => {
+      items.isSuccess = items.isActive && items.correct
+      items.isError = items.isActive && !items.correct
+      items.isMark = !items.isActive && items.correct
+    })
+
     this.markForCheck()
   }
 
   timeout() {
-    this.updateResult({ isTimeout: true })
-    this._result()
+    super.timeout()
+    this.showResult()
   }
-
-  onKey(key: string) {
-    if (this.mode !== "play") {
-      return
-    }
-
-    switch (key) {
-      case "BACKSPACE":
-        this.userResult = this.userResult.slice(0,-1);
-        break
-      case ".":
-        if (!this.userResult.match(/\./)) {
-          this.userResult += key
-        }
-        break
-      default:
-        this.userResult += key
-        break
-    }
-  }
-
-  onButtonTouch() {
-    if (this.mode === "play") {
-      this._result()
-      return
-    }
-
-    this.finish()
-  }
-
 }

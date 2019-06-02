@@ -9,9 +9,9 @@ export type ITableWordsTrainer = "table-words"
 export interface ITableWordsTrainerConfig extends ITrainerConfig {
   id: ITableWordsTrainer
 
-  timeLimit: number
+  playTimeLimit: number
 
-  columns: Array<string>
+  title: string
   runes: Array<string>
 }
 

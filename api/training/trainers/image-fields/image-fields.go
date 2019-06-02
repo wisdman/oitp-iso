@@ -13,9 +13,9 @@ var complexityData = [...]Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 30,
 
-		PagesCount: 3,
-		MinItems:   3,
-		MaxItems:   4,
+		Quantity: 3,
+		MinItems: 3,
+		MaxItems: 4,
 
 		AnswersCount: 10,
 	},
@@ -23,9 +23,9 @@ var complexityData = [...]Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 30,
 
-		PagesCount: 5,
-		MinItems:   3,
-		MaxItems:   4,
+		Quantity: 5,
+		MinItems: 3,
+		MaxItems: 4,
 
 		AnswersCount: 10,
 	},
@@ -33,9 +33,9 @@ var complexityData = [...]Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 30,
 
-		PagesCount: 5,
-		MinItems:   4,
-		MaxItems:   5,
+		Quantity: 5,
+		MinItems: 4,
+		MaxItems: 5,
 
 		AnswersCount: 15,
 	},
@@ -49,22 +49,23 @@ func Build(
 	err error,
 ) {
 	params := complexityData[complexity]
-	config := newConfig(params)
-	icons := icons.GetIcons(params.PagesCount*params.MaxItems + params.AnswersCount)
+	questionConfig := newQuestionConfig(params)
+
+	icons := icons.GetIcons(params.Quantity*params.MaxItems + params.AnswersCount)
 	var offset int
 
-	// Generate pages
-	for i, max := 0, len(config.Pages); i < max; i++ {
+	for i := 0; i < params.Quantity; i++ {
 		length := rand.Intn(params.MaxItems-params.MinItems+1) + params.MinItems
 
-		config.Pages[i] = make([]int, length)
+		config := newConfig(params)
+		config.Items = make([]int, length)
 
 		for j := 0; j < length; j++ {
 			icon := icons[offset]
-			config.Pages[i][j] = icon
+			config.Items[j] = icon
 
 			if rand.Intn(2) == 1 {
-				config.Answers = append(config.Answers, &Answer{
+				questionConfig.Items = append(questionConfig.Items, &Answer{
 					Icon:    icon,
 					Correct: true,
 				})
@@ -72,22 +73,19 @@ func Build(
 
 			offset++
 		}
+
+		configs = append(configs, config)
 	}
 
 	// Generate fake answers
-	for i, max := 0, params.AnswersCount-len(config.Answers); i < max; i++ {
-		config.Answers = append(config.Answers, &Answer{
+	for i, max := 0, params.AnswersCount-len(questionConfig.Items); i < max; i++ {
+		questionConfig.Items = append(questionConfig.Items, &Answer{
 			Icon:    icons[offset],
 			Correct: false,
 		})
-
 		offset++
 	}
 
-	rand.Shuffle(len(config.Answers), func(i, j int) {
-		config.Answers[i], config.Answers[j] = config.Answers[j], config.Answers[i]
-	})
-
-	configs = append(configs, config)
+	configs = append(configs, questionConfig)
 	return configs, nil
 }

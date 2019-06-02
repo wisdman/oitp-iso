@@ -1,8 +1,3 @@
-// Индуктивность мышления
-//
-// Пройдите таблицу от 1 до 25 за ограниченное время.
-//
-
 package matrixSequence
 
 import (
@@ -11,21 +6,27 @@ import (
 
 var complexityPatternData = [...]Parameters{
 	Parameters{
-		TimeLimit:   30,
-		Quantity:    3,
-		MatrixSize:  25,
+		PlayTimeLimit: 30,
+
+		Quantity:   3,
+		MatrixSize: 25,
+
 		ShowSuccess: true,
 	},
 	Parameters{
-		TimeLimit:   30,
-		Quantity:    3,
-		MatrixSize:  25,
+		PlayTimeLimit: 30,
+
+		Quantity:   3,
+		MatrixSize: 25,
+
 		ShowSuccess: false,
 	},
 	Parameters{
-		TimeLimit:   20,
-		Quantity:    5,
-		MatrixSize:  25,
+		PlayTimeLimit: 20,
+
+		Quantity:   5,
+		MatrixSize: 25,
+
 		ShowSuccess: false,
 	},
 }

@@ -133,8 +133,6 @@ export class TrainerInputComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-
-
   private _onInput(key: string) {
     if (!this.isActive) {
       return

@@ -15,20 +15,23 @@ var complexityData = [...]Parameters{
 	Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 20,
-		MaxLength:     6,
-		Quantity:      3,
+
+		MaxLength: 6,
+		Quantity:  3,
 	},
 	Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 20,
-		MaxLength:     8,
-		Quantity:      3,
+
+		MaxLength: 8,
+		Quantity:  3,
 	},
 	Parameters{
 		ShowTimeLimit: 5,
 		PlayTimeLimit: 20,
-		MaxLength:     10,
-		Quantity:      3,
+
+		MaxLength: 10,
+		Quantity:  3,
 	},
 }
 

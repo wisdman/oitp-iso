@@ -11,7 +11,7 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 
-interface IEventData {
+export interface IEventData {
   type: "down" | "move" | "up"
   target: EventTarget | null
   x: number

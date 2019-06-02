@@ -28,7 +28,7 @@
       [attr.d]="item.path"
     ></path>
     <image
-      *ngIf="type === 'icon'"
+      *ngIf="type === 'icon' && item.data"
       class="image"
       [attr.x]="item.x + (item.width - imageSize) / 2"
       [attr.y]="item.y + (item.height - imageSize) / 2"

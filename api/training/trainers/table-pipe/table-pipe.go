@@ -8,16 +8,16 @@ import (
 
 var complexityData = [...]Parameters{
 	Parameters{
-		TimeLimit:  120,
-		MatrixSize: 30,
+		PlayTimeLimit: 120,
+		MatrixSize:    30,
 	},
 	Parameters{
-		TimeLimit:  60,
-		MatrixSize: 30,
+		PlayTimeLimit: 60,
+		MatrixSize:    30,
 	},
 	Parameters{
-		TimeLimit:  30,
-		MatrixSize: 30,
+		PlayTimeLimit: 30,
+		MatrixSize:    30,
 	},
 }
 

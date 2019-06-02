@@ -1,19 +1,16 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
 } from "@angular/core"
 
 import { Subscription, merge } from "rxjs"
 
 import {
-  AbstractTrainerComponent,
-
-} from "../abstract"
-
-import {
   SVGRectangle,
   genSVGRectangle,
 } from "../../lib/svg"
+
+import { AbstractTrainerComponent } from "../abstract"
 
 import {
   ITablePipeTrainerAction,
@@ -40,27 +37,25 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
   rules!: Array<IItem>
   matrix!: Array<IItem>
 
-  itemSize!: number
-  get viewBox() {
-    return `0 0 ${this.itemSize} ${this.itemSize}`
-  }
-
   private _actionSubscriber!: Subscription
 
   init() {
     this.current = 0
 
-    this.itemSize = this.getCSSPropertyIntValue("--item-size")
+    const itemSize = this.getCSSPropertyIntValue("--trainer-svg-height")
+    const padding = this.getCSSPropertyIntValue("--trainer-svg-padding")
 
-    const drawSize = this.itemSize - 4
-    this.rules = this.config.items.map(item => ({...genSVGRectangle(2, 2, drawSize, drawSize), ...item}))
-    this.matrix = this.config.matrix.map(i => ({...genSVGRectangle(2, 2, drawSize, drawSize), ...this.rules[i]}))
+    this.matrixHeight = itemSize + padding * 2
+    this.matrixWidth = itemSize + padding * 2
+
+    this.rules = this.config.items.map(item => ({...genSVGRectangle(2, 2, itemSize, itemSize), ...item}))
+    this.matrix = this.config.matrix.map(i => ({...genSVGRectangle(2, 2, itemSize, itemSize), ...this.rules[i]}))
 
     if (this._actionSubscriber) this._actionSubscriber.unsubscribe()
     this._actionSubscriber = merge(this.pointerService.swipe, this.keypadService.arrow)
                               .subscribe(action => this._step(action))
 
-    this.setTimeout(this.config.timeLimit)
+    this.setTimeout(this.config.playTimeLimit)
   }
 
   destroy() {
