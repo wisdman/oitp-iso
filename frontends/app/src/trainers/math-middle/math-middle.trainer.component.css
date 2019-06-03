@@ -4,6 +4,9 @@
   grid-template-columns: repeat(5, min-content);
   grid-auto-rows: min-content;
   gap: 16px;
+
+  margin: 0;
+  margin-top: calc(var(--trainer-margin) * 4);
 }
 
 .item-box {
