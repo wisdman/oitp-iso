@@ -31,17 +31,26 @@ func Build(
 	params := complexityReadingData[complexity]
 	config := newConfig(params)
 
+	var questions []*Question
 	if err := sql.QueryRow(`
 	   SELECT
-	     "data"
-	   FROM public.trainers_texts
-	   WHERE "type" = 'reading'
+	     "data",
+	     "questions"
+	   FROM public.trainers_text_reading
 	   ORDER BY random()
 	   LIMIT 1`,
-	).Scan(&config.Data); err != nil {
+	).Scan(&config.Data, &questions); err != nil {
 		return nil, err
 	}
 
 	configs = append(configs, config)
+
+	for i, max := 0, len(questions); i < max; i++ {
+		questionConfig := newQuestionConfig(params)
+		questionConfig.Data = questions[i].Data
+		questionConfig.Correct = questions[i].Correct
+		configs = append(configs, questionConfig)
+	}
+
 	return configs, nil
 }

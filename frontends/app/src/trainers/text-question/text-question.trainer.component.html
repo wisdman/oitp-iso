@@ -1,0 +1,20 @@
+<!-- Точность восприятия - вопрос к тексту -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Ответьте&nbsp;<br>на&nbsp;вопрос</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<h2>{{ this.config.data }}</h2>
+
+<trainer-selector
+  class="selector"
+  type="text"
+  [readonly]="mode==='result'"
+  [items]="items"
+  (touch)="showResult()"
+></trainer-selector>
+
+<trainer-button
+  class="button"
+  [class.invisible]="mode === 'play'"
+  value="Продолжить"
+  (touch)="finish()"
+></trainer-button>

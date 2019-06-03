@@ -5,19 +5,20 @@ import { IClassificationWordsTrainer, IClassificationWordsTrainerConfig, IClassi
 import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
 import { IImageExpressionsTrainer, IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult } from "./image-expressions"
-import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
 import { IImageFieldQuestionTrainer, IImageFieldQuestionTrainerConfig, IImageFieldQuestionTrainerResult } from "./image-field-question"
+import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
 import { IMathEquationTrainer, IMathEquationTrainerConfig, IMathEquationTrainerResult } from "./math-equation"
 import { IMathMiddleTrainer, IMathMiddleTrainerConfig, IMathMiddleTrainerResult } from "./math-middle"
 import { IMathSequenceTrainer, IMathSequenceTrainerConfig, IMathSequenceTrainerResult } from "./math-sequence"
 import { IMathWasteTrainer, IMathWasteTrainerConfig, IMathWasteTrainerResult } from "./math-waste"
-import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
 import { IMatrixFillingQuestionTrainer, IMatrixFillingQuestionTrainerConfig, IMatrixFillingQuestionTrainerResult } from "./matrix-filling-question"
+import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
 import { IRelaxTrainer, IRelaxTrainerConfig, IRelaxTrainerResult } from "./relax"
 import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } from "./table-pipe"
 import { ITableWordsTrainer, ITableWordsTrainerConfig, ITableWordsTrainerResult } from "./table-words"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
+import { ITextQuestionTrainer, ITextQuestionTrainerConfig, ITextQuestionTrainerResult } from "./text-question"
 import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResult } from "./text-reading"
 import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
 import { IWordsColumnsTrainer, IWordsColumnsTrainerConfig, IWordsColumnsTrainerResult } from "./words-columns"
@@ -42,6 +43,7 @@ export type ITrainer = IClassificationColorsTrainer
                      | ITablePipeTrainer
                      | ITableWordsTrainer
                      | ITextLettersTrainer
+                     | ITextQuestionTrainer
                      | ITextReadingTrainer
                      | ITextTezirovanieTrainer
                      | IWordsColumnsTrainer
@@ -67,6 +69,7 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | ITablePipeTrainerConfig
                             | ITableWordsTrainerConfig
                             | ITextLettersTrainerConfig
+                            | ITextQuestionTrainerConfig
                             | ITextReadingTrainerConfig
                             | ITextTezirovanieTrainerConfig
                             | IWordsColumnsTrainerConfig
@@ -91,6 +94,7 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | ITablePipeTrainerResult
                             | ITableWordsTrainerResult
                             | ITextLettersTrainerResult
+                            | ITextQuestionTrainerResult
                             | ITextReadingTrainerResult
                             | ITextTezirovanieTrainerResult
                             | IWordsColumnsTrainerResult

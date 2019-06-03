@@ -26,6 +26,7 @@ const (
 	UITablePipe                 IUITrainer = "table-pipe"
 	UITableWords                IUITrainer = "table-words"
 	UITextLetters               IUITrainer = "text-letters"
+	UITextQuestion              IUITrainer = "text-question"
 	UITextReading               IUITrainer = "text-reading"
 	UITextTezirovanie           IUITrainer = "text-tezirovanie"
 	UIWordsColumns              IUITrainer = "words-columns"

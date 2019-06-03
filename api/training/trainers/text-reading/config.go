@@ -21,3 +21,26 @@ func newConfig(
 		Config: abstract.NewConfig(abstract.UITextReading),
 	}
 }
+
+type Question struct {
+	Data    *string `json:"data"`
+	Correct *bool   `json:"correct"`
+}
+
+type QuestionConfig struct {
+	*abstract.Config
+
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	Data    *string `json:"data"`
+	Correct *bool   `json:"correct"`
+}
+
+func newQuestionConfig(
+	params Parameters,
+) *QuestionConfig {
+	return &QuestionConfig{
+		Config:        abstract.NewConfig(abstract.UITextQuestion),
+		PlayTimeLimit: params.PlayTimeLimit,
+	}
+}

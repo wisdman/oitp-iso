@@ -127,6 +127,12 @@ class="field"
       (result)="onResult($event)"
     ></trainer-text-letters>
 
+    <trainer-text-question
+      *ngIf="config.id === 'text-question'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-text-question>
+
     <trainer-text-reading
       *ngIf="config.id === 'text-reading'"
       [config]="config"
