@@ -1,34 +1,35 @@
 <!-- Точность восприятия - афоризмы -->
-<h1 *ngIf="mode==='show'" class="h1">Запомните</h1>
-<h1 *ngIf="mode==='play'" class="h1">Восстановите первые букавы каждого слова</h1>
+<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните&nbsp;афоризм<br>&nbsp;</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>первую&nbsp;букаву&nbsp;каждого&nbsp;слова</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
-<p
-  class="p"
-  [class.hide]="mode==='play'"
->{{ data }}</p>
-
+<h2
+  class="trainer-h2"
+  [class.invisible]="mode === 'play'"
+>{{ this.config.data }}</h2>
 <div
+  *ngIf="mode === 'play' || mode === 'result'"
   class="runes"
-  [class.hide]="mode==='show'"
 >
   <span
     *ngFor="let item of runes"
     class="rune"
-    [class.rune--success]="mode==='result' && item.rune === item.user"
-    [class.rune--error]="mode==='result' && item.rune !== item.user"
-  >{{ item.user }}</span>
+    [class.rune-error] = "mode === 'result' && item.data !== item.userData"
+    [class.rune-success] = "mode === 'result' && item.data === item.userData"
+  >{{ item.userData }}</span>
 </div>
 
 <trainer-button
   *ngIf="mode === 'show'"
   class="button"
   value="Продолжить"
-  (touch)="startPlay()"
+  (touch)="start()"
 ></trainer-button>
 
 <trainer-button
-  *ngIf="mode === 'result'"
+  *ngIf="mode === 'play' || mode === 'result'"
   class="button"
+  [class.invisible]="mode === 'play'"
   value="Продолжить"
   (touch)="finish()"
 ></trainer-button>

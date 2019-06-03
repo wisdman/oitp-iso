@@ -1,118 +1,47 @@
-:host {
-  --item-border-color: rgb(187, 173, 160);
-  --item-success-color: rgb(45, 169, 79, 0.7);
-  --item-error-color: #f65e3b;
-
-  --rune-size: 50px;
-  --column-width: 200px;
-  --gap: 1px;
-  --padding: 2px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  min-width: 100%;
-  flex: 1 1 100%;
-  max-height: 100%;
-
-  position: relative;
-}
-
-.p {
-  display: block;
-
-  max-width: 666px;
-  padding-left: 8px;
-  padding-right: 8px;
-
-  margin-top: auto;
-  margin-bottom: 0;
-
-  font-size: 22px;
-  line-height: 1.35;
-  text-align: center;
-  font-weight: 600;
-
-  opacity: 1;
-  transition: opacity .25s, visibility .0s;
-}
-
-@media (max-width: 600px) {
-  .p {
-    font-size: 18px;
-  }
-}
-
 .runes {
   display: flex;
-  margin-top: auto;
-
-  opacity: 1;
-  transition: opacity .25s, visibility .0s;
-}
-
-.p + .runes {
-  margin-top: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .rune {
   display: block;
-  width: 40px;
-  height: 40px;
+  width: 1.6em;
+  height: 1.6em;
 
-  margin: 0 8px;
+  margin-top: calc(var(--trainer-margin) * 4);
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 
-  border-bottom: 3px solid var(--item-border-color);
+  border-bottom: 3px solid var(--trainer-border-color);
 
-  font-size: 32px;
-  font-weight: 500;
+  font-size: 200%;
+  font-weight: 600;
+  line-height: 1;
   text-align: center;
-
-  transition: color .25s, border-bottom-color .25s;
 }
 
-@media (max-width: 600px) {
-  .rune {
-    width: 30px;
-    height: 30px;
-
-    margin: 0 4px;
-
-    font-size: 22px;
-  }
+.rune:empty {
+  border-bottom-color: var(--trainer-selected-color);
 }
 
-.rune--success {
-  color: var(--item-success-color);
+.rune:empty ~ .rune:empty {
+  border-bottom-color: var(--trainer-border-color);
+}
+
+.rune-error {
+  color: var(--trainer-error-color);
   border-bottom-color: currentColor;
 }
 
-.rune--error {
-  color: var(--item-error-color);
+.rune-success {
+  color: var(--trainer-success-color);
   border-bottom-color: currentColor;
 }
 
 .button {
-  margin-top: 32px;
+  margin: 0;
+  margin-top: calc(var(--trainer-margin) * 5);
   margin-bottom: auto;
-
-  opacity: 1;
-  transition: opacity .25s, visibility .0s;
-}
-
-.keypad {
-  margin-top: auto;
-
-  opacity: 1;
-  transition: opacity .25s, visibility .0s;
-}
-
-.hide {
-  opacity: 0;
-  visibility: hidden;
-
-  /* transition: opacity .25s, visibility .0s linear .25s; */
 }

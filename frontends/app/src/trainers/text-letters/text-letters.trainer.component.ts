@@ -8,7 +8,7 @@ import {
   Subscription,
 } from "rxjs"
 
-import { getRuneString } from "../../lib/runes"
+import { NOT_RUNES_RX } from "../../lib/runes"
 
 import { AbstractTrainerComponent } from "../abstract"
 
@@ -28,118 +28,126 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
 
   mode: "show" | "play" | "result" = "show"
 
-  data!: string
-  runes!: Array<string>
+  runes!: Array<{
+    data: string
+    userData: string
+  }>
 
   private _keypadRuneSubscription!: Subscription
-  private _keypadSubscription!: Subscription
+  private _keypadEnterOrSpaceSubscription!: Subscription
+  private _keypadBackspaceSubscription!: Subscription
+
+  private _getRunes(v: string) {
+    return v.replace(NOT_RUNES_RX, " ")
+            .split(/\s+/)
+            .map(s => s.charAt(0).toUpperCase())
+  }
 
   init() {
     this.keypadService.show("RU")
 
-    this.data = this.config.data
-    this.runes = getRuneString(this.config.data).split("").map(() => "")
+    this.runes = this._getRunes(this.config.data)
+                     .map(data => ({data, userData:""}))
+
+    if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
+    this._keypadRuneSubscription = merge(
+                                    this.keypadService.ru,
+                                    // this.keypadService.en,
+                                    this.keypadService.numbers,
+                                  ).subscribe(rune => this._onRune(rune))
+
+    if (this._keypadBackspaceSubscription) this._keypadBackspaceSubscription.unsubscribe()
+    this._keypadBackspaceSubscription = this.keypadService.backspace.subscribe(() => this._onBackspace())
+
+    if (this._keypadEnterOrSpaceSubscription) this._keypadEnterOrSpaceSubscription.unsubscribe()
+    this._keypadEnterOrSpaceSubscription = merge(
+                                             this.keypadService.enter,
+                                             this.keypadService.space,
+                                           ).subscribe(() => this._onEnterOrSpace())
 
     this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
-
-    if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
-    this._keypadRuneSubscription = this.keypadService.ru.subscribe(rune => this._step(rune))
-
-    if (this._keypadSubscription) this._keypadSubscription.unsubscribe()
-    this._keypadSubscription = merge(this.keypadService.enter, this.keypadService.space)
-                                .subscribe(() => this._next())
   }
 
   destroy() {
     if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
-    if (this._keypadSubscription) this._keypadSubscription.unsubscribe()
+    if (this._keypadBackspaceSubscription) this._keypadBackspaceSubscription.unsubscribe()
+    if (this._keypadEnterOrSpaceSubscription) this._keypadEnterOrSpaceSubscription.unsubscribe()
     this.keypadService.hide()
   }
 
-  timeout() {
-    switch (this.mode) {
-      case "show":
-        this.startPlay()
-        return
-
-      case "play":
-        super.timeout()
-        this.showResult()
-        return
-    }
-  }
-
-  startPlay() {
+  start() {
+    this.setTimeout(this.config.playTimeLimit)
     this.mode = "play"
     this.markForCheck()
-    this.setTimeout(this.config.playTimeLimit)
   }
 
-  showResult() {
+  private _result() {
     this.setTimeout(0)
     this.mode = "result"
     this.markForCheck()
   }
 
-  private _step(rune: string) {
-    const idx = this.runes.findIndex(value => !value)
+  finish() {
+    const success = this.runes.reduce((acc, {data, userData}) => data === userData ? ++acc : acc, 0)
+    const error = this.runes.length = success
+    this.updateResult({ success, error })
+    super.finish()
+  }
+
+  private _onRune(rune: string) {
+    if (this.mode !== "play") {
+      return
+    }
+
+    const idx = this.runes.findIndex(({userData}) => !userData)
     if (idx < 0) {
       return
     }
 
-    this.runes[idx+1] = rune
+    this.runes[idx].userData = rune
+    this.markForCheck()
+
+    const finish = this.runes.every(({userData}) => !!userData)
+    if (finish) {
+      this._result()
+    }
   }
 
-  private _next() {
+  private _onBackspace() {
+    if (this.mode !== "play") {
+      return
+    }
+
+    let idx = this.runes.findIndex(({userData}) => !userData) - 1
+    if (idx < 0) {
+      idx = this.runes.length - 1
+    }
+
+    this.runes[idx].userData = ""
+    this.markForCheck()
+  }
+
+  timeout() {
     switch (this.mode) {
       case "show":
-        this.startPlay()
+        this.start()
         return
-
       case "play":
         super.timeout()
-        this.showResult()
+        this._result()
         return
     }
   }
 
-  // private _step(rune: string) {
-  //   const next = this.runes.find(item => !item.user)
-  //   if (next === undefined) {
-  //     this._result()
-  //     return
-  //   }
-
-  //   next.user = rune
-
-  //   const success =  this.runes.filter(({rune, user}) => rune === user).length
-  //   const error = this.runes.length - success
-  //   this.updateResult({ success, error })
-
-  //   if (this.runes.every(({user}) => !!user)) {
-  //     this._result()
-  //   }
-  // }
-
-  // onKey(rune: string) {
-  //   if (this.mode !== "play") {
-  //     return
-  //   }
-
-  //   if (!RUNES.includes(rune)) {
-  //     return
-  //   }
-
-  //   this._step(rune)
-  // }
-
-  // onButtonTouch() {
-  //   if (this.mode === "result") {
-  //     this.finish()
-  //     return
-  //   }
-
-  //   this._play()
-  // }
+  private _onEnterOrSpace() {
+    switch (this.mode) {
+      case "show":
+        this.start()
+        return
+      case "result":
+        this.finish()
+        return
+    }
+  }
 }
