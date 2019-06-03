@@ -125,7 +125,7 @@ var level_0 = [](func() *Item){
 		}
 
 		L := A*100 + B*10 + C
-		R := X*100 + Y*10 + C
+		R := X*100 + Y*10 + Z
 		SUM := A + B + C + X + Y + Z
 
 		return &Item{
