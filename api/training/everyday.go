@@ -30,7 +30,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 		{"matrix-sequence-pattern"},
 		{"space-waste-2d", "space-waste-3d"},
 		{"table-words"},
-		// {"text-letters"},
+		{"text-letters"},
 		// {"text-reading-tezirovanie"},
 		// {"words-columns-pairs"},
 		// {"words-columns-words"},
