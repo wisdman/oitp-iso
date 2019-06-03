@@ -1,9 +1,10 @@
 <!-- Точность восприятия - тексты -->
-<h1 class="h1">Прочтите текст</h1>
-<!-- <h1 class="h1">Выделите тезись</h1> -->
+<h1 class="trainer-h1">Прочтите&nbsp;текст</h1>
 
-<article class="article" [innerHtml]="sanitizeHtml(this.config.data)"></article>
-<button
-    class="button button--main"
-    (click)="onClick()"
-  >Продолжить</button>
+<div class="text" [innerHtml]="sanitizeHtml(this.config.data)"></div>
+
+<trainer-button
+  class="button"
+  value="Продолжить"
+  (touch)="finish()"
+></trainer-button>

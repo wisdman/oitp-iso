@@ -3,7 +3,7 @@
 // Выделите тезись
 //
 
-package textReading
+package textTezirovanie
 
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"
@@ -11,20 +11,17 @@ import (
 
 var complexityTezirovanieData = [...]Parameters{
 	Parameters{
-		ShowTimeLimit:     60,
-		QuestionTimeLimit: 30,
+		PlayTimeLimit: 120,
 	},
 	Parameters{
-		ShowTimeLimit:     50,
-		QuestionTimeLimit: 30,
+		PlayTimeLimit: 60,
 	},
 	Parameters{
-		ShowTimeLimit:     40,
-		QuestionTimeLimit: 30,
+		PlayTimeLimit: 30,
 	},
 }
 
-func BuildTezirovanie(
+func Build(
 	sql *db.Transaction,
 	complexity uint8,
 ) (

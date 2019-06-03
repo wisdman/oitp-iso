@@ -18,10 +18,6 @@
   display: none;
 }
 
-.touch-action-none {
-  touch-action: none;
-}
-
 .svg-image {
   display: block;
   position: relative;

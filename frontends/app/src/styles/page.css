@@ -39,3 +39,9 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+
+.touch-action-none {
+  overflow: hidden;
+  max-height: 100vh;
+  touch-action: none;
+}

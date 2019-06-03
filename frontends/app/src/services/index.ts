@@ -1,3 +1,4 @@
+export * from "./fullscreen.service"
 export * from "./keypad.service"
 export * from "./notification.service"
 export * from "./pointer.service"

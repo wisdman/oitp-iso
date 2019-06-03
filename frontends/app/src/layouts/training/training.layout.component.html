@@ -1,4 +1,7 @@
-<div class="field">
+<div
+class="field"
+[class.field--locked]="fullscreenService.locked | async"
+>
   <timer-global></timer-global>
 
   <training-greeting
@@ -129,6 +132,12 @@
       [config]="config"
       (result)="onResult($event)"
     ></trainer-text-reading>
+
+    <trainer-text-tezirovanie
+      *ngIf="config.id === 'text-tezirovanie'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-text-tezirovanie>
 
     <trainer-words-columns
       *ngIf="config.id === 'words-columns'"

@@ -3,11 +3,10 @@
   justify-content: center;
   align-items: stretch;
 
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100vw;
-  height: 100vh;
+  height: auto;
+
+  min-height: 100vh;
 
   --padding: 12px;
   padding: var(--padding);
@@ -15,7 +14,6 @@
   background-color: rgba(255, 255, 255, 0.24);
 
   overflow: hidden;
-  position: relative;
   user-select: none;
 }
 
@@ -38,10 +36,6 @@
   width: 100%;
   max-width: 960px;
 
-  margin-top: calc(var(--body-scroll-top) * 1px);
-  height: calc(var(--window-height, 100%) * 1px - var(--padding) * 2 - 4px);
-  max-height: 100%;
-
   border-top: 1px solid rgba(0,0,0,.5);
   border-radius: 9px;
 
@@ -51,6 +45,11 @@
   overflow: visible;
   position: relative;
   user-select: none;
+}
+
+.field--locked {
+  height: calc(var(--window-height) - var(--padding) * 2 - 4px);
+  max-height: calc(var(--window-height) - var(--padding) * 2 - 4px);
 }
 
 .field::after {

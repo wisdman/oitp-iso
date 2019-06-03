@@ -27,6 +27,7 @@ const (
 	UITableWords                IUITrainer = "table-words"
 	UITextLetters               IUITrainer = "text-letters"
 	UITextReading               IUITrainer = "text-reading"
+	UITextTezirovanie           IUITrainer = "text-tezirovanie"
 	UIWordsColumns              IUITrainer = "words-columns"
 	UIWordsPairs                IUITrainer = "words-pairs"
 )

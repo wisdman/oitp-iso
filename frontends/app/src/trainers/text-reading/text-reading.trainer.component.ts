@@ -3,9 +3,7 @@ import {
   Component,
 } from "@angular/core"
 
-import {
-  AbstractTrainerComponent,
-} from "../abstract"
+import { AbstractTrainerComponent } from "../abstract"
 
 import {
   ITextReadingTrainerConfig,
@@ -22,10 +20,6 @@ export class TextReadingTrainerComponent
 extends AbstractTrainerComponent<ITextReadingTrainerConfig, ITextReadingTrainerResult> {
 
   init() {
-    this.setTimeout(this.config.timeLimit)
-  }
-
-  onClick() {
-    this.finish()
+    this.fullscreenService.unlock()
   }
 }

@@ -12,11 +12,6 @@ type IEvents = "pointerdown"
              | "mousedown"
              | "click"
 
-const preventFunction = function(event: Event) {
-  event.preventDefault()
-  event.stopPropagation()
-}
-
 export interface ITouchData {
   target: EventTarget | null
   x: number
@@ -58,8 +53,6 @@ export class FastTouchDirective implements OnInit, OnDestroy {
     }
     const self = this
     this._eventListeners.push(["pointerdown", function(event: PointerEvent){
-      event.preventDefault()
-      event.stopPropagation()
       self.touchValueChange.emit({
         target: event.target,
         x: event.clientX,
@@ -74,15 +67,11 @@ export class FastTouchDirective implements OnInit, OnDestroy {
     }
 
     if (this._isPointerEvent) {
-      this._eventListeners.push(["touchstart", preventFunction])
       return
     }
 
     const self = this
     this._eventListeners.push(["touchstart", function(event: TouchEvent){
-      event.preventDefault()
-      event.stopPropagation()
-
       const touch = event.changedTouches[0]
       self.touchValueChange.emit({
         target: touch.target,
@@ -93,18 +82,17 @@ export class FastTouchDirective implements OnInit, OnDestroy {
   }
 
   private _initMouseEvents() {
-    this._eventListeners.push(["click", preventFunction])
+    this._eventListeners.push(["click", function(event: Event) {
+      event.preventDefault()
+      event.stopPropagation()
+    }])
 
     if (this._isPointerEvent || this._isTouchEvents) {
-      this._eventListeners.push(["mousedown", preventFunction])
       return
     }
 
     const self = this
     this._eventListeners.push(["mousedown", function(event: MouseEvent){
-      event.preventDefault()
-      event.stopPropagation()
-
       self.touchValueChange.emit({
         target: event.target,
         x: event.clientX,

@@ -1,0 +1,40 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  min-width: 100%;
+  flex: 1 1 100%;
+  max-height: 100%;
+
+  position: relative;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.h1 {
+  display: block;
+
+  margin: 0;
+  margin-top: 34px;
+  margin-bottom: auto;
+  text-indent: 30px;
+
+  padding-left: 20px;
+  padding-right: 20px;
+
+  font-size: 18px;
+  line-height: 1.2;
+  text-align: center;
+  font-weight: 600;
+}
+
+.article {
+  user-select: text;
+}
+
+.button {
+  margin-top: 16px;
+}

@@ -11,6 +11,8 @@ import {
   withLatestFrom,
 } from "rxjs/operators"
 
+import { FullscreenService } from "./fullscreen.service"
+
 export interface IEventData {
   type: "down" | "move" | "up"
   target: EventTarget | null
@@ -25,16 +27,12 @@ const SWIPE_DELTA = 40
 @Injectable({ providedIn: "root" })
 export class PointerService {
 
+  constructor(
+    private _fullscreenService: FullscreenService
+  ) {}
+
   private _isPointerEvent = "PointerEvent" in window
   private _isTouchEvents = "ontouchstart" in window
-
-  private _isScrollLocked: Subject<boolean> = new Subject<boolean>()
-  lockScroll() {
-    this._isScrollLocked.next(true)
-  }
-  unlockScroll() {
-    this._isScrollLocked.next(false)
-  }
 
   private _events: Subject<IEventData> = new Subject<IEventData>()
   private _onEvent(data: IEventData) {
@@ -206,6 +204,7 @@ export class PointerService {
       })
     }
   }
+
   private _enableMoveListeners() {
     document.addEventListener("pointermove", this._onPointerMoveListener, { passive: false, capture: true })
     document.addEventListener("touchmove", this._onTouchMoveListener, { passive: false, capture: true })
@@ -218,30 +217,18 @@ export class PointerService {
     document.removeEventListener("mousemove", this._onMouseMoveListener, { capture: true })
   }
 
-  private _initScrollSubscriber() {
-    this._isScrollLocked.subscribe( isScrollLocked => {
-      if (isScrollLocked) {
+  private _initMoveListenersToggle() {
+    this._fullscreenService.locked.subscribe(locked => {
+      if (locked) {
         document.documentElement.classList.add("touch-action-none")
+        document.body.classList.add("touch-action-none")
         this._enableMoveListeners()
-        this._updateHeight()
       } else {
-        this._disableMoveListeners()
         document.documentElement.classList.remove("touch-action-none")
-        this._updateHeight()
+        document.body.classList.remove("touch-action-none")
+        this._disableMoveListeners()
       }
     })
-  }
-
-  private _updateHeight() {
-    window.requestAnimationFrame(() => {
-      document.documentElement.style.setProperty("--body-scroll-top", `${document.body.scrollTop}`)
-      document.documentElement.style.setProperty("--window-height", `${window.innerHeight}`)
-    })
-  }
-
-  private _initHeightDetection() {
-    window.addEventListener("resize", () => this._updateHeight(), { passive: false, capture: true })
-    window.addEventListener("deviceorientation", () => this._updateHeight(), { passive: false, capture: true })
   }
 
   load(): Promise<void> {
@@ -249,12 +236,7 @@ export class PointerService {
     this._initDownListeners()
     this._initMoveListeners()
     this._initUpListeners()
-    this._initScrollSubscriber()
-
-    // Rwal window height
-    this._initHeightDetection()
-    this._updateHeight()
-
+    this._initMoveListenersToggle()
     return Promise.resolve()
   }
 }

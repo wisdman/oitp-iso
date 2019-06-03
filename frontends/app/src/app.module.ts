@@ -74,6 +74,7 @@ import {
   TableWordsTrainerComponent,
   TextLettersTrainerComponent,
   TextReadingTrainerComponent,
+  TextTezirovanieTrainerComponent,
   WordsColumnsTrainerComponent,
   WordsPairsTrainerComponent,
 } from "./trainers"
@@ -85,6 +86,8 @@ import {
 } from "./pipes"
 
 import {
+  FullscreenService,
+  FullscreenServiceFactory,
   KeypadService,
   KeypadServiceFactory,
   NotificationService,
@@ -174,6 +177,7 @@ import { ROUTES } from "./app.routing"
     TableWordsTrainerComponent,
     TextLettersTrainerComponent,
     TextReadingTrainerComponent,
+    TextTezirovanieTrainerComponent,
     WordsColumnsTrainerComponent,
     WordsPairsTrainerComponent,
 
@@ -205,6 +209,14 @@ import { ROUTES } from "./app.routing"
     TimerService,
     TrainingService,
     UserService,
+
+    FullscreenService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: FullscreenServiceFactory,
+      deps: [ FullscreenService ],
+      multi: true
+    },
 
     KeypadService,
     {

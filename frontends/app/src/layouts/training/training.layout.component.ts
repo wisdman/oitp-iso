@@ -14,8 +14,8 @@ import {
 import { Subscription } from "rxjs"
 
 import {
+  FullscreenService,
   KeypadService,
-  PointerService,
   TimerService,
   TrainingService,
 } from "../../services"
@@ -36,11 +36,12 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private _cdr: ChangeDetectorRef,
     private _keypadService: KeypadService,
-    private _pointerService: PointerService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _timerService: TimerService,
     private _trainingService: TrainingService,
+
+    public fullscreenService: FullscreenService,
   ) {}
 
   mode: "greeting" | "game" | "result" = "greeting"
@@ -63,7 +64,6 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this._timerService.pause()
-    this._pointerService.lockScroll()
     this._keypadService.lockKeypad()
     this.mode = "greeting"
 
@@ -87,8 +87,8 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._routeParamsSubscriber) this._routeParamsSubscriber.unsubscribe()
     if (this._trainingSubscriber) this._trainingSubscriber.unsubscribe()
+
     this._keypadService.unlockKeypad()
-    this._pointerService.unlockScroll()
   }
 
   onGoDashboard() {

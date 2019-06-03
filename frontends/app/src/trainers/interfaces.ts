@@ -19,6 +19,7 @@ import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } f
 import { ITableWordsTrainer, ITableWordsTrainerConfig, ITableWordsTrainerResult } from "./table-words"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
 import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResult } from "./text-reading"
+import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
 import { IWordsColumnsTrainer, IWordsColumnsTrainerConfig, IWordsColumnsTrainerResult } from "./words-columns"
 import { IWordsPairsTrainer, IWordsPairsTrainerConfig, IWordsPairsTrainerResult } from "./words-pairs"
 
@@ -42,6 +43,7 @@ export type ITrainer = IClassificationColorsTrainer
                      | ITableWordsTrainer
                      | ITextLettersTrainer
                      | ITextReadingTrainer
+                     | ITextTezirovanieTrainer
                      | IWordsColumnsTrainer
                      | IWordsPairsTrainer
 
@@ -66,6 +68,7 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | ITableWordsTrainerConfig
                             | ITextLettersTrainerConfig
                             | ITextReadingTrainerConfig
+                            | ITextTezirovanieTrainerConfig
                             | IWordsColumnsTrainerConfig
                             | IWordsPairsTrainerConfig
 
@@ -89,6 +92,7 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | ITableWordsTrainerResult
                             | ITextLettersTrainerResult
                             | ITextReadingTrainerResult
+                            | ITextTezirovanieTrainerResult
                             | IWordsColumnsTrainerResult
                             | IWordsPairsTrainerResult
 

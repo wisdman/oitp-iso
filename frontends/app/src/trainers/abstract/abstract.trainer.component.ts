@@ -16,9 +16,10 @@ import { DomSanitizer } from "@angular/platform-browser"
 import { Subscription } from "rxjs"
 
 import {
-  TimerService,
-  PointerService,
+  FullscreenService,
   KeypadService,
+  PointerService,
+  TimerService,
 } from "../../services"
 
 import {
@@ -39,6 +40,7 @@ implements OnInit, OnDestroy, OnChanges {
     private _elRef:ElementRef<HTMLElement>,
     private _sanitizer: DomSanitizer,
 
+    public fullscreenService: FullscreenService,
     public keypadService: KeypadService,
     public pointerService: PointerService,
     public timerService: TimerService,
@@ -159,6 +161,9 @@ implements OnInit, OnDestroy, OnChanges {
   private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
+    // Lock fullscreen
+    this.fullscreenService.lock()
+
     // Enable loader
     this.loading = true
 
@@ -200,6 +205,9 @@ implements OnInit, OnDestroy, OnChanges {
 
     // Destroy trainer
     this.destroy()
+
+    // Unlock fullscreen
+    this.fullscreenService.unlock()
   }
 
   // Default functions

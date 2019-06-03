@@ -40,6 +40,7 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
   private _actionSubscriber!: Subscription
 
   init() {
+    this.fullscreenService.lock()
     this.current = 0
 
     const itemSize = this.getCSSPropertyIntValue("--trainer-svg-height")

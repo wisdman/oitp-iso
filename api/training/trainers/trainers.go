@@ -22,6 +22,7 @@ import (
 	"github.com/wisdman/oitp-isov/api/training/trainers/table-words"
 	"github.com/wisdman/oitp-isov/api/training/trainers/text-letters"
 	"github.com/wisdman/oitp-isov/api/training/trainers/text-reading"
+	"github.com/wisdman/oitp-isov/api/training/trainers/text-tezirovanie"
 	"github.com/wisdman/oitp-isov/api/training/trainers/words-columns"
 	"github.com/wisdman/oitp-isov/api/training/trainers/words-pairs"
 	"github.com/wisdman/oitp-isov/api/training/trainers/words-questions"
@@ -48,21 +49,21 @@ const (
 	Relax                     ITrainer = "relax"                      // Расслабление
 	SpaceQuestionsWaste2D     ITrainer = "space-waste-2d"             // Пространство и логика
 	SpaceQuestionsWaste3D     ITrainer = "space-waste-3d"             // Пространство и логика
+	TablePipeEN               ITrainer = "table-pipe-en"              // Расприделение внимания
+	TablePipeNumber           ITrainer = "table-pipe-number"          // Расприделение внимания
+	TablePipeRU               ITrainer = "table-pipe-ru"              // Расприделение внимания
+	TableWords                ITrainer = "table-words"                // Вариативность мышления
+	TextLetters               ITrainer = "text-letters"               // Точность восприятия - афоризмы
+	TextReading               ITrainer = "text-reading"               // Точность восприятия - тексты
+	TextTezirovanie           ITrainer = "text-tezirovanie"           // Тезирование
 
-	TablePipeEN            ITrainer = "table-pipe-en"            // Разминка EN
-	TablePipeNumber        ITrainer = "table-pipe-number"        // Разминка Цифры
-	TablePipeRU            ITrainer = "table-pipe-ru"            // Разминка RU
-	TableWords             ITrainer = "table-words"              // Заполнение таблицы словами
-	TextLetters            ITrainer = "text-letters"             // Первые буквы слов фразы
-	TextReadingRO          ITrainer = "text-reading-ro"          // Текст для чтения и вопросы
-	TextReadingTezirovanie ITrainer = "text-reading-tezirovanie" // Тезирование
-	WordsColumnsPairs      ITrainer = "words-columns-pairs"      // Два столбика слов
-	WordsColumnsWords      ITrainer = "words-columns-words"      // Востановить список слов по памяти
-	WordsPairsAntonyms     ITrainer = "words-pairs-antonyms"     // Два столбика слов, антинимы
-	WordsPairsParonyms     ITrainer = "words-pairs-paronyms"     // Два столбика слов, паронимы
-	WordsPairsSynonyms     ITrainer = "words-pairs-synonyms"     // Два столбика слов, синонимы
-	WordsQuestionsClose    ITrainer = "words-questions-close"    // Выбрать наиболее близкое слово
-	WordsQuestionsWaste    ITrainer = "words-questions-waste"    // Выбрать лишнее слово
+	WordsColumnsPairs   ITrainer = "words-columns-pairs"   // Два столбика слов
+	WordsColumnsWords   ITrainer = "words-columns-words"   // Востановить список слов по памяти
+	WordsPairsAntonyms  ITrainer = "words-pairs-antonyms"  // Два столбика слов, антинимы
+	WordsPairsParonyms  ITrainer = "words-pairs-paronyms"  // Два столбика слов, паронимы
+	WordsPairsSynonyms  ITrainer = "words-pairs-synonyms"  // Два столбика слов, синонимы
+	WordsQuestionsClose ITrainer = "words-questions-close" // Выбрать наиболее близкое слово
+	WordsQuestionsWaste ITrainer = "words-questions-waste" // Выбрать лишнее слово
 )
 
 type ITrainerBuilder func(
@@ -97,8 +98,8 @@ var BuildFunctions = map[ITrainer]ITrainerBuilder{
 	TablePipeRU:               tablePipe.BuildRU,
 	TableWords:                tableWords.Build,
 	TextLetters:               textLetters.Build,
-	TextReadingRO:             textReading.BuildReading,
-	TextReadingTezirovanie:    textReading.BuildTezirovanie,
+	TextReading:               textReading.Build,
+	TextTezirovanie:           textTezirovanie.Build,
 	WordsColumnsPairs:         wordsColumns.BuildPairs,
 	WordsColumnsWords:         wordsColumns.BuildWords,
 	WordsPairsAntonyms:        wordsPairs.BuildAntonyms,
