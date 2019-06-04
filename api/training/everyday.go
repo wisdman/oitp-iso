@@ -15,7 +15,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
 
 	var trainersList = []trainers.ITrainer{
-		"table-pipe-ru", "table-pipe-number",
+		"text-tezirovanie", "table-pipe-ru", "table-pipe-number",
 	}
 
 	var trainersRandom = [][]trainers.ITrainer{
@@ -32,7 +32,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 		{"table-words"},
 		{"text-letters"},
 		{"text-reading"},
-		// {"text-tezirovanie"},
+		{"text-tezirovanie"},
 		// {"words-columns-pairs"},
 		// {"words-columns-words"},
 		// {"words-pairs-antonyms", "words-pairs-paronyms", "words-pairs-synonyms", "words-questions-close", "words-questions-waste"},

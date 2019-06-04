@@ -17,8 +17,7 @@ func Build(
 	rows, err := sql.Query(`
     SELECT
       data
-    FROM public.trainers_texts
-    WHERE type = 'relax'
+    FROM public.trainers_text_relax
     ORDER BY random()
     LIMIT 1
     `,

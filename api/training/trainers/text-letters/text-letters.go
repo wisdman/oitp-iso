@@ -44,8 +44,7 @@ func Build(
 			SELECT
 	      data,
 	      array_length(regexp_split_to_array(trim(data), E'\\W+'), 1) AS "length"
-	    FROM public.trainers_texts
-	    WHERE type = 'expression'
+	    FROM public.trainers_text_letters
 		) t
 		WHERE t."length" <= $1
 		ORDER BY random()

@@ -9,6 +9,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  Renderer2,
   SimpleChanges,
 } from "@angular/core"
 
@@ -38,6 +39,7 @@ implements OnInit, OnDestroy, OnChanges {
   constructor(
     private _cdr: ChangeDetectorRef,
     private _elRef:ElementRef<HTMLElement>,
+    private _renderer: Renderer2,
     private _sanitizer: DomSanitizer,
 
     public fullscreenService: FullscreenService,
@@ -111,6 +113,12 @@ implements OnInit, OnDestroy, OnChanges {
   }
   detectChanges() {
     this._cdr.detectChanges()
+  }
+
+
+  // Renderer2
+  appendChild(newChild: Node, parent?: Node) {
+    this._renderer.appendChild(parent || this._elRef.nativeElement, newChild)
   }
 
 

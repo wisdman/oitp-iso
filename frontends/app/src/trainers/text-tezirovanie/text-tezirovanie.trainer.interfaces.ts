@@ -8,10 +8,10 @@ export type ITextTezirovanieTrainer = "text-tezirovanie"
 
 export interface ITextTezirovanieTrainerConfig extends ITrainerConfig {
   id: ITextTezirovanieTrainer
-  mode: "show" | "play"
-  data: string
 
-  timeLimit: number
+  playTimeLimit: number
+
+  data: string
 }
 
 export interface ITextTezirovanieTrainerResult extends ITrainerResult {

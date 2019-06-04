@@ -18,7 +18,7 @@ import { ASSETS_ICONS } from "../../app.config"
 import { AbstractTrainerComponent } from "../abstract"
 
 import { ITouchData } from "../../directives/fast-touch"
-import { IEventData } from "../../services/pointer.service"
+import { IPointerEvent } from "../../services/pointer.service"
 
 import {
   IMatrixFillingTrainerConfig,
@@ -206,7 +206,7 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     this.markForCheck()
   }
 
-  onPointerUp({x, y}: IEventData) {
+  onPointerUp({x, y}: IPointerEvent) {
     if (!this.current) {
       return
     }
@@ -243,7 +243,7 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     this._step()
   }
 
-  onpointermMove({x, y}: IEventData) {
+  onpointermMove({x, y}: IPointerEvent) {
     if (!this.current) {
       return
     }

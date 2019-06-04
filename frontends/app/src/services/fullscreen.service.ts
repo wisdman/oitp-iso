@@ -15,6 +15,16 @@ import {
 @Injectable({ providedIn: "root" })
 export class FullscreenService {
 
+  private _disableTouchAction() {
+    document.documentElement.classList.add("page-touch-action-none")
+    document.body.classList.add("page-touch-action-none")
+  }
+
+  private _enableTouchAction() {
+    document.documentElement.classList.remove("page-touch-action-none")
+    document.body.classList.remove("page-touch-action-none")
+  }
+
   private _resetScroll() {
     document.body.scrollTop = 0
   }
@@ -28,12 +38,18 @@ export class FullscreenService {
   locked = this._isLocked.pipe(share())
 
   private _initResizeSubscribe() {
-    this._isLocked.pipe(
+    this.locked.pipe(
       withLatestFrom(
-        merge(of(undefined), fromEvent(window, "resize"), fromEvent(window, "deviceorientation"))
-      ),
-    ).subscribe(([locked]) => {
-      locked && this._resetScroll()
+        merge(of(undefined), fromEvent(window, "resize"), fromEvent(window, "deviceorientation")),
+        locked => locked,
+      )
+    ).subscribe(locked => {
+      if (locked) {
+        this._disableTouchAction()
+        this._resetScroll()
+      } else {
+        this._enableTouchAction()
+      }
       this._setCSSPropertyes()
     })
   }

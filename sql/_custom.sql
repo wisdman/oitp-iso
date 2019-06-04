@@ -33,3 +33,11 @@ INSERT INTO private.trainers_text_reading("data", "questions")(
   WHERE t."type" = 'reading'
   GROUP BY t."id"
 )
+
+UPDATE public.trainers_text_tezirovanie SET data = replace(data,'&nbsp;',' ') WHERE data LIKE '%&nbsp;%';
+UPDATE public.trainers_text_tezirovanie SET data = regexp_replace(data,'\s+',' ','g');
+UPDATE public.trainers_text_tezirovanie SET data = regexp_replace(data,'\s+<\/p','','g');
+UPDATE public.trainers_text_tezirovanie SET data = regexp_replace(data,'<h1>\s*<\/h1>','','g');
+UPDATE public.trainers_text_tezirovanie SET data = regexp_replace(data,'\s+',' ','g');
+
+UPDATE public.trainers_text_tezirovanie SET data = regexp_replace(data,'>','','g');

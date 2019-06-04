@@ -1,8 +1,3 @@
-// Тезирование
-//
-// Выделите тезись
-//
-
 package textTezirovanie
 
 import (
@@ -34,8 +29,7 @@ func Build(
 	if err := sql.QueryRow(`
     SELECT
       "data"
-    FROM public.trainers_texts
-    WHERE "type" = 'tezirovanie'
+    FROM  public.trainers_text_tezirovanie
     ORDER BY random()
     LIMIT 1`,
 	).Scan(&config.Data); err != nil {
