@@ -37,7 +37,19 @@ import {
 import {
   ButtonDirective,
   FastTouchDirective,
+  TezirovanieDirective,
+  TouchableDirective,
 } from "./directives"
+
+import {
+  AuthGuard,
+  LogoutGuard,
+  TrainingRoutingGuard,
+} from "./guards"
+
+import {
+  ErrorInterceptor
+} from "./interceptors"
 
 import {
   ClubLayoutComponent,
@@ -51,6 +63,28 @@ import {
   SupportLayoutComponent,
   TrainingLayoutComponent,
 } from "./layouts"
+
+import {
+  DaysPipe,
+  TimerPipe,
+  SafeStylePipe,
+} from "./pipes"
+
+import {
+  FullscreenService,
+  FullscreenServiceFactory,
+  KeypadService,
+  KeypadServiceFactory,
+  NotificationService,
+  NotificationServiceFactory,
+  PointerService,
+  PointerServiceFactory,
+  ProgressService,
+  RecommendationService,
+  TimerService,
+  TrainingService,
+  UserService,
+} from "./services"
 
 import {
   AbstractTrainerComponent,
@@ -79,38 +113,6 @@ import {
   WordsColumnsTrainerComponent,
   WordsPairsTrainerComponent,
 } from "./trainers"
-
-import {
-  DaysPipe,
-  TimerPipe,
-  SafeStylePipe,
-} from "./pipes"
-
-import {
-  FullscreenService,
-  FullscreenServiceFactory,
-  KeypadService,
-  KeypadServiceFactory,
-  NotificationService,
-  NotificationServiceFactory,
-  PointerService,
-  PointerServiceFactory,
-  ProgressService,
-  RecommendationService,
-  TimerService,
-  TrainingService,
-  UserService,
-} from "./services"
-
-import {
-  AuthGuard,
-  LogoutGuard,
-  TrainingRoutingGuard,
-} from "./guards"
-
-import {
-  ErrorInterceptor
-} from "./interceptors"
 
 import { ROUTES } from "./app.routing"
 
@@ -144,6 +146,8 @@ import { ROUTES } from "./app.routing"
 
     ButtonDirective,
     FastTouchDirective,
+    TezirovanieDirective,
+    TouchableDirective,
 
     ClubLayoutComponent,
     DashboardLayoutComponent,
@@ -155,6 +159,10 @@ import { ROUTES } from "./app.routing"
     PublicationsLayoutComponent,
     SupportLayoutComponent,
     TrainingLayoutComponent,
+
+    DaysPipe,
+    TimerPipe,
+    SafeStylePipe,
 
     AbstractTrainerComponent,
     ClassificationColorsTrainerComponent,
@@ -182,10 +190,6 @@ import { ROUTES } from "./app.routing"
     TextTezirovanieTrainerComponent,
     WordsColumnsTrainerComponent,
     WordsPairsTrainerComponent,
-
-    DaysPipe,
-    TimerPipe,
-    SafeStylePipe,
   ],
 
   entryComponents: [

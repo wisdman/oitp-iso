@@ -65,7 +65,7 @@
   *ngIf="mode==='play'"
   class="button"
   value="Проверить"
-  [active]="currentItem === undefined"
+  [focus]="currentItem === undefined"
   (touch)="showResult()"
 ></trainer-button>
 

@@ -1,16 +1,6 @@
+
 .text {
-  margin: 0;
+  margin-left: 0;
+  margin-right: 0;
   margin-top: calc(var(--trainer-margin) * 5);
-
-  user-select: text;
-}
-
-.text span {
-  display: inline;
-}
-
-.button {
-  margin: 0;
-  margin-top: calc(var(--trainer-margin) * 5);
-  margin-bottom: auto;
 }

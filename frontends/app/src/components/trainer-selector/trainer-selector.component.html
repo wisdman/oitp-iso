@@ -16,7 +16,7 @@
     [class.item--error]="item.isError"
     [class.item--mark]="item.isMark"
     [class.item--success]="item.isSuccess"
-    fastTouch (touch)="onTouch(item)"
+    touchable (pointerDown)="onTouch(item)"
   >
     <path
       class="fill-path"

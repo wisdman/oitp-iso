@@ -1,10 +1,11 @@
 :root {
-  /* === Trainers theme === */
-
   --trainer-text-color: rgba(119, 110, 101);
 
   --trainer-background-color: rgba(238, 228, 218, 0.72);
+  --trainer-hover-color: rgba(238, 228, 218, 1);
   --trainer-border-color: rgb(187, 173, 160);
+
+  --trainer-hover-transition-time: 150ms;
 
   --trainer-selected-color: rgb(2, 115, 212);
 
@@ -139,4 +140,17 @@
   .trainer p .trainer-p {
     font-size: 14px;
   }
+}
+
+/* Trainer text box style */
+
+.trainer-text {
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: calc(var(--trainer-margin) * 5);
+  margin-bottom: 0;
+}
+
+.trainer-text span {
+  display: inline;
 }

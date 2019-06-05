@@ -8,8 +8,8 @@
 >
   <g
     class="item"
-    [class.item--active]="isActive"
-    fastTouch (touch)="onTouch()"
+    [class.item--focus]="focus"
+    [class.item--active]="active | async"
   >
     <path
       class="fill-path"
@@ -22,7 +22,7 @@
     <text
       class="text"
       [attr.x]="item.x + item.width / 2"
-      [attr.y]="item.y + item.height / 2 + 2"
+      [attr.y]="item.y + item.height / 2 + 1"
       dominant-baseline="middle"
       text-anchor="middle"
     >{{ item.data }}</text>

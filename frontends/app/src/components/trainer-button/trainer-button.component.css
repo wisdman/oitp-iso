@@ -1,11 +1,19 @@
 :host {
-  --text-padding: 24px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+  --padding-left: 24px;
+  --padding-right: 24px;
 
   display: flex;
   width: auto;
   max-width: 100%;
   height: auto;
   max-height: 100%;
+
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: calc(var(--trainer-margin) * 5);
+  margin-bottom: auto;
 
   font-size: inherit;
   font-weight: 600;
@@ -31,7 +39,7 @@
   fill: none;
 }
 
-.item--active .path {
+.item--focus .path {
   stroke: var(--trainer-selected-color);
   stroke-width: 2;
 }
@@ -42,12 +50,18 @@
   fill: var(--trainer-background-color);
 }
 
+.item--active .fill-path {
+  fill: var(--trainer-hover-color);
+}
+
 .text {
   font-family: inherit;
   font-size: inherit;
   font-weight: inherit;
+
   line-height: 1;
   text-transform: uppercase;
+  text-decoration: none;
 
   color: var(--trainer-text-color);
   fill: currentColor;

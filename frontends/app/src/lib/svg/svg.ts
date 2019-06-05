@@ -16,6 +16,8 @@ export interface SVGRectangle {
   fillPath: string
 }
 
+export type SVGShape = SVGRectangle
+
 export interface SVGCircle {
   x: number
   y: number

@@ -1,0 +1,20 @@
+
+.mark {
+  background-color: rgba(0,0,0,0);
+}
+
+.user-mark {
+  background-color: rgba(255, 255, 0, .87);
+}
+
+.result .mark {
+  background-color: var(--trainer-error-color-light);
+}
+
+.result .user-mark {
+  background-color: var(--trainer-error-color-light);
+}
+
+.result .mark .user-mark {
+  background-color: var(--trainer-success-color-light);
+}

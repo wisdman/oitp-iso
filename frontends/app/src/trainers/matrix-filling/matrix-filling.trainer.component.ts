@@ -18,7 +18,7 @@ import { ASSETS_ICONS } from "../../app.config"
 import { AbstractTrainerComponent } from "../abstract"
 
 import { ITouchData } from "../../directives/fast-touch"
-import { IPointerEvent } from "../../services/pointer.service"
+import { IPointerEvent } from "../../lib/pointer-events"
 
 import {
   IMatrixFillingTrainerConfig,

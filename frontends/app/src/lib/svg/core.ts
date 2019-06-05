@@ -50,27 +50,3 @@ export interface OpSet {
   size?: Point;
   path?: string;
 }
-
-// export interface Drawable {
-//   shape: string;
-//   options: ResolvedOptions;
-//   sets: OpSet[];
-// }
-
-// export interface PathInfo {
-//   d: string;
-//   stroke: string;
-//   strokeWidth: number;
-//   fill?: string;
-//   pattern?: PatternInfo;
-// }
-
-// export interface PatternInfo {
-//   x: number;
-//   y: number;
-//   width: number;
-//   height: number;
-//   viewBox: string;
-//   patternUnits: string;
-//   path: PathInfo;
-// }

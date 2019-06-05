@@ -1,6 +1,6 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
   ElementRef,
   EventEmitter,
   Input,
@@ -11,10 +11,33 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
-import { Subscription, merge } from "rxjs"
+import {
+  merge,
+  Subscription,
+  Observable,
+} from "rxjs"
 
 import {
-  SVGRectangle,
+  distinctUntilChanged,
+  map,
+  share,
+  switchMap,
+  take,
+  tap,
+} from "rxjs/operators"
+
+import {
+  initPointerDown,
+  initPointerUp,
+  IPointerEvent,
+} from "../../lib/pointer-events"
+
+import { PointerService } from "../../services"
+
+import { textSize } from "../../lib/util"
+
+import {
+  SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
 
@@ -31,32 +54,16 @@ export class TrainerButtonComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private _elRef:ElementRef<HTMLElement>,
     private _keypadService: KeypadService,
+    private _pointerService: PointerService,
   ){}
 
-  private _style = getComputedStyle(this._elRef.nativeElement)
+  item!: SVGShape & { data: string }
 
+  private _style = getComputedStyle(this._elRef.nativeElement)
   private _getCSSPropertyIntValue(property: string): number {
     const value = this._style.getPropertyValue(property)
     return Number.parseInt(value)
   }
-
-  private _getTextWidth(value: string): number {
-    const context = document.createElement("canvas").getContext("2d")
-    if (context === null) {
-      return 0
-    }
-    context.font = `${this._style.fontWeight} ${this._style.fontSize} ${this._style.fontFamily}`
-    return context.measureText(value).width
-  }
-
-  @Input()
-  value: string = ""
-
-  @Output("touch")
-  touchValueChange = new EventEmitter()
-
-  @Input("active")
-  isActive: boolean = false
 
   matrixWidth: number = 0
   matrixHeight: number = 0
@@ -64,40 +71,82 @@ export class TrainerButtonComponent implements OnInit, OnChanges, OnDestroy {
     return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
   }
 
-  item!: SVGRectangle & { data: string }
+  private _renderShape(text: string): SVGShape {
+    const {
+      width: textWidth,
+      height: textHeight,
+    } = textSize(text, `${this._style.fontWeight} ${this._style.fontSize} ${this._style.fontFamily}`)
+
+    const paddingTop    = this._getCSSPropertyIntValue("--padding-top")
+    const paddingBottom = this._getCSSPropertyIntValue("--padding-bottom")
+    const paddingLeft   = this._getCSSPropertyIntValue("--padding-left")
+    const paddingRight  = this._getCSSPropertyIntValue("--padding-right")
+
+    const svgPadding = this._getCSSPropertyIntValue("--trainer-svg-padding")
+
+    const width = paddingLeft + textWidth + paddingRight
+    const height = paddingTop + textHeight + paddingBottom
+
+    this.matrixWidth = svgPadding + width + svgPadding
+    this.matrixHeight = svgPadding + height + svgPadding
+
+    return genSVGRectangle(svgPadding, svgPadding, width, height)
+  }
+
+  @Input()
+  value: string = ""
+
+  @Output("touch")
+  touchChange: EventEmitter<IPointerEvent> = new EventEmitter<IPointerEvent>()
+
+  @Input("focus")
+  focus: boolean = false
+
+  private _pointerDown = initPointerDown(this._elRef.nativeElement).pipe(
+    tap(({originalEvent}) => {
+      originalEvent.preventDefault()
+      originalEvent.stopPropagation()
+    }),
+    share()
+  )
+
+  private _pointerUp = initPointerUp(this._elRef.nativeElement).pipe(
+    tap(({originalEvent}) => {
+      originalEvent.preventDefault()
+      originalEvent.stopPropagation()
+    }),
+    share()
+  )
+
+  active:Observable<boolean> = merge(
+    this._pointerDown.pipe(map(() => true)),
+    this._pointerService.pointerup.pipe(map(() => false)),
+    this._pointerService.pointercancel.pipe(map(() => false)),
+  ).pipe(distinctUntilChanged())
 
   private _keypadSubscriber!: Subscription
+  private _touchSubscriber!: Subscription
 
   ngOnInit() {
-    const textWidth = this._getTextWidth(this.value)
-    const textPadding = this._getCSSPropertyIntValue("--text-padding")
+    const data = this.value.toLocaleUpperCase()
+    this.item = {...this._renderShape(data), data}
 
-    const itemPadding = this._getCSSPropertyIntValue("--trainer-svg-padding")
-
-    const itemWidth = textPadding + textWidth + textPadding
-    const itemHeight = this._getCSSPropertyIntValue("--trainer-svg-height")
-
-    this.matrixWidth = itemPadding + itemWidth + itemPadding
-    this.matrixHeight = itemPadding + itemHeight + itemPadding
-
-    this.item = {...genSVGRectangle(itemPadding, itemPadding, itemWidth, itemHeight), data: this.value}
-
-    if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()
     this._keypadSubscriber = merge(this._keypadService.enter, this._keypadService.space)
-                              .subscribe(() => this.isActive && this.onTouch())
+                              .subscribe(() => this.focus && this.touchChange.emit())
+
+    this._touchSubscriber = this._pointerDown
+                                .pipe(switchMap(() => this._pointerUp.pipe(take(1))))
+                                .subscribe(event => this.touchChange.emit(event))
   }
 
   ngOnDestroy(){
-    if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()
+    this._keypadSubscriber.unsubscribe()
+    this._touchSubscriber.unsubscribe()
   }
 
   ngOnChanges(sc: SimpleChanges ) {
-    if (sc.text !== undefined && !sc.text.firstChange) {
+    if (sc.value !== undefined && !sc.value.firstChange) {
       this.ngOnInit()
     }
-  }
-
-  onTouch() {
-    this.touchValueChange.emit()
   }
 }

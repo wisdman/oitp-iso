@@ -19,7 +19,7 @@ import { KeypadService } from "../../services"
 })
 export class TrainingGreetingComponent implements OnInit, OnDestroy {
   constructor(
-    private _keypadService: KeypadService
+    private _keypadService: KeypadService,
   ){}
 
   @Output("touch")
