@@ -15,7 +15,7 @@ func (api *API) Once(w http.ResponseWriter, r *http.Request) {
 	rand.Seed(time.Now().UnixNano())
 
 	var trainersList = []trainers.ITrainer{
-		"matrix-filling-random", "matrix-sequence-random",
+		"matrix-filling-pattern", "matrix-sequence-random",
 	}
 
 	rand.Shuffle(len(trainersList), func(i, j int) {
