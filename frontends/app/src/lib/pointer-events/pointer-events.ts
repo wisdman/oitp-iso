@@ -19,7 +19,6 @@ export interface IPointerEvent {
 }
 
 export function initPointerDown(node: HTMLElement | SVGElement | Document) {
-  console.log("initPointerDown", node)
   return merge(
     fromEvent<PointerEvent>(node, "pointerdown", { passive: false, capture: true })
     .pipe(filter(event => event.isPrimary), map(fromPointerEvent)),
@@ -31,7 +30,6 @@ export function initPointerDown(node: HTMLElement | SVGElement | Document) {
 }
 
 export function initPointerMove(node: HTMLElement | SVGElement | Document) {
-  console.log("initPointerMove", node)
   return merge(
     fromEvent<PointerEvent>(node, "pointermove", { passive: false, capture: true })
     .pipe(filter(event => event.isPrimary), map(fromPointerEvent)),
@@ -43,7 +41,6 @@ export function initPointerMove(node: HTMLElement | SVGElement | Document) {
 }
 
 export function initPointerUp(node: HTMLElement | SVGElement | Document) {
-  console.log("initPointerUp", node)
   return merge(
     fromEvent<PointerEvent>(node, "pointerup", { passive: false, capture: true })
     .pipe(filter(event => event.isPrimary), map(fromPointerEvent)),
@@ -55,7 +52,6 @@ export function initPointerUp(node: HTMLElement | SVGElement | Document) {
 }
 
 export function initPointerCancel(node: HTMLElement | SVGElement | Document) {
-  console.log("initPointerCancel")
   return merge(
     fromEvent<PointerEvent>(node, "pointercancel", { passive: false, capture: true })
     .pipe(filter(event => event.isPrimary), map(fromPointerEvent)),
