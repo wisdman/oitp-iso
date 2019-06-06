@@ -5,7 +5,7 @@
 // Восстановите пары слов
 //
 
-package wordsColumns
+package wordsPairs
 
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"

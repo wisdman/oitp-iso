@@ -30,7 +30,9 @@ const (
 	UITextReading               IUITrainer = "text-reading"
 	UITextTezirovanie           IUITrainer = "text-tezirovanie"
 	UIWordsColumns              IUITrainer = "words-columns"
+	UIWordsLexis                IUITrainer = "words-lexis"
 	UIWordsPairs                IUITrainer = "words-pairs"
+	UIWordsQuestion             IUITrainer = "words-question"
 )
 
 type Config struct {

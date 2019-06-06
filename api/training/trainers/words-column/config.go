@@ -1,4 +1,4 @@
-package wordsColumns
+package wordsColumn
 
 import (
 	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
@@ -8,7 +8,7 @@ type Parameters struct {
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	ItemsCount uint16 `json:"itemsCount"`
+	ItemsCount int `json:"itemsCount"`
 
 	Quantity int `json:"quantity"`
 }
@@ -19,7 +19,7 @@ type Config struct {
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Items [][]*string `json:"items"`
+	Items []*string `json:"items"`
 }
 
 func newConfig(

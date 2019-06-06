@@ -5,13 +5,13 @@
 // Восстановите слова по памяти
 //
 
-package wordsColumns
+package wordsColumn
 
 import (
 	"github.com/wisdman/oitp-isov/api/lib/db"
 )
 
-var complexityWordsData = [...]Parameters{
+var complexityWordsColumn = [...]Parameters{
 	Parameters{
 		ShowTimeLimit: 30,
 		PlayTimeLimit: 60,
@@ -22,52 +22,42 @@ var complexityWordsData = [...]Parameters{
 		ShowTimeLimit: 20,
 		PlayTimeLimit: 60,
 		ItemsCount:    5,
-		Quantity:      3,
+		Quantity:      2,
 	},
 	Parameters{
 		ShowTimeLimit: 20,
 		PlayTimeLimit: 60,
 		ItemsCount:    7,
-		Quantity:      3,
+		Quantity:      2,
 	},
 }
 
-func BuildWords(
+func Build(
 	sql *db.Transaction,
 	complexity uint8,
 ) (
 	configs []interface{},
 	err error,
 ) {
-	params := complexityWordsData[complexity]
+	params := complexityWordsColumn[complexity]
 
-	var query string
-	for i := 0; i < params.Quantity; i++ {
-		if i > 0 {
-			query += " UNION "
-		}
-		query += `
-			SELECT jsonb_agg("word") AS "items"
-			FROM (
-				SELECT ARRAY["word"] AS "word"
-				FROM public.trainers_lexicon
-				WHERE "forColumns"
-				ORDER BY random()
-				LIMIT $1
-			) t`
-	}
-
-	rows, err := sql.Query(query, params.ItemsCount)
-	if err != nil {
+	var words []*string
+	if err := sql.QueryRow(`
+		SELECT
+			"word"
+		FROM
+			public.trainers_words_column
+		ORDER BY random()
+		LIMIT $1`,
+		params.Quantity*params.ItemsCount,
+	).Scan(&words); err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
-	for rows.Next() {
+	for i := 0; i < params.Quantity; i++ {
 		config := newConfig(params)
-		if err = rows.Scan(&config.Items); err != nil {
-			return nil, err
-		}
+		config.Items = words[0:params.ItemsCount]
+		words = words[params.ItemsCount:]
 		configs = append(configs, config)
 	}
 

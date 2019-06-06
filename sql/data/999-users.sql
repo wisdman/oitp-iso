@@ -47,3 +47,24 @@ SELECT public.user__add('Евсеевы', 'evseev@kzakazu.ru', '5m4rJO4');
 SELECT public.user__add('Дьяконов Алексей', 'dasar3000@mail.ru', 'QOUqwBN');
 SELECT public.user__add('Ускова Вера', 'darkfuneralskrillex@mail.ru', 'v5DZ43k');
 SELECT public.user__add('Екатерина Кац', 'kattykats17@mail.ru', 'm5XbRQg');
+
+
+SELECT public.user__add(' ', 'info@chitai-str.ru', '6TmfSd');
+SELECT public.user__add(' ', '9091382722@mail.ru', '25wjPN');
+SELECT public.user__add(' ', 'smk8888@rambler.ru', 'Evwh4t');
+SELECT public.user__add(' ', 'gusevaka@mail.ru', 'eDTGHH');
+SELECT public.user__add(' ', 'chitai89@mail.ru', '6MdONB');
+SELECT public.user__add(' ', 'chitai58@mail.ru', 'SCtXo8');
+SELECT public.user__add(' ', 'nata.miss.tata@mail.ru', 'LevGRF');
+SELECT public.user__add(' ', 'i.v.bikovskaya@rambler.ru', 'pmo7M0');
+SELECT public.user__add(' ', 't.andreeva20000@mai.ru', 'CanqkL');
+SELECT public.user__add(' ', 'kravtsova170@rambler.ru', 'hcdEDQ');
+SELECT public.user__add(' ', 'kiselevata02@mail.ru', 'Mbyq8U');
+SELECT public.user__add(' ', 'nejva55@gmail.com', 'prMOWm');
+
+SELECT public.user__add(' ', 'a.vasilev@arcticgroup.ru', 'prMwDm');
+SELECT public.user__add(' ', 'evseeva@li.ru', '6TmfSd');
+SELECT public.user__add(' ', 'kozhaeva_m@mail.ru', '25wjPN');
+SELECT public.user__add(' ', 'delovoibereg1@mail.ru', 'Evwh4t');
+SELECT public.user__add(' ', 'vasilyevd81@gmail.com', 'EvQh7t');
+SELECT public.user__add(' ', 'uskova_vv@mail.ru', 'DyjhU8');

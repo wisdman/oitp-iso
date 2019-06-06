@@ -4,7 +4,7 @@
 }
 
 .user-mark {
-  background-color: rgba(255, 255, 0, .87);
+  background-color: rgba(255, 255, 0, .87); /* Yellow */
 }
 
 .result .mark {
@@ -12,9 +12,27 @@
 }
 
 .result .user-mark {
-  background-color: var(--trainer-error-color-light);
+  color: var(--trainer-error-color);
+  background-color: rgba(0,0,0,0);
+  position: relative;
+}
+
+.result .user-mark::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(50% + 1px);
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--trainer-error-color);
 }
 
 .result .mark .user-mark {
+  color: inherit;
   background-color: var(--trainer-success-color-light);
+}
+
+.result .mark .user-mark::after {
+  display: none;
 }
