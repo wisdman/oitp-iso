@@ -1,14 +1,14 @@
-package wordsPairs
+package wordsLexis
 
 import (
 	"github.com/wisdman/oitp-isov/api/training/trainers/abstract"
 )
 
 type Parameters struct {
-	TimeLimit  uint16 `json:"timeLimit"`
-	ItemsCount uint16 `json:"itemsCount"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Quantity int `json:"quantity"`
+	ItemsCount int `json:"itemsCount"`
+	Quantity   int `json:"quantity"`
 }
 
 type IItemsType string
@@ -21,7 +21,7 @@ const (
 
 type Config struct {
 	*abstract.Config
-	TimeLimit uint16 `json:"timeLimit"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	ItemsType IItemsType  `json:"itemsType"`
 	Items     [][]*string `json:"items"`
@@ -29,9 +29,12 @@ type Config struct {
 
 func newConfig(
 	params Parameters,
+	itemsType IItemsType,
+
 ) *Config {
 	return &Config{
-		Config:    abstract.NewConfig(abstract.UIWordsPairs),
-		TimeLimit: params.TimeLimit,
+		Config:        abstract.NewConfig(abstract.UIWordsLexis),
+		PlayTimeLimit: params.PlayTimeLimit,
+		ItemsType:     itemsType,
 	}
 }

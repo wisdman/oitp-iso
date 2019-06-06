@@ -9,8 +9,7 @@ type Parameters struct {
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	ItemsCount int `json:"itemsCount"`
-
-	Quantity int `json:"quantity"`
+	Quantity   int `json:"quantity"`
 }
 
 type Config struct {
@@ -26,7 +25,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIWordsColumns),
+		Config:        abstract.NewConfig(abstract.UIWordsColumn),
 		ShowTimeLimit: params.ShowTimeLimit,
 		PlayTimeLimit: params.PlayTimeLimit,
 	}

@@ -32,7 +32,7 @@ var complexityPairsData = [...]Parameters{
 	},
 }
 
-func BuildPairs(
+func Build(
 	sql *db.Transaction,
 	complexity uint8,
 ) (
@@ -41,33 +41,23 @@ func BuildPairs(
 ) {
 	params := complexityPairsData[complexity]
 
-	var query string
-	for i := 0; i < params.Quantity; i++ {
-		if i > 0 {
-			query += " UNION "
-		}
-		query += `
-			SELECT jsonb_agg("items") as "items"
-			FROM (
-				SELECT ARRAY["word_a", "word_b"] as "items"
-				FROM public.trainers_lexicon_pairs
-				ORDER BY random()
-				LIMIT $1
-			) t`
-	}
-
-	rows, err := sql.Query(query, params.ItemsCount)
-	if err != nil {
+	var words [][]*string
+	if err := sql.QueryRow(`
+		SELECT
+			ARRAY["wordA", "wordB"]
+		FROM
+			public.trainers_words_pairs
+		ORDER BY random()
+		LIMIT $1`,
+		params.Quantity*params.ItemsCount,
+	).Scan(&words); err != nil {
 		return nil, err
 	}
-	defer rows.Close()
 
-	for rows.Next() {
+	for i := 0; i < params.Quantity; i++ {
 		config := newConfig(params)
-		if err = rows.Scan(&config.Items); err != nil {
-			return nil, err
-		}
-
+		config.Items = words[0:params.ItemsCount]
+		words = words[params.ItemsCount:]
 		configs = append(configs, config)
 	}
 

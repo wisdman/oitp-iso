@@ -19,44 +19,48 @@ export interface IPointerEvent {
 }
 
 export function initPointerDown(node: HTMLElement | SVGElement | Document) {
+  console.log("initPointerDown", node)
   return merge(
     fromEvent<PointerEvent>(node, "pointerdown", { passive: false, capture: true })
     .pipe(filter(event => event.isPrimary), map(fromPointerEvent)),
     fromEvent<TouchEvent>(node, "touchstart", { passive: false, capture: true })
-    .pipe(filter(event => isPointerEvents && event.changedTouches.length === 1), map(fromTouchEvent)),
+    .pipe(filter(event => !isPointerEvents && event.changedTouches.length === 1), map(fromTouchEvent)),
     fromEvent<MouseEvent>(node, "mousedown", { passive: false, capture: true })
-    .pipe(filter(() => isPointerEvents && isTouchEvents), map(fromMouseEvent))
+    .pipe(filter(() => !isPointerEvents && !isTouchEvents), map(fromMouseEvent))
   )
 }
 
 export function initPointerMove(node: HTMLElement | SVGElement | Document) {
+  console.log("initPointerMove", node)
   return merge(
     fromEvent<PointerEvent>(node, "pointermove", { passive: false, capture: true })
     .pipe(filter(event => event.isPrimary), map(fromPointerEvent)),
     fromEvent<TouchEvent>(node, "touchmove", { passive: false, capture: true })
-    .pipe(filter(event => isPointerEvents && event.changedTouches.length === 1), map(fromTouchEvent)),
+    .pipe(filter(event => !isPointerEvents && event.changedTouches.length === 1), map(fromTouchEvent)),
     fromEvent<MouseEvent>(node, "mousemove", { passive: false, capture: true })
-    .pipe(filter(() => isPointerEvents && isTouchEvents), map(fromMouseEvent))
+    .pipe(filter(() => !isPointerEvents && !isTouchEvents), map(fromMouseEvent))
   )
 }
 
 export function initPointerUp(node: HTMLElement | SVGElement | Document) {
+  console.log("initPointerUp", node)
   return merge(
     fromEvent<PointerEvent>(node, "pointerup", { passive: false, capture: true })
     .pipe(filter(event => event.isPrimary), map(fromPointerEvent)),
     fromEvent<TouchEvent>(node, "touchend", { passive: false, capture: true })
-    .pipe(filter(event => isPointerEvents && event.changedTouches.length === 1), map(fromTouchEvent)),
+    .pipe(filter(event => !isPointerEvents && event.changedTouches.length === 1), map(fromTouchEvent)),
     fromEvent<MouseEvent>(node, "mouseup", { passive: false, capture: true })
-    .pipe(filter(() => isPointerEvents && isTouchEvents), map(fromMouseEvent))
+    .pipe(filter(() => !isPointerEvents && !isTouchEvents), map(fromMouseEvent))
   )
 }
 
 export function initPointerCancel(node: HTMLElement | SVGElement | Document) {
+  console.log("initPointerCancel")
   return merge(
     fromEvent<PointerEvent>(node, "pointercancel", { passive: false, capture: true })
     .pipe(filter(event => event.isPrimary), map(fromPointerEvent)),
     fromEvent<TouchEvent>(node, "touchcancel", { passive: false, capture: true })
-    .pipe(filter(event => isPointerEvents && event.changedTouches.length === 1), map(fromTouchEvent)),
+    .pipe(filter(event => !isPointerEvents && event.changedTouches.length === 1), map(fromTouchEvent)),
   )
 }
 

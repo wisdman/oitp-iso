@@ -32,6 +32,8 @@ CREATE VIEW public.trainers_words_lexis AS
     t."id" AS "id",
     t."enabled" AS "enabled",
 
+    t."relation" AS "relation",
+
     t."wordA" AS "wordA",
     t."wordB" AS "wordB"
   FROM private.trainers_words_lexis t

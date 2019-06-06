@@ -29,7 +29,7 @@ const (
 	UITextQuestion              IUITrainer = "text-question"
 	UITextReading               IUITrainer = "text-reading"
 	UITextTezirovanie           IUITrainer = "text-tezirovanie"
-	UIWordsColumns              IUITrainer = "words-columns"
+	UIWordsColumn               IUITrainer = "words-column"
 	UIWordsLexis                IUITrainer = "words-lexis"
 	UIWordsPairs                IUITrainer = "words-pairs"
 	UIWordsQuestion             IUITrainer = "words-question"

@@ -23,7 +23,8 @@ import (
 	"github.com/wisdman/oitp-isov/api/training/trainers/text-letters"
 	"github.com/wisdman/oitp-isov/api/training/trainers/text-reading"
 	"github.com/wisdman/oitp-isov/api/training/trainers/text-tezirovanie"
-	"github.com/wisdman/oitp-isov/api/training/trainers/words-columns"
+	"github.com/wisdman/oitp-isov/api/training/trainers/words-column"
+	"github.com/wisdman/oitp-isov/api/training/trainers/words-lexis"
 	"github.com/wisdman/oitp-isov/api/training/trainers/words-pairs"
 	"github.com/wisdman/oitp-isov/api/training/trainers/words-questions"
 )
@@ -56,12 +57,12 @@ const (
 	TextLetters               ITrainer = "text-letters"               // Точность восприятия - афоризмы
 	TextReading               ITrainer = "text-reading"               // Точность восприятия - тексты
 	TextTezirovanie           ITrainer = "text-tezirovanie"           // Тезирование
+	WordsColumn               ITrainer = "words-column"               // Мнемотехника. Столбики
+	WordsLexisAntonyms        ITrainer = "words-lexis-antonyms"       // Вербальный интеллект
+	WordsLexisParonyms        ITrainer = "words-lexis-paronyms"       // Вербальный интеллект
+	WordsLexisSynonyms        ITrainer = "words-lexis-synonyms"       // Вербальный интеллект
+	WordsPairs                ITrainer = "words-pairs"                // Точность восприятия - Столбики
 
-	WordsColumnsPairs   ITrainer = "words-columns-pairs"   // Два столбика слов
-	WordsColumnsWords   ITrainer = "words-columns-words"   // Востановить список слов по памяти
-	WordsPairsAntonyms  ITrainer = "words-pairs-antonyms"  // Два столбика слов, антинимы
-	WordsPairsParonyms  ITrainer = "words-pairs-paronyms"  // Два столбика слов, паронимы
-	WordsPairsSynonyms  ITrainer = "words-pairs-synonyms"  // Два столбика слов, синонимы
 	WordsQuestionsClose ITrainer = "words-questions-close" // Выбрать наиболее близкое слово
 	WordsQuestionsWaste ITrainer = "words-questions-waste" // Выбрать лишнее слово
 )
@@ -100,13 +101,14 @@ var BuildFunctions = map[ITrainer]ITrainerBuilder{
 	TextLetters:               textLetters.Build,
 	TextReading:               textReading.Build,
 	TextTezirovanie:           textTezirovanie.Build,
-	WordsColumnsPairs:         wordsColumns.BuildPairs,
-	WordsColumnsWords:         wordsColumns.BuildWords,
-	WordsPairsAntonyms:        wordsPairs.BuildAntonyms,
-	WordsPairsParonyms:        wordsPairs.BuildParonyms,
-	WordsPairsSynonyms:        wordsPairs.BuildSynonyms,
-	WordsQuestionsClose:       wordsQuestion.BuildClose,
-	WordsQuestionsWaste:       wordsQuestion.BuildWaste,
+	WordsColumn:               wordsColumn.Build,
+	WordsLexisAntonyms:        wordsLexis.BuildAntonyms,
+	WordsLexisParonyms:        wordsLexis.BuildParonyms,
+	WordsLexisSynonyms:        wordsLexis.BuildSynonyms,
+	WordsPairs:                wordsPairs.Build,
+
+	WordsQuestionsClose: wordsQuestion.BuildClose,
+	WordsQuestionsWaste: wordsQuestion.BuildWaste,
 }
 
 func Build(
