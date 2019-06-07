@@ -11,23 +11,8 @@ import { DEBUG } from "./app.config"
 
 if (!DEBUG) enableProdMode()
 
-function main(): Promise<any> {
-  registerLocaleData(localeRu)
-  return platformBrowserDynamic()
-         .bootstrapModule(AppModule)
-}
+registerLocaleData(localeRu)
 
-const domReadyHandler = () => {
-  document.removeEventListener("DOMContentLoaded", domReadyHandler)
-  main().catch((err) => console.error(err))
-}
-
-switch (document.readyState) {
-  case "loading":
-    document.addEventListener("DOMContentLoaded", domReadyHandler)
-    break
-  case "interactive":
-  case "complete":
-  default:
-    main().catch((err) => console.error(err))
-}
+platformBrowserDynamic()
+.bootstrapModule(AppModule)
+.catch(err => console.error(err))
