@@ -18,7 +18,7 @@ const FAVICON = PATH("./favicon")
 const INDEX_HTML = PATH("./src/index.html")
 const ARTIFACTS_INDEX_HTML = PATH("./artifacts/index.html")
 
-const CHUNKS = ["polyfills", "vendor", "common", "styles", "main"]
+const CHUNKS = ["runtime", "polyfills", "vendor", "common", "styles", "main"]
 
 const MANIFEST = {
   name: "VLL",

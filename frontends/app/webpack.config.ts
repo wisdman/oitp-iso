@@ -69,6 +69,7 @@ export default {
     publicPath: "/",
     filename: `js/[name]-${isES5 ? "es5" : "es2015"}.[hash:10].js`,
     crossOriginLoading: false,
+    futureEmitAssets: true,
   },
 
   module: {
@@ -235,7 +236,7 @@ export default {
       template: PATH("./src/index.html"),
       inject: "head",
       chunksSortMode: "manual",
-      chunks: ["polyfills", "vendor", "common", "styles", "main"],
+      chunks: ["runtime", "polyfills", "vendor", "common", "styles", "main"],
     }),
 
     new HotModuleReplacementPlugin()
@@ -243,7 +244,7 @@ export default {
 
   optimization: {
     noEmitOnErrors: true,
-    runtimeChunk: { name: "vendor" },
+    runtimeChunk: "single",
     splitChunks: {
       maxAsyncRequests: Infinity,
       cacheGroups: {
@@ -255,7 +256,7 @@ export default {
         common: {
           name: "common",
           chunks: "async",
-          minChunks: 1,
+          minChunks: 2,
           enforce: true,
           priority: 5,
         },
@@ -264,14 +265,14 @@ export default {
           name: "vendor",
           chunks: "initial",
           enforce: true,
-          test: (module, chunks) => {
+          test: (module: { nameForCondition?: Function }, chunks: Array<{ name: string }>) => {
             const moduleName = module.nameForCondition ? module.nameForCondition() : ""
-            return /[\\/]node_modules[\\/]/.test(moduleName) &&
-              !chunks.some(({ name }:{ name: string }) => name === "polyfills"
-                                                       || name === "polyfills-es5"
-                                                       || name === "styles"
-                          )
-          },
+            return /[\\/]node_modules[\\/]/.test(moduleName)
+                && !chunks.some(({ name }) => name === "polyfills"
+                                           || name === "polyfills-es5"
+                                           || name === "styles"
+                                )
+            }
         },
       }
     },
