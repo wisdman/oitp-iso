@@ -62,10 +62,10 @@ void function MakeIndex() {
                         .map(({es2015, es5}) => {
                           let str = ""
                           if (es2015) {
-                            str += `<script src="${resolve(PUBLIC_JS, es2015)}" type="module"></script>`
+                            str += `<script src="${resolve(PUBLIC_JS, es2015)}" type="module" defer></script>`
                           }
                           if (es5) {
-                            str += `<script src="${resolve(PUBLIC_JS, es5)}" nomodule></script>`
+                            str += `<script src="${resolve(PUBLIC_JS, es5)}" nomodule defer></script>`
                           }
                           return str
                         })
