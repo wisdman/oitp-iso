@@ -18,7 +18,20 @@ const FAVICON = PATH("./favicon")
 const INDEX_HTML = PATH("./src/index.html")
 const ARTIFACTS_INDEX_HTML = PATH("./artifacts/index.html")
 
-const CHUNKS = ["runtime", "polyfills", "vendor", "common", "styles", "main"]
+const CHUNKS = [
+  "runtime-es2015",
+  "polyfills-es2015",
+  "runtime-es5",
+  "polyfills-es5",
+  "vendor-es2015",
+  "common-es2015",
+  "styles-es2015",
+  "main-es2015",
+  "vendor-es5",
+  "common-es5",
+  "styles-es5",
+  "main-es5",
+]
 
 const MANIFEST = {
   name: "VLL",
@@ -56,19 +69,13 @@ void function MakeIndex() {
   const scriptsFiles = FS.readdirSync(ARTIFACTS_JS)
                          .filter(fileName => fileName.match(/\.js/))
   const scripts = CHUNKS.map( chunk => ({
-                              es2015: scriptsFiles.find(fileName => fileName.startsWith(`${chunk}-es2015`)),
-                              es5: scriptsFiles.find(fileName => fileName.startsWith(`${chunk}-es5`))
+                              file: scriptsFiles.find(fileName => fileName.startsWith(chunk)),
+                              isModule: chunk.endsWith("es2015"),
                             }))
-                        .map(({es2015, es5}) => {
-                          let str = ""
-                          if (es2015) {
-                            str += `<script src="${resolve(PUBLIC_JS, es2015)}" type="module" defer></script>`
-                          }
-                          if (es5) {
-                            str += `<script src="${resolve(PUBLIC_JS, es5)}" nomodule defer></script>`
-                          }
-                          return str
-                        })
+                        .filter(({file}) => file !== undefined)
+                        .map(({file, isModule}) =>
+                          `<script src="${resolve(PUBLIC_JS, file as string)}" ${isModule ? 'type="module"' : 'nomodule'} defer></script>`
+                        )
                         .join("")
 
   index = index.replace("</head>", styles + scripts + "</head>")
