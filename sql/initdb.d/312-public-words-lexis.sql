@@ -12,7 +12,7 @@ CREATE VIEW public.trainer_words_lexis AS
     t."wordB"
   FROM private.trainer_words_lexis AS t
   WHERE
-    t."deleted" IS NOT NULL
+    t."deleted" IS NULL
     AND
     t."enabled";
 

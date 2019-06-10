@@ -9,6 +9,6 @@ CREATE VIEW admin.trainer_definitions AS
     t."word",
     t."definitions"
   FROM private.trainer_definitions AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_definitions TO "api-admin";

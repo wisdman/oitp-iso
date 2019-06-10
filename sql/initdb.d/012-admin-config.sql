@@ -7,6 +7,6 @@ CREATE VIEW admin.config AS
     c."description"
 
   FROM private.config AS c
-  WHERE c."deleted" IS NOT NULL;
+  WHERE c."deleted" IS NULL;
 
 GRANT SELECT ON admin.config TO "api-admin";

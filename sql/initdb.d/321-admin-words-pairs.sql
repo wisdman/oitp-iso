@@ -9,6 +9,6 @@ CREATE VIEW admin.trainer_words_pairs AS
     t."wordA",
     t."wordB"
   FROM private.trainer_words_pairs AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_words_pairs TO "api-admin";

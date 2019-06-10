@@ -36,7 +36,7 @@ CREATE VIEW admin.users AS
     ) AS "sessions"
   FROM private.users AS u
   LEFT JOIN private.sessions AS s ON (s."owner" = u."id")
-  WHERE u."deleted" IS NOT NULL
+  WHERE u."deleted" IS NULL
   GROUP BY u."id";
 
 GRANT SELECT ON admin.users TO "api-admin";

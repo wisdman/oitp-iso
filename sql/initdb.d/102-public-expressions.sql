@@ -9,7 +9,7 @@ CREATE VIEW public.expressions AS
     e."author" AS "author"
   FROM private.expressions AS e
   WHERE
-    e."deleted" IS NOT NULL
+    e."deleted" IS NULL
     AND
     e."enabled";
 

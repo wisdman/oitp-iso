@@ -8,7 +8,7 @@ CREATE VIEW public.files AS
     f."description"
   FROM private.files AS f
   WHERE
-    f."deleted" IS NOT NULL
+    f."deleted" IS NULL
     AND
     f."enabled";
 

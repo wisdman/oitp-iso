@@ -29,7 +29,7 @@ CREATE TABLE private.users (
   "avatar"  oid  DEFAULT NULL,
 
   "profile" jsonb NOT NULL DEFAULT '{}'::jsonb, -- Профиль пользователя
-  "tariff" uuid NOT NULL DEFAULT public.default_tariff(),
+  "tariff" uuid DEFAULT NULL,
 
   "timezone" interval NOT NULL DEFAULT '0'::interval,
 

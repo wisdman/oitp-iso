@@ -9,7 +9,7 @@ CREATE VIEW public.trainer_text_tezirovanie AS
     t."data"
   FROM private.trainer_text_tezirovanie AS t
   WHERE
-    t."deleted" IS NOT NULL
+    t."deleted" IS NULL
     AND
     t."enabled";
 

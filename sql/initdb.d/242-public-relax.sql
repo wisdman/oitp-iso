@@ -9,7 +9,7 @@ CREATE VIEW public.trainer_relax AS
     t."data"
   FROM private.trainer_relax AS t
   WHERE
-    t."deleted" IS NOT NULL
+    t."deleted" IS NULL
     AND
     t."enabled";
 

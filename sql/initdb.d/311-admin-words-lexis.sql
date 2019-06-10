@@ -11,6 +11,6 @@ CREATE VIEW admin.trainer_words_lexis AS
     t."wordA",
     t."wordB"
   FROM private.trainer_words_lexis AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_words_lexis TO "api-admin";

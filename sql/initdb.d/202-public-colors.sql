@@ -10,7 +10,7 @@ CREATE VIEW public.trainer_colors AS
     t."color"
   FROM private.trainer_colors AS t
   WHERE
-    t."deleted" IS NOT NULL
+    t."deleted" IS NULL
     AND
     t."enabled";
 

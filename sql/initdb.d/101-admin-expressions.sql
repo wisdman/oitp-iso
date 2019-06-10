@@ -8,6 +8,6 @@ CREATE VIEW admin.expressions AS
     e."data" AS "data",
     e."author" AS "author"
   FROM private.expressions AS e
-  WHERE e."deleted" IS NOT NULL;
+  WHERE e."deleted" IS NULL;
 
 GRANT SELECT ON admin.expressions TO "api-admin";

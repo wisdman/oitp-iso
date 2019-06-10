@@ -9,7 +9,7 @@ CREATE VIEW public.trainer_words_column AS
     t."word"
   FROM private.trainer_words_column AS t
   WHERE
-    t."deleted" IS NOT NULL
+    t."deleted" IS NULL
     AND
     t."enabled";
 

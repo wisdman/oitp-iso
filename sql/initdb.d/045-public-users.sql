@@ -11,7 +11,7 @@ CREATE VIEW public.users AS
   FROM
     private.users AS u
   WHERE
-    u."deleted" IS NOT NULL
+    u."deleted" IS NULL
     AND
     u."enabled";
 

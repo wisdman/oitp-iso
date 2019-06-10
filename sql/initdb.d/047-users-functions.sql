@@ -1,7 +1,7 @@
 SET search_path = "$user";
 
 CREATE OR REPLACE FUNCTION public.users__init_session(_sessionKey char(128), _ip inet)
-RETURNS void
+RETURNS bool
 AS $$
   DECLARE
     _sessionUser text;
@@ -16,11 +16,12 @@ AS $$
     RETURNING u."id" INTO _sessionUser;
 
     IF NOT FOUND THEN
-      RAISE EXCEPTION 'Incorrect Session Key' USING ERRCODE = 'AA401';
+      RETURN FALSE;
     END IF;
 
     PERFORM set_config('app.sessionKey', _sessionKey, true);
     PERFORM set_config('app.sessionUser', _sessionUser, true);
+    RETURN TRUE;
   END;
 $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 
@@ -47,7 +48,7 @@ AS $$
       RETURNING
         s."id",
         to_char(s."ts", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "ts",
-        to_char(s."expires", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "expires";
+        to_char(s."expires", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "expires"
   END;
 $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 

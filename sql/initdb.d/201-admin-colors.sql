@@ -9,6 +9,6 @@ CREATE VIEW admin.trainer_colors AS
     t."data",
     t."color"
   FROM private.trainer_colors AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_colors TO "api-admin";

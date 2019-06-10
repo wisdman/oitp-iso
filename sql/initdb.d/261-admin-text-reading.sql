@@ -10,6 +10,6 @@ CREATE VIEW admin.trainer_text_reading AS
     t."author",
     t."questions"
   FROM private.trainer_text_reading AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_text_reading TO "api-admin";

@@ -8,6 +8,6 @@ CREATE VIEW admin.trainer_words_column AS
 
     t."word"
   FROM private.trainer_words_column AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_words_column TO "api-admin";

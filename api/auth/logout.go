@@ -10,7 +10,7 @@ import (
 func (api *API) Logout(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
-	_, err := sql.Exec("DELETE FROM private.sessions")
+	_, err := sql.Exec("SELECT public.users__logout()")
 	if err != nil {
 		service.Fatal(w, err)
 		return

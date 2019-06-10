@@ -8,6 +8,6 @@ CREATE VIEW admin.trainer_text_letters AS
 
     t."data"
   FROM private.trainer_text_letters AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_text_letters TO "api-admin";

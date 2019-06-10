@@ -10,6 +10,6 @@ func Error(w http.ResponseWriter, code int) {
 }
 
 func Fatal(w http.ResponseWriter, err interface{}) {
-	log.Printf("Fatal: %+v\n", err)
+	log.Printf("FATAL: %+v\n", err)
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 }

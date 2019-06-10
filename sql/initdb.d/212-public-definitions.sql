@@ -10,7 +10,7 @@ CREATE VIEW public.trainer_definitions AS
     t."definitions"
   FROM private.trainer_definitions AS t
   WHERE
-    t."deleted" IS NOT NULL
+    t."deleted" IS NULL
     AND
     t."enabled";
 

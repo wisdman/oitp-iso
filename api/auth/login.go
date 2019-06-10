@@ -41,21 +41,7 @@ func (api *API) Login(w http.ResponseWriter, r *http.Request) {
 
 	var session Session
 	err = sql.QueryRow(
-		`INSERT INTO public.sessions("owner", "ip", "fingerprint")
-	     	SELECT
-	        u."id" AS "owner",
-	        $3 AS "ip",
-	        $4 AS "fingerprint"
-	      FROM
-	        public.users u
-	      WHERE
-	        u."email" = $1
-	        AND
-	        u."password" = digest($2, 'sha512')
-      RETURNING
-        "id",
-        to_char("ts", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "ts",
-        to_char("expires", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "expires"`,
+		`SELECT * FROM public.users__email_login($1, $2, $3, $4)`,
 		login.Email,
 		login.Password,
 		login.IP,

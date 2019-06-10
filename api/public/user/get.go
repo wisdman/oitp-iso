@@ -3,36 +3,47 @@ package main
 import (
 	"net/http"
 
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 	"github.com/wisdman/oitp-isov/api/lib/service"
-	"github.com/wisdman/oitp-isov/api/lib/session"
 )
 
 func (api *API) GetUser(w http.ResponseWriter, r *http.Request) {
-	sql, err := session.Begin(api.db, r)
-	if err == session.ErrorIncorrectSessionKey || err == session.ErrorUnauthorized {
-		service.Error(w, http.StatusUnauthorized)
-		return
-	} else if err != nil {
-		service.Fatal(w, err)
-		return
-	}
+	sql := middleware.GetDBTransaction(r)
 
-	var user []byte
-	err = sql.QueryRow(
-		`SELECT "user" FROM public.users LIMIT 1`,
-	).Scan(&user)
+	var user User
+	err := sql.QueryRow(`
+		SELECT
+			u."id",
+
+			u."email",
+			u."emailIsValid",
+
+			u."phone",
+    	u."phoneIsValid",
+
+    	u."name",
+	    u."surname",
+	    u."avatar"
+
+		FROM public.self AS u
+		LIMIT 1`,
+	).Scan(
+		&user.Id,
+
+		&user.Email,
+		&user.EmailIsValid,
+
+		&user.Phone,
+		&user.PhoneIsValid,
+
+		&user.Name,
+		&user.Surname,
+		&user.Avatar,
+	)
 	if err != nil {
 		service.Fatal(w, err)
-		sql.Rollback()
 		return
 	}
 
-	if err = sql.Commit(); err != nil {
-		service.Fatal(w, err)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	w.Write(user)
+	service.ResponseJSON(w, user)
 }

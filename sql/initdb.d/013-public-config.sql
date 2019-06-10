@@ -6,6 +6,6 @@ CREATE VIEW public.config AS
     c."description",
     c."value"
   FROM private.config AS c
-  WHERE c."deleted" IS NOT NULL;
+  WHERE c."deleted" IS NULL;
 
 GRANT SELECT ON public.config TO "api-public";

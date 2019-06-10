@@ -9,6 +9,6 @@ CREATE VIEW admin.files AS
     f."title",
     f."description"
   FROM private.files AS f
-  WHERE f."deleted" IS NOT NULL;
+  WHERE f."deleted" IS NULL;
 
 GRANT SELECT ON admin.files TO "api-admin";

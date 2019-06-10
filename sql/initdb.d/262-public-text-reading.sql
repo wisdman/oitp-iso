@@ -11,7 +11,7 @@ CREATE VIEW public.trainer_text_reading AS
     t."questions"
   FROM private.trainer_text_reading AS t
   WHERE
-    t."deleted" IS NOT NULL
+    t."deleted" IS NULL
     AND
     t."enabled";
 

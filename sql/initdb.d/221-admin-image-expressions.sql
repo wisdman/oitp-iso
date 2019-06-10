@@ -8,6 +8,6 @@ CREATE VIEW admin.trainer_image_expressions AS
 
     t."data"
   FROM private.trainer_image_expressions AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_image_expressions TO "api-admin";

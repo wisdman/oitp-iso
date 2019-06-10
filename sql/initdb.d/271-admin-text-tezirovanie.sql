@@ -8,6 +8,6 @@ CREATE VIEW admin.trainer_text_tezirovanie AS
 
     t."data"
   FROM private.trainer_text_tezirovanie AS t
-  WHERE t."deleted" IS NOT NULL;
+  WHERE t."deleted" IS NULL;
 
 GRANT SELECT ON  admin.trainer_text_tezirovanie TO "api-admin";
