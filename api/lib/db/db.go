@@ -1,44 +1,47 @@
 package db
 
 import (
+	"context"
 	"log"
 
 	"github.com/jackc/pgx"
 )
 
 type DB struct {
-	pool *pgx.ConnPool
+	*pgx.ConnPool
 }
 
 func New() *DB {
-	config, err := pgx.ParseEnvLibpq()
+	poolConfig, err := parseEnv()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	config.Logger = &DBLogger{}
-	config.LogLevel = pgx.LogLevelError
-	// config.LogLevel = pgx.LogLevelInfo
-
-	pool, err := pgx.NewConnPool(pgx.ConnPoolConfig{ConnConfig: config})
+	ConnPool, err := pgx.NewConnPool(*poolConfig)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	return &DB{pool}
+	return &DB{ConnPool}
 }
 
-func (db *DB) Acquire() (*Transaction, error) {
-	conn, err := db.pool.Acquire()
+func (db *DB) Exec(ctx context.Context, sql string, args ...interface{}) (pgx.CommandTag, error) {
+	return db.ExecEx(ctx, sql, nil, args...)
+}
+
+func (db *DB) Query(ctx context.Context, sql string, args ...interface{}) (*pgx.Rows, error) {
+	return db.QueryEx(ctx, sql, nil, args...)
+}
+
+func (db *DB) QueryRow(ctx context.Context, sql string, args ...interface{}) *pgx.Row {
+	return db.QueryRowEx(ctx, sql, nil, args...)
+}
+
+func (db *DB) Begin(ctx context.Context) (*Transaction, error) {
+	Tx, err := db.BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.ReadCommitted})
 	if err != nil {
 		return nil, err
 	}
 
-	tx, err := conn.Begin()
-	if err != nil {
-		db.pool.Release(conn)
-		return nil, err
-	}
-
-	return &Transaction{db, conn, tx}, nil
+	return &Transaction{Tx, ctx}, nil
 }

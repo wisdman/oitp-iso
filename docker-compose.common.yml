@@ -9,11 +9,13 @@ services:
     volumes:
       - data-volume:/var/lib/postgresql/data
     secrets:
-      - secret-sql
+      - secret-sql-root
+    env_file:
+      - ./environment
     environment:
-      - POSTGRES_DB=oitp
+      - LANG=ru_RU.utf8
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-sql
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-sql-root
     networks:
       default:
 
@@ -22,17 +24,16 @@ services:
     build:
       context: ./api
       args:
-        - APP_NAME=auth
+        - APP_PATH=auth
     image: oitp-isov/api-auth
     secrets:
-      - secret-api
+      - secret-api-public
+    env_file:
+      - ./environment
     environment:
-      - PGAPPNAME=auth
-      - PGHOST=sql
-      - PGSSLMODE=disable
-      - PGDATABASE=oitp
-      - PGUSER=api
-      - PGPASSWORD=API-P@Ssw0rd
+      - POSTGRES_APPNAME=api-auth
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
       - sql
     links:
@@ -40,22 +41,21 @@ services:
     networks:
       default:
 
-  api-recommendation:
+  api-public-info:
     restart: unless-stopped
     build:
       context: ./api
       args:
-        - APP_NAME=recommendation
-    image: oitp-isov/api-recommendation
+        - APP_PATH=public/info
+    image: oitp-isov/api-public-info
     secrets:
-      - secret-api
+      - secret-api-public
+    env_file:
+      - ./environment
     environment:
-      - PGAPPNAME=recommendation
-      - PGHOST=sql
-      - PGSSLMODE=disable
-      - PGDATABASE=oitp
-      - PGUSER=api
-      - PGPASSWORD=API-P@Ssw0rd
+      - POSTGRES_APPNAME=api-public-info
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
       - sql
     links:
@@ -68,17 +68,16 @@ services:
     build:
       context: ./api
       args:
-        - APP_NAME=user
-    image: oitp-isov/api-user
+        - APP_PATH=public/user
+    image: oitp-isov/api-public-user
     secrets:
-      - secret-api
+      - secret-api-public
+    env_file:
+      - ./environment
     environment:
-      - PGAPPNAME=user
-      - PGHOST=sql
-      - PGSSLMODE=disable
-      - PGDATABASE=oitp
-      - PGUSER=api
-      - PGPASSWORD=API-P@Ssw0rd
+      - POSTGRES_APPNAME=api-public-user
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
       - sql
     links:
@@ -91,17 +90,16 @@ services:
     build:
       context: ./api
       args:
-        - APP_NAME=training
-    image: oitp-isov/api-training
+        - APP_PATH=public/training
+    image: oitp-isov/api-public-training
     secrets:
-      - secret-api
+      - secret-api-public
+    env_file:
+      - ./environment
     environment:
-      - PGAPPNAME=training
-      - PGHOST=sql
-      - PGSSLMODE=disable
-      - PGDATABASE=oitp
-      - PGUSER=api
-      - PGPASSWORD=API-P@Ssw0rd
+      - POSTGRES_APPNAME=api-public-training
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
       - sql
     links:
@@ -135,7 +133,7 @@ volumes:
   data-volume:
 
 secrets:
-  secret-sql:
-    file: ./secret-sql.env
-  secret-api:
-    file: ./secret-api.env
+  secret-sql-root:
+    file: ./secret-sql-root.env
+  secret-api-public:
+    file: ./secret-api-public.env

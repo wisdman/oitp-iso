@@ -1,35 +1,32 @@
 package db
 
 import (
+	"context"
+
 	"github.com/jackc/pgx"
 )
 
 type Transaction struct {
-	db   *DB
-	conn *pgx.Conn
-	tx   *pgx.Tx
+	*pgx.Tx
+	ctx context.Context
 }
 
 func (transaction *Transaction) Exec(sql string, args ...interface{}) (pgx.CommandTag, error) {
-	return transaction.tx.Exec(sql, args...)
+	return transaction.ExecEx(transaction.ctx, sql, nil, args...)
 }
 
 func (transaction *Transaction) Query(sql string, args ...interface{}) (*pgx.Rows, error) {
-	return transaction.tx.Query(sql, args...)
+	return transaction.QueryEx(transaction.ctx, sql, nil, args...)
 }
 
 func (transaction *Transaction) QueryRow(sql string, args ...interface{}) *pgx.Row {
-	return transaction.tx.QueryRow(sql, args...)
+	return transaction.QueryRowEx(transaction.ctx, sql, nil, args...)
 }
 
 func (transaction *Transaction) Commit() error {
-	err := transaction.tx.Commit()
-	transaction.db.pool.Release(transaction.conn)
-	return err
+	return transaction.CommitEx(transaction.ctx)
 }
 
 func (transaction *Transaction) Rollback() error {
-	err := transaction.tx.Rollback()
-	transaction.db.pool.Release(transaction.conn)
-	return err
+	return transaction.RollbackEx(transaction.ctx)
 }

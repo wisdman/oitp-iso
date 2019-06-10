@@ -47,9 +47,8 @@ func Build(
 	params := complexityColorsData[complexity]
 
 	rows, err := sql.Query(`
-    SELECT "color", "word"
-    FROM public.trainers_lexicon
-    WHERE "color" IS NOT NULL
+    SELECT "color", "data"
+    FROM public.trainer_classification_colors
     ORDER BY random()
     LIMIT public.random_range($1,$2)`,
 		params.MinItems,

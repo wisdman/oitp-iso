@@ -10,8 +10,9 @@ import (
 )
 
 type Service struct {
-	router *Router
-	server *http.Server
+	router      *Router
+	server      *http.Server
+	middlewares []Middleware
 }
 
 var addr string
@@ -23,50 +24,62 @@ func init() {
 	}
 }
 
-func New() *Service {
-	service := &Service{router: NewRouter()}
+func New(middlewares ...Middleware) *Service {
+	service := &Service{
+		router:      NewRouter(),
+		middlewares: middlewares,
+	}
 	service.server = &http.Server{Addr: addr, Handler: service.router}
 	return service
 }
 
+func (service *Service) WITH(middlewares ...Middleware) *Service {
+	return &Service{
+		router: service.router,
+		server: service.server,
+
+		middlewares: append(append([]Middleware{}, service.middlewares...), middlewares...),
+	}
+}
+
 // Shortcut for service.router.Handle(method, path, handle)
 func (service *Service) Handle(method, path string, handle http.HandlerFunc) {
-	service.router.Handle(method, path, handle)
+	service.router.Handle(method, path, handle, service.middlewares...)
 }
 
 // GET is a shortcut for service.router.Handle("GET", path, handle)
 func (service *Service) GET(path string, handle http.HandlerFunc) {
-	service.router.Handle("GET", path, handle)
+	service.router.Handle("GET", path, handle, service.middlewares...)
 }
 
 // HEAD is a shortcut for service.router.Handle("HEAD", path, handle)
 func (service *Service) HEAD(path string, handle http.HandlerFunc) {
-	service.router.Handle("HEAD", path, handle)
+	service.router.Handle("HEAD", path, handle, service.middlewares...)
 }
 
 // OPTIONS is a shortcut for service.router.Handle("OPTIONS", path, handle)
 func (service *Service) OPTIONS(path string, handle http.HandlerFunc) {
-	service.router.Handle("OPTIONS", path, handle)
+	service.router.Handle("OPTIONS", path, handle, service.middlewares...)
 }
 
 // POST is a shortcut for service.router.Handle("POST", path, handle)
 func (service *Service) POST(path string, handle http.HandlerFunc) {
-	service.router.Handle("POST", path, handle)
+	service.router.Handle("POST", path, handle, service.middlewares...)
 }
 
 // PUT is a shortcut for service.router.Handle("PUT", path, handle)
 func (service *Service) PUT(path string, handle http.HandlerFunc) {
-	service.router.Handle("PUT", path, handle)
+	service.router.Handle("PUT", path, handle, service.middlewares...)
 }
 
 // PATCH is a shortcut for service.router.Handle("PATCH", path, handle)
 func (service *Service) PATCH(path string, handle http.HandlerFunc) {
-	service.router.Handle("PATCH", path, handle)
+	service.router.Handle("PATCH", path, handle, service.middlewares...)
 }
 
 // DELETE is a shortcut for service.router.Handle("DELETE", path, handle)
 func (service *Service) DELETE(path string, handle http.HandlerFunc) {
-	service.router.Handle("DELETE", path, handle)
+	service.router.Handle("DELETE", path, handle, service.middlewares...)
 }
 
 // Start service

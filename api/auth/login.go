@@ -1,66 +1,78 @@
 package main
 
 import (
-	"encoding/json"
-	"log"
+	"net"
 	"net/http"
-	"time"
 
 	"github.com/jackc/pgx"
 
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
 
-type ILogin struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+type Login struct {
+	Email       string      `json:"email"`
+	Password    string      `json:"password"`
+	IP          net.IP      `json:"ip"`
+	Fingerprint interface{} `json:"fingerprint"`
+}
+
+type Session struct {
+	Id      string `json:"id"`
+	Ts      string `json:"ts"`
+	Expires string `json:"expires"`
 }
 
 func (api *API) Login(w http.ResponseWriter, r *http.Request) {
-	var login ILogin
-	decoder := json.NewDecoder(r.Body)
-	err := decoder.Decode(&login)
+	sql := middleware.GetDBTransaction(r)
+
+	var login Login
+	err := service.DecodeJSONBody(r, &login)
 	if err != nil || login.Email == "" || login.Password == "" {
 		service.Error(w, http.StatusUnauthorized)
 		return
 	}
 
-	sql, err := api.db.Acquire()
-	if err != nil {
-		service.Fatal(w, err)
+	login.IP = middleware.GetIP(r)
+	if login.IP == nil {
+		service.Error(w, http.StatusUnauthorized)
 		return
 	}
 
-	var sessionID string
-	var sessionExpires string
+	var session Session
 	err = sql.QueryRow(
-		"SELECT id, expires FROM public.user__login_by_email($1, $2)",
+		`INSERT INTO public.sessions("owner", "ip", "fingerprint")
+	     	SELECT
+	        u."id" AS "owner",
+	        $3 AS "ip",
+	        $4 AS "fingerprint"
+	      FROM
+	        public.users u
+	      WHERE
+	        u."email" = $1
+	        AND
+	        u."password" = digest($2, 'sha512')
+      RETURNING
+        "id",
+        to_char("ts", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "ts",
+        to_char("expires", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "expires"`,
 		login.Email,
 		login.Password,
-	).Scan(&sessionID, &sessionExpires)
+		login.IP,
+		login.Fingerprint,
+	).Scan(
+		&session.Id,
+		&session.Ts,
+		&session.Expires,
+	)
+
 	if err == pgx.ErrNoRows {
-		log.Println(err)
 		service.Error(w, http.StatusUnauthorized)
-		sql.Rollback()
 		return
 	} else if err != nil {
 		service.Fatal(w, err)
-		sql.Rollback()
 		return
 	}
 
-	expires, err := time.Parse(time.RFC3339, sessionExpires)
-	if err != nil {
-		service.Fatal(w, err)
-		sql.Rollback()
-		return
-	}
-
-	if err = sql.Commit(); err != nil {
-		service.Fatal(w, err)
-		return
-	}
-
-	setSession(w, sessionID, expires)
-	w.WriteHeader(http.StatusOK)
+	service.ResponseJSON(w, session)
 }

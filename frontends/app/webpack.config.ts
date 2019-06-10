@@ -19,6 +19,7 @@ import * as MiniCssExtractPlugin from "mini-css-extract-plugin"
 import * as TerserWebpackPlugin from "terser-webpack-plugin"
 import * as CompressionWebpackPlugin from "compression-webpack-plugin"
 import * as CircularDependencyPlugin from "circular-dependency-plugin"
+import * as ScriptExtHtmlWebpackPlugin from "script-ext-html-webpack-plugin"
 
 import { ScriptTarget } from "typescript"
 
@@ -237,6 +238,10 @@ export default {
       inject: "head",
       chunksSortMode: "manual",
       chunks: ["runtime", "polyfills", "vendor", "common", "styles", "main"],
+    }),
+
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: "defer"
     }),
 
     new HotModuleReplacementPlugin()

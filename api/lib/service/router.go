@@ -17,6 +17,8 @@ import (
 	"runtime/debug"
 )
 
+type Middleware func(http.HandlerFunc) http.HandlerFunc
+
 type ctxParamsKey int
 
 const ParamsKey ctxParamsKey = 0
@@ -36,7 +38,7 @@ func NewRouter() *Router {
 }
 
 // Handle registers a new request handle with the given path and method.
-func (router *Router) Handle(method, path string, handle http.HandlerFunc) {
+func (router *Router) Handle(method, path string, handle http.HandlerFunc, middlewares ...Middleware) {
 	if path[0] != '/' {
 		log.Fatalf("Path must begin with '/' in path \"%s\"\n", path)
 	}
@@ -47,7 +49,20 @@ func (router *Router) Handle(method, path string, handle http.HandlerFunc) {
 		router.trees[method] = root
 	}
 
-	root.addRoute(path, handle)
+	middlewaresLength := len(middlewares)
+
+	if middlewaresLength == 0 {
+		root.addRoute(path, handle)
+		return
+	}
+
+	// Wrap the end handler with the middleware chain
+	h := middlewares[middlewaresLength-1](handle)
+	for i := middlewaresLength - 2; i >= 0; i-- {
+		h = middlewares[i](h)
+	}
+
+	root.addRoute(path, h)
 }
 
 // ServeHTTP makes the router implement the http.Handler interface.

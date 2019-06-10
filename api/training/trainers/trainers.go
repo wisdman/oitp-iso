@@ -18,6 +18,7 @@ import (
 	"github.com/wisdman/oitp-isov/api/training/trainers/matrix-sequence"
 	"github.com/wisdman/oitp-isov/api/training/trainers/relax"
 	"github.com/wisdman/oitp-isov/api/training/trainers/space-questions"
+	"github.com/wisdman/oitp-isov/api/training/trainers/storytelling"
 	"github.com/wisdman/oitp-isov/api/training/trainers/table-pipe"
 	"github.com/wisdman/oitp-isov/api/training/trainers/table-words"
 	"github.com/wisdman/oitp-isov/api/training/trainers/text-letters"
@@ -50,9 +51,10 @@ const (
 	Relax                     ITrainer = "relax"                      // Расслабление
 	SpaceQuestionsWaste2D     ITrainer = "space-waste-2d"             // Пространство и логика
 	SpaceQuestionsWaste3D     ITrainer = "space-waste-3d"             // Пространство и логика
-	TablePipeEN               ITrainer = "table-pipe-en"              // Расприделение внимания
-	TablePipeNumber           ITrainer = "table-pipe-number"          // Расприделение внимания
-	TablePipeRU               ITrainer = "table-pipe-ru"              // Расприделение внимания
+	Storytelling              ITrainer = "storytelling"               // Слуховая память
+	TablePipeEN               ITrainer = "table-pipe-en"              // Распределение внимания
+	TablePipeNumber           ITrainer = "table-pipe-number"          // Распределение внимания
+	TablePipeRU               ITrainer = "table-pipe-ru"              // Распределение внимания
 	TableWords                ITrainer = "table-words"                // Вариативность мышления
 	TextLetters               ITrainer = "text-letters"               // Точность восприятия - афоризмы
 	TextReading               ITrainer = "text-reading"               // Точность восприятия - тексты
@@ -62,9 +64,8 @@ const (
 	WordsLexisParonyms        ITrainer = "words-lexis-paronyms"       // Вербальный интеллект
 	WordsLexisSynonyms        ITrainer = "words-lexis-synonyms"       // Вербальный интеллект
 	WordsPairs                ITrainer = "words-pairs"                // Точность восприятия - Столбики
-
-	WordsQuestionsClose ITrainer = "words-questions-close" // Выбрать наиболее близкое слово
-	WordsQuestionsWaste ITrainer = "words-questions-waste" // Выбрать лишнее слово
+	WordsQuestionsClose       ITrainer = "words-questions-close"      // Активизация лексикона
+	WordsQuestionsWaste       ITrainer = "words-questions-waste"      // Вербальный интеллект
 )
 
 type ITrainerBuilder func(
@@ -94,6 +95,7 @@ var BuildFunctions = map[ITrainer]ITrainerBuilder{
 	Relax:                     relax.Build,
 	SpaceQuestionsWaste2D:     spaceQuestions.BuildWaste2D,
 	SpaceQuestionsWaste3D:     spaceQuestions.BuildWaste3D,
+	Storytelling:              storytelling.Build,
 	TablePipeEN:               tablePipe.BuildEN,
 	TablePipeNumber:           tablePipe.BuildNUMBERS,
 	TablePipeRU:               tablePipe.BuildRU,

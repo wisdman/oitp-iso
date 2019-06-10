@@ -4,8 +4,8 @@ MAINTAINER Wisdman <wisdman@ajaw.it>
 ADD . /build
 WORKDIR /build
 
-ARG APP_NAME
-RUN go build -mod=vendor -o api-bin ./$APP_NAME
+ARG APP_PATH
+RUN go build -mod=vendor -o api-bin ./$APP_PATH
 
 
 FROM alpine
