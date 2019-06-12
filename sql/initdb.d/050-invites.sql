@@ -7,7 +7,7 @@ CREATE TABLE private.invites (
   "email" varchar(256) NOT NULL,
   "accepted" bool NOT NULL DEFAULT FALSE,
 
-  "tariff" uuid NOT NULL DEFAULT public.default_tariff(),
+  "tariff" uuid DEFAULT NULL,
 
   "ts" timestamp without time zone NOT NULL DEFAULT timezone('UTC', now()),
   "expires" timestamp without time zone NOT NULL,

@@ -334,9 +334,9 @@ export default {
         target: "http://localhost",
         pathRewrite: { "^/api/training" : "" }
       },
-      "/api/recommendation": {
+      "/auth": {
         target: "http://localhost",
-        pathRewrite: { "^/api/recommendation" : "" }
+        pathRewrite: { "^/auth" : "" }
       }
     }
   }

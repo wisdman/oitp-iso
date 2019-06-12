@@ -37,6 +37,7 @@ import {
 import {
   ButtonDirective,
   FastTouchDirective,
+  InputDirective,
   TezirovanieDirective,
   TouchableDirective,
 } from "./directives"
@@ -44,11 +45,11 @@ import {
 import {
   AuthGuard,
   LogoutGuard,
-  TrainingRoutingGuard,
+  RootRoutingGuard,
 } from "./guards"
 
 import {
-  ErrorInterceptor
+  HTTPInterceptor,
 } from "./interceptors"
 
 import {
@@ -56,7 +57,6 @@ import {
   DashboardLayoutComponent,
   LoginLayoutComponent,
   MainLayoutComponent,
-  PatternsLayoutComponent,
   PaymentLayoutComponent,
   ProfileLayoutComponent,
   PublicationsLayoutComponent,
@@ -82,6 +82,7 @@ import {
   ProgressService,
   RecommendationService,
   TimerService,
+  TokenService,
   TrainingService,
   UserService,
 } from "./services"
@@ -146,6 +147,7 @@ import { ROUTES } from "./app.routing"
 
     ButtonDirective,
     FastTouchDirective,
+    InputDirective,
     TezirovanieDirective,
     TouchableDirective,
 
@@ -153,7 +155,6 @@ import { ROUTES } from "./app.routing"
     DashboardLayoutComponent,
     LoginLayoutComponent,
     MainLayoutComponent,
-    PatternsLayoutComponent,
     PaymentLayoutComponent,
     ProfileLayoutComponent,
     PublicationsLayoutComponent,
@@ -192,9 +193,7 @@ import { ROUTES } from "./app.routing"
     WordsPairsTrainerComponent,
   ],
 
-  entryComponents: [
-
-  ],
+  entryComponents: [],
 
   imports: [
     BrowserModule,
@@ -208,11 +207,12 @@ import { ROUTES } from "./app.routing"
   providers: [
     AuthGuard,
     LogoutGuard,
-    TrainingRoutingGuard,
+    RootRoutingGuard,
 
     ProgressService,
     RecommendationService,
     TimerService,
+    TokenService,
     TrainingService,
     UserService,
 
@@ -250,7 +250,7 @@ import { ROUTES } from "./app.routing"
 
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
+      useClass: HTTPInterceptor,
       multi: true
     },
 

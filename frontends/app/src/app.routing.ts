@@ -5,7 +5,6 @@ import {
   DashboardLayoutComponent,
   LoginLayoutComponent,
   MainLayoutComponent,
-  PatternsLayoutComponent,
   PaymentLayoutComponent,
   ProfileLayoutComponent,
   PublicationsLayoutComponent,
@@ -16,7 +15,7 @@ import {
 import {
   AuthGuard,
   LogoutGuard,
-  TrainingRoutingGuard,
+  RootRoutingGuard,
 } from "./guards"
 
 export const ROUTES: Routes =
@@ -68,8 +67,5 @@ export const ROUTES: Routes =
 },{
   path: "training/:type",
   component: TrainingLayoutComponent,
-  canActivate: [ TrainingRoutingGuard ],
-},{
-  path: "patterns",
-  component: PatternsLayoutComponent,
+  canActivate: [ RootRoutingGuard ],
 }]

@@ -4,7 +4,7 @@ import { CanActivate, Router } from "@angular/router"
 import { Observable, of } from "rxjs"
 
 @Injectable()
-export class TrainingRoutingGuard implements CanActivate {
+export class RootRoutingGuard implements CanActivate {
   constructor( private _router: Router ) {}
 
   canActivate(): Observable<boolean> {
