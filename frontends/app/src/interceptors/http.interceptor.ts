@@ -46,20 +46,12 @@ export class HTTPInterceptor implements HttpInterceptor {
     })
 
     return next.handle(request).pipe(catchError(err => {
-      switch (err.status) {
-        case 401:
-          this._router.navigateByUrl("/login")
-          break
-
-        case 404:
-          this._notificationService.message("404: Not Found")
-          break
-
-        default:
-          this._notificationService.message("500: Internal server error")
-          break
+      if (err.status === 401) {
+        this._tokenService.token = ""
+        this._router.navigateByUrl("/login")
+      } else {
+        this._notificationService.httpError(err.status)
       }
-
       return empty()
     }))
   }

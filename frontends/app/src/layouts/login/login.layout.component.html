@@ -6,46 +6,34 @@
     <span class="visually-hidden">Международная школа Васильевой</span>
   </a>
   <fieldset class="fieldset">
-    <legend class="legend" *ngIf="isSignInForm">Вход в кабинет</legend>
-    <legend class="legend" *ngIf="!isSignInForm && !isPasswordRecovery">Регистрация</legend>
-    <legend class="legend" *ngIf="!isSignInForm && isPasswordRecovery">Востановление пароля</legend>
+    <legend class="legend" *ngIf="mode==='login'">Вход в кабинет</legend>
+    <legend class="legend" *ngIf="mode==='invite'">Регистрация</legend>
+    <legend class="legend" *ngIf="mode==='reset'">Востановление пароля</legend>
 
-    <div class="input">
-      <input id="email" type="text" formControlName="email" required>
-      <label for="email">E-mail</label>
-    </div>
+    <input
+      type="email"
+      formControlName="email"
+      placeholder="E-mail"
+    >
 
-    <div class="input" *ngIf="!isSignInForm && !isPasswordRecovery">
-      <input id="name" type="text" formControlName="name">
-      <label for="name">Имя Фамилия</label>
-    </div>
-
-    <div class="input" *ngIf="isSignInForm">
-      <input id="password" type="password" formControlName="password" required>
-      <label for="password">Пароль</label>
-    </div>
+    <input
+      *ngIf="mode==='login'"
+      type="password"
+      formControlName="password"
+      placeholder="Пароль"
+    >
 
     <button type="submit" class="submit button--main" [disabled]="!loginForm.valid">
-      <span *ngIf="isSignInForm">Войти</span>
-      <span *ngIf="!isSignInForm && !isPasswordRecovery">Зарегистрироваться</span>
-      <span *ngIf="!isSignInForm && isPasswordRecovery">Сбросить пароль</span>
+      <span *ngIf="mode==='login'">Войти</span>
+      <span *ngIf="mode==='invite'">Зарегистрироваться</span>
+      <span *ngIf="mode==='reset'">Сбросить пароль</span>
     </button>
 
-    <p class="reset-password" *ngIf="isSignInForm">
-      <a routerLink="/register" [state]="{ passwordRecovery: true }">Востановить пароль</a>
-    </p>
-  </fieldset>
-
-  <fieldset class="fieldset fieldset--social">
-    <legend class="legend legend--social">войти используя другие сервисы</legend>
-    <social-buttons
-      class="social-buttons"
-      (action)="onSocialAction($event)"
-      [buttons]="['vkontakte','facebook','twitter','yandex']"
-    ></social-buttons>
+    <p *ngIf="mode==='login'" class="reset-password"><a routerLink="/reset">Востановить пароль</a></p>
+    <p *ngIf="mode==='reset'" class="reset-password">Вспомнили пароль? <a routerLink="/login">Войдите</a></p>
   </fieldset>
 </form>
 <div class="switch">
-  <p *ngIf="isSignInForm">Ещё нет аккаунта? <a routerLink="/register">Зарегистрируйтесь</a></p>
-  <p *ngIf="!isSignInForm">Уже зарегистрированы? <a routerLink="/login">Войдите</a></p>
+  <p *ngIf="mode==='login' || mode==='reset'">Ещё нет аккаунта? <a routerLink="/invite">Зарегистрируйтесь</a></p>
+  <p *ngIf="mode==='invite'">Уже зарегистрированы? <a routerLink="/login">Войдите</a></p>
 </div>

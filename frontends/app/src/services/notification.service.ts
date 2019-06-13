@@ -33,6 +33,14 @@ export class NotificationService {
   message(message: string) {
     console.log(message)
   }
+
+  error(message: string) {
+    console.log(message)
+  }
+
+  httpError(status: number) {
+    this.error(`${status}: Непредвиденная ошибка сервера`)
+  }
 }
 
 export function NotificationServiceFactory(notificationService: NotificationService): Function {

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core"
 
-import { ProgressService } from "../../services"
+import { UserService } from "../../services"
 
 @Component({
   selector: "progress-list",
@@ -9,6 +9,6 @@ import { ProgressService } from "../../services"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressListComponent {
-  constructor(private _progressService: ProgressService) {}
-  public user = this._progressService.progress
+  constructor(private _userService: UserService) {}
+  public progress = this._userService.progress
 }

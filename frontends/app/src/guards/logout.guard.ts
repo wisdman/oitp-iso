@@ -1,19 +1,28 @@
 import { Injectable } from "@angular/core"
 import { CanActivate, Router } from "@angular/router"
 
-import { Observable, of } from "rxjs"
+import { HttpClient } from  "@angular/common/http"
 
-import { UserService } from "../services"
+import { of }  from "rxjs"
+
+import {
+  catchError,
+  map,
+} from "rxjs/operators"
+
+import { API_AUTH_LOGOUT } from "../app.config"
 
 @Injectable()
 export class LogoutGuard implements CanActivate {
   constructor(
-    private _userService: UserService,
+    private _httpClient:HttpClient,
     private _router: Router,
   ) {}
 
-  canActivate(): Observable<boolean> {
-    this._userService.logout().subscribe(() => this._router.navigate(["/login"]))
-    return of(true)
+  canActivate() {
+    return this._httpClient.delete<undefined>(API_AUTH_LOGOUT).pipe(
+      catchError(() => of(undefined)),
+      map(() => this._router.createUrlTree(["/login"]))
+    )
   }
 }

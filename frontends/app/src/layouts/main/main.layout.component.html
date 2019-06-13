@@ -32,11 +32,18 @@
       <span class="sidebar__nav-caption">Личный кабинет</span>
     </a>
 
-    <a class="sidebar__nav-link" routerLink="/publications" routerLinkActive="sidebar__nav-link--active" (click)="isSidebarActive=false">
+    <!-- <a class="sidebar__nav-link" routerLink="/publications" routerLinkActive="sidebar__nav-link--active" (click)="isSidebarActive=false">
       <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill-rule="evenodd" aria-hidden="true">
         <path d="M22 24h-18v-22h12l6 6v16zm-7-21h-10v20h16v-14h-6v-6zm-1-2h-11v21h-1v-22h12v1zm2 7h4.586l-4.586-4.586v4.586z"></path>
       </svg>
       <span class="sidebar__nav-caption">Учебные материалы</span>
+    </a> -->
+
+    <a class="sidebar__nav-link" routerLink="/log" routerLinkActive="sidebar__nav-link--active" (click)="isSidebarActive=false">
+      <svg class="svg-icon" width="20" height="20" viewBox="0 0 24 24" fill-rule="evenodd" aria-hidden="true">
+        <path d="M22 24h-18v-22h12l6 6v16zm-7-21h-10v20h16v-14h-6v-6zm-1-2h-11v21h-1v-22h12v1zm2 7h4.586l-4.586-4.586v4.586z"></path>
+      </svg>
+      <span class="sidebar__nav-caption">История занятий</span>
     </a>
 
     <!-- <a class="sidebar__nav-link" routerLink="/club" routerLinkActive="sidebar__nav-link--active" (click)="isSidebarActive=false">

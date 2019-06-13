@@ -12,7 +12,7 @@ import {
 import {
   CardChargerComponent,
   CardEverydayComponent,
-  CardRecommendationsComponent,
+  CardInfoComponent,
   ChartCircularComponent,
   ChartLinearComponent,
   HeaderNotificationsComponent,
@@ -44,6 +44,7 @@ import {
 
 import {
   AuthGuard,
+  LoginGuard,
   LogoutGuard,
   RootRoutingGuard,
 } from "./guards"
@@ -73,14 +74,13 @@ import {
 import {
   FullscreenService,
   FullscreenServiceFactory,
+  InfoService,
   KeypadService,
   KeypadServiceFactory,
   NotificationService,
   NotificationServiceFactory,
   PointerService,
   PointerServiceFactory,
-  ProgressService,
-  RecommendationService,
   TimerService,
   TokenService,
   TrainingService,
@@ -111,8 +111,8 @@ import {
   TextQuestionTrainerComponent,
   TextReadingTrainerComponent,
   TextTezirovanieTrainerComponent,
-  WordsColumnsTrainerComponent,
-  WordsPairsTrainerComponent,
+  WordsColumnTrainerComponent,
+  WordsLexisTrainerComponent,
 } from "./trainers"
 
 import { ROUTES } from "./app.routing"
@@ -124,7 +124,7 @@ import { ROUTES } from "./app.routing"
 
     CardChargerComponent,
     CardEverydayComponent,
-    CardRecommendationsComponent,
+    CardInfoComponent,
     ChartCircularComponent,
     ChartLinearComponent,
     HeaderNotificationsComponent,
@@ -189,8 +189,8 @@ import { ROUTES } from "./app.routing"
     TextQuestionTrainerComponent,
     TextReadingTrainerComponent,
     TextTezirovanieTrainerComponent,
-    WordsColumnsTrainerComponent,
-    WordsPairsTrainerComponent,
+    WordsColumnTrainerComponent,
+    WordsLexisTrainerComponent,
   ],
 
   entryComponents: [],
@@ -206,11 +206,11 @@ import { ROUTES } from "./app.routing"
 
   providers: [
     AuthGuard,
+    LoginGuard,
     LogoutGuard,
     RootRoutingGuard,
 
-    ProgressService,
-    RecommendationService,
+    InfoService,
     TimerService,
     TokenService,
     TrainingService,

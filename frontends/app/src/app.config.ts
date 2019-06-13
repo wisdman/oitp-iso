@@ -11,27 +11,25 @@ export const APP_FULL_NAME = `${APP_NAME} v${APP_VERSION} ${DEBUG ? "DEBUG MODE"
 export const AUTR_TOKEN_KEY = "token"
 export const AUTR_TOKEN_HEADER = "X-Authorization"
 
-export const AUTH_BASE = "/auth"
-
-export const AUTH_LOGIN = `${AUTH_BASE}`
-export const AUTH_LOGOUT = `${AUTH_BASE}`
-
-export const AUTH_INVITE = `${AUTH_BASE}/invite`
-export const AUTH_SMS = `${AUTH_BASE}/sms`
-
-
 export const API_BASE = "/api"
 
 export const API_AUTH = `${API_BASE}/auth`
-export const API_REGISTER = `${API_BASE}/register`
+export const API_AUTH_LOGIN = `${API_AUTH}`
+export const API_AUTH_LOGOUT = `${API_AUTH}`
+export const API_AUTH_INVITE = `${API_AUTH}/invite`
+export const API_AUTH_SMS = `${API_AUTH}/sms`
 
-export const API_USER = `${API_BASE}/user`
+export const API_INFO = `${API_BASE}/public/info`
 
-export const API_RECOMMENDATION = `${API_BASE}/recommendation`
-
-export const API_TRAINING = `${API_BASE}/training`
+export const API_TRAINING = `${API_BASE}/public/training`
 export const API_TRAINING_EVERYDAY = `${API_TRAINING}/everyday`
 export const API_TRAINING_ONCE = `${API_TRAINING}/once`
+
+export const API_USER = `${API_BASE}/public/user`
+
+export const API_PROGRESS = `${API_BASE}/public/progress`
+
+export const API_LOG = `${API_BASE}/public/log`
 
 export const ASSETS = "/assets"
 export const ASSETS_EXPRESSIONS = `${ASSETS}/expressions`

@@ -14,6 +14,7 @@ import {
 
 import {
   AuthGuard,
+  LoginGuard,
   LogoutGuard,
   RootRoutingGuard,
 } from "./guards"
@@ -54,16 +55,22 @@ export const ROUTES: Routes =
   }]
 },{
   path: "login",
+  canActivate: [ LoginGuard ],
   component: LoginLayoutComponent,
-  data: { signIn: true },
+  data: { mode: "login" },
 },{
   path: "logout",
   canActivate: [ LogoutGuard ],
   component: LoginLayoutComponent,
-  data: { signIn: true },
+  data: { mode: "login" },
 },{
-  path: "register",
+  path: "invite",
   component: LoginLayoutComponent,
+  data: { mode: "invite" },
+},{
+  path: "reset",
+  component: LoginLayoutComponent,
+  data: { mode: "reset" },
 },{
   path: "training/:type",
   component: TrainingLayoutComponent,

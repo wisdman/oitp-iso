@@ -35,7 +35,7 @@ const postCSSPlugins = [
   require("postcss-import")(),
   require("postcss-gap-properties")(),
   require("autoprefixer")(),
-  require("postcss-csso")(),
+  require("cssnano")({ preset: "default" }),
 ]
 
 export default {
@@ -334,9 +334,13 @@ export default {
         target: "http://localhost",
         pathRewrite: { "^/api/training" : "" }
       },
-      "/auth": {
+      "/api/progress": {
         target: "http://localhost",
-        pathRewrite: { "^/auth" : "" }
+        pathRewrite: { "^/api/progress" : "" }
+      },
+      "/api/auth": {
+        target: "http://localhost:8081",
+        pathRewrite: { "^/api/auth" : "" }
       }
     }
   }

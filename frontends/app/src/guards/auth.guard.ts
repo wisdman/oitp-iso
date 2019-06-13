@@ -2,16 +2,23 @@ import { Injectable } from "@angular/core"
 import { CanActivate } from "@angular/router"
 import { HttpClient } from  "@angular/common/http"
 
-import { Observable } from "rxjs"
-import { map } from "rxjs/operators"
+import { of }  from "rxjs"
 
-import { AUTH_BASE } from "../app.config"
+import {
+  catchError,
+  map,
+} from "rxjs/operators"
+
+import { API_AUTH } from "../app.config"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private _httpClient: HttpClient) {}
 
-  canActivate(): Observable<boolean> {
-    return this._httpClient.get(AUTH_BASE).pipe(map(()=>true))
+  canActivate() {
+    return this._httpClient.get<undefined>(API_AUTH).pipe(
+      map(()=>true),
+      catchError(() => of(false)),
+    )
   }
 }

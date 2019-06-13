@@ -37,7 +37,7 @@ CREATE TRIGGER sms__expires__trigger
 
 CREATE OR REPLACE FUNCTION private.users__dropSMS() RETURNS trigger AS $$
 BEGIN
-  IF (NEW."deleted" OR NOT NEW."enabled") THEN
+  IF (NEW."deleted" IS NOT NULL OR NOT NEW."enabled") THEN
     DELETE FROM private.sms s WHERE s."owner" = NEW."id";
   END IF;
   RETURN NEW;

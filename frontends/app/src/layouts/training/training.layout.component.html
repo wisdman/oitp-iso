@@ -145,17 +145,17 @@ class="field"
       (result)="onResult($event)"
     ></trainer-text-tezirovanie>
 
-    <trainer-words-columns
-      *ngIf="config.id === 'words-columns'"
+    <trainer-words-column
+      *ngIf="config.id === 'words-column'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-words-columns>
+    ></trainer-words-column>
 
-    <trainer-words-pairs
-      *ngIf="config.id === 'words-pairs'"
+    <trainer-words-lexis
+      *ngIf="config.id === 'words-lexis'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-words-pairs>
+    ></trainer-words-lexis>
   </div>
 
   <training-result

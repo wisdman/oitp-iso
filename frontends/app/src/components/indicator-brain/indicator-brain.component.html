@@ -8,6 +8,12 @@
   </defs>
 </svg>
 
-<div #brainNode class="brain" *ngIf="user | async as user" [class.brain--medium]="user.charge >= 30" [class.brain--good]="user.charge >= 70">
-  <span class="brain__percent">{{ user.charge }}</span>
+<div
+  *ngIf="progress | async as progress"
+  #brainNode
+  class="brain"
+  [class.brain--medium]="progress.charge >= 30"
+  [class.brain--good]="progress.charge >= 70"
+>
+  <span class="brain__percent">{{ progress.charge }}</span>
 </div>

@@ -1,6 +1,6 @@
 export * from "./card-charger"
 export * from "./card-everyday"
-export * from "./card-recommendations"
+export * from "./card-info"
 export * from "./chart-circular"
 export * from "./chart-linear"
 export * from "./header-notifications"

@@ -86,7 +86,8 @@
   font-family: inherit;
 }
 
-.trainer h1, .trainer-h1, {
+.trainer h1,
+.trainer-h1 {
   margin-bottom: auto;
   font-size: 18px;
   font-weight: 600;

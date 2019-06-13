@@ -72,6 +72,10 @@ implements OnInit, OnDestroy, OnChanges {
   // === Style reading ===
   private _style = getComputedStyle(this._elRef.nativeElement)
 
+  get fontStyle(): string {
+    return `${this._style.fontWeight} ${this._style.fontSize} ${this._style.fontFamily}`
+  }
+
   getCSSPropertyIntValue(property: string): number {
     const value = this._style.getPropertyValue(property)
     return Number.parseInt(value)

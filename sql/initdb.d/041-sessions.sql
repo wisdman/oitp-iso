@@ -7,7 +7,9 @@ CREATE TABLE private.sessions (
   "ip" inet NOT NULL, -- IPv4 or IPv6 user address
   "fingerprint" jsonb NOT NULL DEFAULT '{}'::jsonb, -- System fingerprinting
 
-  "ts" timestamp without time zone NOT NULL,
+  "login" timestamp without time zone NOT NULL,
+  "logout"  timestamp without time zone DEFAULT NULL,
+
   "expires" timestamp without time zone NOT NULL,
 
   CONSTRAINT sessions__idx__pkey PRIMARY KEY ("id"),
@@ -21,38 +23,23 @@ CREATE TABLE private.sessions (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) WITH (OIDS = FALSE);
 
-CREATE OR REPLACE FUNCTION private.sessions__unique_id() RETURNS trigger AS $$
+CREATE OR REPLACE FUNCTION private.sessions__new() RETURNS trigger AS $$
 BEGIN
   NEW."id" = public.unique_id();
+  NEW."login" = timezone('UTC', now());
   RETURN NEW;
 END; $$ LANGUAGE plpgsql;
-CREATE TRIGGER sessions__unique_id__trigger
+CREATE TRIGGER sessions__new__trigger
   BEFORE INSERT ON private.sessions FOR EACH ROW
-  EXECUTE PROCEDURE private.sessions__unique_id();
+  EXECUTE PROCEDURE private.sessions__new();
 
-CREATE OR REPLACE FUNCTION private.sessions__time() RETURNS trigger AS $$
+CREATE OR REPLACE FUNCTION private.sessions__expires() RETURNS trigger AS $$
 DECLARE sessionInterval interval;
 BEGIN
   SELECT c."value"::text::interval INTO sessionInterval FROM private.config c WHERE c."key" = 'sessionInterval';
   NEW."expires" = timezone('UTC', now() + sessionInterval);
-  NEW."ts" = timezone('UTC', now());
   RETURN NEW;
 END; $$ LANGUAGE plpgsql;
-CREATE TRIGGER sessions__time__trigger
+CREATE TRIGGER sessions__expires__trigger
   BEFORE INSERT OR UPDATE ON private.sessions FOR EACH ROW
-  EXECUTE PROCEDURE private.sessions__time();
-
-CREATE OR REPLACE FUNCTION private.users__dropSessions() RETURNS trigger AS $$
-BEGIN
-  IF (NEW."deleted" OR NOT NEW."enabled") THEN
-    DELETE FROM private.sessions s WHERE s."owner" = NEW."id";
-  END IF;
-  RETURN NEW;
-END; $$ LANGUAGE plpgsql;
-CREATE TRIGGER users__dropSessions__trigger
-  AFTER UPDATE ON private.users FOR EACH ROW
-  EXECUTE PROCEDURE private.users__dropSessions();
-
-CREATE OR REPLACE FUNCTION private.sessions__prune() RETURNS void AS $$
-  DELETE FROM private.sessions WHERE "expires" < timezone('UTC', now());
-$$ LANGUAGE SQL;
+  EXECUTE PROCEDURE private.sessions__expires();

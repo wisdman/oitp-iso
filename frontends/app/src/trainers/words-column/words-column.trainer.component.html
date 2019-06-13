@@ -1,0 +1,67 @@
+<!-- Мнемотехника. Столбики -->
+<h1 *ngIf="mode==='show'" class="trainer-h1">Заполните&nbsp;слова,<br>соеденив&nbsp;их&nbsp;нелепой&nbsp;связью</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;слова,<br>по&nbsp;памяти</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<svg
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <g
+    *ngFor="let item of items"
+    class="item"
+    [class.item--selected]="mode === 'play' && item === currentItem"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <foreignObject
+      [attr.x]="item.x"
+      [attr.y]="item.y"
+      [attr.width]="item.width"
+      [attr.height]="item.height"
+    >
+      <xhtml:trainer-input
+        [active]="mode === 'play' && item === currentItem"
+        [success]="mode === 'result' && item.data === item.userData"
+        [error]="mode === 'result' && item.data !== item.userData"
+        [(value)]="mode === 'show' && item.data || item.userData"
+        (touch)="onTouch(item)"
+      ></trainer-input>
+    </foreignObject>
+  </g>
+</svg>
+
+<trainer-button
+  *ngIf="mode==='show'"
+  class="button"
+  value="Продолжить"
+  [focus]="currentItem === undefined"
+  (touch)="startPlay()"
+></trainer-button>
+
+<trainer-button
+  *ngIf="mode==='play'"
+  class="button"
+  value="Проверить"
+  [focus]="currentItem === undefined"
+  (touch)="showResult()"
+></trainer-button>
+
+<trainer-button
+  *ngIf="mode === 'result'"
+  class="button"
+  value="Продолжить"
+  [focus]="currentItem === undefined"
+  (touch)="finish()"
+></trainer-button>

@@ -18,6 +18,7 @@ void function init() {
   context.textBaseline = "top"
 }()
 
+// Return text size by value and css font-style
 export function textSize(text: string, fontStyle: string): {
   height: number
   width: number
@@ -50,7 +51,7 @@ export function textSize(text: string, fontStyle: string): {
     }
   }
 
-  // find ast row
+  // find last row
   for (let y = height; y > 0; y--) {
     for (let x = 0; x < width; x++) {
       const alpha = imageData[((width * y) + x) * 4 + 3];

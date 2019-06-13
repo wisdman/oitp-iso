@@ -13,6 +13,10 @@ AS $$
       u."id" = s."owner"
       AND
       s."id" = _sessionKey
+      AND
+      s."expires" > timezone('UTC', now())
+      AND
+      s."logout" IS NULL
     RETURNING u."id" INTO _sessionUser;
 
     IF NOT FOUND THEN
@@ -28,7 +32,6 @@ $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION public.users__email_login(_email text, _password text, _ip inet, _fingerprint jsonb)
 RETURNS table (
   "id" char(128),
-  "ts" text,
   "expires" text
 )
 AS $$
@@ -47,8 +50,7 @@ AS $$
           u."password" = digest(_password, 'sha512')
       RETURNING
         s."id",
-        to_char(s."ts", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "ts",
-        to_char(s."expires", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "expires"
+        to_char(s."expires", 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "expires";
   END;
 $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 
@@ -56,6 +58,11 @@ CREATE OR REPLACE FUNCTION public.users__logout()
 RETURNS void
 AS $$
   BEGIN
-    DELETE FROM private.sessions AS s WHERE s."id" = current_setting('app.sessionKey')::char(128);
+    UPDATE
+      private.sessions AS s
+    SET
+      "logout" = timezone('UTC', now())
+    WHERE
+      s."id" = current_setting('app.sessionKey')::char(128);
   END;
 $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

@@ -30,7 +30,8 @@ CREATE VIEW admin.users AS
       json_build_object(
           'fingerprint', s."fingerprint",
           'ip', s."ip",
-          'ts', s."ts",
+          'login', s."login",
+          'logout', s."logout",
           'expires', s."expires"
       )
     ) AS "sessions"

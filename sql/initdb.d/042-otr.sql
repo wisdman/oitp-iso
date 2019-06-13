@@ -38,7 +38,7 @@ CREATE TRIGGER otr__expires__trigger
 
 CREATE OR REPLACE FUNCTION private.users__dropOTR() RETURNS trigger AS $$
 BEGIN
-  IF (NEW."deleted" OR NOT NEW."enabled") THEN
+  IF (NEW."deleted" IS NOT NULL OR NOT NEW."enabled") THEN
     DELETE FROM private.otr otr WHERE otr."owner" = NEW."id";
   END IF;
   RETURN NEW;

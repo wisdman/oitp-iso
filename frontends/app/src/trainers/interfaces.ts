@@ -21,8 +21,8 @@ import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResu
 import { ITextQuestionTrainer, ITextQuestionTrainerConfig, ITextQuestionTrainerResult } from "./text-question"
 import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResult } from "./text-reading"
 import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
-import { IWordsColumnsTrainer, IWordsColumnsTrainerConfig, IWordsColumnsTrainerResult } from "./words-columns"
-import { IWordsPairsTrainer, IWordsPairsTrainerConfig, IWordsPairsTrainerResult } from "./words-pairs"
+import { IWordsColumnTrainer, IWordsColumnTrainerConfig, IWordsColumnTrainerResult } from "./words-column"
+import { IWordsLexisTrainer, IWordsLexisTrainerConfig, IWordsLexisTrainerResult } from "./words-lexis"
 
 export type ITrainer = IClassificationColorsTrainer
                      | IClassificationDefinitionsTrainer
@@ -46,8 +46,8 @@ export type ITrainer = IClassificationColorsTrainer
                      | ITextQuestionTrainer
                      | ITextReadingTrainer
                      | ITextTezirovanieTrainer
-                     | IWordsColumnsTrainer
-                     | IWordsPairsTrainer
+                     | IWordsColumnTrainer
+                     | IWordsLexisTrainer
 
 
 export type ITrainerConfigs = IClassificationColorsTrainerConfig
@@ -72,8 +72,8 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | ITextQuestionTrainerConfig
                             | ITextReadingTrainerConfig
                             | ITextTezirovanieTrainerConfig
-                            | IWordsColumnsTrainerConfig
-                            | IWordsPairsTrainerConfig
+                            | IWordsColumnTrainerConfig
+                            | IWordsLexisTrainerConfig
 
 export type ITrainerResults = IClassificationColorsTrainerResult
                             | IClassificationDefinitionsTrainerResult
@@ -97,8 +97,8 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | ITextQuestionTrainerResult
                             | ITextReadingTrainerResult
                             | ITextTezirovanieTrainerResult
-                            | IWordsColumnsTrainerResult
-                            | IWordsPairsTrainerResult
+                            | IWordsColumnTrainerResult
+                            | IWordsLexisTrainerResult
 
 export interface ITrainerConfig {
   id: ITrainer

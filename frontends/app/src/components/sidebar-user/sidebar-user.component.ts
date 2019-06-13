@@ -10,5 +10,5 @@ import { UserService } from "../../services"
 })
 export class SidebarUserComponent {
   constructor(private _userService: UserService) {}
-  public user = this._userService.getUser()
+  public user = this._userService.user
 }

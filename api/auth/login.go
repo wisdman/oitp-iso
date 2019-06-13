@@ -19,7 +19,6 @@ type Login struct {
 
 type Session struct {
 	Id      string `json:"id"`
-	Ts      string `json:"ts"`
 	Expires string `json:"expires"`
 }
 
@@ -48,7 +47,6 @@ func (api *API) Login(w http.ResponseWriter, r *http.Request) {
 		login.Fingerprint,
 	).Scan(
 		&session.Id,
-		&session.Ts,
 		&session.Expires,
 	)
 

@@ -1,0 +1,3 @@
+<ng-container *ngIf="info | async as info">
+  <p *ngIf="info.type === 'text'">{{ info.data }}</p>
+</ng-container>

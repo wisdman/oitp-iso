@@ -1,14 +1,14 @@
-<div class="charts" *ngIf="user | async as user">
+<div class="charts" *ngIf="progress | async as progress">
   <div class="wrapper">
-    <chart-circular class="chart chart--memory" [value]="user.memory"></chart-circular>
+    <chart-circular class="chart chart--memory" [value]="progress.memory"></chart-circular>
     <h3 class="h3">Память</h3>
   </div>
   <div class="wrapper">
-    <chart-circular class="chart chart--knowledge" [value]="user.knowledge"></chart-circular>
+    <chart-circular class="chart chart--knowledge" [value]="progress.knowledge"></chart-circular>
     <h3 class="h3">Эрудиция</h3>
   </div>
   <div class="wrapper">
-    <chart-circular class="chart chart--intelligence" [value]="user.intelligence"></chart-circular>
+    <chart-circular class="chart chart--intelligence" [value]="progress.intelligence"></chart-circular>
     <h3 class="h3">Мышление</h3>
   </div>
 </div>

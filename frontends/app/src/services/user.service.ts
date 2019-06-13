@@ -1,36 +1,71 @@
 import { Injectable } from "@angular/core"
-import { HttpClient } from  "@angular/common/http"
-
-import { from } from "rxjs"
 
 import {
-  API_AUTH,
+  HttpBackend,
+  HttpClient,
+} from  "@angular/common/http"
+
+import {
+  BehaviorSubject,
+  never,
+  Observable,
+  of,
+} from "rxjs"
+
+import {
+  catchError,
+  map,
+  switchMap,
+  share,
+} from "rxjs/operators"
+
+import {
+  API_AUTH_INVITE,
+  API_AUTH_LOGIN,
+  API_AUTH_SMS,
+  API_LOG,
+  API_PROGRESS,
   API_USER,
+  APP_FULL_NAME,
 } from "../app.config"
 
-type IUser = Partial<{
-  id: number
-  name: string
-  avatar: string
-  premium: number
+import {
+  ILog,
+  INetworkInformation,
+  IProgress,
+  IUser,
+} from "./user.interfaces"
 
-  charge: number
-
-  intelligence: number
-  knowledge: number
-  memory: number
-
-  speed: Array<number>
-}>
-
+import { NotificationService } from "./notification.service"
+import { TokenService } from "./token.service"
 
 @Injectable({ providedIn: "root" })
 export class UserService {
+  constructor(
+    private _httpBackend: HttpBackend,
+    private _httpClient:HttpClient,
+    private _notificationService: NotificationService,
+    private _tokenService: TokenService,
+  ) {}
 
-  constructor(private _httpClient:HttpClient) {}
+  private _independentHttpClient = new HttpClient(this._httpBackend)
 
-  getUser() {
-    return this._httpClient.get<IUser>(API_USER)
+  get fingerprint() {
+    const connection:INetworkInformation = (<any>navigator).connection
+                                        || (<any>navigator).mozConnection
+                                        || (<any>navigator).webkitConnection
+    return {
+      app: APP_FULL_NAME,
+      language: navigator.language,
+      languages: navigator.languages,
+      userAgent: navigator.userAgent,
+      connection: connection && {
+        downlink: connection.downlink || 0,
+        effectiveType: connection.effectiveType || null,
+        rtt: connection.rtt || 0,
+        type: connection.type || null,
+      } || null
+    }
   }
 
   login({
@@ -39,40 +74,76 @@ export class UserService {
   }:{
     email: string,
     password: string,
-  }) {
-    const request = fetch(API_AUTH, {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({email: email.toLowerCase(), password})
-    }).then(r => r.status === 200)
+  }): Observable<boolean> {
+    return this._independentHttpClient
+            .post<{id?: string}>(API_AUTH_LOGIN, {
+              email: email.toLowerCase(),
+              password: password,
+              fingerprint: this.fingerprint,
+            }).pipe(
+              catchError(err => {
+                if (err.status === 401) {
+                  return of(null)
+                }
+                this._notificationService.httpError(err.status)
+                return never()
+              }),
+              map(session => {
+                if (!session || !session.id) {
+                  this._tokenService.token = ""
+                  return false
+                }
 
-    return from(request)
+                this._tokenService.token = session.id
+                return true
+              }),
+            )
   }
 
-  logout(){
-    const request = fetch(API_AUTH, { method: "DELETE" })
-    return from(request)
-  }
-
-  register({
-    email,
-    reset = false
+  invite({
+    email
   }:{
     email: string,
-    reset: boolean
   }) {
-    const request = fetch(API_AUTH, {
-      method: "PUT",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({email, reset})
-    }).then(r => r.status === 200)
-
-    return from(request)
+    return this._independentHttpClient
+            .post(API_AUTH_INVITE, {
+              email: email.toLowerCase(),
+              fingerprint: this.fingerprint,
+            })
   }
+
+  sms({
+    phone,
+    code,
+  }:{
+    phone: string
+    code: number
+  }) {
+    return this._independentHttpClient
+            .post(API_AUTH_SMS, {
+              phone: phone.toLowerCase(),
+              code: code,
+              fingerprint: this.fingerprint,
+            })
+  }
+
+  private _reloadUser: BehaviorSubject<void> = new BehaviorSubject<void>(undefined)
+  reloadUser() {
+    this._reloadUser.next()
+  }
+
+  progress = this._reloadUser.pipe(
+    switchMap(() => this._httpClient.get<IProgress>(API_PROGRESS)),
+    share(),
+  )
+
+  user = this._reloadUser.pipe(
+    switchMap(() => this._httpClient.get<IUser>(API_USER)),
+    share(),
+  )
+
+  log = this._reloadUser.pipe(
+    switchMap(() => this._httpClient.get<ILog>(API_LOG)),
+    share(),
+  )
 }
