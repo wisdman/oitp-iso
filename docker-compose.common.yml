@@ -33,7 +33,7 @@ services:
     environment:
       - POSTGRES_APPNAME=api-auth
       - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD=API-P@Ssw0rd
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
       - sql
     links:
