@@ -55,7 +55,7 @@ services:
     environment:
       - POSTGRES_APPNAME=api-public-info
       - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
+      - POSTGRES_PASSWORD=API-P@Ssw0rd
     depends_on:
       - sql
     links:
@@ -77,7 +77,7 @@ services:
     environment:
       - POSTGRES_APPNAME=api-public-progress
       - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
+      - POSTGRES_PASSWORD=API-P@Ssw0rd
     depends_on:
       - sql
     links:
@@ -99,7 +99,7 @@ services:
     environment:
       - POSTGRES_APPNAME=api-public-user
       - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
+      - POSTGRES_PASSWORD=API-P@Ssw0rd
     depends_on:
       - sql
     links:
@@ -121,7 +121,7 @@ services:
     environment:
       - POSTGRES_APPNAME=api-public-training
       - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
+      - POSTGRES_PASSWORD=API-P@Ssw0rd
     depends_on:
       - sql
     links:

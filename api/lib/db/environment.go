@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net"
 	"os"
@@ -37,8 +36,6 @@ func parseEnv() (*pgx.ConnPoolConfig, error) {
 	} else if password := os.Getenv("POSTGRES_PASSWORD"); password != "" {
 		config.Password = password
 	}
-
-	fmt.Println(config.Password)
 
 	if strTimeout := os.Getenv("POSTGRES_TIMEOUT"); strTimeout != "" {
 		if timeout, err := strconv.ParseInt(strTimeout, 10, 64); err == nil {
