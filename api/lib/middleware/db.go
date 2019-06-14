@@ -69,9 +69,13 @@ func DB(pool *db.DB) func(fn http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func GetDBTransaction(r *http.Request) *db.Transaction {
-	if sql, ok := r.Context().Value(TransactionKey).(*db.Transaction); ok {
+func GetDBTransactionFromContext(ctx context.Context) *db.Transaction {
+	if sql, ok := ctx.Value(TransactionKey).(*db.Transaction); ok {
 		return sql
 	}
 	panic("Transaction middleware isn't initialized")
+}
+
+func GetDBTransaction(r *http.Request) *db.Transaction {
+	return GetDBTransactionFromContext(r.Context())
 }

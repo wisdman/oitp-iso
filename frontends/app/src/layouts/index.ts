@@ -1,5 +1,6 @@
 export * from "./club"
 export * from "./dashboard"
+export * from "./log"
 export * from "./login"
 export * from "./main"
 export * from "./payment"

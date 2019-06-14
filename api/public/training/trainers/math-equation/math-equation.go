@@ -1,10 +1,9 @@
 package mathEquation
 
 import (
+	"context"
+	"math/rand"
 	"strconv"
-
-	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/lib/w-rand"
 )
 
 var complexityData = [...]Parameters{
@@ -28,31 +27,37 @@ var complexityData = [...]Parameters{
 	},
 }
 
+func multiRange(min int, max int, count int) []int {
+	values := make([]int, count)
+	for i := 0; i < count; i++ {
+		values[i] = rand.Intn(max-min+1) + min
+	}
+	return values
+}
+
 func newEquation(params Parameters) (result string) {
-	rand := wRand.NewUnique()
-	digits := rand.MultiRange(1, 9, params.UniqueDigits)
+	digits := multiRange(1, 9, params.UniqueDigits)
 	digitsLen := len(digits)
 	for i := 0; i < params.DigitsCount; i++ {
 		if i > 0 {
-			operation := operations[wRand.Intn(operationsLen)]
+			operation := operations[rand.Intn(operationsLen)]
 			result += string(operation)
 		}
-		digit := strconv.Itoa(digits[wRand.Intn(digitsLen)])
+		digit := strconv.Itoa(digits[rand.Intn(digitsLen)])
 		result += string(digit)
 	}
 
 	return result
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
+	var configs []interface{}
 
-	params := complexityData[complexity]
+	params := complexityData[0]
 
 	for i := 0; i < params.Quantity; i++ {
 		config := newConfig(params)
@@ -60,5 +65,5 @@ func Build(
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

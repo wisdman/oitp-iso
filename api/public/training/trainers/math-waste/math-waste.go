@@ -1,9 +1,8 @@
 package mathWaste
 
 import (
+	"context"
 	"math/rand"
-
-	"github.com/wisdman/oitp-isov/api/lib/db"
 )
 
 var complexityData = [...]Parameters{
@@ -34,15 +33,14 @@ func init() {
 	// levels = append(levels, level_2)
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
+	var configs []interface{}
 
-	params := complexityData[complexity]
+	params := complexityData[0]
 
 	for i := 0; i < params.Quantity; i++ {
 		config := newConfig(params)
@@ -54,5 +52,5 @@ func Build(
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

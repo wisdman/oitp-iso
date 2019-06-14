@@ -14,6 +14,7 @@
   [attr.height]="matrixHeight"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
+  version="1.1"
   preserveAspectRatio="xMidYMid meet"
 >
   <defs>
@@ -50,28 +51,28 @@
     <use
       *ngIf="item.data >= 0 && mode === 'show'"
       class="image"
-      [attr.href]="'#' + item.data"
+      [attr.xlink:href]="'#' + item.data"
       [attr.x]="item.x + (item.width - imageSize) / 2"
       [attr.y]="item.y + (item.height - imageSize) / 2"
     ></use>
     <use
       *ngIf="item.userData >= 0 && mode === 'play'"
       class="image"
-      [attr.href]="'#' + item.userData"
+      [attr.xlink:href]="'#' + item.userData"
       [attr.x]="item.x + (item.width - imageSize) / 2"
       [attr.y]="item.y + (item.height - imageSize) / 2"
     ></use>
     <use
       *ngIf="mode === 'result'"
       class="error-icon"
-      href="#error"
+      xlink:href="#error"
       [attr.x]="item.x + (item.width - imageSize) / 2"
       [attr.y]="item.y + (item.height - imageSize) / 2"
     ></use>
     <use
       *ngIf="mode === 'result'"
       class="success-icon"
-      href="#success"
+      xlink:href="#success"
       [attr.x]="item.x + (item.width - imageSize) / 2"
       [attr.y]="item.y + (item.height - imageSize) / 2"
     ></use>
@@ -94,7 +95,7 @@
     <use
       *ngIf="item.data >= 0"
       class="image"
-      [attr.href]="'#' + item.data"
+      [attr.xlink:href]="'#' + item.data"
       [attr.x]="item.x + (item.width - imageSize) / 2"
       [attr.y]="item.y + (item.height - imageSize) / 2"
     ></use>

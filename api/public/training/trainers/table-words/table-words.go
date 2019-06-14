@@ -1,9 +1,8 @@
 package tableWords
 
 import (
+	"context"
 	"math/rand"
-
-	"github.com/wisdman/oitp-isov/api/lib/db"
 )
 
 var RUNES_RU = [...]string{"А", "Б", "В", "Г", "Д", "Е", "Ж", "З", "И", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ы", "Э", "Ю", "Я"}
@@ -25,14 +24,14 @@ var complexityData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityData[complexity]
+	var configs []interface{}
+
+	params := complexityData[0]
 	config := newConfig(params)
 
 	ids := rand.Perm(len(RUNES_RU))
@@ -43,5 +42,5 @@ func Build(
 	config.Title = groups[rand.Intn(len(groups))]
 
 	configs = append(configs, config)
-	return configs, nil
+	return configs, ctx, nil
 }

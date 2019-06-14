@@ -156,6 +156,24 @@ class="field"
       [config]="config"
       (result)="onResult($event)"
     ></trainer-words-lexis>
+
+    <trainer-words-pairs
+      *ngIf="config.id === 'words-pairs'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-words-pairs>
+
+    <trainer-words-question-close
+      *ngIf="config.id === 'words-question-close'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-words-question-close>
+
+    <trainer-words-question-waste
+      *ngIf="config.id === 'words-question-waste'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-words-question-waste>
   </div>
 
   <training-result

@@ -1,15 +1,14 @@
 package spaceQuestions
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
 )
 
-func BuildWaste3D(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildWaste3D(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	return configs, nil
+	var configs []interface{}
+	return configs, ctx, nil
 }

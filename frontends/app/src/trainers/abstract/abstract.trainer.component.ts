@@ -17,6 +17,7 @@ import { DomSanitizer } from "@angular/platform-browser"
 import { Subscription } from "rxjs"
 
 import {
+  CarpetService,
   FullscreenService,
   KeypadService,
   PointerService,
@@ -42,6 +43,7 @@ implements OnInit, OnDestroy, OnChanges {
     private _renderer: Renderer2,
     private _sanitizer: DomSanitizer,
 
+    public carpetService: CarpetService,
     public fullscreenService: FullscreenService,
     public keypadService: KeypadService,
     public pointerService: PointerService,
@@ -67,7 +69,6 @@ implements OnInit, OnDestroy, OnChanges {
       this.resultValueChange.emit(this.result)
     }
   }
-
 
   // === Style reading ===
   private _style = getComputedStyle(this._elRef.nativeElement)

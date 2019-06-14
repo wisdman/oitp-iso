@@ -57,6 +57,7 @@ import {
   ClubLayoutComponent,
   DashboardLayoutComponent,
   LoginLayoutComponent,
+  LogLayoutComponent,
   MainLayoutComponent,
   PaymentLayoutComponent,
   ProfileLayoutComponent,
@@ -72,6 +73,7 @@ import {
 } from "./pipes"
 
 import {
+  CarpetService,
   FullscreenService,
   FullscreenServiceFactory,
   InfoService,
@@ -113,6 +115,9 @@ import {
   TextTezirovanieTrainerComponent,
   WordsColumnTrainerComponent,
   WordsLexisTrainerComponent,
+  WordsPairsTrainerComponent,
+  WordsQuestionCloseTrainerComponent,
+  WordsQuestionWasteTrainerComponent,
 } from "./trainers"
 
 import { ROUTES } from "./app.routing"
@@ -154,6 +159,7 @@ import { ROUTES } from "./app.routing"
     ClubLayoutComponent,
     DashboardLayoutComponent,
     LoginLayoutComponent,
+    LogLayoutComponent,
     MainLayoutComponent,
     PaymentLayoutComponent,
     ProfileLayoutComponent,
@@ -191,6 +197,9 @@ import { ROUTES } from "./app.routing"
     TextTezirovanieTrainerComponent,
     WordsColumnTrainerComponent,
     WordsLexisTrainerComponent,
+    WordsPairsTrainerComponent,
+    WordsQuestionCloseTrainerComponent,
+    WordsQuestionWasteTrainerComponent,
   ],
 
   entryComponents: [],
@@ -210,6 +219,7 @@ import { ROUTES } from "./app.routing"
     LogoutGuard,
     RootRoutingGuard,
 
+    CarpetService,
     InfoService,
     TimerService,
     TokenService,

@@ -1,9 +1,8 @@
 package matrixSequence
 
 import (
+	"context"
 	"math/rand"
-
-	"github.com/wisdman/oitp-isov/api/lib/db"
 )
 
 var complexityRandomData = [...]Parameters{
@@ -33,14 +32,14 @@ var complexityRandomData = [...]Parameters{
 	},
 }
 
-func BuildRandom(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildRandom(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityRandomData[complexity]
+	var configs []interface{}
+
+	params := complexityRandomData[0]
 
 	for i := 0; i < params.Quantity; i++ {
 		config := newConfig(params)
@@ -52,5 +51,5 @@ func BuildRandom(
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

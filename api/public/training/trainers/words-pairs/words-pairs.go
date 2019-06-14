@@ -1,14 +1,9 @@
-// Точность восприятия. Столбики
-//
-// Запомните пары слов
-//
-// Восстановите пары слов
-//
-
 package wordsPairs
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityPairsData = [...]Parameters{
@@ -32,26 +27,31 @@ var complexityPairsData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityPairsData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityPairsData[0]
 
 	var words [][]*string
 	if err := sql.QueryRow(`
 		SELECT
-			ARRAY["wordA", "wordB"]
-		FROM
-			public.trainer_words_pairs
-		ORDER BY random()
-		LIMIT $1`,
+			jsonb_agg("words") AS "words"
+		FROM(
+			SELECT
+				jsonb_build_array("wordA", "wordB") AS "words"
+			FROM
+				public.trainer_words_pairs
+			ORDER BY random()
+			LIMIT $1
+		) t`,
 		params.Quantity*params.ItemsCount,
 	).Scan(&words); err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 
 	for i := 0; i < params.Quantity; i++ {
@@ -61,5 +61,5 @@ func Build(
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

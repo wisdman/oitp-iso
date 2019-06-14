@@ -23,6 +23,9 @@ import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResu
 import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
 import { IWordsColumnTrainer, IWordsColumnTrainerConfig, IWordsColumnTrainerResult } from "./words-column"
 import { IWordsLexisTrainer, IWordsLexisTrainerConfig, IWordsLexisTrainerResult } from "./words-lexis"
+import { IWordsPairsTrainer, IWordsPairsTrainerConfig, IWordsPairsTrainerResult } from "./words-pairs"
+import { IWordsQuestionCloseTrainer, IWordsQuestionCloseTrainerConfig, IWordsQuestionCloseTrainerResult } from "./words-question-close"
+import { IWordsQuestionWasteTrainer, IWordsQuestionWasteTrainerConfig, IWordsQuestionWasteTrainerResult } from "./words-question-waste"
 
 export type ITrainer = IClassificationColorsTrainer
                      | IClassificationDefinitionsTrainer
@@ -48,6 +51,9 @@ export type ITrainer = IClassificationColorsTrainer
                      | ITextTezirovanieTrainer
                      | IWordsColumnTrainer
                      | IWordsLexisTrainer
+                     | IWordsPairsTrainer
+                     | IWordsQuestionCloseTrainer
+                     | IWordsQuestionWasteTrainer
 
 
 export type ITrainerConfigs = IClassificationColorsTrainerConfig
@@ -74,6 +80,9 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | ITextTezirovanieTrainerConfig
                             | IWordsColumnTrainerConfig
                             | IWordsLexisTrainerConfig
+                            | IWordsPairsTrainerConfig
+                            | IWordsQuestionCloseTrainerConfig
+                            | IWordsQuestionWasteTrainerConfig
 
 export type ITrainerResults = IClassificationColorsTrainerResult
                             | IClassificationDefinitionsTrainerResult
@@ -99,6 +108,9 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | ITextTezirovanieTrainerResult
                             | IWordsColumnTrainerResult
                             | IWordsLexisTrainerResult
+                            | IWordsPairsTrainerResult
+                            | IWordsQuestionCloseTrainerResult
+                            | IWordsQuestionWasteTrainerResult
 
 export interface ITrainerConfig {
   id: ITrainer

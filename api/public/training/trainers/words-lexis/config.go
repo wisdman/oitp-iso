@@ -31,7 +31,6 @@ type Config struct {
 func newConfig(
 	params Parameters,
 	itemsType IItemsType,
-
 ) *Config {
 	return &Config{
 		Config:        abstract.NewConfig(abstract.UIWordsLexis),

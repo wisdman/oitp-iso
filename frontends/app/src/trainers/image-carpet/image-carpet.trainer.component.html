@@ -1,3 +1,44 @@
 <!-- Наглядно-образная память -->
-<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните картинку</h1>
-<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите картинку по пмяти</h1>
+<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните&nbsp;картинку<br>&nbsp;</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;картинку<br>по&nbsp;пмяти</h1>
+
+<svg
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <path
+    *ngFor="let item of items"
+    class="path"
+    [attr.d]="item.path"
+    [attr.fill]="item.fill"
+  ></path>
+</svg>
+
+<trainer-button
+  *ngIf="mode==='show'"
+  class="button"
+  value="Продолжить"
+  [focus]="true"
+  (touch)="startPlay()"
+></trainer-button>
+
+<trainer-button
+  *ngIf="mode==='play'"
+  class="button"
+  value="Проверить"
+  [focus]="true"
+  (touch)="showResult()"
+></trainer-button>
+
+<trainer-button
+  *ngIf="mode === 'result'"
+  class="button"
+  value="Продолжить"
+  [focus]="true"
+  (touch)="finish()"
+></trainer-button>

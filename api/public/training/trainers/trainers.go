@@ -1,7 +1,7 @@
 package trainers
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
 
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/classification-colors"
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/classification-definitions"
@@ -27,7 +27,8 @@ import (
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/words-column"
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/words-lexis"
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/words-pairs"
-	"github.com/wisdman/oitp-isov/api/public/training/trainers/words-questions"
+	"github.com/wisdman/oitp-isov/api/public/training/trainers/words-questions-close"
+	"github.com/wisdman/oitp-isov/api/public/training/trainers/words-questions-waste"
 )
 
 type ITrainer string
@@ -44,7 +45,7 @@ const (
 	MathMiddle                ITrainer = "math-middle"                // Арифметико-практическое мышление
 	MathSequence              ITrainer = "math-sequence"              // Арифметико-практическое мышление
 	MathWaste                 ITrainer = "math-waste"                 // Арифметико-практическое мышление
-	MatrixFillingPattern      ITrainer = "matrix-filling-pattern"     // Индуктивность
+	MatrixFillingPattern      ITrainer = "matrix-filling-pattern"     // Индуктивность мышления
 	MatrixFillingUnique       ITrainer = "matrix-filling-unique"      // Мнемотехника
 	MatrixSequencePattern     ITrainer = "matrix-sequence-pattern"    // Индуктивность мышления
 	MatrixSequenceRandom      ITrainer = "matrix-sequence-random"     // Таблицы с произвольным рассположением чисел
@@ -68,12 +69,10 @@ const (
 	WordsQuestionsWaste       ITrainer = "words-questions-waste"      // Вербальный интеллект
 )
 
-type ITrainerBuilder func(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+type ITrainerBuilder func(context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 )
 
 var BuildFunctions = map[ITrainer]ITrainerBuilder{
@@ -108,18 +107,17 @@ var BuildFunctions = map[ITrainer]ITrainerBuilder{
 	WordsLexisParonyms:        wordsLexis.BuildParonyms,
 	WordsLexisSynonyms:        wordsLexis.BuildSynonyms,
 	WordsPairs:                wordsPairs.Build,
-
-	WordsQuestionsClose: wordsQuestion.BuildClose,
-	WordsQuestionsWaste: wordsQuestion.BuildWaste,
+	WordsQuestionsClose:       wordsQuestionClose.Build,
+	WordsQuestionsWaste:       wordsQuestionWaste.Build,
 }
 
 func Build(
-	sql *db.Transaction,
+	ctx context.Context,
 	trainer ITrainer,
-	complexity uint8,
 ) (
-	configs []interface{},
-	err error,
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	return BuildFunctions[trainer](sql, complexity)
+	return BuildFunctions[trainer](ctx)
 }

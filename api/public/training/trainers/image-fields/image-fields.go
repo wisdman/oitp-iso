@@ -1,11 +1,10 @@
 package imageFields
 
 import (
+	"context"
 	"math/rand"
 
-	"github.com/wisdman/oitp-isov/api/lib/db"
-
-	"github.com/wisdman/oitp-isov/api/public/training/trainers/icons"
+	"github.com/wisdman/oitp-isov/api/public/training/icons"
 )
 
 var complexityData = [...]Parameters{
@@ -41,17 +40,18 @@ var complexityData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityData[complexity]
+	var configs []interface{}
+
+	params := complexityData[0]
 	questionConfig := newQuestionConfig(params)
 
-	icons := icons.GetIcons(params.Quantity*params.MaxItems + params.AnswersCount)
+	icons, ctx := icons.GetIcons(ctx, params.Quantity*params.MaxItems+params.AnswersCount)
+
 	var offset int
 
 	for i := 0; i < params.Quantity; i++ {
@@ -87,5 +87,5 @@ func Build(
 	}
 
 	configs = append(configs, questionConfig)
-	return configs, nil
+	return configs, ctx, nil
 }

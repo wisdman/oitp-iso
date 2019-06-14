@@ -1,7 +1,9 @@
 package matrixSequence
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityPatternData = [...]Parameters{
@@ -31,14 +33,15 @@ var complexityPatternData = [...]Parameters{
 	},
 }
 
-func BuildPattern(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildPattern(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityPatternData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityPatternData[0]
 
 	rows, err := sql.Query(`
     SELECT
@@ -55,17 +58,17 @@ func BuildPattern(
 		params.Quantity,
 	)
 	if err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		config := newConfig(params)
 		if err = rows.Scan(&config.Matrix); err != nil {
-			return nil, err
+			return nil, ctx, err
 		}
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

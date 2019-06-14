@@ -1,8 +1,9 @@
 package matrixFilling
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/public/training/trainers/icons"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/public/training/icons"
 )
 
 var complexityUniqueData = [...]Parameters{
@@ -32,16 +33,16 @@ var complexityUniqueData = [...]Parameters{
 	},
 }
 
-func BuildUnique(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildUnique(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityUniqueData[complexity]
+	var configs []interface{}
 
-	icons := icons.GetIcons(params.Quantity*params.ItemsCount + params.AnswersCount)
+	params := complexityUniqueData[0]
+
+	icons, ctx := icons.GetIcons(ctx, params.Quantity*params.ItemsCount+params.AnswersCount)
 	var offset int
 
 	for i := 0; i < params.Quantity; i++ {
@@ -62,5 +63,5 @@ func BuildUnique(
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

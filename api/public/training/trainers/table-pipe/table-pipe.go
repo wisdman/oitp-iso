@@ -1,9 +1,8 @@
 package tablePipe
 
 import (
+	"context"
 	"math/rand"
-
-	"github.com/wisdman/oitp-isov/api/lib/db"
 )
 
 var complexityData = [...]Parameters{
@@ -21,15 +20,14 @@ var complexityData = [...]Parameters{
 	},
 }
 
-func build(
-	sql *db.Transaction,
-	complexity uint8,
-	runeType IRunes,
-) (
-	configs []interface{},
-	err error,
+func build(ctx context.Context, runeType IRunes) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityData[complexity]
+	var configs []interface{}
+
+	params := complexityData[0]
 
 	config := newConfig(params)
 	itemsLen := len(config.Items)
@@ -48,35 +46,29 @@ func build(
 		config.Matrix[i] = uint16(rand.Intn(itemsLen))
 	}
 
-	return append(configs, config), nil
+	return append(configs, config), ctx, nil
 }
 
-func BuildRU(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildRU(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	return build(sql, complexity, RunesRU)
+	return build(ctx, RunesRU)
 }
 
-func BuildEN(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildEN(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	return build(sql, complexity, RunesEN)
+	return build(ctx, RunesEN)
 }
 
-func BuildNUMBERS(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildNUMBERS(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	return build(sql, complexity, RunesNUMBERS)
+	return build(ctx, RunesNUMBERS)
 }

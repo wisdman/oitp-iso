@@ -13,6 +13,7 @@
       [attr.height]="matrixHeight"
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
+      version="1.1"
       preserveAspectRatio="xMidYMid meet"
     >
       <path
@@ -73,13 +74,13 @@
     >{{ item.data }}</text>
     <use
       class="error"
-      href="#error"
+      xlink:href="#error"
       [attr.x]="item.x + (item.width - 24) / 2"
       [attr.y]="item.y + (item.height - 24) / 2"
     ></use>
     <use
       class="success"
-      href="#success"
+      xlink:href="#success"
       [attr.x]="item.x + (item.width - 24) / 2"
       [attr.y]="item.y + (item.height - 24) / 2"
     ></use>

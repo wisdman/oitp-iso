@@ -32,6 +32,7 @@ export const API_PROGRESS = `${API_BASE}/public/progress`
 export const API_LOG = `${API_BASE}/public/log`
 
 export const ASSETS = "/assets"
+export const ASSETS_CARPETS = `${ASSETS}/carpets`
 export const ASSETS_EXPRESSIONS = `${ASSETS}/expressions`
 export const ASSETS_ICONS = `${ASSETS}/icons`
 export const ASSETS_RELAX = `${ASSETS}/relax`

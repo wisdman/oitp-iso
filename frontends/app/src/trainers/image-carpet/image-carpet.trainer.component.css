@@ -1,0 +1,15 @@
+
+.matrix {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+
+  margin-top: calc(var(--trainer-margin) * 4);
+  margin-bottom: auto;
+}
+
+.path {
+  stroke: var(--trainer-text-color);
+  stroke-width: 50;
+}

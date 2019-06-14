@@ -1,7 +1,9 @@
 package wordsColumn
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityWordsColumn = [...]Parameters{
@@ -25,14 +27,15 @@ var complexityWordsColumn = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityWordsColumn[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityWordsColumn[0]
 
 	var words []string
 	if err := sql.QueryRow(`
@@ -48,7 +51,7 @@ func Build(
     ) t`,
 		params.Quantity*params.ItemsCount,
 	).Scan(&words); err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 
 	for i := 0; i < params.Quantity; i++ {
@@ -58,5 +61,5 @@ func Build(
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

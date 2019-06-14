@@ -1,8 +1,10 @@
 package imageExpressions
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/lib/w-rand"
+	"context"
+	"math/rand"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityData = [...]Parameters{
@@ -44,14 +46,15 @@ var complexityData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityData[0]
 
 	rows, err := sql.Query(`
     SELECT "id", "data"
@@ -62,7 +65,7 @@ func Build(
 		params.MaxItems,
 	)
 	if err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 	defer rows.Close()
 
@@ -71,13 +74,13 @@ func Build(
 	for rows.Next() {
 		item := &Item{}
 		if err = rows.Scan(&item.Image, &item.Data); err != nil {
-			return nil, err
+			return nil, ctx, err
 		}
 		config.Items = append(config.Items, item)
 	}
 
-	wRand.Shuffle(len(config.Items), func(i, j int) { config.Items[i], config.Items[j] = config.Items[j], config.Items[i] })
+	rand.Shuffle(len(config.Items), func(i, j int) { config.Items[i], config.Items[j] = config.Items[j], config.Items[i] })
 
 	configs = append(configs, config)
-	return configs, nil
+	return configs, ctx, nil
 }

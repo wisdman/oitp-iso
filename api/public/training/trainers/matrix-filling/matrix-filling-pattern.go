@@ -1,10 +1,11 @@
 package matrixFilling
 
 import (
+	"context"
 	"math/rand"
 
-	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/public/training/trainers/icons"
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
+	"github.com/wisdman/oitp-isov/api/public/training/icons"
 )
 
 var complexityPatternData = [...]Parameters{
@@ -43,17 +44,18 @@ var complexityPatternData = [...]Parameters{
 	},
 }
 
-func BuildPattern(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildPattern(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityPatternData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityPatternData[0]
 	questionConfig := newQuestionConfig(params)
 
-	icons := icons.GetIcons(params.Quantity*params.ItemsCount + params.AnswersCount)
+	icons, ctx := icons.GetIcons(ctx, params.Quantity*params.ItemsCount+params.AnswersCount)
 	var offset int
 
 	rows, err := sql.Query(`
@@ -71,14 +73,14 @@ func BuildPattern(
 		params.Quantity,
 	)
 	if err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		config := newConfig(params)
 		if err = rows.Scan(&config.Matrix); err != nil {
-			return nil, err
+			return nil, ctx, err
 		}
 
 		var maxIdx uint16
@@ -119,5 +121,5 @@ func BuildPattern(
 	}
 
 	configs = append(configs, questionConfig)
-	return configs, nil
+	return configs, ctx, nil
 }

@@ -1,7 +1,9 @@
 package classificationDefinitions
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityDefinitionsData = [...]Parameters{
@@ -37,14 +39,15 @@ var complexityDefinitionsData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityDefinitionsData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityDefinitionsData[0]
 
 	rows, err := sql.Query(`
 		SELECT
@@ -72,7 +75,7 @@ func Build(
 		params.MaxItems,
 	)
 	if err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 	defer rows.Close()
 
@@ -81,11 +84,11 @@ func Build(
 	for rows.Next() {
 		item := &Item{}
 		if err = rows.Scan(&item.Definition, &item.Data); err != nil {
-			return nil, err
+			return nil, ctx, err
 		}
 		config.Items = append(config.Items, item)
 	}
 
 	configs = append(configs, config)
-	return configs, nil
+	return configs, ctx, nil
 }

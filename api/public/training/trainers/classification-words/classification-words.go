@@ -1,8 +1,10 @@
 package classificationWords
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
-	"github.com/wisdman/oitp-isov/api/lib/w-rand"
+	"context"
+	"math/rand"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityWordsData = [...]Parameters{
@@ -44,19 +46,20 @@ var complexityWordsData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityWordsData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityWordsData[0]
 
 	itemsCounts := make([]int, params.Quantity)
 	var maxItems int
 	for i := 0; i < params.Quantity; i++ {
-		length := wRand.Range(params.MinItems, params.MaxItems)
+		length := rand.Intn(params.MaxItems - params.MinItems + 1)
 		itemsCounts[i] = length
 		if itemsCounts[i] > maxItems {
 			maxItems = itemsCounts[i]
@@ -89,7 +92,7 @@ func Build(
 		maxItems,
 	)
 	if err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 	defer rows.Close()
 
@@ -98,11 +101,11 @@ func Build(
 	for rows.Next() {
 		item := &Item{}
 		if err = rows.Scan(&item.Word, &item.Data); err != nil {
-			return nil, err
+			return nil, ctx, err
 		}
 		config.Items = append(config.Items, item)
 	}
 
 	configs = append(configs, config)
-	return configs, nil
+	return configs, ctx, nil
 }

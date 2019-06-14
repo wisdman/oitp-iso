@@ -1,15 +1,14 @@
 package imageDifferences
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
 )
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	return configs, nil
+	var configs []interface{}
+	return configs, ctx, nil
 }

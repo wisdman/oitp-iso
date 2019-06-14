@@ -1,7 +1,9 @@
 package textTezirovanie
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityTezirovanieData = [...]Parameters{
@@ -16,14 +18,15 @@ var complexityTezirovanieData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityTezirovanieData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityTezirovanieData[0]
 	config := newConfig(params)
 
 	if err := sql.QueryRow(`
@@ -33,9 +36,9 @@ func Build(
     ORDER BY random()
     LIMIT 1`,
 	).Scan(&config.Data); err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 
 	configs = append(configs, config)
-	return configs, nil
+	return configs, ctx, nil
 }

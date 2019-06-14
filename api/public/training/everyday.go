@@ -3,19 +3,16 @@ package main
 import (
 	"math/rand"
 	"net/http"
-	"time"
 
-	"github.com/wisdman/oitp-isov/api/lib/middleware"
 	"github.com/wisdman/oitp-isov/api/lib/service"
 
+	"github.com/wisdman/oitp-isov/api/public/training/icons"
 	"github.com/wisdman/oitp-isov/api/public/training/trainers"
 )
 
 func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
-	rand.Seed(time.Now().UnixNano())
-
 	var trainersList = []trainers.ITrainer{
-		"words-lexis-antonyms", "words-lexis-paronyms", "words-lexis-synonyms", "table-pipe-ru", "table-pipe-number",
+		"table-pipe-ru", "table-pipe-number",
 	}
 
 	var trainersRandom = [][]trainers.ITrainer{
@@ -29,14 +26,15 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 		{"matrix-filling-unique"},
 		{"matrix-sequence-pattern"},
 		{"space-waste-2d", "space-waste-3d"},
+		// {"storytelling"},
 		{"table-words"},
 		{"text-letters"},
 		{"text-reading"},
 		{"text-tezirovanie"},
 		{"words-column"},
 		{"words-lexis-antonyms", "words-lexis-paronyms", "words-lexis-synonyms"},
-		// {"words-columns-words"},
-		// {"words-pairs-antonyms", "words-pairs-paronyms", "words-pairs-synonyms", "words-questions-close", "words-questions-waste"},
+		{"words-pairs"},
+		{"words-questions-close", "words-questions-waste"},
 	}
 
 	rand.Shuffle(len(trainersRandom), func(i, j int) {
@@ -60,12 +58,13 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 
 	trainersList = append(trainersList, trainersFinish[0])
 
-	sql := middleware.GetDBTransaction(r)
-
+	var configs []interface{}
+	var err error
+	ctx := icons.New(r.Context())
 	training := newTraining(1800)
 
 	for i, max := 0, len(trainersList); i < max; i++ {
-		configs, err := trainers.Build(sql, trainersList[i], 0)
+		configs, ctx, err = trainers.Build(ctx, trainersList[i])
 		if err != nil {
 			service.Fatal(w, err)
 			return

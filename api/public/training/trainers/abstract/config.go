@@ -32,7 +32,8 @@ const (
 	UIWordsColumn               IUITrainer = "words-column"
 	UIWordsLexis                IUITrainer = "words-lexis"
 	UIWordsPairs                IUITrainer = "words-pairs"
-	UIWordsQuestion             IUITrainer = "words-question"
+	UIWordsQuestionClose        IUITrainer = "words-question-close"
+	UIWordsQuestionWaste        IUITrainer = "words-question-waste"
 )
 
 type Config struct {

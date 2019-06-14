@@ -1,7 +1,9 @@
 package textReading
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityReadingData = [...]Parameters{
@@ -16,14 +18,15 @@ var complexityReadingData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityReadingData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityReadingData[0]
 	config := newConfig(params)
 
 	var questions []*Question
@@ -35,7 +38,7 @@ func Build(
 	   ORDER BY random()
 	   LIMIT 1`,
 	).Scan(&config.Data, &questions); err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 
 	configs = append(configs, config)
@@ -47,5 +50,5 @@ func Build(
 		configs = append(configs, questionConfig)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

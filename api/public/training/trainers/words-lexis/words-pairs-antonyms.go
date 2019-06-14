@@ -1,12 +1,9 @@
-// Вербальный интеллект
-//
-// Синомимы .....
-//
-
 package wordsLexis
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityAntonymsData = [...]Parameters{
@@ -27,14 +24,15 @@ var complexityAntonymsData = [...]Parameters{
 	},
 }
 
-func BuildAntonyms(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func BuildAntonyms(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityAntonymsData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityAntonymsData[0]
 
 	var words [][]*string
 	if err := sql.QueryRow(`
@@ -52,15 +50,15 @@ func BuildAntonyms(
 		) t`,
 		params.Quantity*params.ItemsCount,
 	).Scan(&words); err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 
 	for i := 0; i < params.Quantity; i++ {
-		config := newConfig(params, Paronyms)
+		config := newConfig(params, Antonyms)
 		config.Items = words[0:params.ItemsCount]
 		words = words[params.ItemsCount:]
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

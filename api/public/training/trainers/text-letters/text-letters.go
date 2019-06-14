@@ -1,7 +1,9 @@
 package textLetters
 
 import (
-	"github.com/wisdman/oitp-isov/api/lib/db"
+	"context"
+
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 )
 
 var complexityData = [...]Parameters{
@@ -28,14 +30,15 @@ var complexityData = [...]Parameters{
 	},
 }
 
-func Build(
-	sql *db.Transaction,
-	complexity uint8,
-) (
-	configs []interface{},
-	err error,
+func Build(ctx context.Context) (
+	[]interface{},
+	context.Context,
+	error,
 ) {
-	params := complexityData[complexity]
+	var configs []interface{}
+
+	sql := middleware.GetDBTransactionFromContext(ctx)
+	params := complexityData[0]
 
 	rows, err := sql.Query(`
 		SELECT
@@ -54,18 +57,18 @@ func Build(
 		params.Quantity,
 	)
 	if err != nil {
-		return nil, err
+		return nil, ctx, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		config := newConfig(params)
 		if err = rows.Scan(&config.Data); err != nil {
-			return nil, err
+			return nil, ctx, err
 		}
 
 		configs = append(configs, config)
 	}
 
-	return configs, nil
+	return configs, ctx, nil
 }

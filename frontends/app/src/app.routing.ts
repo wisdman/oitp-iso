@@ -4,6 +4,7 @@ import {
   ClubLayoutComponent,
   DashboardLayoutComponent,
   LoginLayoutComponent,
+  LogLayoutComponent,
   MainLayoutComponent,
   PaymentLayoutComponent,
   ProfileLayoutComponent,
@@ -36,6 +37,10 @@ export const ROUTES: Routes =
     path: "dashboard",
     component: DashboardLayoutComponent,
     data: { title: "Личный кабинет" },
+  },{
+    path: "log",
+    component: LogLayoutComponent,
+    data: { title: "История занятий" },
   },{
     path: "payment",
     component: PaymentLayoutComponent,

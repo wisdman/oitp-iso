@@ -3,17 +3,14 @@ package main
 import (
 	"math/rand"
 	"net/http"
-	"time"
 
-	"github.com/wisdman/oitp-isov/api/lib/middleware"
 	"github.com/wisdman/oitp-isov/api/lib/service"
 
+	"github.com/wisdman/oitp-isov/api/public/training/icons"
 	"github.com/wisdman/oitp-isov/api/public/training/trainers"
 )
 
 func (api *API) Once(w http.ResponseWriter, r *http.Request) {
-	rand.Seed(time.Now().UnixNano())
-
 	var trainersList = []trainers.ITrainer{
 		"matrix-filling-pattern", "matrix-sequence-random",
 	}
@@ -22,12 +19,14 @@ func (api *API) Once(w http.ResponseWriter, r *http.Request) {
 		trainersList[i], trainersList[j] = trainersList[j], trainersList[i]
 	})
 
-	sql := middleware.GetDBTransaction(r)
-
 	training := newTraining(1800)
 
+	var configs []interface{}
+	var err error
+	ctx := icons.New(r.Context())
+
 	for i, max := 0, len(trainersList); i < max; i++ {
-		configs, err := trainers.Build(sql, trainersList[i], 0)
+		configs, ctx, err = trainers.Build(ctx, trainersList[i])
 		if err != nil {
 			service.Fatal(w, err)
 			return

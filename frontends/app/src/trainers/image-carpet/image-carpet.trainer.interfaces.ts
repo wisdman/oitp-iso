@@ -9,10 +9,10 @@ export type IImageCarpetTrainer = "image-carpet"
 export interface IImageCarpetTrainerConfig extends ITrainerConfig {
   id: IImageCarpetTrainer
 
-  timeLimit: number
+  playTimeLimit: number
+  showTimeLimit: number
 
-  mode: "show" | "play"
-  carpet: string
+  item: number
 }
 
 export interface IImageCarpetTrainerResult extends ITrainerResult {
