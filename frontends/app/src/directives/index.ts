@@ -1,5 +1,5 @@
 export * from "./button"
-export * from "./fast-touch"
+export * from "./focusable"
 export * from "./input"
 export * from "./tezirovanie"
 export * from "./touchable"

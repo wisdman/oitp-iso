@@ -3,8 +3,7 @@
 
 <div class="text" [innerHtml]="sanitizeHtml(this.config.data)"></div>
 
-<trainer-button
-  class="button"
-  value="Продолжить"
-  (touch)="finish()"
-></trainer-button>
+<button
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

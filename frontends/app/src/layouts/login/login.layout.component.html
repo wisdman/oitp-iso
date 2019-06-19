@@ -12,15 +12,17 @@
 
     <input
       type="email"
+      class="input--main"
       formControlName="email"
-      placeholder="E-mail"
+      label="E-mail"
     >
 
     <input
       *ngIf="mode==='login'"
       type="password"
+      class="input--main"
       formControlName="password"
-      placeholder="Пароль"
+      label="Пароль"
     >
 
     <button type="submit" class="submit button--main" [disabled]="!loginForm.valid">

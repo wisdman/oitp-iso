@@ -3,11 +3,15 @@
   position: relative;
 
   margin: 0 auto;
-  margin-top: 16px;
   padding: 0;
 
   flex-shrink: 0;
   width: 100%;
+  height: auto;
+}
+
+.input--main {
+  margin-top: 16px;
   height: 48px;
 
   background-color: var(--color-white);
@@ -15,7 +19,11 @@
   border-radius: 8px;
 }
 
-.focus {
+.input--trainer {
+  height: 100%;
+}
+
+.input--main.focus {
   border-color: var(--color-primar);
 }
 
@@ -33,9 +41,14 @@
 
   background-color: transparent;
   background-image: none;
-  border: 0 none;
-  border-radius: 8px;
+  color: inherit;
 
+  border: 0 none;
+
+}
+
+.input--main .input {
+  border-radius: 8px;
   color: var(--color-text);
 }
 
@@ -45,6 +58,11 @@
 }
 
 .label {
+  display: none;
+}
+
+.input--main .label {
+  display: block;
   position: absolute;
   left: .5em;
   top: 50%;
@@ -77,12 +95,20 @@
   cursor: text;
 }
 
-.focus .label,
-.not-empty .label,
-.date .label {
+.input--main.focus .label,
+.input--main.not-empty .label,
+.input--main.date .label {
   transform: translate(0, calc(-50% - 24px)) scale(0.80);
 }
 
-.focus .label {
+.input--main.focus .label {
   color: var(--color-primar);
+}
+
+.input--trainer.success {
+  color: var(--trainer-success-color)
+}
+
+.input--trainer.error {
+  color: var(--trainer-error-color)
 }

@@ -3,10 +3,8 @@ import {
   Component,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
-
 import {
-  SVGRectangle,
+  SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
 
@@ -21,7 +19,7 @@ import {
 
 type IColumnType = "left" | "right"
 
-interface IItem extends SVGRectangle {
+interface IItem extends SVGShape {
   type: IColumnType
   data: string
   userData: string
@@ -42,11 +40,7 @@ extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerRes
   currentItem?: IItem
   hiddenColumn!: IColumnType
 
-  private _keypadTabSubscriber!: Subscription
-
   init() {
-    this.keypadService.show("RU")
-
     this.hiddenColumn = Math.random() >= 0.5 ? "left" : "right"
 
     const {
@@ -99,18 +93,9 @@ extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerRes
       }]
     }).flat()
 
-    if (this._keypadTabSubscriber) this._keypadTabSubscriber.unsubscribe()
-    this._keypadTabSubscriber = this.keypadService.tab
-                                .subscribe(() => this._onTab())
-
     this.currentItem = undefined
     this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
-  }
-
-  destroy() {
-    if (this._keypadTabSubscriber) this._keypadTabSubscriber.unsubscribe()
-    this.keypadService.hide()
   }
 
   timeout() {
@@ -142,7 +127,7 @@ extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerRes
     this.mode = "result"
   }
 
-  private _onTab() {
+  tab() {
     if (this.mode !== "play") {
       return
     }

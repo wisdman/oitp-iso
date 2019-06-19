@@ -3,8 +3,6 @@ import {
   Component,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
-
 import { AbstractTrainerComponent } from "../abstract"
 
 import {
@@ -31,12 +29,7 @@ extends AbstractTrainerComponent<IMathMiddleTrainerConfig, IMathMiddleTrainerRes
   isSuccess: boolean = false
   isAnswerShown: boolean = false
 
-  private _keypadEnterSubscription!: Subscription
-  private _keypadSpaceSubscription!: Subscription
-
   init() {
-    this.keypadService.show("NUMBERS")
-
     this.userData = ""
     this.isSuccess = true
     this.isAnswerShown = false
@@ -44,20 +37,8 @@ extends AbstractTrainerComponent<IMathMiddleTrainerConfig, IMathMiddleTrainerRes
     this.items = this.config.items.slice(0,-1)
     this.item = this.config.items[this.config.items.length - 1]
 
-    if (this._keypadEnterSubscription) this._keypadEnterSubscription.unsubscribe()
-    this._keypadEnterSubscription = this.keypadService.enter
-                                        .subscribe(() => this.mode === "play" ? this.showResult() : this.finish())
-
-    if (this._keypadSpaceSubscription) this._keypadSpaceSubscription.unsubscribe()
-    this._keypadSpaceSubscription = this.keypadService.space
-                                        .subscribe(() => this.mode === "result" && this.finish())
-
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
-  }
-
-  destroy() {
-    this.keypadService.hide()
   }
 
   showResult() {

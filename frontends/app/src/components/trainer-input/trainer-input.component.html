@@ -1,7 +1,0 @@
-<span
-  *ngFor="let item of valueList; let i = index"
-  class="item"
-  [class.item--cursor]="isActive && i === cursor"
-  [class.item--space]="item === ' '"
-  fastTouch (touch)="onTouch(i)"
->{{item}}</span>

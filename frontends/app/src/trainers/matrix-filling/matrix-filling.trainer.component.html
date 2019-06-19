@@ -1,8 +1,8 @@
 <!-- Индуктивность - Паттерны -->
 <!-- Мнемотехника - Уникальные -->
 <h1 *ngIf="mode === 'show' && !isUnique" class="trainer-h1">Запомните&nbsp;таблицу<br>&nbsp;</h1>
-<h1 *ngIf="mode === 'show' && isUnique" class="trainer-h1">Запомните&nbsp;таблицу,<br>cоединив&nbsp;картинки&nbsp;ассоциотивной&nbsp;связью</h1>
-<h1 *ngIf="mode === 'play'" class="trainer-h1">Востановите&nbsp;таблицу<br>по&nbsp;памяти</h1>
+<h1 *ngIf="mode === 'show' && isUnique" class="trainer-h1">Запомните&nbsp;таблицу,<br>cоединив&nbsp;картинки&nbsp;ассоциативной&nbsp;связью</h1>
+<h1 *ngIf="mode === 'play'" class="trainer-h1">Восстановите&nbsp;таблицу<br>по&nbsp;памяти</h1>
 <h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
 <svg
@@ -38,7 +38,7 @@
     [class.item-error]="item.userData !== item.data"
     [class.item-success]="item.userData === item.data"
     [attr.matrixIndex]="i"
-    fastTouch (touch)="onTouch($event, item.userData)"
+    touchable (pointerDown)="onTouch($event, item.userData)"
   >
     <path
       class="fill-path"
@@ -82,7 +82,7 @@
     *ngFor="let item of items"
     class="item"
     [class.invisible]="mode === 'show'"
-    fastTouch (touch)="onTouch($event, item.data)"
+    touchable (pointerDown)="onTouch($event, item.data)"
   >
     <path
       class="fill-path"
@@ -102,20 +102,18 @@
   </g>
 </svg>
 
-<trainer-button
+<button
   *ngIf="mode === 'show'"
-  class="button"
-  value="Продолжить"
-  (touch)="startPlay()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="startPlay()"
+>Продолжить</button>
 
-<trainer-button
+<button
   *ngIf="mode === 'play' || mode === 'result'"
-  class="button"
+  class="button button--trainer"
   [class.invisible]="mode === 'play'"
-  value="Продолжить"
-  (touch)="finish()"
-></trainer-button>
+  (click)="finish()"
+>Продолжить</button>
 
 <img
   *ngIf = "current"

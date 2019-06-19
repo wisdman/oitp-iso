@@ -22,6 +22,9 @@
   --trainer-box-size: 100px;
   --trainer-icon-size: 80px;
 
+  --trainer-button-padding-vertical: 16px;
+  --trainer-button-padding-horizontal: 24px;
+
   --trainer-margin: 8px;
 }
 

@@ -3,11 +3,6 @@ import {
   Component,
 } from "@angular/core"
 
-import {
-  merge,
-  Subscription,
-} from "rxjs"
-
 import { ASSETS_ICONS } from "../../app.config"
 
 import { AbstractTrainerComponent } from "../abstract"
@@ -39,9 +34,9 @@ extends AbstractTrainerComponent<IImageFieldTrainerConfig, IImageFieldTrainerRes
   itemWidth!: number
   itemHeight!: number
 
-  private _keypadSubscriber!: Subscription
-
   init() {
+    this.fullscreenService.lock()
+
     this.matrixWidth = this.matrixHeight = this.getCSSPropertyIntValue("--matrix-size")
     this.itemWidth = this.itemHeight = this.getCSSPropertyIntValue("--item-size")
 
@@ -59,15 +54,7 @@ extends AbstractTrainerComponent<IImageFieldTrainerConfig, IImageFieldTrainerRes
       return { x, y, item }
     })
 
-    if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()
-    this._keypadSubscriber = merge(this.keypadService.enter, this.keypadService.space)
-                              .subscribe(() => this.finish())
-
     this.setTimeout(this.config.showTimeLimit)
-  }
-
-  destroy() {
-    if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()
   }
 
   timeout() {

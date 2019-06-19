@@ -11,8 +11,8 @@ var groups = [...]string{"Моря", "Страны", "Животные", "Рыб
 
 var complexityData = [...]Parameters{
 	Parameters{
-		PlayTimeLimit: 120,
-		RunesCount:    5,
+		PlayTimeLimit: 60,
+		RunesCount:    10,
 	},
 	Parameters{
 		PlayTimeLimit: 120,

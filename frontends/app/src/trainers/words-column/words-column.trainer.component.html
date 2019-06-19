@@ -1,5 +1,5 @@
 <!-- Мнемотехника. Столбики -->
-<h1 *ngIf="mode==='show'" class="trainer-h1">Заполните&nbsp;слова,<br>соеденив&nbsp;их&nbsp;нелепой&nbsp;связью</h1>
+<h1 *ngIf="mode==='show'" class="trainer-h1">Заполните&nbsp;слова,<br>соединив&nbsp;их&nbsp;нелепой&nbsp;связью</h1>
 <h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;слова,<br>по&nbsp;памяти</h1>
 <h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
@@ -31,37 +31,29 @@
       [attr.width]="item.width"
       [attr.height]="item.height"
     >
-      <xhtml:trainer-input
-        [active]="mode === 'play' && item === currentItem"
-        [success]="mode === 'result' && item.data === item.userData"
-        [error]="mode === 'result' && item.data !== item.userData"
-        [(value)]="mode === 'show' && item.data || item.userData"
-        (touch)="onTouch(item)"
-      ></trainer-input>
+      <xhtml:input
+        type="text"
+        class="input--trainer"
+        [(ngModel)]="item.userData"
+      />
     </foreignObject>
   </g>
 </svg>
 
-<trainer-button
+<button
   *ngIf="mode==='show'"
-  class="button"
-  value="Продолжить"
-  [focus]="currentItem === undefined"
-  (touch)="startPlay()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="startPlay()"
+>Продолжить</button>
 
-<trainer-button
+<button
   *ngIf="mode==='play'"
-  class="button"
-  value="Проверить"
-  [focus]="currentItem === undefined"
-  (touch)="showResult()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="showResult()"
+>Проверить</button>
 
-<trainer-button
+<button
   *ngIf="mode === 'result'"
-  class="button"
-  value="Продолжить"
-  [focus]="currentItem === undefined"
-  (touch)="finish()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

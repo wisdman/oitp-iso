@@ -1,6 +1,6 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
 } from "@angular/core"
 
 import {
@@ -12,11 +12,7 @@ import {
   zip,
 } from "rxjs"
 
-import {
-  mergeMap,
-} from "rxjs/operators"
-
-import { compareRuneString } from "../../lib/runes"
+import { mergeMap } from "rxjs/operators"
 
 import { ASSETS_EXPRESSIONS } from "../../app.config"
 
@@ -48,22 +44,20 @@ extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressio
   item!: IItem
   userData:string = ""
 
-  get isSucess() {
+  get isSuccess() {
     if (!this.item || !this.item.data) {
       return false
     }
-    return compareRuneString(this.userData, this.item.data)
-  }
 
-  private _keypadEnterSubscriber!: Subscription
-  private _keypadSpaceSubscriber!: Subscription
+    const userData = this.userData.toUpperCase().replace(/[^0-9a-zA-Zа-яА-Я]+/ig,"")
+    const itemData = this.item.data.toUpperCase().replace(/[^0-9a-zA-Zа-яА-Я]+/ig,"")
+    return userData === itemData
+  }
 
   private _stepSubject: Subject<undefined> = new Subject<undefined>()
   private _itemSubscription!: Subscription
 
   init() {
-    this.keypadService.show("RU")
-
     if (this._itemSubscription) this._itemSubscription.unsubscribe()
     this._itemSubscription = zip(
       from([...this.config.items.sort(() => Math.random() - 0.5), undefined]),
@@ -75,19 +69,9 @@ extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressio
         this.markForCheck()
         this.setTimeout(this.config.showTimeLimit)
       },
-      error => console.error(error),
+      undefined,
       () => this._paly(),
     )
-
-    if (this._keypadEnterSubscriber) this._keypadEnterSubscriber.unsubscribe()
-    this._keypadEnterSubscriber = this.keypadService.enter.subscribe(() => this.onButtonTouch())
-
-    if (this._keypadSpaceSubscriber) this._keypadSpaceSubscriber.unsubscribe()
-    this._keypadSpaceSubscriber = this.keypadService.space.subscribe(() => {
-      if (this.item.mode === "show" || this.item.mode === "result") {
-        this.onButtonTouch()
-      }
-    })
 
     this._stepSubject.next()
   }
@@ -104,7 +88,6 @@ extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressio
       value => value,
     ).subscribe(
       item => {
-        console.log(item)
         this.item = item
         this.markForCheck()
 
@@ -116,7 +99,7 @@ extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressio
 
         this.setTimeout(0)
       },
-      error => console.error(error),
+      undefined,
       () => this.finish(),
     )
 
@@ -124,17 +107,14 @@ extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressio
   }
 
   destroy() {
-    if (this._itemSubscription) this._itemSubscription.unsubscribe()
-    if (this._keypadEnterSubscriber) this._keypadEnterSubscriber.unsubscribe()
-    if (this._keypadSpaceSubscriber) this._keypadSpaceSubscriber.unsubscribe()
-    this.keypadService.hide()
+    this._itemSubscription.unsubscribe()
   }
 
   timeout() {
     this._stepSubject.next()
   }
 
-  onButtonTouch() {
+  next() {
     this._stepSubject.next()
   }
 }

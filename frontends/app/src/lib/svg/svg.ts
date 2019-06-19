@@ -6,7 +6,7 @@ import {
   opsToPath,
 } from "./generator"
 
-export interface SVGRectangle {
+export interface SVGShape {
   x: number
   y: number
 
@@ -15,18 +15,6 @@ export interface SVGRectangle {
 
   path: string
   fillPath: string
-}
-
-export type SVGShape = SVGRectangle
-
-export interface SVGCircle {
-  x: number
-  y: number
-
-  width: number
-  height: number
-
-  path: string
 }
 
 export function genSVGRectangle(x: number, y: number, width: number, height: number, fill: boolean = true): SVGShape {

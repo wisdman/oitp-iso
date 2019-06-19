@@ -7,7 +7,7 @@ import (
 
 var complexityData = [...]Parameters{
 	Parameters{
-		PlayTimeLimit: 180,
+		PlayTimeLimit: 60,
 
 		Level:    0,
 		Quantity: 3,

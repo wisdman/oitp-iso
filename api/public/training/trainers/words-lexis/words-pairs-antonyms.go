@@ -8,7 +8,7 @@ import (
 
 var complexityAntonymsData = [...]Parameters{
 	Parameters{
-		PlayTimeLimit: 60,
+		PlayTimeLimit: 40,
 		ItemsCount:    5,
 		Quantity:      1,
 	},

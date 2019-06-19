@@ -3,10 +3,13 @@ import {
   Component,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
+// import {
+  // FormGroup,
+  // FormArray,
+// } from "@angular/forms"
 
 import {
-  SVGRectangle,
+  SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
 
@@ -17,7 +20,7 @@ import {
   ITableWordsTrainerResult,
 } from "./table-words.trainer.interfaces"
 
-interface IItem extends SVGRectangle {
+interface IItem extends SVGShape {
   data: string
   isSucess?: boolean
 }
@@ -37,11 +40,31 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
   items!: Array<IItem>
   currentItem?: IItem
 
-  private _keypadTabSubscriber!: Subscription
+  // itemsForm!: FormGroup
+
+  // init() {
+
+  //   this.fullscreenService.unlock()
+  //   this.itemsForm = this.formBuilder.group({
+  //     items: this.formBuilder.array([
+  //       this.createItem(),
+  //       this.createItem(),
+  //       this.createItem(),
+  //       this.createItem(),
+  //       this.createItem(),
+  //       this.createItem(),
+  //       this.createItem(),
+  //     ])
+  //   })
+  // }
+
+  // createItem(): FormGroup {
+  //   return this.formBuilder.group({
+  //     data: "",
+  //   });
+  // }
 
   init() {
-    this.keypadService.show("RU")
-
     const runeSize = this.getCSSPropertyIntValue("--trainer-svg-height")
     const columnWidth = this.getCSSPropertyIntValue("--column-width")
     const padding = this.getCSSPropertyIntValue("--trainer-svg-padding")
@@ -63,10 +86,11 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
     this.headers = [
       ...this.config.runes.map((data, i) =>
           ({...genSVGRectangle(padding, padding + runeSize + (runeSize + gap) * i, runeSize, runeSize), data})
-      ),{
-        ...genSVGRectangle(padding, padding, runeSize + gap + columnWidth, runeSize),
-        data: this.config.title,
-      }
+      ),
+      // {
+      //   ...genSVGRectangle(padding, padding, runeSize + gap + columnWidth, runeSize),
+      //   data: this.config.title,
+      // }
     ]
 
     this.items = this.config.runes.map((_, i) => {
@@ -80,17 +104,8 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
 
     this.currentItem = this.items[0]
 
-    if (this._keypadTabSubscriber) this._keypadTabSubscriber.unsubscribe()
-    this._keypadTabSubscriber = this.keypadService.tab
-                                .subscribe(() => this._onTab())
-
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
-  }
-
-  destroy() {
-    if (this._keypadTabSubscriber) this._keypadTabSubscriber.unsubscribe()
-    this.keypadService.hide()
   }
 
   timeout() {
@@ -102,7 +117,7 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
     this.mode = "result"
   }
 
-  private _onTab() {
+  tab() {
     if (!this.currentItem) {
       this.currentItem = this.items[0]
       this.markForCheck()

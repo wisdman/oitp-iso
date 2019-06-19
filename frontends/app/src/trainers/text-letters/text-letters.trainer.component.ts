@@ -3,11 +3,6 @@ import {
   Component,
 } from "@angular/core"
 
-import {
-  merge,
-  Subscription,
-} from "rxjs"
-
 import { NOT_RUNES_RX } from "../../lib/runes"
 
 import { AbstractTrainerComponent } from "../abstract"
@@ -33,10 +28,6 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     userData: string
   }>
 
-  private _keypadRuneSubscription!: Subscription
-  private _keypadEnterOrSpaceSubscription!: Subscription
-  private _keypadBackspaceSubscription!: Subscription
-
   private _getRunes(v: string) {
     return v.replace(NOT_RUNES_RX, " ")
             .split(/\s+/)
@@ -44,36 +35,20 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
   }
 
   init() {
-    this.keypadService.show("RU")
+    this.fullscreenService.lock()
 
     this.runes = this._getRunes(this.config.data)
                      .map(data => ({data, userData:""}))
 
-    if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
-    this._keypadRuneSubscription = merge(
-                                    this.keypadService.ru,
-                                    // this.keypadService.en,
-                                    this.keypadService.numbers,
-                                  ).subscribe(rune => this._onRune(rune))
-
-    if (this._keypadBackspaceSubscription) this._keypadBackspaceSubscription.unsubscribe()
-    this._keypadBackspaceSubscription = this.keypadService.backspace.subscribe(() => this._onBackspace())
-
-    if (this._keypadEnterOrSpaceSubscription) this._keypadEnterOrSpaceSubscription.unsubscribe()
-    this._keypadEnterOrSpaceSubscription = merge(
-                                             this.keypadService.enter,
-                                             this.keypadService.space,
-                                           ).subscribe(() => this._onEnterOrSpace())
+    // if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
+    // this._keypadRuneSubscription = merge(
+    //                                 this.keypadService.ru,
+    //                                 // this.keypadService.en,
+    //                                 this.keypadService.numbers,
+    //                               ).subscribe(rune => this._onRune(rune))
 
     this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
-  }
-
-  destroy() {
-    if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
-    if (this._keypadBackspaceSubscription) this._keypadBackspaceSubscription.unsubscribe()
-    if (this._keypadEnterOrSpaceSubscription) this._keypadEnterOrSpaceSubscription.unsubscribe()
-    this.keypadService.hide()
   }
 
   start() {
@@ -95,7 +70,7 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     super.finish()
   }
 
-  private _onRune(rune: string) {
+  _onRune(rune: string) {
     if (this.mode !== "play") {
       return
     }
@@ -114,7 +89,7 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     }
   }
 
-  private _onBackspace() {
+  _onBackspace() {
     if (this.mode !== "play") {
       return
     }
@@ -140,7 +115,7 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     }
   }
 
-  private _onEnterOrSpace() {
+  _onEnterOrSpace() {
     switch (this.mode) {
       case "show":
         this.start()

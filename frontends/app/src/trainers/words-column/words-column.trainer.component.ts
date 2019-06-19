@@ -3,10 +3,8 @@ import {
   Component,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
-
 import {
-  SVGRectangle,
+  SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
 
@@ -17,7 +15,7 @@ import {
   IWordsColumnTrainerResult,
 } from "./words-column.trainer.interfaces"
 
-interface IItem extends SVGRectangle {
+interface IItem extends SVGShape {
   data: string
   userData: string
 }
@@ -36,11 +34,7 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig, IWordsColumnTrainerR
   items!: Array<IItem>
   currentItem?: IItem
 
-  private _keypadTabSubscriber!: Subscription
-
   init() {
-    this.keypadService.show("RU")
-
     const width = this.getCSSPropertyIntValue("--column-width")
     const height = this.getCSSPropertyIntValue("--trainer-svg-height")
     const padding = this.getCSSPropertyIntValue("--trainer-svg-padding")
@@ -66,18 +60,9 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig, IWordsColumnTrainerR
       }
     })
 
-    if (this._keypadTabSubscriber) this._keypadTabSubscriber.unsubscribe()
-    this._keypadTabSubscriber = this.keypadService.tab
-                                .subscribe(() => this._onTab())
-
     this.currentItem = undefined
     this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
-  }
-
-  destroy() {
-    if (this._keypadTabSubscriber) this._keypadTabSubscriber.unsubscribe()
-    this.keypadService.hide()
   }
 
   timeout() {
@@ -103,7 +88,7 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig, IWordsColumnTrainerR
     this.mode = "result"
   }
 
-  private _onTab() {
+  tab() {
     if (this.mode !== "play") {
       return
     }

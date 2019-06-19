@@ -70,6 +70,8 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
   private _itemSubscription!: Subscription
 
   init() {
+    this.fullscreenService.lock()
+
     this.transitionDuration = this.getCSSPropertyIntValue("--transition-duration")
     this.isError = this.isSuccess = false
 

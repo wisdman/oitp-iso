@@ -51,10 +51,8 @@
   </ng-container>
 </svg>
 
-<trainer-button
+<button
   *ngIf="mode === 'result'"
-  class="button"
-  value="Продолжить"
-  [focus]="true"
-  (touch)="finish()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

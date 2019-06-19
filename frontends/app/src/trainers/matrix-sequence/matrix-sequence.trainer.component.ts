@@ -4,7 +4,7 @@ import {
 } from "@angular/core"
 
 import {
-  SVGRectangle,
+  SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
 
@@ -15,7 +15,7 @@ import {
   IMatrixSequenceTrainerResult,
 } from "./matrix-sequence.trainer.interfaces"
 
-interface IMatrixItem extends SVGRectangle {
+interface IMatrixItem extends SVGShape {
   data: number,
 
   isSuccess?: boolean
@@ -36,6 +36,8 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
   current: number = 1
 
   init() {
+    this.fullscreenService.lock()
+
     this.current = 1
 
     const side = Math.sqrt(this.config.matrix.length)

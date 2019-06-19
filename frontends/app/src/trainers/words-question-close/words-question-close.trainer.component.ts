@@ -3,8 +3,6 @@ import {
   Component,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
-
 import { AbstractTrainerComponent } from "../abstract"
 
 import { ISelectorItem } from "../../components/trainer-selector"
@@ -27,27 +25,13 @@ extends AbstractTrainerComponent<IWordsQuestionCloseTrainerConfig, IWordsQuestio
 
   items!: Array<ISelectorItem & { correct: boolean }>
 
-  private _keypadEnterSubscriber!: Subscription
-  private _keypadSpaceSubscriber!: Subscription
-
   init() {
+    this.fullscreenService.lock()
+
     this.items = Array.from(this.config.items)
-
-    if (this._keypadEnterSubscriber) this._keypadEnterSubscriber.unsubscribe()
-    this._keypadEnterSubscriber = this.keypadService.enter
-                                      .subscribe(() => this.mode === "result" && this.finish())
-
-    if (this._keypadSpaceSubscriber) this._keypadSpaceSubscriber.unsubscribe()
-    this._keypadEnterSubscriber = this.keypadService.space
-                                      .subscribe(() => this.mode === "result" && this.finish())
 
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
-  }
-
-  destroy() {
-    if (this._keypadEnterSubscriber) this._keypadEnterSubscriber.unsubscribe()
-    if (this._keypadSpaceSubscriber) this._keypadSpaceSubscriber.unsubscribe()
   }
 
   showResult() {

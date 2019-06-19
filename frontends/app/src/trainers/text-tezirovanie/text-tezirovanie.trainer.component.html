@@ -7,14 +7,13 @@
   [mode]="mode"
 ></div>
 
-<trainer-button
+<button
   *ngIf="mode === 'play'"
-  value="Проверить"
-  (touch)="showResult()"
-></trainer-button>
+  (click)="showResult()"
+>Проверить</button>
 
-<trainer-button
+<button
   *ngIf="mode === 'result'"
-  value="Продолжить"
-  (touch)="finish()"
-></trainer-button>
+  class="button--trainer"
+  (click)="finish()"
+>Продолжить</button>

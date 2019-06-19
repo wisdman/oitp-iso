@@ -31,8 +31,19 @@
   fill: none;
 }
 
-.path--active {
+.path--selected,
+:host:focus-within {
   stroke: var(--trainer-selected-color);
+  stroke-width: 2;
+}
+
+.path--success {
+  stroke: var(--trainer-success-color);
+  stroke-width: 2;
+}
+
+.path--error {
+  stroke: var(--trainer-error-color);
   stroke-width: 2;
 }
 

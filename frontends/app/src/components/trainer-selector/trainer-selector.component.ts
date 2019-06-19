@@ -16,7 +16,7 @@ import {
 import {
   genSVGEllipse,
   genSVGRectangle,
-  SVGRectangle,
+  SVGShape,
 } from "../../lib/svg"
 
 export interface ISelectorItem {
@@ -71,17 +71,17 @@ export class TrainerSelectorComponent implements OnInit, OnChanges {
   readonly: boolean = false
 
   @Input("items")
-  matrix!: Array<SVGRectangle & ISelectorItem & { ellipse: string }>
+  matrix!: Array<SVGShape & ISelectorItem & { ellipse: string }>
 
   @Output("touch")
   touchChange: EventEmitter<ISelectorItem> = new EventEmitter<ISelectorItem>()
 
   imageSize!: number
 
-  private _itemsDiffer!: WeakMap<SVGRectangle & ISelectorItem, KeyValueDiffer<string, any>>
+  private _itemsDiffer!: WeakMap<SVGShape & ISelectorItem, KeyValueDiffer<string, any>>
 
   ngOnInit() {
-    this._itemsDiffer = new WeakMap<SVGRectangle & ISelectorItem, KeyValueDiffer<string, any>>()
+    this._itemsDiffer = new WeakMap<SVGShape & ISelectorItem, KeyValueDiffer<string, any>>()
 
     let itemWidth: number
     let itemHeight: number

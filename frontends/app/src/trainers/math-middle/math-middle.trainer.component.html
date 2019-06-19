@@ -20,15 +20,11 @@
   <div class="item-box">{{ item.data[0] }}</div>
   <div class="item-box">(</div>
   <div class="item-box">
-    <trainer-input
+    <input
+      type="number"
       class="input"
-      type="NUMBERS"
-      [active]="mode === 'play'"
-      [success]="mode === 'result' && isSuccess"
-      [error]="mode === 'result' && !isSuccess"
-      [autoFontSize]="false"
-      [(value)]="userData"
-    ></trainer-input>
+      [(ngModel)]="userData"
+    >
   </div>
   <div class="item-box">)</div>
   <div class="item-box">{{ item.data[2] }}</div>
@@ -38,23 +34,20 @@
   >{{ item.answer }}</div>
 </div>
 
-<trainer-button
-  class="button button--answer"
+<button
+  class="button button--trainer button--answer"
   [class.invisible]="mode !== 'result' || isSuccess || isAnswerShown"
-  value="Показать решение"
-  (touch)="showAnswer()"
-></trainer-button>
+  (click)="showAnswer()"
+>Показать решение</button>
 
-<trainer-button
+<button
   *ngIf="mode === 'play'"
-  class="button"
-  value="Проверить"
-  (touch)="showResult()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="showResult()"
+>Проверить</button>
 
-<trainer-button
+<button
   *ngIf="mode === 'result'"
-  class="button"
-  value="Продолжить"
-  (touch)="finish()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

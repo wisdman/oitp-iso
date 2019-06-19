@@ -12,9 +12,8 @@
   (touch)="showResult()"
 ></trainer-selector>
 
-<trainer-button
-  class="button"
+<button
+  class="button button--trainer"
   [class.invisible]="mode === 'play'"
-  value="Продолжить"
-  (touch)="finish()"
-></trainer-button>
+  (click)="finish()"
+>Продолжить</button>

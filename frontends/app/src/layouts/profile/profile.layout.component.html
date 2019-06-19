@@ -13,22 +13,22 @@
 
   <input
     type="text"
-    class="input"
+    class="input--main"
     formControlName="name"
-    placeholder="Имя"
+    label="Имя"
   >
 
   <input
     type="text"
-    class="input"
+    class="input--main"
     formControlName="surname"
-    placeholder="Фамилия"
+    label="Фамилия"
   >
 
   <select
-    class="input"
+    class="input--main"
     formControlName="gender"
-    placeholder="Пол"
+    label="Пол"
   >
     <option
       *ngFor="let gender of genders"
@@ -38,15 +38,15 @@
 
   <input
     type="date"
-    class="input"
+    class="input--main"
     formControlName="birthday"
-    placeholder="Дата рождения"
+    label="Дата рождения"
   >
 
    <select
-    class="input"
+    class="input--main"
     formControlName="country"
-    placeholder="Страна"
+    label="Страна"
   >
     <option
       *ngFor="let country of countries"
@@ -56,9 +56,9 @@
 
   <input
     type="text"
-    class="input"
+    class="input--main"
     formControlName="location"
-    placeholder="Город / Населенный пункт"
+    label="Город / Населенный пункт"
   >
 
   <button type="submit" class="submit button--main" [disabled]="!mainForm.valid">Внести изменения</button>
@@ -71,23 +71,23 @@
 >
   <input
     type="email"
-    class="input"
+    class="input--main"
     formControlName="email"
-    placeholder="Текущий E-mail"
+    label="Текущий E-mail"
   >
 
   <input
     type="email"
-    class="input"
+    class="input--main"
     formControlName="newEmail"
-    placeholder="Новый E-mail"
+    label="Новый E-mail"
   >
 
   <input
     type="password"
-    class="input"
+    class="input--main"
     formControlName="password"
-    placeholder="Ваш пароль"
+    label="Ваш пароль"
   >
 
   <button type="submit" class="submit button--main" [disabled]="!emailForm.valid">Сменить E-mail</button>
@@ -101,23 +101,23 @@
 
   <input
     type="password"
-    class="input"
+    class="input--main"
     formControlName="currentPassword"
-    placeholder="Текущий пароль"
+    label="Текущий пароль"
   >
 
   <input
     type="password"
-    class="input"
+    class="input--main"
     formControlName="password1"
-    placeholder="Новый пароль"
+    label="Новый пароль"
   >
 
   <input
     type="password"
-    class="input"
+    class="input--main"
     formControlName="password2"
-    placeholder="Новый пароль еще раз"
+    label="Новый пароль еще раз"
   >
 
   <button type="submit" class="submit button--main" [disabled]="!passwordForm.valid">Сменить пароль</button>

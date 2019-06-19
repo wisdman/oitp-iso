@@ -9,7 +9,7 @@ import (
 var complexityPairsData = [...]Parameters{
 	Parameters{
 		ShowTimeLimit: 30,
-		PlayTimeLimit: 60,
+		PlayTimeLimit: 40,
 		ItemsCount:    5,
 		Quantity:      2,
 	},

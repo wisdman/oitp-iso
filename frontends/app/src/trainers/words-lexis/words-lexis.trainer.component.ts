@@ -50,6 +50,8 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig, IWordsLexisTrainerRes
   items!: Array<IItem>
 
   init() {
+    this.fullscreenService.lock()
+
     const {
       width: textWidth,
       height: textHeight,

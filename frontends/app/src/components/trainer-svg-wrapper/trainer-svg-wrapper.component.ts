@@ -7,17 +7,17 @@ import {
 } from "@angular/core"
 
 import {
-  SVGRectangle,
+  SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
 
 @Component({
-  selector: "trainer-input-wrapper",
-  templateUrl: "./trainer-input-wrapper.component.html",
-  styleUrls: [ "./trainer-input-wrapper.component.css" ],
+  selector: "trainer-svg-wrapper",
+  templateUrl: "./trainer-svg-wrapper.component.html",
+  styleUrls: [ "./trainer-svg-wrapper.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TrainerInputWrapperComponent implements OnInit {
+export class TrainerSVGWrapperComponent implements OnInit {
   constructor(
     private _elRef:ElementRef<HTMLElement>,
   ){}
@@ -29,8 +29,14 @@ export class TrainerInputWrapperComponent implements OnInit {
     return Number.parseInt(value)
   }
 
-  @Input("active")
-  isActive: boolean = false
+  @Input("selected")
+  isSelected: boolean = false
+
+  @Input("success")
+  isSuccess: boolean = false
+
+  @Input("error")
+  isError: boolean = false
 
   matrixWidth: number = 0
   matrixHeight: number = 0
@@ -39,7 +45,7 @@ export class TrainerInputWrapperComponent implements OnInit {
     return `0 0 ${this.matrixWidth || 0} ${this.matrixHeight || 0}`
   }
 
-  matrix!:SVGRectangle
+  matrix!:SVGShape
 
   ngOnInit() {
     const padding = this._getCSSPropertyIntValue("--trainer-svg-padding");

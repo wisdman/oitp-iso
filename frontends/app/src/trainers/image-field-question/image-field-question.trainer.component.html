@@ -1,5 +1,5 @@
 <!-- Скорость зрительного восприятия -->
-<h1 *ngIf="mode==='play'" class="trainer-h1">Отметьте&nbsp;картинки<br>показанные&nbsp;ранее</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Отметьте&nbsp;картинки,<br>показанные&nbsp;ранее</h1>
 <h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
 <trainer-selector
@@ -9,16 +9,14 @@
   [items]="items"
 ></trainer-selector>
 
-<trainer-button
+<button
   *ngIf="mode==='play'"
-  class="button"
-  value="Проверить"
-  (touch)="showResult()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="showResult()"
+>Проверить</button>
 
-<trainer-button
+<button
   *ngIf="mode==='result'"
-  class="button"
-  value="Продолжить"
-  (touch)="finish()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

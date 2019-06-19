@@ -4,11 +4,9 @@ import {
   ITrainerResult,
 } from "../interfaces"
 
-import { ISwipe, IArrow } from "../../services"
+import { ISwipe } from "../../services"
 
 export type ITablePipeTrainer = "table-pipe"
-
-export type ITablePipeTrainerAction = ISwipe | IArrow
 
 export interface ITablePipeTrainerConfig extends ITrainerConfig {
   id: ITablePipeTrainer
@@ -17,7 +15,7 @@ export interface ITablePipeTrainerConfig extends ITrainerConfig {
 
   items: Array<{
     data: string
-    action: ITablePipeTrainerAction
+    action: ISwipe
   }>
   matrix: Array<number>
 }

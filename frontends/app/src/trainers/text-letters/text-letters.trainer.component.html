@@ -1,6 +1,6 @@
 <!-- Точность восприятия - афоризмы -->
 <h1 *ngIf="mode==='show'" class="trainer-h1">Запомните&nbsp;афоризм<br>&nbsp;</h1>
-<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>первую&nbsp;букаву&nbsp;каждого&nbsp;слова</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>первую&nbsp;букву&nbsp;каждого&nbsp;слова</h1>
 <h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
 <h2
@@ -19,18 +19,16 @@
   >{{ item.userData }}</span>
 </div>
 
-<trainer-button
+<button
   *ngIf="mode === 'show'"
-  class="button"
-  value="Продолжить"
-  (touch)="start()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="start()"
+>Продолжить</button>
 
-<trainer-button
+<button
   *ngIf="mode === 'play' || mode === 'result'"
-  class="button"
+  class="button button--trainer"
   [class.invisible]="mode === 'play'"
-  value="Продолжить"
-  (touch)="finish()"
-></trainer-button>
+  (click)="finish()"
+>Продолжить</button>
 

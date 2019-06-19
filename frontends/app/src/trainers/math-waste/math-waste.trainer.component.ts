@@ -3,11 +3,6 @@ import {
   Component,
 } from "@angular/core"
 
-import {
-  merge,
-  Subscription,
-} from "rxjs"
-
 import { ISelectorItem } from "../../components/trainer-selector"
 
 import { AbstractTrainerComponent } from "../abstract"
@@ -30,9 +25,9 @@ extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResul
 
   items!: Array<ISelectorItem & { correct: boolean }>
 
-  private _keypadSubscription!: Subscription
-
   init() {
+    this.fullscreenService.lock()
+
     this.items = this.config.items
                             .map((data, i) => ({
                               data: String(data),
@@ -40,17 +35,8 @@ extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResul
                             }))
                             .sort(() => Math.random() - 0.5)
 
-    if (this._keypadSubscription) this._keypadSubscription.unsubscribe()
-    this._keypadSubscription = merge(this.keypadService.enter, this.keypadService.space)
-                                        .subscribe(() => this.mode === "result" && this.finish())
-
-
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
-  }
-
-  destroy() {
-    if (this._keypadSubscription) this._keypadSubscription.unsubscribe()
   }
 
   showResult() {

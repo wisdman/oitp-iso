@@ -3,24 +3,33 @@ import {
   Component,
 } from "@angular/core"
 
-import { Subscription, merge } from "rxjs"
+import {
+  Subscription,
+  merge,
+} from "rxjs"
 
 import {
-  SVGRectangle,
+  filter,
+  map,
+} from "rxjs/operators"
+
+import {
+  SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
+
+import { ISwipe } from "../../services"
 
 import { AbstractTrainerComponent } from "../abstract"
 
 import {
-  ITablePipeTrainerAction,
   ITablePipeTrainerConfig,
   ITablePipeTrainerResult,
 } from "./table-pipe.trainer.interfaces"
 
-interface IItem extends SVGRectangle {
+interface IItem extends SVGShape {
   data: string
-  action: ITablePipeTrainerAction
+  action: ISwipe
   isSuccess?: boolean,
   isError?: boolean,
 }
@@ -53,8 +62,17 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
     this.matrix = this.config.matrix.map(i => ({...genSVGRectangle(2, 2, itemSize, itemSize), ...this.rules[i]}))
 
     if (this._actionSubscriber) this._actionSubscriber.unsubscribe()
-    this._actionSubscriber = merge(this.pointerService.swipe, this.keypadService.arrow)
-                              .subscribe(action => this._step(action))
+    this._actionSubscriber = merge(
+      this.pointerService.swipe,
+      this.keypadService.keydown.pipe(
+        filter(({key}) => ["DOWN", "UP", "LEFT", "RIGHT"].includes(key)),
+        map(({key, originalEvent}) => {
+          originalEvent.preventDefault()
+          originalEvent.stopPropagation()
+          return key as ISwipe
+        })
+      ),
+    ).subscribe(action => this._step(action))
 
     this.setTimeout(this.config.playTimeLimit)
   }
@@ -63,7 +81,7 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
     if (this._actionSubscriber) this._actionSubscriber.unsubscribe()
   }
 
-  private _step(action: ITablePipeTrainerAction) {
+  private _step(action: ISwipe) {
     const currentItem = this.matrix[this.current]
     currentItem.isSuccess = currentItem.action === action
     currentItem.isError = !currentItem.isSuccess

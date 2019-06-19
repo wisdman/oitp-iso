@@ -13,7 +13,10 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
+import { FormBuilder } from "@angular/forms"
+
 import { DomSanitizer } from "@angular/platform-browser"
+
 import { Subscription } from "rxjs"
 
 import {
@@ -44,6 +47,7 @@ implements OnInit, OnDestroy, OnChanges {
     private _sanitizer: DomSanitizer,
 
     public carpetService: CarpetService,
+    public formBuilder: FormBuilder,
     public fullscreenService: FullscreenService,
     public keypadService: KeypadService,
     public pointerService: PointerService,
@@ -84,23 +88,6 @@ implements OnInit, OnDestroy, OnChanges {
 
   getCSSPropertyStringValue(property: string): string {
     return this._style.getPropertyValue(property)
-  }
-
-  getTextWidth(value: string): number
-  getTextWidth(value: Array<string>): Array<number>
-  getTextWidth(value: string | Array<string>): number | Array<number> {
-    const context = document.createElement("canvas").getContext("2d")
-    if (context === null) {
-      return Array.isArray(value) ? [] : 0
-    }
-
-    context.font = `${this._style.fontWeight} ${this._style.fontSize} ${this._style.fontFamily}`
-
-    if (Array.isArray(value)) {
-      return value.map(text => context.measureText(text).width)
-    }
-
-    return context.measureText(value).width
   }
 
 
@@ -174,9 +161,6 @@ implements OnInit, OnDestroy, OnChanges {
   private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
-    // Lock fullscreen
-    this.fullscreenService.lock()
-
     // Enable loader
     this.loading = true
 
@@ -214,12 +198,11 @@ implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     // Lap timer unsubscribe
-    if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
+    this._lapTimerSubscriber.unsubscribe()
 
     // Destroy trainer
     this.destroy()
 
-    // Unlock fullscreen
     this.fullscreenService.unlock()
   }
 

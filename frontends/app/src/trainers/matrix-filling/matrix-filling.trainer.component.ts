@@ -3,13 +3,10 @@ import {
   ChangeDetectionStrategy,
 } from "@angular/core"
 
-import {
-  merge,
-  Subscription,
-} from "rxjs"
+import { Subscription } from "rxjs"
 
 import {
-  SVGRectangle,
+  SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
 
@@ -17,7 +14,6 @@ import { ASSETS_ICONS } from "../../app.config"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import { ITouchData } from "../../directives/fast-touch"
 import { IPointerEvent } from "../../lib/pointer-events"
 
 import {
@@ -47,17 +43,18 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
   }
 
   defs!: Array<string>
-  matrix!: Array<SVGRectangle & { data: number, userData: number }>
-  items!: Array<SVGRectangle & { data: number }>
+  matrix!: Array<SVGShape & { data: number, userData: number }>
+  items!: Array<SVGShape & { data: number }>
 
   imageSize!: number
   itemsHeight!: number
 
-  private _keypadSubscriber!: Subscription
   private _pointerupSubscriber!: Subscription
   private _pointermoveSubscriber!: Subscription
 
   init() {
+    this.fullscreenService.lock()
+
     this.isUnique = [...new Set(this.config.matrix)].length === this.config.matrix.length
 
     this.current = undefined
@@ -129,10 +126,6 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
       }
     })
 
-    if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()
-    this._keypadSubscriber = merge(this.keypadService.enter, this.keypadService.space)
-                              .subscribe(() => this.onKeypad())
-
     if (this._pointerupSubscriber) this._pointerupSubscriber.unsubscribe()
     this._pointerupSubscriber = this.pointerService.pointerup.subscribe(event => this.onPointerUp(event))
 
@@ -141,10 +134,6 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
 
     this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
-  }
-
-  destroy() {
-    if (this._keypadSubscriber) this._keypadSubscriber.unsubscribe()
   }
 
   startPlay() {
@@ -191,7 +180,7 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     }
   }
 
-  onTouch({x, y}: ITouchData, data: number) {
+  onTouch({x, y}: IPointerEvent, data: number) {
     if (this.mode !== "play") {
       return
     }

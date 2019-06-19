@@ -1,6 +1,6 @@
 <!-- Наглядно-образная память -->
 <h1 *ngIf="mode==='show'" class="trainer-h1">Запомните&nbsp;картинку<br>&nbsp;</h1>
-<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;картинку<br>по&nbsp;пмяти</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;картинку<br>по&nbsp;памяти</h1>
 
 <svg
   class="matrix"
@@ -19,26 +19,20 @@
   ></path>
 </svg>
 
-<trainer-button
+<button
   *ngIf="mode==='show'"
-  class="button"
-  value="Продолжить"
-  [focus]="true"
-  (touch)="startPlay()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="startPlay()"
+>Продолжить</button>
 
-<trainer-button
+<button
   *ngIf="mode==='play'"
-  class="button"
-  value="Проверить"
-  [focus]="true"
-  (touch)="showResult()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="showResult()"
+>Проверить</button>
 
-<trainer-button
+<button
   *ngIf="mode === 'result'"
-  class="button"
-  value="Продолжить"
-  [focus]="true"
-  (touch)="finish()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

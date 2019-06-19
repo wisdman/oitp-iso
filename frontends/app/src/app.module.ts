@@ -20,15 +20,12 @@ import {
   IndicatorBrainComponent,
   IndicatorChartsComponent,
   IndicatorSpeedComponent,
-  KeypadComponent,
   ProgressListComponent,
   SidebarUserComponent,
   SocialBbuttonsComponent,
   TimerGlobalComponent,
   TimerLapComponent,
-  TrainerButtonComponent,
-  TrainerInputComponent,
-  TrainerInputWrapperComponent,
+  TrainerSVGWrapperComponent,
   TrainerSelectorComponent,
   TrainingGreetingComponent,
   TrainingResultComponent,
@@ -36,7 +33,7 @@ import {
 
 import {
   ButtonDirective,
-  FastTouchDirective,
+  FocusableDirective,
   InputDirective,
   TezirovanieDirective,
   TouchableDirective,
@@ -74,11 +71,11 @@ import {
 
 import {
   CarpetService,
+  FocusService,
   FullscreenService,
   FullscreenServiceFactory,
   InfoService,
   KeypadService,
-  KeypadServiceFactory,
   NotificationService,
   NotificationServiceFactory,
   PointerService,
@@ -137,21 +134,18 @@ import { ROUTES } from "./app.routing"
     IndicatorBrainComponent,
     IndicatorChartsComponent,
     IndicatorSpeedComponent,
-    KeypadComponent,
     ProgressListComponent,
     SidebarUserComponent,
     SocialBbuttonsComponent,
     TimerGlobalComponent,
     TimerLapComponent,
-    TrainerButtonComponent,
-    TrainerInputComponent,
-    TrainerInputWrapperComponent,
+    TrainerSVGWrapperComponent,
     TrainerSelectorComponent,
     TrainingGreetingComponent,
     TrainingResultComponent,
 
     ButtonDirective,
-    FastTouchDirective,
+    FocusableDirective,
     InputDirective,
     TezirovanieDirective,
     TouchableDirective,
@@ -220,7 +214,9 @@ import { ROUTES } from "./app.routing"
     RootRoutingGuard,
 
     CarpetService,
+    FocusService,
     InfoService,
+    KeypadService,
     TimerService,
     TokenService,
     TrainingService,
@@ -231,14 +227,6 @@ import { ROUTES } from "./app.routing"
       provide: APP_INITIALIZER,
       useFactory: FullscreenServiceFactory,
       deps: [ FullscreenService ],
-      multi: true
-    },
-
-    KeypadService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: KeypadServiceFactory,
-      deps: [ KeypadService ],
       multi: true
     },
 

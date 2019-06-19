@@ -1,5 +1,6 @@
 <!-- Вариативность мышления -->
-<h1 class="trainer-h1">Заполните&nbsp;таблицу,<br>орентируясь&nbsp;на&nbsp;тематическую&nbsp;группу<br>и&nbsp;первую&nbsp;буквe&nbsp;слова</h1>
+<!-- <h1 class="trainer-h1">Заполните&nbsp;таблицу,<br>орентируясь&nbsp;на&nbsp;первую<br>и&nbsp;последнюю&nbsp;буквы&nbsp;слова</h1> -->
+<h1 class="trainer-h1">Заполните&nbsp;таблицу,<br>орентируясь<br>на&nbsp;первую&nbsp;букву&nbsp;слова</h1>
 
 <svg
   class="matrix"
@@ -50,28 +51,22 @@
       [attr.width]="item.width"
       [attr.height]="item.height"
     >
-      <xhtml:trainer-input
-        [active]="mode === 'play' && item === currentItem"
-        [success]="mode === 'result' && item.isSucess"
-        [error]="mode === 'result' && !item.isSucess"
-        [(value)]="item.data"
-        (touch)="onTouch(item)"
-      ></trainer-input>
+      <xhtml:input
+        type="text"
+        [(ngModel)]="item.data"
+      />
     </foreignObject>
   </g>
 </svg>
 
-<trainer-button
+<button
   *ngIf="mode==='play'"
-  class="button"
-  value="Проверить"
-  [focus]="currentItem === undefined"
-  (touch)="showResult()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="showResult()"
+>Проверить</button>
 
-<trainer-button
+<button
   *ngIf="mode === 'result'"
-  class="button"
-  value="Продолжить"
-  (touch)="finish()"
-></trainer-button>
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

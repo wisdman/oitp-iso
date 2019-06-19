@@ -8,7 +8,7 @@ import (
 
 var complexityTezirovanieData = [...]Parameters{
 	Parameters{
-		PlayTimeLimit: 120,
+		PlayTimeLimit: 60,
 	},
 	Parameters{
 		PlayTimeLimit: 60,

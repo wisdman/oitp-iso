@@ -17,23 +17,35 @@
     class="trainer-h2 text"
   >{{item.data}}</h2>
 
-  <trainer-input-wrapper
+  <trainer-svg-wrapper
     *ngIf="item.mode === 'play' || item.mode === 'result'"
+    #wrapper
     class="input"
-    [active]="item.mode === 'play'"
+    [error]="item.mode === 'result' && !isSuccess"
+    [success]="item.mode === 'result' && isSuccess"
   >
-    <xhtml:trainer-input
-      [active]="item.mode === 'play'"
-      [success]="item.mode === 'result' && isSucess"
-      [error]="item.mode === 'result' && !isSucess"
-      [(value)]="userData"
-    ></trainer-input>
-  </trainer-input-wrapper>
+    <input
+      type="text"
+      class="input--trainer"
+      [message]="isSuccess && 'success' || 'error'"
+      [disabled]="item.mode === 'result'"
+      [(ngModel)]="userData"
+      focusable
+    >
+  </trainer-svg-wrapper>
 
-  <trainer-button
-    class="button"
-    value="Продолжить"
-    (touch)="onButtonTouch()"
-  ></trainer-button>
+  <button
+    *ngIf="item.mode === 'show' || item.mode === 'result'"
+    class="button button--trainer"
+    focusable
+    (click)="next()"
+  >Продолжить</button>
+
+  <button
+    *ngIf="item.mode === 'play'"
+    class="button button--trainer"
+    focusable
+    (click)="next()"
+  >Проверить</button>
 </ng-container>
 

@@ -3,14 +3,18 @@
   [attr.viewBox]="matrixViewBox"
   [attr.width]="matrixWidth"
   [attr.height]="matrixHeight"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   preserveAspectRatio="xMidYMid meet"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
   <g>
     <path
       class="path"
       [attr.d]="matrix.path"
-      [class.path--active]="isActive"
+      [class.path--selected]="isSelected"
+      [class.path--success]="isSuccess"
+      [class.path--error]="isError"
     ></path>
     <foreignObject
       class="object"
