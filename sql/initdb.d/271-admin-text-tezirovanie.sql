@@ -1,4 +1,3 @@
--- Updated 09.06.2019
 SET search_path = "$user";
 
 CREATE VIEW admin.trainer_text_tezirovanie AS

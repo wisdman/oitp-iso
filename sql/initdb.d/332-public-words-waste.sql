@@ -1,4 +1,3 @@
--- Updated 09.06.2019
 SET search_path = "$user";
 
 CREATE VIEW public.trainer_words_waste AS

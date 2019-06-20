@@ -1,4 +1,3 @@
--- Updated 05.06.2019
 SET search_path = "$user";
 
 CREATE TYPE public.trainer_words_lexis_relation AS ENUM (

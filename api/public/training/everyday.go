@@ -26,7 +26,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 		{"matrix-filling-unique"},
 		{"matrix-sequence-pattern"},
 		{"space-waste-2d", "space-waste-3d"},
-		// {"storytelling"},
+		{"storytelling"},
 		{"table-words"},
 		{"text-letters"},
 		{"text-reading"},

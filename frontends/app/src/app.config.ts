@@ -36,3 +36,4 @@ export const ASSETS_CARPETS = `${ASSETS}/carpets`
 export const ASSETS_EXPRESSIONS = `${ASSETS}/expressions`
 export const ASSETS_ICONS = `${ASSETS}/icons`
 export const ASSETS_RELAX = `${ASSETS}/relax`
+export const ASSETS_STORYTELLING = `${ASSETS}/storytelling`

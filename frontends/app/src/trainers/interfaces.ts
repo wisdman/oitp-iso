@@ -4,8 +4,8 @@ import { IClassificationDefinitionsTrainer, IClassificationDefinitionsTrainerCon
 import { IClassificationWordsTrainer, IClassificationWordsTrainerConfig, IClassificationWordsTrainerResult } from "./classification-words"
 import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
-import { IImageExpressionsTrainer, IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult } from "./image-expressions"
 import { IImageExpressionsQuestionTrainer, IImageExpressionsQuestionTrainerConfig, IImageExpressionsQuestionTrainerResult } from "./image-expressions-question"
+import { IImageExpressionsTrainer, IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult } from "./image-expressions"
 import { IImageFieldQuestionTrainer, IImageFieldQuestionTrainerConfig, IImageFieldQuestionTrainerResult } from "./image-field-question"
 import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
 import { IMathEquationTrainer, IMathEquationTrainerConfig, IMathEquationTrainerResult } from "./math-equation"
@@ -16,6 +16,7 @@ import { IMatrixFillingQuestionTrainer, IMatrixFillingQuestionTrainerConfig, IMa
 import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
 import { IRelaxTrainer, IRelaxTrainerConfig, IRelaxTrainerResult } from "./relax"
+import { IStorytellingTrainer, IStorytellingTrainerConfig, IStorytellingTrainerResult } from "./storytelling"
 import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } from "./table-pipe"
 import { ITableWordsTrainer, ITableWordsTrainerConfig, ITableWordsTrainerResult } from "./table-words"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
@@ -45,6 +46,7 @@ export type ITrainer = IClassificationColorsTrainer
                      | IMatrixFillingQuestionTrainer
                      | IMatrixSequenceTrainer
                      | IRelaxTrainer
+                     | IStorytellingTrainer
                      | ITablePipeTrainer
                      | ITableWordsTrainer
                      | ITextLettersTrainer
@@ -75,6 +77,7 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | IMatrixFillingQuestionTrainerConfig
                             | IMatrixSequenceTrainerConfig
                             | IRelaxTrainerConfig
+                            | IStorytellingTrainerConfig
                             | ITablePipeTrainerConfig
                             | ITableWordsTrainerConfig
                             | ITextLettersTrainerConfig
@@ -104,6 +107,7 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | IMatrixFillingQuestionTrainerResult
                             | IMatrixSequenceTrainerResult
                             | IRelaxTrainerResult
+                            | IStorytellingTrainerResult
                             | ITablePipeTrainerResult
                             | ITableWordsTrainerResult
                             | ITextLettersTrainerResult

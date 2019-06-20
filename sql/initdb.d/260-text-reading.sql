@@ -1,4 +1,3 @@
--- Updated 04.06.2019
 SET search_path = "$user";
 
 CREATE TABLE private.trainer_text_reading (
