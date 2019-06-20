@@ -23,6 +23,9 @@ interface IItem extends SVGShape {
   type: IColumnType
   data: string
   userData: string
+
+  isSelected?: boolean
+  isSuccess?: boolean
 }
 
 @Component({
@@ -34,10 +37,18 @@ interface IItem extends SVGShape {
 export class WordsPairsTrainerComponent
 extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerResult> {
 
+  private _prepareString(value: string): string {
+    return value.toUpperCase()
+                .replace(/[^0-9A-ZА-ЯЙЁ\s]+/ig,"")
+                .replace(/\s+/, " ")
+                .trim()
+                .replace("Й", "И")
+                .replace("Ё", "Е")
+  }
+
   mode: "show" | "play" | "result" = "show"
 
   items!: Array<IItem>
-  currentItem?: IItem
   hiddenColumn!: IColumnType
 
   init() {
@@ -93,9 +104,29 @@ extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerRes
       }]
     }).flat()
 
-    this.currentItem = undefined
     this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
+  }
+
+  startPlay() {
+    this.items = this.items.map(value => ({
+      ...value,
+      userData: value.type === this.hiddenColumn ? "" : value.userData,
+    }))
+
+    this.mode = "play"
+    this.setTimeout(this.config.playTimeLimit)
+    this.markForCheck()
+  }
+
+  showResult() {
+    this.setTimeout(0)
+
+    this.items.forEach(value =>
+      value.isSuccess = this._prepareString(value.data) === this._prepareString(value.userData)
+    )
+
+    this.mode = "result"
   }
 
   timeout() {
@@ -108,51 +139,4 @@ extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerRes
         return
     }
   }
-
-  startPlay() {
-    this.items.forEach(value => {
-      if (value.type === this.hiddenColumn) {
-        value.userData = ""
-      }
-    })
-    this.currentItem = this.items.find(value => value.type === this.hiddenColumn)
-    this.mode = "play"
-    this.setTimeout(this.config.playTimeLimit)
-    this.markForCheck()
-  }
-
-  showResult() {
-    this.setTimeout(0)
-    this.currentItem = undefined
-    this.mode = "result"
-  }
-
-  tab() {
-    if (this.mode !== "play") {
-      return
-    }
-
-    if (!this.currentItem) {
-      this.currentItem = this.items.find(value => value.type === this.hiddenColumn)
-      this.markForCheck()
-      return
-    }
-
-    let idx = this.items.indexOf(this.currentItem)
-    this.currentItem = this.items.find((value, i) => value.type === this.hiddenColumn && i > idx)
-    this.markForCheck()
-  }
-
-  onTouch(item: IItem) {
-    if (this.mode !== "play") {
-      return
-    }
-
-    if (item.type !== this.hiddenColumn) {
-      return
-    }
-
-    this.currentItem = item
-  }
-
 }

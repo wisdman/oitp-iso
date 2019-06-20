@@ -49,6 +49,12 @@ class="field"
       (result)="onResult($event)"
     ></trainer-image-expressions>
 
+    <trainer-image-expressions-question
+      *ngIf="config.id === 'image-expressions-question'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-image-expressions-question>
+
     <trainer-image-field
       *ngIf="config.id === 'image-field'"
       [config]="config"

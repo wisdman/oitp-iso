@@ -18,6 +18,9 @@ import {
 interface IItem extends SVGShape {
   data: string
   userData: string
+
+  isSelected?: boolean
+  isSuccess?: boolean
 }
 
 @Component({
@@ -29,10 +32,19 @@ interface IItem extends SVGShape {
 export class WordsColumnTrainerComponent
 extends AbstractTrainerComponent<IWordsColumnTrainerConfig, IWordsColumnTrainerResult> {
 
+  private _prepareString(value: string): string {
+    return value.toUpperCase()
+                .replace(/[^0-9A-ZА-ЯЙЁ\s]+/ig,"")
+                .replace(/\s+/, " ")
+                .trim()
+                .replace("Й", "И")
+                .replace("Ё", "Е")
+  }
+
+
   mode: "show" | "play" | "result" = "show"
 
   items!: Array<IItem>
-  currentItem?: IItem
 
   init() {
     const width = this.getCSSPropertyIntValue("--column-width")
@@ -56,13 +68,32 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig, IWordsColumnTrainerR
       return {
         ...genSVGRectangle(x, y, width, height),
         data: data.toUpperCase(),
-        userData: "",
+        userData: data.toUpperCase(),
       }
     })
 
-    this.currentItem = undefined
     this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
+  }
+
+  startPlay() {
+    this.mode = "play"
+
+    this.items = this.items.map(value => ({...value, userData: "" }))
+
+    this.setTimeout(this.config.playTimeLimit)
+    this.markForCheck()
+  }
+
+  showResult() {
+    this.setTimeout(0)
+
+    this.items.forEach(value =>
+      value.isSuccess = this._prepareString(value.data) === this._prepareString(value.userData)
+    )
+
+    this.mode = "result"
+    this.markForCheck()
   }
 
   timeout() {
@@ -75,45 +106,4 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig, IWordsColumnTrainerR
         return
     }
   }
-
-  startPlay() {
-    this.currentItem = this.items[0]
-    this.mode = "play"
-    this.setTimeout(this.config.playTimeLimit)
-  }
-
-  showResult() {
-    this.setTimeout(0)
-    this.currentItem = undefined
-    this.mode = "result"
-  }
-
-  tab() {
-    if (this.mode !== "play") {
-      return
-    }
-
-    if (!this.currentItem) {
-      this.currentItem = this.items[0]
-      this.markForCheck()
-      return
-    }
-
-    let idx = this.items.indexOf(this.currentItem) + 1
-
-    if (idx >= this.items.length) {
-      this.currentItem = undefined
-    }
-
-    this.currentItem = this.items[idx]
-    this.markForCheck()
-  }
-
-  onTouch(item: IItem) {
-    if (this.mode !== "play") {
-      return
-    }
-    this.currentItem = item
-  }
-
 }

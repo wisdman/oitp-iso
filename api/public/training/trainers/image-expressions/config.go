@@ -12,18 +12,13 @@ type Parameters struct {
 	MaxItems int `json:"maxItems"`
 }
 
-type Item struct {
-	Image int     `json:"image"`
-	Data  *string `json:"data"`
-}
-
 type Config struct {
 	*abstract.Config
 
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
-	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Items []*Item `json:"items"`
+	Image int     `json:"image"`
+	Data  *string `json:"data"`
 }
 
 func newConfig(
@@ -32,6 +27,23 @@ func newConfig(
 	return &Config{
 		Config:        abstract.NewConfig(abstract.UIImageExpression),
 		ShowTimeLimit: params.ShowTimeLimit,
+	}
+}
+
+type QuestionConfig struct {
+	*abstract.Config
+
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	Image int     `json:"image"`
+	Data  *string `json:"data"`
+}
+
+func newQuestionConfig(
+	params Parameters,
+) *QuestionConfig {
+	return &QuestionConfig{
+		Config:        abstract.NewConfig(abstract.UIImageExpressionQuestion),
 		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

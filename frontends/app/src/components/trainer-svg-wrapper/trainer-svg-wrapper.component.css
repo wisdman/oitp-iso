@@ -10,9 +10,11 @@
   height: var(--trainer-svg-height);
   max-height: 100%;
 
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
+  font: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+
+  overflow: visible;
 }
 
 .matrix {
@@ -22,7 +24,11 @@
   height: 100%;
   max-height: 100%;
 
-  font-family: inherit;
+  font: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+
+  overflow: visible;
 }
 
 .path {
@@ -31,7 +37,7 @@
   fill: none;
 }
 
-.path--selected,
+.path--focused,
 :host:focus-within {
   stroke: var(--trainer-selected-color);
   stroke-width: 2;
@@ -54,7 +60,7 @@
 }
 
 .object {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
+  font: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
 }

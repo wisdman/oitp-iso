@@ -25,12 +25,12 @@ extends AbstractTrainerComponent<IMathSequenceTrainerConfig, IMathSequenceTraine
   items!: Array<IMathSequenceTrainerItem>
   item!: IMathSequenceTrainerItem
 
-  userData: string = ""
+  userData?: number
   isSuccess: boolean = false
   isAnswerShown: boolean = false
 
   init() {
-    this.userData = ""
+    this.userData = undefined
     this.isSuccess = true
     this.isAnswerShown = false
 
@@ -44,12 +44,11 @@ extends AbstractTrainerComponent<IMathSequenceTrainerConfig, IMathSequenceTraine
   showResult() {
     this.setTimeout(0)
 
-    if (this.userData.trim() === "") {
-      this.userData = "0"
+   if (!this.userData) {
+      this.userData = 0
     }
 
-    this.isSuccess = Number.parseFloat(this.userData) === this.item.data
-    this.updateResult({ success: this.isSuccess ? 1 : 0, error: !this.isSuccess ? 1 : 0 })
+    this.isSuccess = this.userData === this.item.data
 
     this.mode = "result"
     this.markForCheck()
@@ -62,6 +61,14 @@ extends AbstractTrainerComponent<IMathSequenceTrainerConfig, IMathSequenceTraine
   timeout() {
     super.timeout()
     this.showResult()
+  }
+
+  finish() {
+    this.updateResult({
+      success: this.isSuccess ? 1 : 0,
+      error: !this.isSuccess ? 1 : 0,
+    })
+    super.finish()
   }
 
 }

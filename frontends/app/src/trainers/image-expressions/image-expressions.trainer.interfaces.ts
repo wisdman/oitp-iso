@@ -6,18 +6,13 @@ import {
 
 export type IImageExpressionsTrainer = "image-expressions"
 
-export interface IImageExpressionsTrainerItem {
-  image: number
-  data: string
-}
-
 export interface IImageExpressionsTrainerConfig extends ITrainerConfig {
   id: IImageExpressionsTrainer
 
   showTimeLimit: number
-  playTimeLimit: number
 
-  items: Array<IImageExpressionsTrainerItem>
+  image: number
+  data: string
 }
 
 export interface IImageExpressionsTrainerResult extends ITrainerResult {

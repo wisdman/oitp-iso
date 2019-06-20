@@ -4,41 +4,51 @@
   --columns: 11;
 
   grid-template-columns: repeat(var(--columns), min-content);
-  grid-auto-rows: min-content;
+  grid-auto-rows: min-content min-content min-content;
   column-gap: var(--trainer-margin);
-  row-gap: calc(var(--trainer-margin) * 2);
+  row-gap: var(--trainer-margin);
+
+  align-items: center;
 }
 
-.item-box {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
-}
-
-.item-data {
-  flex-grow: 1;
-  font-size: 120%;
-  font-weight: 600;
-  white-space: nowrap;
-  text-align: center;
-  margin: 8px 0;
-
+.item-answer-top {
+  grid-row-start: 1;
   position: relative;
-}
 
-.item-correct {
-  position: absolute;
-  left: 0;
-  bottom: calc(100% + 4px);
-  color: var(--trainer-success-color);
-}
-
-.item-answer {
   font-size: 80%;
   font-weight: 400;
   white-space: nowrap;
   text-align: center;
+}
+
+.item-data {
+  grid-row-start: 2;
+
+  font-size: 120%;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.item-data--input {
+  width: 50px;
+}
+
+.item-answer-bottom {
+  grid-row-start: 3;
+
+  font-size: 80%;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.item-answer-correct {
+  position: absolute;
+  bottom: -10px;
+  color: var(--trainer-success-color);
+
+  font-size: 140%;
+  font-weight: 600;
 }
 
 .input {
@@ -53,4 +63,9 @@
 
 .button--answer {
    margin-bottom: 0;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
 }

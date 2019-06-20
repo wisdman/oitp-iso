@@ -35,6 +35,7 @@ import {
   ButtonDirective,
   FocusableDirective,
   InputDirective,
+  KeyFilterDirective,
   TezirovanieDirective,
   TouchableDirective,
 } from "./directives"
@@ -94,6 +95,7 @@ import {
   ImageCarpetTrainerComponent,
   ImageDifferencesTrainerComponent,
   ImageExpressionsTrainerComponent,
+  ImageExpressionsQuestionTrainerComponent,
   ImageFieldTrainerComponent,
   ImageFieldQuestionTrainerComponent,
   MathEquationTrainerComponent,
@@ -147,6 +149,7 @@ import { ROUTES } from "./app.routing"
     ButtonDirective,
     FocusableDirective,
     InputDirective,
+    KeyFilterDirective,
     TezirovanieDirective,
     TouchableDirective,
 
@@ -172,6 +175,7 @@ import { ROUTES } from "./app.routing"
     ImageCarpetTrainerComponent,
     ImageDifferencesTrainerComponent,
     ImageExpressionsTrainerComponent,
+    ImageExpressionsQuestionTrainerComponent,
     ImageFieldTrainerComponent,
     ImageFieldQuestionTrainerComponent,
     MathEquationTrainerComponent,

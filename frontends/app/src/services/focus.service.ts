@@ -1,42 +1,49 @@
 import { Injectable } from "@angular/core"
 
+import { fromEvent } from "rxjs"
+
 import { filter } from "rxjs/operators"
 
-import { KeypadService } from "./keypad.service"
+interface IFocusNode extends HTMLElement {
+  disabled?: boolean
+}
 
 @Injectable({ providedIn: "root" })
 export class FocusService {
 
-  private _focusLoop: Array<HTMLElement> = new Array<HTMLElement>()
-  private _activeNode?: HTMLElement
+  private _focusLoop: Array<IFocusNode> = new Array<IFocusNode>()
+  private _activeNode?: IFocusNode
 
-  private _blurFn!: (event: FocusEvent) => void
+  private _blurFn!: (event: Event) => void
 
-  constructor(
-    private _keypadService: KeypadService
-  ) {
+  constructor() {
     const self = this
-    this._blurFn = function(_: FocusEvent) {
+    this._blurFn = function(_: Event) {
       self._updateFocus()
     }
 
-    this._keypadService.keydown.pipe(
-      filter(({key}) => key === "TAB"),
+    fromEvent<KeyboardEvent>(window, "keydown", { passive: false, capture: true }).pipe(
+      filter(({key}) => !!key.match(/^TAB$/i)),
       filter(() => this._focusLoop.length > 0),
     ).subscribe(event => {
-      event.originalEvent.preventDefault()
-      event.originalEvent.stopPropagation()
+      event.preventDefault()
+      event.stopPropagation()
       this._nextFocus()
     })
   }
 
   private _nextFocus() {
     let idx = this._focusLoop.findIndex(value => value === this._activeNode) + 1
-    if (idx >= this._focusLoop.length) {
-      idx = 0
-    }
+    if (idx >= this._focusLoop.length) idx = 0
 
     this._activeNode = this._focusLoop[idx]
+    if (this._activeNode.disabled) {
+      idx = this._focusLoop.findIndex(value => !value.disabled, idx)
+      if (idx < 0) idx = 0
+      this._activeNode = this._focusLoop[idx]
+    }
+
+
     if (this._activeNode) {
       this._activeNode.focus()
     }
@@ -44,26 +51,29 @@ export class FocusService {
 
   private _updateFocus() {
     setTimeout(() => {
-      const activeElement = document.activeElement as (HTMLElement | null)
+      const activeElement = document.activeElement as (IFocusNode | null)
 
       if (activeElement && this._focusLoop.includes(activeElement)) {
         this._activeNode = activeElement
+        if (this._activeNode.disabled) return this._nextFocus()
         return
       }
 
       if (this._activeNode && this._focusLoop.includes(this._activeNode)) {
+        if (this._activeNode.disabled) return this._nextFocus()
         this._activeNode.focus()
         return
       }
 
       this._activeNode = this._focusLoop[0]
       if (this._activeNode) {
+        if (this._activeNode.disabled) return this._nextFocus()
         this._activeNode.focus()
       }
     }, 0)
   }
 
-  registration(node: HTMLElement) {
+  registration(node: IFocusNode) {
     if (this._focusLoop.includes(node)) {
       return
     }
@@ -73,7 +83,7 @@ export class FocusService {
     this._updateFocus()
   }
 
-  unregistration(node: HTMLElement) {
+  unregistration(node: IFocusNode) {
     const idx = this._focusLoop.indexOf(node)
     if (idx < 0) {
       return

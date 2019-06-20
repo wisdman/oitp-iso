@@ -13,6 +13,7 @@ const (
 	UIImageCarpet               IUITrainer = "image-carpet"
 	UIImageDifferences          IUITrainer = "image-differences"
 	UIImageExpression           IUITrainer = "image-expressions"
+	UIImageExpressionQuestion   IUITrainer = "image-expressions-question"
 	UIImageField                IUITrainer = "image-field"
 	UIImageFieldQuestion        IUITrainer = "image-field-question"
 	UIMathEquation              IUITrainer = "math-equation"

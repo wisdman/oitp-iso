@@ -7,24 +7,26 @@
   <ng-container
     *ngFor="let item of items"
   >
-    <div class="item-box">
-      <div class="item-answer" [class.invisible]="!isAnswerShown">{{ item.rune }}</div>
-      <div class="item-data">{{ item.data }},</div>
-      <div class="item-answer" [class.invisible]="!isAnswerShown">{{ item.act }}</div>
-    </div>
+    <div class="item-answer-top" [class.invisible]="!isAnswerShown">{{ item.rune }}</div>
+    <div class="item-data">{{ item.data }},</div>
+    <div class="item-answer-bottom" [class.invisible]="!isAnswerShown">{{ item.act }}</div>
   </ng-container>
-  <div class="item-box">
-    <div class="item-answer">&nbsp;</div>
-    <div class="item-data">
-      <div class="item-correct" [class.invisible]="!isAnswerShown">{{ item.data }}</div>
-      <input
-        type="number"
-        class="input"
-        [(ngModel)]="userData"
-      >
-    </div>
-    <div class="item-answer" [class.invisible]="!isAnswerShown">{{ item.act }}</div>
+  <div class="item-answer-top" [class.invisible]="!isAnswerShown">
+    <div class="item-answer-correct">{{ item.data }}</div>
   </div>
+  <div class="item-data item-data--input">
+    <input
+      type="number"
+      min="0" max="99999"
+      class="input--trainer"
+      [disabled]="mode === 'result'"
+      [message]="mode === 'result' && (isSuccess && 'success' || 'error') || undefined"
+      [(ngModel)]="userData"
+      (enter)="mode === 'result' && finish() || showResult()"
+      focusable
+    >
+  </div>
+  <div class="item-answer-bottom" [class.invisible]="!isAnswerShown">{{ item.act }}</div>
 </div>
 
 <button
@@ -43,4 +45,5 @@
   *ngIf="mode === 'result'"
   class="button button--trainer"
   (click)="finish()"
+  focusable
 >Продолжить</button>

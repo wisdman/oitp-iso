@@ -1,5 +1,6 @@
 export * from "./button"
 export * from "./focusable"
 export * from "./input"
+export * from "./keyfilter"
 export * from "./tezirovanie"
 export * from "./touchable"

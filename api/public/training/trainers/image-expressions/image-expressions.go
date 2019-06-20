@@ -69,18 +69,27 @@ func Build(ctx context.Context) (
 	}
 	defer rows.Close()
 
-	config := newConfig(params)
-
+	var questions []*QuestionConfig
 	for rows.Next() {
-		item := &Item{}
-		if err = rows.Scan(&item.Image, &item.Data); err != nil {
+		config := newConfig(params)
+		if err = rows.Scan(&config.Image, &config.Data); err != nil {
 			return nil, ctx, err
 		}
-		config.Items = append(config.Items, item)
+		configs = append(configs, config)
+
+		question := newQuestionConfig(params)
+		question.Image = config.Image
+		question.Data = config.Data
+		questions = append(questions, question)
 	}
 
-	rand.Shuffle(len(config.Items), func(i, j int) { config.Items[i], config.Items[j] = config.Items[j], config.Items[i] })
+	rand.Shuffle(len(configs), func(i, j int) { configs[i], configs[j] = configs[j], configs[i] })
 
-	configs = append(configs, config)
+	rand.Shuffle(len(questions), func(i, j int) { questions[i], questions[j] = questions[j], questions[i] })
+
+	for _, question := range questions {
+		configs = append(configs, question)
+	}
+
 	return configs, ctx, nil
 }

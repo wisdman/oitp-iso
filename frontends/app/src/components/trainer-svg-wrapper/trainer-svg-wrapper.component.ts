@@ -1,15 +1,29 @@
 import {
-  Component,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
 } from "@angular/core"
+
+import {
+  fromEvent,
+  merge,
+  of,
+  Subscription,
+} from "rxjs"
+
+import { map } from "rxjs/operators"
+
 
 import {
   SVGShape,
   genSVGRectangle,
 } from "../../lib/svg"
+
+const FOCUSABLE_TAGS = "input, select, textarea"
 
 @Component({
   selector: "trainer-svg-wrapper",
@@ -17,8 +31,9 @@ import {
   styleUrls: [ "./trainer-svg-wrapper.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TrainerSVGWrapperComponent implements OnInit {
+export class TrainerSVGWrapperComponent implements OnInit, OnDestroy {
   constructor(
+    private _cdr: ChangeDetectorRef,
     private _elRef:ElementRef<HTMLElement>,
   ){}
 
@@ -29,8 +44,7 @@ export class TrainerSVGWrapperComponent implements OnInit {
     return Number.parseInt(value)
   }
 
-  @Input("selected")
-  isSelected: boolean = false
+  isFocused: boolean = false
 
   @Input("success")
   isSuccess: boolean = false
@@ -47,6 +61,8 @@ export class TrainerSVGWrapperComponent implements OnInit {
 
   matrix!:SVGShape
 
+  private _focusSubscriber!: Subscription
+
   ngOnInit() {
     const padding = this._getCSSPropertyIntValue("--trainer-svg-padding");
     const {width, height} = this._elRef.nativeElement.getBoundingClientRect()
@@ -55,5 +71,21 @@ export class TrainerSVGWrapperComponent implements OnInit {
     this.matrixHeight = height
 
     this.matrix = genSVGRectangle(padding, padding, width - padding * 2, height - padding * 2)
+
+    this._focusSubscriber = merge(
+      of(false),
+      ...Array.from(this._elRef.nativeElement.querySelectorAll(FOCUSABLE_TAGS))
+              .map(node => [
+                fromEvent(node,"focus").pipe(map(() => true)),
+                fromEvent(node,"blur").pipe(map(() => false)),
+              ]).flat()
+    ).subscribe(isFocused => {
+      this.isFocused = isFocused
+      this._cdr.markForCheck()
+    })
+  }
+
+  ngOnDestroy() {
+    this._focusSubscriber.unsubscribe()
   }
 }

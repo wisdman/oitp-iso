@@ -25,13 +25,13 @@ extends AbstractTrainerComponent<IMathMiddleTrainerConfig, IMathMiddleTrainerRes
   items!: Array<IMathMiddleTrainerItem>
   item!: IMathMiddleTrainerItem
 
-  userData: string = ""
+  userData?: number
   isSuccess: boolean = false
   isAnswerShown: boolean = false
 
   init() {
-    this.userData = ""
-    this.isSuccess = true
+    this.userData = undefined
+    this.isSuccess = false
     this.isAnswerShown = false
 
     this.items = this.config.items.slice(0,-1)
@@ -44,12 +44,11 @@ extends AbstractTrainerComponent<IMathMiddleTrainerConfig, IMathMiddleTrainerRes
   showResult() {
     this.setTimeout(0)
 
-    if (this.userData.trim() === "") {
-      this.userData = "0"
+    if (!this.userData) {
+      this.userData = 0
     }
 
-    this.isSuccess = Number.parseFloat(this.userData) === this.item.data[1]
-    this.updateResult({ success: this.isSuccess ? 1 : 0, error: !this.isSuccess ? 1 : 0 })
+    this.isSuccess = this.userData === this.item.data[1]
 
     this.mode = "result"
     this.markForCheck()
@@ -62,5 +61,13 @@ extends AbstractTrainerComponent<IMathMiddleTrainerConfig, IMathMiddleTrainerRes
   timeout() {
     super.timeout()
     this.showResult()
+  }
+
+  finish() {
+    this.updateResult({
+      success: this.isSuccess ? 1 : 0,
+      error: !this.isSuccess ? 1 : 0,
+    })
+    super.finish()
   }
 }

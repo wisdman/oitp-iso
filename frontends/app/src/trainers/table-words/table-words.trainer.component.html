@@ -35,7 +35,7 @@
   <g
     *ngFor="let item of items"
     class="item"
-    [class.item--selected]="mode === 'play' && item === currentItem"
+    [class.item--selected]="mode === 'play' && item.isSelected"
   >
     <path
       class="item__fill-path"
@@ -53,7 +53,14 @@
     >
       <xhtml:input
         type="text"
+        class="input input--trainer"
+        [message]="mode === 'result' && (isSuccess && 'success' || 'error') || undefined"
+        [disabled]="mode === 'result'"
         [(ngModel)]="item.data"
+        (enter)="mode === 'result' && finish()"
+        (focus)="item.isSelected = true"
+        (blur)="item.isSelected = false"
+        focusable
       />
     </foreignObject>
   </g>
@@ -63,10 +70,12 @@
   *ngIf="mode==='play'"
   class="button button--trainer"
   (click)="showResult()"
+  focusable
 >Проверить</button>
 
 <button
   *ngIf="mode === 'result'"
   class="button button--trainer"
   (click)="finish()"
+  focusable
 >Продолжить</button>

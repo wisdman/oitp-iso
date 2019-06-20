@@ -7,6 +7,7 @@
   class="trainer-h2"
   [class.invisible]="mode === 'play'"
 >{{ this.config.data }}</h2>
+
 <div
   *ngIf="mode === 'play' || mode === 'result'"
   class="runes"
@@ -18,17 +19,33 @@
     [class.rune-success] = "mode === 'result' && item.data === item.userData"
   >{{ item.userData }}</span>
 </div>
+<input
+  type="text"
+  class="hidden"
+  [disabled]="mode !== 'play'"
+  [(ngModel)]="userData"
+  (enter)="mode === 'play' && showResult()"
+  keyfilter="0-9a-zA-Zа-яА-ЯйЙёЁ"
+  focusable
+>
 
 <button
   *ngIf="mode === 'show'"
   class="button button--trainer"
-  (click)="start()"
+  (click)="startPlay()"
+  focusable
 >Продолжить</button>
 
 <button
-  *ngIf="mode === 'play' || mode === 'result'"
+  *ngIf="mode === 'play'"
   class="button button--trainer"
-  [class.invisible]="mode === 'play'"
+  (click)="showResult()"
+>Проверить</button>
+
+<button
+  *ngIf="mode === 'result'"
+  class="button button--trainer"
   (click)="finish()"
+  focusable
 >Продолжить</button>
 

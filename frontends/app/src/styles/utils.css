@@ -9,13 +9,20 @@
   white-space: nowrap;
 }
 
-.invisible {
-  opacity: 0;
-  visibility: hidden;
-}
-
 .display-none {
   display: none;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.text-align-center {
+  text-align: center;
 }
 
 .svg-image {

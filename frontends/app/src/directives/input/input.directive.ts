@@ -21,7 +21,10 @@ import {
   Subscription,
 } from "rxjs"
 
-import { map } from "rxjs/operators"
+import {
+  filter,
+  map,
+} from "rxjs/operators"
 
 import STYLE from "./input.directive.css"
 
@@ -83,8 +86,8 @@ export class InputDirective implements OnInit, OnDestroy, DoCheck {
     }
   }
 
-  @Output("focused")
-  focusedChange: EventEmitter<boolean> = new EventEmitter<boolean>()
+  @Output("enter")
+  enterChange: EventEmitter<undefined> = new EventEmitter<undefined>()
 
   private _messageClass: string = ""
 
@@ -102,7 +105,10 @@ export class InputDirective implements OnInit, OnDestroy, DoCheck {
 
     if (value) {
       const [className, messageText] = Array.isArray(value) ? value : [value, undefined]
-      this._renderer.addClass(this._wrapperNode, this._messageClass = className)
+      this._messageClass = STYLE[className]
+      if (this._messageClass) {
+        this._renderer.addClass(this._wrapperNode, this._messageClass)
+      }
 
       if (messageText) {
         this._messageNode = this._renderer.createElement("p")
@@ -115,6 +121,7 @@ export class InputDirective implements OnInit, OnDestroy, DoCheck {
 
   private _focusSubscriber!: Subscription
   private _valueSubscriber!: Subscription
+  private _keypadEnterSubscriber!: Subscription
 
   ngOnInit() {
     this._renderer.addClass(this._wrapperNode, STYLE.wrapper)
@@ -128,12 +135,16 @@ export class InputDirective implements OnInit, OnDestroy, DoCheck {
     this._focusSubscriber = merge(
       fromEvent(this._inputNode, "focus").pipe(map(() => true)),
       fromEvent(this._inputNode, "blur").pipe(map(() => false)),
-    ).subscribe(isFocused => {
+    ).subscribe(isFocused =>
       isFocused ? this._renderer.addClass(this._wrapperNode, STYLE.focus)
                 : this._renderer.removeClass(this._wrapperNode, STYLE.focus)
+    )
 
-      this.focusedChange.emit(isFocused)
-    })
+    // Enter events
+    this._keypadEnterSubscriber =
+      fromEvent<KeyboardEvent>(this._inputNode, "keydown", { passive: false, capture: true }).pipe(
+        filter(({key}) => key.match(/^ENTER$/i) !== null),
+      ).subscribe(() => this.enterChange.emit())
 
     // Value change event
     const control = this._ngControl.control
@@ -150,6 +161,7 @@ export class InputDirective implements OnInit, OnDestroy, DoCheck {
 
   ngOnDestroy() {
     this._focusSubscriber.unsubscribe()
+    this._keypadEnterSubscriber.unsubscribe()
     if (this._valueSubscriber) this._valueSubscriber.unsubscribe()
   }
 

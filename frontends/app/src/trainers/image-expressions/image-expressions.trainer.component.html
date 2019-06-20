@@ -1,51 +1,19 @@
 <!-- Гармонизация работы полушарий -->
-<ng-container *ngIf="item">
-  <h1 *ngIf="item.mode==='show'" class="trainer-h1">Запомните&nbsp;название</h1>
-  <h1 *ngIf="item.mode==='play' || item.mode==='result'" class="trainer-h1">Восстановите<br>название&nbsp;по&nbsp;памяти</h1>
+<h1 class="trainer-h1">Запомните&nbsp;название</h1>
 
-  <picture
-    *ngIf="item.image"
-    class="image"
-  >
-    <source [srcset]="getSrcset(item.image, 'jpg')">
-    <source [srcset]="getSrcset(item.image, 'webp')">
-    <img [src]="getSrcset(item.image, 'jpg')">
-  </picture>
+<picture
+  *ngIf="this.config.image"
+  class="image"
+>
+  <source [srcset]="getSrcset(this.config.image, 'jpg')">
+  <source [srcset]="getSrcset(this.config.image, 'webp')">
+  <img [src]="getSrcset(this.config.image, 'jpg')">
+</picture>
 
-  <h2
-    *ngIf="item.mode === 'show' || item.mode === 'result'"
-    class="trainer-h2 text"
-  >{{item.data}}</h2>
+<h2 class="trainer-h2 text">{{this.config && this.config.data || ''}}</h2>
 
-  <trainer-svg-wrapper
-    *ngIf="item.mode === 'play' || item.mode === 'result'"
-    #wrapper
-    class="input"
-    [error]="item.mode === 'result' && !isSuccess"
-    [success]="item.mode === 'result' && isSuccess"
-  >
-    <input
-      type="text"
-      class="input--trainer"
-      [message]="isSuccess && 'success' || 'error'"
-      [disabled]="item.mode === 'result'"
-      [(ngModel)]="userData"
-      focusable
-    >
-  </trainer-svg-wrapper>
-
-  <button
-    *ngIf="item.mode === 'show' || item.mode === 'result'"
-    class="button button--trainer"
-    focusable
-    (click)="next()"
-  >Продолжить</button>
-
-  <button
-    *ngIf="item.mode === 'play'"
-    class="button button--trainer"
-    focusable
-    (click)="next()"
-  >Проверить</button>
-</ng-container>
-
+<button
+  class="button button--trainer"
+  focusable
+  (click)="finish()"
+>Продолжить</button>

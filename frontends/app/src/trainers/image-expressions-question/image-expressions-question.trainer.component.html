@@ -1,0 +1,47 @@
+<!-- Гармонизация работы полушарий -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>название&nbsp;по&nbsp;памяти</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<picture
+  *ngIf="this.config.image"
+  class="image"
+>
+  <source [srcset]="getSrcset(this.config.image, 'jpg')">
+  <source [srcset]="getSrcset(this.config.image, 'webp')">
+  <img [src]="getSrcset(this.config.image, 'jpg')">
+</picture>
+
+<h2
+  *ngIf="mode==='result'"
+  class="trainer-h2 text"
+>{{this.config && this.config.data || ''}}</h2>
+
+<trainer-svg-wrapper
+  class="input"
+  [error]="mode === 'result' && !isSuccess"
+  [success]="mode === 'result' && isSuccess"
+>
+  <input
+    type="text"
+    class="input--trainer"
+    [message]="mode === 'result' && (isSuccess && 'success' || 'error') || undefined"
+    [disabled]="mode === 'result'"
+    [(ngModel)]="userData"
+    (enter)="mode === 'result' && finish() || showResult()"
+    focusable
+  >
+</trainer-svg-wrapper>
+
+<button
+  *ngIf="mode === 'play'"
+  class="button button--trainer"
+  (click)="showResult()"
+  focusable
+>Проверить</button>
+
+<button
+  *ngIf="mode === 'result'"
+  class="button button--trainer"
+  (click)="finish()"
+  focusable
+>Продолжить</button>

@@ -8,3 +8,8 @@
   margin-top: calc(var(--trainer-margin) * 4);
   margin-bottom: auto;
 }
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}

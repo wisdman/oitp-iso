@@ -5,6 +5,7 @@ import { IClassificationWordsTrainer, IClassificationWordsTrainerConfig, IClassi
 import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
 import { IImageExpressionsTrainer, IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult } from "./image-expressions"
+import { IImageExpressionsQuestionTrainer, IImageExpressionsQuestionTrainerConfig, IImageExpressionsQuestionTrainerResult } from "./image-expressions-question"
 import { IImageFieldQuestionTrainer, IImageFieldQuestionTrainerConfig, IImageFieldQuestionTrainerResult } from "./image-field-question"
 import { IImageFieldTrainer, IImageFieldTrainerConfig, IImageFieldTrainerResult } from "./image-field"
 import { IMathEquationTrainer, IMathEquationTrainerConfig, IMathEquationTrainerResult } from "./math-equation"
@@ -33,6 +34,7 @@ export type ITrainer = IClassificationColorsTrainer
                      | IImageCarpetTrainer
                      | IImageDifferencesTrainer
                      | IImageExpressionsTrainer
+                     | IImageExpressionsQuestionTrainer
                      | IImageFieldTrainer
                      | IImageFieldQuestionTrainer
                      | IMathEquationTrainer
@@ -62,6 +64,7 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | IImageCarpetTrainerConfig
                             | IImageDifferencesTrainerConfig
                             | IImageExpressionsTrainerConfig
+                            | IImageExpressionsQuestionTrainerConfig
                             | IImageFieldTrainerConfig
                             | IImageFieldQuestionTrainerConfig
                             | IMathEquationTrainerConfig
@@ -90,6 +93,7 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | IImageCarpetTrainerResult
                             | IImageDifferencesTrainerResult
                             | IImageExpressionsTrainerResult
+                            | IImageExpressionsQuestionTrainerResult
                             | IImageFieldTrainerResult
                             | IImageFieldQuestionTrainerResult
                             | IMathEquationTrainerResult

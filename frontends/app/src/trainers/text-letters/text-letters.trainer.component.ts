@@ -3,8 +3,6 @@ import {
   Component,
 } from "@angular/core"
 
-import { NOT_RUNES_RX } from "../../lib/runes"
-
 import { AbstractTrainerComponent } from "../abstract"
 
 import {
@@ -28,36 +26,47 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     userData: string
   }>
 
-  private _getRunes(v: string) {
-    return v.replace(NOT_RUNES_RX, " ")
-            .split(/\s+/)
-            .map(s => s.charAt(0).toUpperCase())
+  private _getRunes(value: string): Array<string> {
+    return value.toUpperCase()
+                .replace(/[^0-9A-ZА-ЯЙЁ\s]+/ig,"")
+                .replace(/\s+/, " ")
+                .trim()
+                .split(/\s+/)
+                .map(s => s.charAt(0).toUpperCase())
+  }
+
+
+
+  private _userData: string = ""
+  get userData() {
+    return this._userData
+  }
+  set userData(value: string) {
+    this._userData = value
+    this.runes = this.runes.map(({data}, i) => ({data, userData: (this._userData[i] || "").toUpperCase() }))
+    if (this._userData.length >= this.runes.length) {
+      this.showResult()
+    }
   }
 
   init() {
     this.fullscreenService.lock()
 
+    this._userData = ""
     this.runes = this._getRunes(this.config.data)
                      .map(data => ({data, userData:""}))
-
-    // if (this._keypadRuneSubscription) this._keypadRuneSubscription.unsubscribe()
-    // this._keypadRuneSubscription = merge(
-    //                                 this.keypadService.ru,
-    //                                 // this.keypadService.en,
-    //                                 this.keypadService.numbers,
-    //                               ).subscribe(rune => this._onRune(rune))
 
     this.mode = "show"
     this.setTimeout(this.config.showTimeLimit)
   }
 
-  start() {
+  startPlay() {
     this.setTimeout(this.config.playTimeLimit)
     this.mode = "play"
     this.markForCheck()
   }
 
-  private _result() {
+  showResult() {
     this.setTimeout(0)
     this.mode = "result"
     this.markForCheck()
@@ -70,58 +79,14 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     super.finish()
   }
 
-  _onRune(rune: string) {
-    if (this.mode !== "play") {
-      return
-    }
-
-    const idx = this.runes.findIndex(({userData}) => !userData)
-    if (idx < 0) {
-      return
-    }
-
-    this.runes[idx].userData = rune
-    this.markForCheck()
-
-    const finish = this.runes.every(({userData}) => !!userData)
-    if (finish) {
-      this._result()
-    }
-  }
-
-  _onBackspace() {
-    if (this.mode !== "play") {
-      return
-    }
-
-    let idx = this.runes.findIndex(({userData}) => !userData) - 1
-    if (idx < 0) {
-      idx = this.runes.length - 1
-    }
-
-    this.runes[idx].userData = ""
-    this.markForCheck()
-  }
-
   timeout() {
     switch (this.mode) {
       case "show":
-        this.start()
+        this.startPlay()
         return
       case "play":
         super.timeout()
-        this._result()
-        return
-    }
-  }
-
-  _onEnterOrSpace() {
-    switch (this.mode) {
-      case "show":
-        this.start()
-        return
-      case "result":
-        this.finish()
+        this.showResult()
         return
     }
   }

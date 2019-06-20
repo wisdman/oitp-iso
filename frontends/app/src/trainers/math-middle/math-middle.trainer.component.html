@@ -9,29 +9,36 @@
   >
     <div class="item-box">{{ item.data[0] }}</div>
     <div class="item-box">(</div>
-    <div class="item-box">{{ item.data[1] }}</div>
+    <div class="item-box text-align-center">{{ item.data[1] }}</div>
     <div class="item-box">)</div>
     <div class="item-box">{{ item.data[2] }}</div>
     <div
       class="item-answer"
-      [class.invisible]="!isAnswerShown"
+      [class.invisible]="mode !== 'result' || !isAnswerShown"
     >{{ item.answer }}</div>
   </ng-container>
   <div class="item-box">{{ item.data[0] }}</div>
   <div class="item-box">(</div>
-  <div class="item-box">
+  <div
+    class="item-box"
+  >
     <input
       type="number"
-      class="input"
+      min="0" max="99999"
+      class="input--trainer"
+      [disabled]="mode === 'result'"
+      [message]="mode === 'result' && (isSuccess && 'success' || 'error') || undefined"
       [(ngModel)]="userData"
+      (enter)="mode === 'result' && finish() || showResult()"
+      focusable
     >
   </div>
   <div class="item-box">)</div>
   <div class="item-box">{{ item.data[2] }}</div>
   <div
-    class="item-answer"
-    [class.invisible]="!isAnswerShown"
-  >{{ item.answer }}</div>
+      class="item-answer"
+      [class.invisible]="mode !== 'result' || !isAnswerShown"
+    >{{ item.answer }}</div>
 </div>
 
 <button
@@ -50,4 +57,5 @@
   *ngIf="mode === 'result'"
   class="button button--trainer"
   (click)="finish()"
+  focusable
 >Продолжить</button>
