@@ -6,6 +6,7 @@ import (
 
 type Parameters struct {
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
+	ItemsCount    int    `json:"itemsCount"`
 	RunesCount    int    `json:"runesCount"`
 }
 
@@ -15,7 +16,6 @@ type Config struct {
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	Runes []string `json:"runes"`
-	Title string   `json:"title"`
 }
 
 func newConfig(
@@ -25,6 +25,6 @@ func newConfig(
 		Config:        abstract.NewConfig(abstract.UITableWords),
 		PlayTimeLimit: params.PlayTimeLimit,
 
-		Runes: make([]string, params.RunesCount),
+		Runes: make([]string, params.ItemsCount),
 	}
 }
