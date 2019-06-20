@@ -25,6 +25,7 @@ const (
 	UIMatrixSequence            IUITrainer = "matrix-sequence"
 	UIRelax                     IUITrainer = "relax"
 	UIStorytelling              IUITrainer = "storytelling"
+	UISpaceQuestionWaste        IUITrainer = "space-question-waste"
 	UITablePipe                 IUITrainer = "table-pipe"
 	UITableWords                IUITrainer = "table-words"
 	UITextLetters               IUITrainer = "text-letters"

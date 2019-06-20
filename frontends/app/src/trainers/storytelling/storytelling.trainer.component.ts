@@ -40,7 +40,10 @@ extends AbstractTrainerComponent<IStorytellingTrainerConfig, IStorytellingTraine
     const audio = new Audio()
     audio.addEventListener("error", () => this.finish())
     audio.addEventListener("ended", () => this.finish())
-    audio.addEventListener("canplaythrough", () => audio.play())
+    audio.addEventListener("canplaythrough", () => {
+      this.setTimeout(Math.ceil(audio.duration))
+      audio.play()
+    })
     audio.src = `${ASSETS_STORYTELLING}/${this.config.audio}.mp3`
     audio.load()
   }

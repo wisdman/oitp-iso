@@ -41,7 +41,9 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 		trainersRandom[i], trainersRandom[j] = trainersRandom[j], trainersRandom[i]
 	})
 
-	var trainersFinish = [...]trainers.ITrainer{"matrix-sequence-random"}
+	var trainersFinish = [...]trainers.ITrainer{
+		"matrix-sequence-random",
+	}
 
 	rand.Shuffle(len(trainersFinish), func(i, j int) {
 		trainersFinish[i], trainersFinish[j] = trainersFinish[j], trainersFinish[i]

@@ -1,8 +1,3 @@
-// Пространство и логика
-//
-// Оприделите лишнюю фигуру
-//
-
 package spaceQuestions
 
 import (
@@ -11,12 +6,14 @@ import (
 
 type Parameters struct {
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
-	Quantity      int    `json:"quantity"`
+
+	ItemsCount int `json:"itemsSize"`
+	Quantity   int `json:"quantity"`
 }
 
 type Answer struct {
-	Icon    int  `json:"icon"`
-	Correct bool `json:"correct"`
+	Data    string `json:"data"`
+	Correct bool   `json:"correct"`
 }
 
 type Config struct {
@@ -31,7 +28,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIImageFieldQuestion),
+		Config:        abstract.NewConfig(abstract.UISpaceQuestionWaste),
 		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }
