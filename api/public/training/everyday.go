@@ -12,7 +12,7 @@ import (
 
 func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	var trainersList = []trainers.ITrainer{
-		"text-reading", "table-pipe-ru", "table-pipe-number",
+		"table-pipe-ru", "table-pipe-number",
 	}
 
 	var trainersRandom = [][]trainers.ITrainer{
