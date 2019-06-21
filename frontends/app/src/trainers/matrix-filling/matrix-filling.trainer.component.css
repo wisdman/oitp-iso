@@ -77,3 +77,8 @@
   user-select: none;
   pointer-events: none;
 }
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}

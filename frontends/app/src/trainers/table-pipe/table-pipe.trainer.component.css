@@ -62,7 +62,7 @@
   gap: var(--gap);
 
   margin: auto;
-  margin-top: calc(var(--trainer-margin) * 2);
+  margin-top: calc(var(--trainer-margin) * 4);
 }
 
 

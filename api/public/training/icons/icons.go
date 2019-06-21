@@ -5,7 +5,7 @@ import (
 	"math/rand"
 )
 
-const MAX_ICON_ID = 288
+const MAX_ICON_ID = 287
 
 type ctxIconsKeyType int
 

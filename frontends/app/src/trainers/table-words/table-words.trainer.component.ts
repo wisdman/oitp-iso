@@ -30,6 +30,15 @@ interface IItem extends SVGShape {
 export class TableWordsTrainerComponent
 extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerResult> {
 
+  private _prepareString(value: string): string {
+    return value.toUpperCase()
+                .replace(/[^0-9A-ZА-ЯЙЁ\s]+/ig,"")
+                .replace(/\s+/, " ")
+                .trim()
+                .replace("Й", "И")
+                .replace("Ё", "Е")
+  }
+
   mode: "play" | "result" = "play"
 
   headers!: Array<IItem>
@@ -77,6 +86,11 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
 
   showResult() {
     this.setTimeout(0)
+
+    this.items.forEach( (value, i) =>
+      value.isSuccess = this._prepareString(value.data)[0] === this.config.runes[i].toUpperCase()
+    )
+
     this.mode = "result"
   }
 

@@ -8,8 +8,6 @@ import {
   genSVGRectangle,
 } from "../../lib/svg"
 
-import { textSize } from "../../lib/util"
-
 import { AbstractTrainerComponent } from "../abstract"
 
 import {
@@ -54,29 +52,12 @@ extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerRes
   init() {
     this.hiddenColumn = Math.random() >= 0.5 ? "left" : "right"
 
-    const {
-      width: textWidth,
-      height: textHeight,
-    } = this.config.items.flat().reduce((max, text) => {
-      const { width, height } = textSize(text, this.fontStyle)
-      return {
-        width: Math.max(max.width, width),
-        height: Math.max(max.height, height),
-      }
-    }, { width: 0, height: 0 })
-
-    const paddingTop    = this.getCSSPropertyIntValue("--padding-top")
-    const paddingBottom = this.getCSSPropertyIntValue("--padding-bottom")
-    const paddingLeft   = this.getCSSPropertyIntValue("--padding-left")
-    const paddingRight  = this.getCSSPropertyIntValue("--padding-right")
-
+    const width = this.getCSSPropertyIntValue("--column-width")
+    const height = this.getCSSPropertyIntValue("--trainer-svg-height")
     const padding = this.getCSSPropertyIntValue("--trainer-svg-padding")
     const gap = this.getCSSPropertyIntValue("--gap")
 
     const rows = this.config.items.length
-
-    const width = paddingLeft + textWidth + paddingRight
-    const height = paddingTop + textHeight + paddingBottom
 
     this.matrixWidth = padding
                      + width  * 2 + gap

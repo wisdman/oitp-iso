@@ -54,7 +54,7 @@ extends AbstractTrainerComponent<IImageFieldTrainerConfig, IImageFieldTrainerRes
       return { x, y, item }
     })
 
-    this.setTimeout(this.config.showTimeLimit)
+    // this.setTimeout(this.config.showTimeLimit)
   }
 
   timeout() {

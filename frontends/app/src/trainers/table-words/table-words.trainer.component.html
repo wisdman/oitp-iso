@@ -35,6 +35,8 @@
     *ngFor="let item of items"
     class="item"
     [class.item--selected]="mode === 'play' && item.isSelected"
+    [class.item--success]="mode === 'result' && item.isSuccess"
+    [class.item--error]="mode === 'result' && !item.isSuccess"
   >
     <path
       class="item__fill-path"
@@ -53,7 +55,7 @@
       <xhtml:input
         type="text"
         class="input input--trainer"
-        [message]="mode === 'result' && (isSuccess && 'success' || 'error') || undefined"
+        [message]="mode === 'result' && (item.isSuccess && 'success' || 'error') || undefined"
         [disabled]="mode === 'result'"
         [(ngModel)]="item.data"
         (enter)="mode === 'result' && finish()"

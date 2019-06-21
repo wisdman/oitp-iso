@@ -17,7 +17,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 
 	var trainersRandom = [][]trainers.ITrainer{
 		{"classification-colors", "classification-definitions", "classification-words"},
-		{"image-carpets", "image-differences"},
+		// {"image-carpets", "image-differences"},
 		{"image-expressions"},
 		{"image-fields"},
 		//{"math-equation"},

@@ -7,17 +7,12 @@
   type="icon"
   [readonly]="mode==='result'"
   [items]="items"
+  (touch)="showResult()"
 ></trainer-selector>
 
 <button
-  *ngIf="mode==='play'"
   class="button button--trainer"
-  (click)="showResult()"
->Проверить</button>
-
-<button
-  *ngIf="mode==='result'"
-  class="button button--trainer"
+  [class.invisible]="mode === 'play'"
   (click)="finish()"
   focusable
 >Продолжить</button>

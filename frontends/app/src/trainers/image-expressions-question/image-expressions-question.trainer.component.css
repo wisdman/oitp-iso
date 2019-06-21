@@ -34,6 +34,10 @@
   max-width: 400px;
 }
 
+.input--trainer {
+  padding: 0 .7em;
+}
+
 .button {
   margin: 0;
   margin-top: calc(var(--trainer-margin) * 4);

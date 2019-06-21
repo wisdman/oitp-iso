@@ -35,6 +35,16 @@
   stroke-width: 2;
 }
 
+.item--success .path {
+  stroke: var(--trainer-success-color);
+  stroke-width: 2;
+}
+
+.item--error .path {
+  stroke: var(--trainer-error-color);
+  stroke-width: 2;
+}
+
 .fill-path {
   stroke: none;
   stroke-width: 0;
@@ -52,6 +62,10 @@
 
   font-size: 16px;
   font-weight: 400;
+}
+
+.input {
+  padding: 0 .7em;
 }
 
 .button {

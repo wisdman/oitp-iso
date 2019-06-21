@@ -59,10 +59,10 @@ func Build(ctx context.Context) (
 	itemsCounts := make([]int, params.Quantity)
 	var maxItems int
 	for i := 0; i < params.Quantity; i++ {
-		length := rand.Intn(params.MaxItems - params.MinItems + 1)
+		length := rand.Intn(params.MaxItems-params.MinItems+1) + params.MinItems
 		itemsCounts[i] = length
-		if itemsCounts[i] > maxItems {
-			maxItems = itemsCounts[i]
+		if length > maxItems {
+			maxItems = length
 		}
 	}
 

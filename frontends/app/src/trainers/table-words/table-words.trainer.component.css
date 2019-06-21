@@ -38,6 +38,16 @@
   stroke-width: 2;
 }
 
+.item--success .item__path {
+  stroke: var(--trainer-success-color);
+  stroke-width: 2;
+}
+
+.item--error .item__path {
+  stroke: var(--trainer-error-color);
+  stroke-width: 2;
+}
+
 .header__fill-path,
 .item__fill-path {
   stroke: none;

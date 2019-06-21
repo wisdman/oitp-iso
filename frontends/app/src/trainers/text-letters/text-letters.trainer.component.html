@@ -24,7 +24,6 @@
   class="hidden"
   [disabled]="mode !== 'play'"
   [(ngModel)]="userData"
-  (enter)="mode === 'play' && showResult()"
   keyfilter="0-9a-zA-Zа-яА-ЯйЙёЁ"
   focusable
 >
@@ -38,7 +37,7 @@
 
 <button
   *ngIf="mode === 'play'"
-  class="button button--trainer"
+  class="button button--trainer invisible"
   (click)="showResult()"
 >Проверить</button>
 
