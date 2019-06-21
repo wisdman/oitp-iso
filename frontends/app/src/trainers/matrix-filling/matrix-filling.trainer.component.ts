@@ -53,8 +53,6 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
   private _pointermoveSubscriber!: Subscription
 
   init() {
-    this.fullscreenService.lock()
-
     this.isUnique = [...new Set(this.config.matrix)].length === this.config.matrix.length
 
     this.current = undefined

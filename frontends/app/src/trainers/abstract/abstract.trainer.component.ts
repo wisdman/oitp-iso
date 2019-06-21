@@ -161,6 +161,8 @@ implements OnInit, OnDestroy, OnChanges {
   private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
+    this.fullscreenService.lock()
+
     // Enable loader
     this.loading = true
 

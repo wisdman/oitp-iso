@@ -30,6 +30,8 @@ extends AbstractTrainerComponent<IMathSequenceTrainerConfig, IMathSequenceTraine
   isAnswerShown: boolean = false
 
   init() {
+    this.fullscreenService.unlock()
+
     this.userData = undefined
     this.isSuccess = true
     this.isAnswerShown = false

@@ -26,8 +26,6 @@ extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResul
   items!: Array<ISelectorItem & { correct: boolean }>
 
   init() {
-    this.fullscreenService.lock()
-
     this.items = this.config.items
                             .map((data, i) => ({
                               data: String(data),

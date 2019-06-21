@@ -26,8 +26,6 @@ extends AbstractTrainerComponent<IWordsQuestionCloseTrainerConfig, IWordsQuestio
   items!: Array<ISelectorItem & { correct: boolean }>
 
   init() {
-    this.fullscreenService.lock()
-
     this.items = Array.from(this.config.items)
 
     this.mode = "play"

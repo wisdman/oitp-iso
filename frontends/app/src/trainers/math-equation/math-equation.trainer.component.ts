@@ -42,7 +42,6 @@ extends AbstractTrainerComponent<IMathEquationTrainerConfig, IMathEquationTraine
 
 
   init() {
-    this.fullscreenService.lock()
     // this.result = this._mathEval(this.config.equation)
 
     // const items = this.config.equation.replace(/[^\d]+/g, "").split("")

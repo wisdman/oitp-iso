@@ -47,6 +47,8 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig, IWordsColumnTrainerR
   items!: Array<IItem>
 
   init() {
+    this.fullscreenService.unlock()
+
     const width = this.getCSSPropertyIntValue("--column-width")
     const height = this.getCSSPropertyIntValue("--trainer-svg-height")
     const padding = this.getCSSPropertyIntValue("--trainer-svg-padding")

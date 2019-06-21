@@ -45,6 +45,8 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
   items!: Array<IItem>
 
   init() {
+    this.fullscreenService.unlock()
+
     const runeSize = this.getCSSPropertyIntValue("--trainer-svg-height")
     const columnWidth = this.getCSSPropertyIntValue("--column-width")
     const padding = this.getCSSPropertyIntValue("--trainer-svg-padding")

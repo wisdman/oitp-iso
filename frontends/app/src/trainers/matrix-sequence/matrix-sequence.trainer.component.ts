@@ -36,8 +36,6 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
   current: number = 1
 
   init() {
-    this.fullscreenService.lock()
-
     this.current = 1
 
     const side = Math.sqrt(this.config.matrix.length)

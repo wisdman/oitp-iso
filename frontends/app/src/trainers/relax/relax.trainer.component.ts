@@ -30,8 +30,6 @@ extends AbstractTrainerComponent<IRelaxTrainerConfig, IRelaxTrainerResult> {
   @ViewChild('h1Node', { static: true }) h1NodeRef!: ElementRef<HTMLElement>
 
   init() {
-    this.fullscreenService.lock()
-
     const h1 = this.h1NodeRef.nativeElement
     window.requestAnimationFrame(() => {
       h1.style.transition = "none"

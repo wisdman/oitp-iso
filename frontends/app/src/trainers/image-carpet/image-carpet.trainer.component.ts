@@ -32,7 +32,6 @@ extends AbstractTrainerComponent<IImageCarpetTrainerConfig, IImageCarpetTrainerR
   private _carpetSubscription!: Subscription
 
   init() {
-    this.fullscreenService.lock()
     this.mode = "show"
 
     this._carpetSubscription = this.carpetService.carpet.subscribe(carpet => {

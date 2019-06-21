@@ -32,8 +32,6 @@ extends AbstractTrainerComponent<IMatrixFillingQuestionTrainerConfig, IMatrixFil
   items!: Array<ISelectorItem & { correct: boolean }>
 
   init() {
-    this.fullscreenService.lock()
-
     this.items = this.config.items
                      .map(({icon, correct}) => ({
                        data: this.getIconHref(icon),

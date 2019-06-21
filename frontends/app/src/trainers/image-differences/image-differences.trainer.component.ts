@@ -24,7 +24,6 @@ extends AbstractTrainerComponent<IImageDifferencesTrainerConfig, IImageDifferenc
   mode: "show" | "play" = "show"
 
   init() {
-    this.fullscreenService.lock()
     this.setTimeout(this.config.timeLimit)
   }
 }

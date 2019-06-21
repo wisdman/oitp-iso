@@ -50,8 +50,6 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
   }
 
   init() {
-    this.fullscreenService.lock()
-
     this._userData = ""
     this.runes = this._getRunes(this.config.data)
                      .map(data => ({data, userData:""}))

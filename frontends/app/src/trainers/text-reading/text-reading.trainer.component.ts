@@ -17,4 +17,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextReadingTrainerComponent
-extends AbstractTrainerComponent<ITextReadingTrainerConfig, ITextReadingTrainerResult> {}
+extends AbstractTrainerComponent<ITextReadingTrainerConfig, ITextReadingTrainerResult> {
+  init() {
+    this.fullscreenService.unlock()
+  }
+}

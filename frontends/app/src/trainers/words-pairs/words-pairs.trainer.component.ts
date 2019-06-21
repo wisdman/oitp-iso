@@ -50,6 +50,8 @@ extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerRes
   hiddenColumn!: IColumnType
 
   init() {
+    this.fullscreenService.unlock()
+
     this.hiddenColumn = Math.random() >= 0.5 ? "left" : "right"
 
     const width = this.getCSSPropertyIntValue("--column-width")

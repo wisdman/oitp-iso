@@ -35,8 +35,6 @@ extends AbstractTrainerComponent<IImageFieldTrainerConfig, IImageFieldTrainerRes
   itemHeight!: number
 
   init() {
-    this.fullscreenService.lock()
-
     this.matrixWidth = this.matrixHeight = this.getCSSPropertyIntValue("--matrix-size")
     this.itemWidth = this.itemHeight = this.getCSSPropertyIntValue("--item-size")
 

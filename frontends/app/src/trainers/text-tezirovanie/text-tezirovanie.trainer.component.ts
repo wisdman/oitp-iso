@@ -23,6 +23,8 @@ extends AbstractTrainerComponent<ITextTezirovanieTrainerConfig, ITextTezirovanie
   value!: string
 
   init() {
+    this.fullscreenService.unlock()
+
     this.value = this.config.data
 
     this.mode = "play"

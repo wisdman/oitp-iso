@@ -26,8 +26,6 @@ extends AbstractTrainerComponent<ISpaceQuestionWasteTrainerConfig, ISpaceQuestio
   items!: Array<ISelectorItem & { correct: boolean }>
 
   init() {
-    this.fullscreenService.lock()
-
     this.items = this.config.items
 
     this.mode = "play"

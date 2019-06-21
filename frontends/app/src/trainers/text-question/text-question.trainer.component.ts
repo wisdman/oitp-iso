@@ -32,8 +32,6 @@ extends AbstractTrainerComponent<ITextQuestionTrainerConfig, ITextQuestionTraine
   items!: Array<ISelectorItem & { correct: boolean }>
 
   init() {
-    this.fullscreenService.lock()
-
     this.items = [{
       data: "Истина",
       correct: this.config.correct,
