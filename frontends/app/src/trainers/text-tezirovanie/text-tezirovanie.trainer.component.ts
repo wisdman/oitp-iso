@@ -19,15 +19,15 @@ import {
 export class TextTezirovanieTrainerComponent
 extends AbstractTrainerComponent<ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult> {
 
-  mode!: "play" | "result"
+  mode: "play" | "result" = "play"
   value!: string
 
   init() {
     this.fullscreenService.unlock()
 
+    this.mode = "play"
     this.value = this.config.data
 
-    this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
   }
 
