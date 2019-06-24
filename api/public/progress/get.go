@@ -12,10 +12,10 @@ var ITEMS = [...]string{"lexicon", "arithmetic", "variability", "verbal", "harmo
 
 func (api *API) GetUser(w http.ResponseWriter, r *http.Request) {
 	progress := &Progress{
-		Charge:       50,
-		Memory:       50,
-		Knowledge:    50,
-		Intelligence: 50,
+		Charge:       82,
+		Memory:       67,
+		Knowledge:    81,
+		Intelligence: 30,
 
 		Speed: []uint16{50, 60, 70, 80, 70},
 	}
