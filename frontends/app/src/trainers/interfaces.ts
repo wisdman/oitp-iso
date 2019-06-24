@@ -2,6 +2,8 @@
 import { IClassificationColorsTrainer, IClassificationColorsTrainerConfig, IClassificationColorsTrainerResult } from "./classification-colors"
 import { IClassificationDefinitionsTrainer, IClassificationDefinitionsTrainerConfig, IClassificationDefinitionsTrainerResult } from "./classification-definitions"
 import { IClassificationWordsTrainer, IClassificationWordsTrainerConfig, IClassificationWordsTrainerResult } from "./classification-words"
+import { IGreetingTrainer, IGreetingTrainerConfig, IGreetingTrainerResult } from "./greeting"
+import { IResultTrainer, IResultTrainerConfig, IResultTrainerResult } from "./result"
 import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
 import { IImageExpressionsQuestionTrainer, IImageExpressionsQuestionTrainerConfig, IImageExpressionsQuestionTrainerResult } from "./image-expressions-question"
@@ -33,6 +35,7 @@ import { IWordsQuestionWasteTrainer, IWordsQuestionWasteTrainerConfig, IWordsQue
 export type ITrainer = IClassificationColorsTrainer
                      | IClassificationDefinitionsTrainer
                      | IClassificationWordsTrainer
+                     | IGreetingTrainer
                      | IImageCarpetTrainer
                      | IImageDifferencesTrainer
                      | IImageExpressionsQuestionTrainer
@@ -47,6 +50,7 @@ export type ITrainer = IClassificationColorsTrainer
                      | IMatrixFillingTrainer
                      | IMatrixSequenceTrainer
                      | IRelaxTrainer
+                     | IResultTrainer
                      | ISpaceQuestionWasteTrainer
                      | IStorytellingTrainer
                      | ITablePipeTrainer
@@ -65,6 +69,7 @@ export type ITrainer = IClassificationColorsTrainer
 export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | IClassificationDefinitionsTrainerConfig
                             | IClassificationWordsTrainerConfig
+                            | IGreetingTrainerConfig
                             | IImageCarpetTrainerConfig
                             | IImageDifferencesTrainerConfig
                             | IImageExpressionsQuestionTrainerConfig
@@ -79,6 +84,7 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | IMatrixFillingTrainerConfig
                             | IMatrixSequenceTrainerConfig
                             | IRelaxTrainerConfig
+                            | IResultTrainerConfig
                             | ISpaceQuestionWasteTrainerConfig
                             | IStorytellingTrainerConfig
                             | ITablePipeTrainerConfig
@@ -96,6 +102,7 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
 export type ITrainerResults = IClassificationColorsTrainerResult
                             | IClassificationDefinitionsTrainerResult
                             | IClassificationWordsTrainerResult
+                            | IGreetingTrainerResult
                             | IImageCarpetTrainerResult
                             | IImageDifferencesTrainerResult
                             | IImageExpressionsQuestionTrainerResult
@@ -110,6 +117,7 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | IMatrixFillingTrainerResult
                             | IMatrixSequenceTrainerResult
                             | IRelaxTrainerResult
+                            | IResultTrainerResult
                             | ISpaceQuestionWasteTrainerResult
                             | IStorytellingTrainerResult
                             | ITablePipeTrainerResult
@@ -141,8 +149,11 @@ export interface ITrainerResult {
   error?: number
 }
 
+export type ITrainingType = "everyday" | "once"
+
 export interface ITraining {
   id: string
   timeLimit: number
+  type: ITrainingType
   trainers: Array<ITrainerConfigs>
 }

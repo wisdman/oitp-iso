@@ -63,7 +63,7 @@ func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	var configs []interface{}
 	var err error
 	ctx := icons.New(r.Context())
-	training := newTraining(1800)
+	training := newTraining("everyday", 1800)
 
 	for i, max := 0, len(trainersList); i < max; i++ {
 		configs, ctx, err = trainers.Build(ctx, trainersList[i])

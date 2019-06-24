@@ -4,15 +4,7 @@ class="field"
 >
   <timer-global></timer-global>
 
-  <training-greeting
-    *ngIf="mode === 'greeting'"
-    (touch)="onStart()"
-  ></training-greeting>
-
-  <div
-    *ngIf="mode === 'game' && config"
-    class="game"
-  >
+  <div *ngIf="config" class="game">
     <trainer-classification-colors
       *ngIf="config.id === 'classification-colors'"
       [config]="config"
@@ -30,6 +22,12 @@ class="field"
       [config]="config"
       (result)="onResult($event)"
     ></trainer-classification-words>
+
+    <trainer-greeting
+      *ngIf="config.id === 'greeting'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-greeting>
 
     <trainer-image-carpet
       *ngIf="config.id === 'image-carpet'"
@@ -115,6 +113,12 @@ class="field"
       (result)="onResult($event)"
     ></trainer-relax>
 
+    <trainer-result
+      *ngIf="config.id === 'result'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-result>
+
     <trainer-space-question-waste
       *ngIf="config.id === 'space-question-waste'"
       [config]="config"
@@ -193,11 +197,6 @@ class="field"
       (result)="onResult($event)"
     ></trainer-words-question-waste>
   </div>
-
-  <training-result
-    *ngIf="mode === 'result'"
-    (buttonClick)="onGoDashboard()"
-  ></training-result>
 
   <timer-lap></timer-lap>
 

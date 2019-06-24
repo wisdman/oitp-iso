@@ -24,8 +24,11 @@ func main() {
 	)
 
 	srv.GET("/debug", api.Debug)
+
 	srv.GET("/everyday", api.Everyday)
 	srv.GET("/once", api.Once)
+
+	srv.GET("/result", api.Result)
 
 	srv.ListenAndServe()
 }

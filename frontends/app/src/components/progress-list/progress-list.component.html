@@ -1,16 +1,39 @@
-<ul>
-  <li>Активизация лексикона</li>
-  <li>Арифметико-практическое мышление</li>
-  <li>Вариативность мышления</li>
-  <li>Вербальный интеллект</li>
-  <li>Гармонизация работы полушарий</li>
-  <li>Индуктивность мышления</li>
-  <li>Мнемотехника</li>
-  <li>Наглядно-образная память</li>
-  <li>Пространство и логика</li>
-  <li>Распределение внимания</li>
-  <li>Скорость зрительного восприятия</li>
-  <li>Слуховая память</li>
-  <li>Тезирование</li>
-  <li>Точность восприятия</li>
+<h3 class="h3">
+  <div class="col-1">Наименование</div>
+  <div class="col-2">Среднее значениие</div>
+  <div class="col-3">Последнее занятие</div>
+  <div class="col-4">Тенденция</div>
+</h3>
+
+<ul class="items" *ngIf="progress | async as progress">
+  <li class="item" *ngFor="let item of progress.items; let i = index">
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'lexicon'">Активизация лексикона</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'arithmetic'">Арифметико-практическое мышление</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'variability'">Вариативность мышления</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'verbal'">Вербальный интеллект</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'harmonization'">Гармонизация работы полушарий</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'inductance'">Индуктивность мышления</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'mnemonics'">Мнемотехника</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'visually-memory'">Наглядно-образная память</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'space-logic'">Пространство и логика</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'attention'">Распределение внимания</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'visually-perception'">Скорость зрительного восприятия</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'auditory-memory'">Слуховая память</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'teasing'">Тезирование</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'accuracy'">Точность восприятия</h4>
+    <div class="col-2 percent">{{ item.average }}%</div>
+    <div
+      class="col-3 percent"
+      [class.up]="getTrend(item) === 'up'"
+      [class.down]="getTrend(item) === 'down'"
+    >{{ item.last | slice:-1 }}%</div>
+    <div class="col-4 chart-wrapper">
+      <chart-linear
+        class="chart"
+        [class.up]="getTrend(item) === 'up'"
+        [class.down]="getTrend(item) === 'down'"
+        [value]="item.last" [min]="20"
+      ></chart-linear>
+    </div>
+  </li>
 </ul>

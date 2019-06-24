@@ -99,7 +99,7 @@ func pointsToSVG(points [][]float64) string {
 	}
 
 	svg := fmt.Sprintf(
-		`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="-60 -60 120 120"><polygon points="%s" style="fill:#aaa;stroke:#666;stroke-width:2"/></svg>`,
+		`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="-60 -60 120 120"><polygon points="%s" style="fill:#aaa;stroke:#333;stroke-width:4"/></svg>`,
 		str,
 	)
 

@@ -39,6 +39,25 @@ const (
 	UIWordsQuestionWaste        IUITrainer = "words-question-waste"
 )
 
+type ITrainerGroup string
+
+const (
+	Lexicon            ITrainer = "lexicon"             // Активизация лексикона
+	Arithmetic         ITrainer = "arithmetic"          // Арифметико-практическое мышление
+	Variability        ITrainer = "variability"         // Вариативность мышления
+	Verbal             ITrainer = "verbal"              // Вербальный интеллект
+	Harmonization      ITrainer = "harmonization"       // Гармонизация работы полушарий
+	Inductance         ITrainer = "inductance"          // Индуктивность мышления
+	Mnemonics          ITrainer = "mnemonics"           // Мнемотехника
+	VisuallyMemory     ITrainer = "visually-memory"     // Наглядно-образная память
+	SpaceLogic         ITrainer = "space-logic"         // Пространство и логика
+	Attention          ITrainer = "attention"           // Распределение внимания
+	VisuallyPerception ITrainer = "visually-perception" // Скорость зрительного восприятия
+	AuditoryMemory     ITrainer = "auditory-memory"     // Слуховая память
+	Teasing            ITrainer = "teasing"             // Тезирование
+	Accuracy           ITrainer = "accuracy"            // Точность восприятия
+)
+
 type Config struct {
 	ID  IUITrainer `json:"id"`
 	UID uuid.UID   `json:"uid"`

@@ -27,8 +27,6 @@ import {
   TimerLapComponent,
   TrainerSVGWrapperComponent,
   TrainerSelectorComponent,
-  TrainingGreetingComponent,
-  TrainingResultComponent,
 } from "./components"
 
 import {
@@ -92,6 +90,7 @@ import {
   ClassificationColorsTrainerComponent,
   ClassificationDefinitionsTrainerComponent,
   ClassificationWordsTrainerComponent,
+  GreetingTrainerComponent,
   ImageCarpetTrainerComponent,
   ImageDifferencesTrainerComponent,
   ImageExpressionsQuestionTrainerComponent,
@@ -106,6 +105,7 @@ import {
   MatrixFillingTrainerComponent,
   MatrixSequenceTrainerComponent,
   RelaxTrainerComponent,
+  ResultTrainerComponent,
   SpaceQuestionWasteTrainerComponent,
   StorytellingTrainerComponent,
   TablePipeTrainerComponent,
@@ -145,8 +145,6 @@ import { ROUTES } from "./app.routing"
     TimerLapComponent,
     TrainerSVGWrapperComponent,
     TrainerSelectorComponent,
-    TrainingGreetingComponent,
-    TrainingResultComponent,
 
     ButtonDirective,
     FocusableDirective,
@@ -174,6 +172,7 @@ import { ROUTES } from "./app.routing"
     ClassificationColorsTrainerComponent,
     ClassificationDefinitionsTrainerComponent,
     ClassificationWordsTrainerComponent,
+    GreetingTrainerComponent,
     ImageCarpetTrainerComponent,
     ImageDifferencesTrainerComponent,
     ImageExpressionsQuestionTrainerComponent,
@@ -188,6 +187,7 @@ import { ROUTES } from "./app.routing"
     MatrixFillingTrainerComponent,
     MatrixSequenceTrainerComponent,
     RelaxTrainerComponent,
+    ResultTrainerComponent,
     SpaceQuestionWasteTrainerComponent,
     StorytellingTrainerComponent,
     TablePipeTrainerComponent,

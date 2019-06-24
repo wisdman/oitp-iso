@@ -37,7 +37,7 @@
   }
 }
 
-.chart {
+.chart-wrapper {
   display: flex;
   justify-content: stretch;
   align-items: stretch;
@@ -47,6 +47,10 @@
   bottom: 0;
   width: 100%;
   height: calc(100% - 40px);
+}
+
+.chart {
+  color: var(--color-primar);
 }
 
 .h3 {

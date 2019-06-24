@@ -11,6 +11,12 @@ export interface INetworkInformation {
   type: string,
 }
 
+export interface IProgressItem {
+  id: string
+  last: Array<number>
+  average: number
+}
+
 export interface IProgress {
   charge: number // Заряд мозга
 
@@ -19,6 +25,8 @@ export interface IProgress {
   intelligence: number // Мышление
 
   speed: Array<number> // Скорость мышления
+
+  items: Array<IProgressItem>
 }
 
 export interface IUser {

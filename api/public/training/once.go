@@ -19,11 +19,10 @@ func (api *API) Once(w http.ResponseWriter, r *http.Request) {
 		trainersList[i], trainersList[j] = trainersList[j], trainersList[i]
 	})
 
-	training := newTraining(1800)
-
 	var configs []interface{}
 	var err error
 	ctx := icons.New(r.Context())
+	training := newTraining("once", 1800)
 
 	for i, max := 0, len(trainersList); i < max; i++ {
 		configs, ctx, err = trainers.Build(ctx, trainersList[i])

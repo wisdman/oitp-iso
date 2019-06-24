@@ -1,6 +1,9 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core"
 
-import { UserService } from "../../services"
+import {
+  UserService,
+  IProgressItem,
+} from "../../services"
 
 @Component({
   selector: "progress-list",
@@ -11,4 +14,8 @@ import { UserService } from "../../services"
 export class ProgressListComponent {
   constructor(private _userService: UserService) {}
   public progress = this._userService.progress
+
+  getTrend(item: IProgressItem): "up" | "down" {
+    return item.last[item.last.length - 1] >= item.average ? "up" : "down"
+  }
 }

@@ -24,6 +24,7 @@ export const API_INFO = `${API_BASE}/public/info`
 export const API_TRAINING = `${API_BASE}/public/training`
 export const API_TRAINING_EVERYDAY = `${API_TRAINING}/everyday`
 export const API_TRAINING_ONCE = `${API_TRAINING}/once`
+export const API_TRAINING_RESULT = `${API_TRAINING}/result`
 
 export const API_USER = `${API_BASE}/public/user`
 
