@@ -42,20 +42,20 @@ const (
 type ITrainerGroup string
 
 const (
-	Lexicon            ITrainer = "lexicon"             // Активизация лексикона
-	Arithmetic         ITrainer = "arithmetic"          // Арифметико-практическое мышление
-	Variability        ITrainer = "variability"         // Вариативность мышления
-	Verbal             ITrainer = "verbal"              // Вербальный интеллект
-	Harmonization      ITrainer = "harmonization"       // Гармонизация работы полушарий
-	Inductance         ITrainer = "inductance"          // Индуктивность мышления
-	Mnemonics          ITrainer = "mnemonics"           // Мнемотехника
-	VisuallyMemory     ITrainer = "visually-memory"     // Наглядно-образная память
-	SpaceLogic         ITrainer = "space-logic"         // Пространство и логика
-	Attention          ITrainer = "attention"           // Распределение внимания
-	VisuallyPerception ITrainer = "visually-perception" // Скорость зрительного восприятия
-	AuditoryMemory     ITrainer = "auditory-memory"     // Слуховая память
-	Teasing            ITrainer = "teasing"             // Тезирование
-	Accuracy           ITrainer = "accuracy"            // Точность восприятия
+	Lexicon            ITrainerGroup = "lexicon"             // Активизация лексикона
+	Arithmetic         ITrainerGroup = "arithmetic"          // Арифметико-практическое мышление
+	Variability        ITrainerGroup = "variability"         // Вариативность мышления
+	Verbal             ITrainerGroup = "verbal"              // Вербальный интеллект
+	Harmonization      ITrainerGroup = "harmonization"       // Гармонизация работы полушарий
+	Inductance         ITrainerGroup = "inductance"          // Индуктивность мышления
+	Mnemonics          ITrainerGroup = "mnemonics"           // Мнемотехника
+	VisuallyMemory     ITrainerGroup = "visually-memory"     // Наглядно-образная память
+	SpaceLogic         ITrainerGroup = "space-logic"         // Пространство и логика
+	Attention          ITrainerGroup = "attention"           // Распределение внимания
+	VisuallyPerception ITrainerGroup = "visually-perception" // Скорость зрительного восприятия
+	AuditoryMemory     ITrainerGroup = "auditory-memory"     // Слуховая память
+	Teasing            ITrainerGroup = "teasing"             // Тезирование
+	Accuracy           ITrainerGroup = "accuracy"            // Точность восприятия
 )
 
 type Config struct {
