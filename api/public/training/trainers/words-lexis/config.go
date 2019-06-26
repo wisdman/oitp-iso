@@ -5,36 +5,38 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	ItemsCount int `json:"itemsCount"`
-	Quantity   int `json:"quantity"`
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
+
+	Quantity int `json:"quantity"`
 }
 
-type IItemsType string
+type Adjustment struct {
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-const (
-	Antonyms IItemsType = "antonyms"
-	Paronyms IItemsType = "paronyms"
-	Synonyms IItemsType = "synonyms"
-)
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
+}
 
 type Config struct {
 	*abstract.Config
 
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	ItemsType IItemsType  `json:"itemsType"`
-	Items     [][]*string `json:"items"`
+	Items [][]*string `json:"items"`
 }
 
 func newConfig(
+	id abstract.ITrainer,
 	params Parameters,
-	itemsType IItemsType,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIWordsLexis),
+		Config: abstract.NewConfig(id, abstract.UIWordsLexis, params.UUID),
+
 		PlayTimeLimit: params.PlayTimeLimit,
-		ItemsType:     itemsType,
 	}
 }

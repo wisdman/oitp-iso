@@ -71,7 +71,7 @@ extends AbstractTrainerComponent<IClassificationDefinitionsTrainerConfig, IClass
     )
 
     this._stepSubject.next()
-    this.setTimeout(this.config.timeLimit)
+    this.setTimeout(this.config.playTimeLimit)
   }
 
   destroy() {

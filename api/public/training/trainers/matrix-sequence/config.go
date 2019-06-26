@@ -5,30 +5,52 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Quantity int `json:"quantity"`
+	MatrixSize int `json:"matrixSize"`
 
-	MatrixSize  int  `json:"matrixSize"`
 	ShowSuccess bool `json:"showSuccess"`
+	UseColors   bool `json:"useColors"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
+}
+
+type Adjustment struct {
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	MatrixSize int `json:"matrixSize"`
+
+	ShowSuccess bool `json:"showSuccess"`
+	UseColors   bool `json:"useColors"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
 }
 
 type Config struct {
 	*abstract.Config
 
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
-	ShowSucess    bool   `json:"showSucess"`
+
+	ShowSucess bool `json:"showSucess"`
+	UseColors  bool `json:"useColors"`
 
 	Matrix []uint16 `json:"matrix"`
 }
 
 func newConfig(
+	id abstract.ITrainer,
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.UIMatrixSequence),
+		Config: abstract.NewConfig(id, abstract.UIMatrixSequence, params.UUID),
 
 		PlayTimeLimit: params.PlayTimeLimit,
-		ShowSucess:    params.ShowSuccess,
+
+		ShowSucess: params.ShowSuccess,
+		UseColors:  params.UseColors,
 	}
 }

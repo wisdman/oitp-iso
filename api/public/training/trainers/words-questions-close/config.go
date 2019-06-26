@@ -5,9 +5,19 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Quantity int `json:"quantity"`
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
+}
+
+type Adjustment struct {
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
 }
 
 type Answer struct {
@@ -28,7 +38,8 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIWordsQuestionClose),
+		Config: abstract.NewConfig(abstract.WordsQuestionsClose, abstract.UIWordsQuestionClose, params.UUID),
+
 		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

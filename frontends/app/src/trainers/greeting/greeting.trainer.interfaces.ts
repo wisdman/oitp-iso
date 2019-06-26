@@ -1,4 +1,3 @@
-
 import {
   ITrainerConfig,
   ITrainerResult,
@@ -8,14 +7,12 @@ import {
 export type IGreetingTrainer = "greeting"
 
 export interface IGreetingTrainerConfig extends ITrainerConfig {
-  id: IGreetingTrainer
+  ui: IGreetingTrainer
   type: ITrainingType
 }
 
 export interface IGreetingTrainerResult extends ITrainerResult {
-  id: IGreetingTrainer
   config: IGreetingTrainerConfig
-
   success: number
   error: number
 }

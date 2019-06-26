@@ -68,7 +68,7 @@ implements OnInit, OnDestroy, OnChanges {
   resultValueChange = new EventEmitter<R>()
 
   updateResult(result: Partial<R>) {
-    this.result = {...this.result, config: this.config, ...result}
+    this.result = {...this.result, ...result, config: this.config }
     if (this.result.isFinish) {
       this.resultValueChange.emit(this.result)
     }

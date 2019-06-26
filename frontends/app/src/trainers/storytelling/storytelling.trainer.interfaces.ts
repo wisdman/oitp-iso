@@ -7,13 +7,12 @@ import {
 export type IStorytellingTrainer = "storytelling"
 
 export interface IStorytellingTrainerConfig extends ITrainerConfig {
-  id: IStorytellingTrainer
+  ui: IStorytellingTrainer
   image: number
   audio: number
 }
 
 export interface IStorytellingTrainerResult extends ITrainerResult {
-  id: IStorytellingTrainer
   config: IStorytellingTrainerConfig
   success: number
   error: number

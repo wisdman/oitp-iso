@@ -7,7 +7,7 @@ import {
 export type IWordsPairsTrainer = "words-pairs"
 
 export interface IWordsPairsTrainerConfig extends ITrainerConfig {
-  id: IWordsPairsTrainer
+  ui: IWordsPairsTrainer
 
   playTimeLimit: number
   showTimeLimit: number
@@ -16,9 +16,7 @@ export interface IWordsPairsTrainerConfig extends ITrainerConfig {
 }
 
 export interface IWordsPairsTrainerResult extends ITrainerResult {
-  id: IWordsPairsTrainer
   config: IWordsPairsTrainerConfig
-
   success: number
   error: number
 }

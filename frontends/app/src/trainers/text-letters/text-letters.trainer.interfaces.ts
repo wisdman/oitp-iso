@@ -7,7 +7,7 @@ import {
 export type ITextLettersTrainer = "text-letters"
 
 export interface ITextLettersTrainerConfig extends ITrainerConfig {
-  id: ITextLettersTrainer
+  ui: ITextLettersTrainer
 
   showTimeLimit: number
   playTimeLimit: number
@@ -16,7 +16,6 @@ export interface ITextLettersTrainerConfig extends ITrainerConfig {
 }
 
 export interface ITextLettersTrainerResult extends ITrainerResult {
-  id: ITextLettersTrainer
   config: ITextLettersTrainerConfig
   success: number
   error: number

@@ -12,16 +12,14 @@ export interface IClassificationDefinitionsTrainerItem {
 }
 
 export interface IClassificationDefinitionsTrainerConfig extends ITrainerConfig {
-  id: IClassificationDefinitionsTrainer
+  ui: IClassificationDefinitionsTrainer
 
-  timeLimit: number
+  playTimeLimit: number
   items: Array<IClassificationDefinitionsTrainerItem>
 }
 
 export interface IClassificationDefinitionsTrainerResult extends ITrainerResult {
-  id: IClassificationDefinitionsTrainer
   config: IClassificationDefinitionsTrainerConfig
-
   success: number
   error: number
 }

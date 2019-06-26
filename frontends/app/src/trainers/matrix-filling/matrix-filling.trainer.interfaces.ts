@@ -6,7 +6,7 @@ import {
 export type IMatrixFillingTrainer = "matrix-filling"
 
 export interface IMatrixFillingTrainerConfig extends ITrainerConfig {
-  id: IMatrixFillingTrainer
+  ui: IMatrixFillingTrainer
 
   showTimeLimit: number
   playTimeLimit: number
@@ -16,7 +16,6 @@ export interface IMatrixFillingTrainerConfig extends ITrainerConfig {
 }
 
 export interface IMatrixFillingTrainerResult extends ITrainerResult {
-  id: IMatrixFillingTrainer
   config: IMatrixFillingTrainerConfig
   success: number
   error: number

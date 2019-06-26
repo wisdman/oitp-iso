@@ -5,6 +5,7 @@ import (
 )
 
 const MAX_RELAX_ID = 45
+const SHOW_TIME_LIMIT = 10
 
 type Config struct {
 	*abstract.Config
@@ -17,8 +18,8 @@ type Config struct {
 
 func newConfig() *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.UIRelax),
+		Config: abstract.NewConfig(abstract.Relax, abstract.UIRelax, ""),
 
-		ShowTimeLimit: 10,
+		ShowTimeLimit: SHOW_TIME_LIMIT,
 	}
 }

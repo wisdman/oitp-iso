@@ -6,7 +6,7 @@ import {
 export type IWordsQuestionCloseTrainer = "words-question-close"
 
 export interface IWordsQuestionCloseTrainerConfig extends ITrainerConfig {
-  id: IWordsQuestionCloseTrainer
+  ui: IWordsQuestionCloseTrainer
 
   playTimeLimit: number
 

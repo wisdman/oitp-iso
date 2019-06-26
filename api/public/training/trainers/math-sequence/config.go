@@ -4,14 +4,27 @@ import (
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/abstract"
 )
 
-var RUNES = [...]string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"}
-
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Level    int `json:"level"`
-	Quantity int `json:"quantity"`
+	Complexity uint16 `json:"complexity"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
 }
+
+type Adjustment struct {
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	Complexity uint16 `json:"complexity"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
+}
+
+var RUNES = [...]string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"}
 
 type Item struct {
 	Rune string `json:"rune"`
@@ -31,7 +44,8 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIMathSequence),
+		Config: abstract.NewConfig(abstract.MathSequence, abstract.UIMathSequence, params.UUID),
+
 		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

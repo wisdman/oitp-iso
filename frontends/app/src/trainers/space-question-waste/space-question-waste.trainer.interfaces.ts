@@ -6,7 +6,7 @@ import {
 export type ISpaceQuestionWasteTrainer = "space-question-waste"
 
 export interface ISpaceQuestionWasteTrainerConfig extends ITrainerConfig {
-  id: ISpaceQuestionWasteTrainer
+  ui: ISpaceQuestionWasteTrainer
 
   playTimeLimit: number
 

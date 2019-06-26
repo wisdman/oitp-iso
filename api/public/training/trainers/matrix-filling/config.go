@@ -5,13 +5,29 @@ import (
 )
 
 type Parameters struct {
-	ShowTimeLimit     uint16 `json:"showTimeLimit"`
-	PlayTimeLimit     uint16 `json:"playTimeLimit"`
-	QuestionTimeLimit uint16 `json:"questionTimeLimit"`
+	UUID abstract.UUID `json:"uuid"`
 
-	Quantity   int `json:"quantity"`
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
 	MatrixSize int `json:"matrixSize"`
-	ItemsCount int `json:"itemsSize"`
+	ItemsCount int `json:"itemsCount"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
+
+	QuestionTimeLimit uint16 `json:"questionTimeLimit"`
+	AnswersCount      int    `json:"answersCount"`
+}
+
+type Adjustment struct {
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
+
+	MatrixSize int `json:"matrixSize"`
+	ItemsCount int `json:"itemsCount"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
 
 	AnswersCount int `json:"answersCount"`
 }
@@ -27,10 +43,11 @@ type Config struct {
 }
 
 func newConfig(
+	id abstract.ITrainer,
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.UIMatrixFilling),
+		Config: abstract.NewConfig(id, abstract.UIMatrixFilling, params.UUID),
 
 		Items: make([]int, params.ItemsCount),
 
@@ -53,10 +70,12 @@ type QuestionConfig struct {
 }
 
 func newQuestionConfig(
+	id abstract.ITrainer,
 	params Parameters,
 ) *QuestionConfig {
 	return &QuestionConfig{
-		Config:        abstract.NewConfig(abstract.UIMatrixFillingQuestion),
+		Config: abstract.NewConfig(id, abstract.UIMatrixFillingQuestion, params.UUID),
+
 		PlayTimeLimit: params.QuestionTimeLimit,
 	}
 }

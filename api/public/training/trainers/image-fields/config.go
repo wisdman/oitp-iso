@@ -5,12 +5,28 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Quantity int `json:"quantity"`
 	MinItems int `json:"minItems"`
 	MaxItems int `json:"maxItems"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
+
+	AnswersCount int `json:"answersCount"`
+}
+
+type Adjustment struct {
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
+
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
 
 	AnswersCount int `json:"answersCount"`
 }
@@ -27,7 +43,8 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIImageField),
+		Config: abstract.NewConfig(abstract.ImageFields, abstract.UIImageField, params.UUID),
+
 		ShowTimeLimit: params.ShowTimeLimit,
 	}
 }
@@ -49,7 +66,8 @@ func newQuestionConfig(
 	params Parameters,
 ) *QuestionConfig {
 	return &QuestionConfig{
-		Config:        abstract.NewConfig(abstract.UIImageFieldQuestion),
+		Config: abstract.NewConfig(abstract.ImageFields, abstract.UIImageFieldQuestion, params.UUID),
+
 		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

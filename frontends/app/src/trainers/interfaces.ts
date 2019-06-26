@@ -3,7 +3,6 @@ import { IClassificationColorsTrainer, IClassificationColorsTrainerConfig, IClas
 import { IClassificationDefinitionsTrainer, IClassificationDefinitionsTrainerConfig, IClassificationDefinitionsTrainerResult } from "./classification-definitions"
 import { IClassificationWordsTrainer, IClassificationWordsTrainerConfig, IClassificationWordsTrainerResult } from "./classification-words"
 import { IGreetingTrainer, IGreetingTrainerConfig, IGreetingTrainerResult } from "./greeting"
-import { IResultTrainer, IResultTrainerConfig, IResultTrainerResult } from "./result"
 import { IImageCarpetTrainer, IImageCarpetTrainerConfig, IImageCarpetTrainerResult } from "./image-carpet"
 import { IImageDifferencesTrainer, IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult } from "./image-differences"
 import { IImageExpressionsQuestionTrainer, IImageExpressionsQuestionTrainerConfig, IImageExpressionsQuestionTrainerResult } from "./image-expressions-question"
@@ -18,12 +17,14 @@ import { IMatrixFillingQuestionTrainer, IMatrixFillingQuestionTrainerConfig, IMa
 import { IMatrixFillingTrainer, IMatrixFillingTrainerConfig, IMatrixFillingTrainerResult } from "./matrix-filling"
 import { IMatrixSequenceTrainer, IMatrixSequenceTrainerConfig, IMatrixSequenceTrainerResult } from "./matrix-sequence"
 import { IRelaxTrainer, IRelaxTrainerConfig, IRelaxTrainerResult } from "./relax"
+import { IResultTrainer, IResultTrainerConfig, IResultTrainerResult } from "./result"
 import { ISpaceQuestionWasteTrainer, ISpaceQuestionWasteTrainerConfig, ISpaceQuestionWasteTrainerResult } from "./space-question-waste"
+import { IStorytellingQuestionTrainer, IStorytellingQuestionTrainerConfig, IStorytellingQuestionTrainerResult } from "./storytelling-question"
 import { IStorytellingTrainer, IStorytellingTrainerConfig, IStorytellingTrainerResult } from "./storytelling"
 import { ITablePipeTrainer, ITablePipeTrainerConfig, ITablePipeTrainerResult } from "./table-pipe"
 import { ITableWordsTrainer, ITableWordsTrainerConfig, ITableWordsTrainerResult } from "./table-words"
 import { ITextLettersTrainer, ITextLettersTrainerConfig, ITextLettersTrainerResult } from "./text-letters"
-import { ITextQuestionTrainer, ITextQuestionTrainerConfig, ITextQuestionTrainerResult } from "./text-question"
+import { ITextReadingQuestionTrainer, ITextReadingQuestionTrainerConfig, ITextReadingQuestionTrainerResult } from "./text-reading-question"
 import { ITextReadingTrainer, ITextReadingTrainerConfig, ITextReadingTrainerResult } from "./text-reading"
 import { ITextTezirovanieTrainer, ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult } from "./text-tezirovanie"
 import { IWordsColumnTrainer, IWordsColumnTrainerConfig, IWordsColumnTrainerResult } from "./words-column"
@@ -52,11 +53,12 @@ export type ITrainer = IClassificationColorsTrainer
                      | IRelaxTrainer
                      | IResultTrainer
                      | ISpaceQuestionWasteTrainer
+                     | IStorytellingQuestionTrainer
                      | IStorytellingTrainer
                      | ITablePipeTrainer
                      | ITableWordsTrainer
                      | ITextLettersTrainer
-                     | ITextQuestionTrainer
+                     | ITextReadingQuestionTrainer
                      | ITextReadingTrainer
                      | ITextTezirovanieTrainer
                      | IWordsColumnTrainer
@@ -86,11 +88,12 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | IRelaxTrainerConfig
                             | IResultTrainerConfig
                             | ISpaceQuestionWasteTrainerConfig
+                            | IStorytellingQuestionTrainerConfig
                             | IStorytellingTrainerConfig
                             | ITablePipeTrainerConfig
                             | ITableWordsTrainerConfig
                             | ITextLettersTrainerConfig
-                            | ITextQuestionTrainerConfig
+                            | ITextReadingQuestionTrainerConfig
                             | ITextReadingTrainerConfig
                             | ITextTezirovanieTrainerConfig
                             | IWordsColumnTrainerConfig
@@ -119,11 +122,12 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | IRelaxTrainerResult
                             | IResultTrainerResult
                             | ISpaceQuestionWasteTrainerResult
+                            | IStorytellingQuestionTrainerResult
                             | IStorytellingTrainerResult
                             | ITablePipeTrainerResult
                             | ITableWordsTrainerResult
                             | ITextLettersTrainerResult
-                            | ITextQuestionTrainerResult
+                            | ITextReadingQuestionTrainerResult
                             | ITextReadingTrainerResult
                             | ITextTezirovanieTrainerResult
                             | IWordsColumnTrainerResult
@@ -133,12 +137,14 @@ export type ITrainerResults = IClassificationColorsTrainerResult
                             | IWordsQuestionWasteTrainerResult
 
 export interface ITrainerConfig {
-  id: ITrainer
-  uid: string
+  id: string
+  ui: ITrainer
+
+  uuid: string
+  training: string
 }
 
 export interface ITrainerResult {
-  id: ITrainer
   config: ITrainerConfig
 
   isFinish?: boolean
@@ -152,7 +158,7 @@ export interface ITrainerResult {
 export type ITrainingType = "everyday" | "once"
 
 export interface ITraining {
-  id: string
+  uuid: string
   timeLimit: number
   type: ITrainingType
   trainers: Array<ITrainerConfigs>

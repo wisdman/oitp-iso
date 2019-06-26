@@ -5,8 +5,18 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 	MatrixSize    uint   `json:"matrixSize"`
+
+	Quantity int `json:"quantity"`
+}
+
+type Adjustment struct {
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	MatrixSize uint `json:"matrixSize"`
 }
 
 type IAction string
@@ -35,10 +45,12 @@ type Config struct {
 }
 
 func newConfig(
+	id abstract.ITrainer,
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UITablePipe),
+		Config: abstract.NewConfig(id, abstract.UITablePipe, params.UUID),
+
 		PlayTimeLimit: params.PlayTimeLimit,
 
 		Items:  make([]*Item, len(actions)),

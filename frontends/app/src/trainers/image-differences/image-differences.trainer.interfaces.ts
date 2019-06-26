@@ -7,7 +7,7 @@ import {
 export type IImageDifferencesTrainer = "image-differences"
 
 export interface IImageDifferencesTrainerConfig extends ITrainerConfig {
-  id: IImageDifferencesTrainer
+  ui: IImageDifferencesTrainer
 
   timeLimit: number
 
@@ -17,9 +17,7 @@ export interface IImageDifferencesTrainerConfig extends ITrainerConfig {
 }
 
 export interface IImageDifferencesTrainerResult extends ITrainerResult {
-  id: IImageDifferencesTrainer
   config: IImageDifferencesTrainerConfig
-
   success: number
   error: number
 }

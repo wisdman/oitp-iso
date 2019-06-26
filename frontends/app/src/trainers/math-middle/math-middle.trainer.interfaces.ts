@@ -12,7 +12,7 @@ export interface IMathMiddleTrainerItem {
 }
 
 export interface IMathMiddleTrainerConfig extends ITrainerConfig {
-  id: IMathMiddleTrainer
+  ui: IMathMiddleTrainer
 
   playTimeLimit: number
 
@@ -21,9 +21,7 @@ export interface IMathMiddleTrainerConfig extends ITrainerConfig {
 }
 
 export interface IMathMiddleTrainerResult extends ITrainerResult {
-  id: IMathMiddleTrainer
   config: IMathMiddleTrainerConfig
-
   success: number
   error: number
 }

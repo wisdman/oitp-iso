@@ -7,7 +7,7 @@ import {
 export type ITextTezirovanieTrainer = "text-tezirovanie"
 
 export interface ITextTezirovanieTrainerConfig extends ITrainerConfig {
-  id: ITextTezirovanieTrainer
+  ui: ITextTezirovanieTrainer
 
   playTimeLimit: number
 
@@ -15,7 +15,6 @@ export interface ITextTezirovanieTrainerConfig extends ITrainerConfig {
 }
 
 export interface ITextTezirovanieTrainerResult extends ITrainerResult {
-  id: ITextTezirovanieTrainer
   config: ITextTezirovanieTrainerConfig
   success: number
   error: number

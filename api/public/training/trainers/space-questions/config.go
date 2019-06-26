@@ -5,10 +5,25 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	ItemsCount int `json:"itemsSize"`
-	Quantity   int `json:"quantity"`
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
+}
+
+type Adjustment struct {
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
 }
 
 type Answer struct {
@@ -25,10 +40,13 @@ type Config struct {
 }
 
 func newConfig(
+	id abstract.ITrainer,
+	ui abstract.IUITrainer,
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UISpaceQuestionWaste),
+		Config: abstract.NewConfig(id, ui, params.UUID),
+
 		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

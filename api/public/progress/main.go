@@ -18,7 +18,7 @@ func main() {
 		middleware.Auth,
 	)
 
-	srv.GET("/", api.GetUser)
+	srv.GET("/", api.Get)
 
 	srv.ListenAndServe()
 }

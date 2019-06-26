@@ -134,6 +134,11 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     this.setTimeout(this.config.showTimeLimit)
   }
 
+  destroy() {
+    if (this._pointerupSubscriber) this._pointerupSubscriber.unsubscribe()
+    if (this._pointermoveSubscriber) this._pointermoveSubscriber.unsubscribe()
+  }
+
   startPlay() {
     this.mode = "play"
     this.current = undefined

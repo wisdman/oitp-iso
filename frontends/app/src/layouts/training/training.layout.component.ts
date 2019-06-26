@@ -43,7 +43,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
   config!: ITrainerConfigs
 
   onResult(result: ITrainerResults) {
-    if (result.id === "result") {
+    if (this.config.ui === "result") {
       this._router.navigate(["/"])
       return
     }

@@ -13,7 +13,7 @@ export interface IMathSequenceTrainerItem {
 }
 
 export interface IMathSequenceTrainerConfig extends ITrainerConfig {
-  id: IMathSequenceTrainer
+  ui: IMathSequenceTrainer
 
   playTimeLimit: number
 
@@ -21,9 +21,7 @@ export interface IMathSequenceTrainerConfig extends ITrainerConfig {
 }
 
 export interface IMathSequenceTrainerResult extends ITrainerResult {
-  id: IMathSequenceTrainer
   config: IMathSequenceTrainerConfig
-
   success: number
   error: number
 }

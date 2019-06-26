@@ -7,7 +7,7 @@ import {
 export type IRelaxTrainer = "relax"
 
 export interface IRelaxTrainerConfig extends ITrainerConfig {
-  id: IRelaxTrainer
+  ui: IRelaxTrainer
 
   showTimeLimit: number
 
@@ -16,6 +16,5 @@ export interface IRelaxTrainerConfig extends ITrainerConfig {
 }
 
 export interface IRelaxTrainerResult extends ITrainerResult {
-  id: IRelaxTrainer
   config: IRelaxTrainerConfig
 }

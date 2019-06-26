@@ -5,7 +5,18 @@ import (
 )
 
 type Parameters struct {
-	TimeLimit uint16 `json:"timeLimit"`
+	UUID abstract.UUID `json:"uuid"`
+
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
+
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
+
+	Quantity int `json:"quantity"`
+}
+
+type Adjustment struct {
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	MinItems int `json:"minItems"`
 	MaxItems int `json:"maxItems"`
@@ -19,15 +30,16 @@ type Item struct {
 type Config struct {
 	*abstract.Config
 
-	TimeLimit uint16  `json:"timeLimit"`
-	Items     []*Item `json:"items"`
+	PlayTimeLimit uint16  `json:"playTimeLimit"`
+	Items         []*Item `json:"items"`
 }
 
 func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:    abstract.NewConfig(abstract.UIClassificationDefinitions),
-		TimeLimit: params.TimeLimit,
+		Config: abstract.NewConfig(abstract.ClassificationDefinitions, abstract.UIClassificationDefinitions, params.UUID),
+
+		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

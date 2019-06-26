@@ -5,11 +5,27 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	ItemTimeLimit uint16 `json:"itemTimeLimit"`
+
+	MinGroups int `json:"minGroups"`
+	MaxGroups int `json:"maxGroups"`
 
 	MinItems int `json:"minItems"`
 	MaxItems int `json:"maxItems"`
+
 	Quantity int `json:"quantity"`
+}
+
+type Adjustment struct {
+	ItemTimeLimit uint16 `json:"itemTimeLimit"`
+
+	MinGroups int `json:"minGroups"`
+	MaxGroups int `json:"maxGroups"`
+
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
 }
 
 type Item struct {
@@ -28,7 +44,8 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIClassificationWords),
+		Config: abstract.NewConfig(abstract.ClassificationWords, abstract.UIClassificationWords, params.UUID),
+
 		ItemTimeLimit: params.ItemTimeLimit,
 	}
 }

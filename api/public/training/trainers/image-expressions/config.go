@@ -5,11 +5,20 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	MinItems int `json:"minItems"`
-	MaxItems int `json:"maxItems"`
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
+}
+
+type Adjustment struct {
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
 }
 
 type Config struct {
@@ -17,15 +26,16 @@ type Config struct {
 
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 
-	Image int     `json:"image"`
-	Data  *string `json:"data"`
+	Image int    `json:"image"`
+	Data  string `json:"data"`
 }
 
 func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIImageExpression),
+		Config: abstract.NewConfig(abstract.ImageExpressions, abstract.UIImageExpression, params.UUID),
+
 		ShowTimeLimit: params.ShowTimeLimit,
 	}
 }
@@ -35,15 +45,16 @@ type QuestionConfig struct {
 
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	Image int     `json:"image"`
-	Data  *string `json:"data"`
+	Image int    `json:"image"`
+	Data  string `json:"data"`
 }
 
 func newQuestionConfig(
 	params Parameters,
 ) *QuestionConfig {
 	return &QuestionConfig{
-		Config:        abstract.NewConfig(abstract.UIImageExpressionQuestion),
+		Config: abstract.NewConfig(abstract.ImageExpressions, abstract.UIImageExpressionQuestion, params.UUID),
+
 		PlayTimeLimit: params.PlayTimeLimit,
 	}
 }

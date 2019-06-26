@@ -6,7 +6,7 @@ import {
 export type IImageFieldQuestionTrainer = "image-field-question"
 
 export interface IImageFieldQuestionTrainerConfig extends ITrainerConfig {
-  id: IImageFieldQuestionTrainer
+  ui: IImageFieldQuestionTrainer
 
   playTimeLimit: number
 

@@ -9,7 +9,7 @@ import { ISwipe } from "../../services"
 export type ITablePipeTrainer = "table-pipe"
 
 export interface ITablePipeTrainerConfig extends ITrainerConfig {
-  id: ITablePipeTrainer
+  ui: ITablePipeTrainer
 
   playTimeLimit: number
 
@@ -21,7 +21,6 @@ export interface ITablePipeTrainerConfig extends ITrainerConfig {
 }
 
 export interface ITablePipeTrainerResult extends ITrainerResult {
-  id: ITablePipeTrainer
   config: ITablePipeTrainerConfig
   success: number
   error: number

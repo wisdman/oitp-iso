@@ -7,7 +7,7 @@ import {
 export type IMathWasteTrainer = "math-waste"
 
 export interface IMathWasteTrainerConfig extends ITrainerConfig {
-  id: IMathWasteTrainer
+  ui: IMathWasteTrainer
 
   playTimeLimit: number
 
@@ -15,9 +15,7 @@ export interface IMathWasteTrainerConfig extends ITrainerConfig {
 }
 
 export interface IMathWasteTrainerResult extends ITrainerResult {
-  id: IMathWasteTrainer
   config: IMathWasteTrainerConfig
-
   success: number
   error: number
 }

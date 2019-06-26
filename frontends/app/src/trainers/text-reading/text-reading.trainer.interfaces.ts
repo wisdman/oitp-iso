@@ -7,12 +7,11 @@ import {
 export type ITextReadingTrainer = "text-reading"
 
 export interface ITextReadingTrainerConfig extends ITrainerConfig {
-  id: ITextReadingTrainer
+  ui: ITextReadingTrainer
   data: string
 }
 
 export interface ITextReadingTrainerResult extends ITrainerResult {
-  id: ITextReadingTrainer
   config: ITextReadingTrainerConfig
   success: number
   error: number

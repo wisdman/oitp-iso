@@ -3,6 +3,7 @@ package trainers
 import (
 	"context"
 
+	"github.com/wisdman/oitp-isov/api/public/training/trainers/abstract"
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/classification-colors"
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/classification-definitions"
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/classification-words"
@@ -31,89 +32,51 @@ import (
 	"github.com/wisdman/oitp-isov/api/public/training/trainers/words-questions-waste"
 )
 
-type ITrainer string
-
-const (
-	ClassificationColors      ITrainer = "classification-colors"      // Активизация лексиклна
-	ClassificationDefinitions ITrainer = "classification-definitions" // Активизация лексиклна
-	ClassificationWords       ITrainer = "classification-words"       // Активизация лексиклна
-	ImageCarpets              ITrainer = "image-carpets"              // Наглядно-образная память
-	ImageDifferences          ITrainer = "image-differences"          // Наглядно-образная память
-	ImageExpressions          ITrainer = "image-expressions"          // Гармонизация работы полушарий
-	ImageFields               ITrainer = "image-fields"               // Скорость зрительного восприятия
-	MathEquation              ITrainer = "math-equation"              // Арифметико-практическое мышление
-	MathMiddle                ITrainer = "math-middle"                // Арифметико-практическое мышление
-	MathSequence              ITrainer = "math-sequence"              // Арифметико-практическое мышление
-	MathWaste                 ITrainer = "math-waste"                 // Арифметико-практическое мышление
-	MatrixFillingPattern      ITrainer = "matrix-filling-pattern"     // Индуктивность мышления
-	MatrixFillingUnique       ITrainer = "matrix-filling-unique"      // Мнемотехника
-	MatrixSequencePattern     ITrainer = "matrix-sequence-pattern"    // Индуктивность мышления
-	MatrixSequenceRandom      ITrainer = "matrix-sequence-random"     // Таблицы с произвольным рассположением чисел
-	Relax                     ITrainer = "relax"                      // Расслабление
-	SpaceQuestionsWaste2D     ITrainer = "space-waste-2d"             // Пространство и логика
-	SpaceQuestionsWaste3D     ITrainer = "space-waste-3d"             // Пространство и логика
-	Storytelling              ITrainer = "storytelling"               // Слуховая память
-	TablePipeEN               ITrainer = "table-pipe-en"              // Распределение внимания
-	TablePipeNumber           ITrainer = "table-pipe-number"          // Распределение внимания
-	TablePipeRU               ITrainer = "table-pipe-ru"              // Распределение внимания
-	TableWords                ITrainer = "table-words"                // Вариативность мышления
-	TextLetters               ITrainer = "text-letters"               // Точность восприятия - афоризмы
-	TextReading               ITrainer = "text-reading"               // Точность восприятия - тексты
-	TextTezirovanie           ITrainer = "text-tezirovanie"           // Тезирование
-	WordsColumn               ITrainer = "words-column"               // Мнемотехника. Столбики
-	WordsLexisAntonyms        ITrainer = "words-lexis-antonyms"       // Вербальный интеллект - Антонимы
-	WordsLexisParonyms        ITrainer = "words-lexis-paronyms"       // Вербальный интеллект - Паронимы
-	WordsLexisSynonyms        ITrainer = "words-lexis-synonyms"       // Вербальный интеллект - Синонимы
-	WordsPairs                ITrainer = "words-pairs"                // Точность восприятия - Столбики
-	WordsQuestionsClose       ITrainer = "words-questions-close"      // Активизация лексикона
-	WordsQuestionsWaste       ITrainer = "words-questions-waste"      // Вербальный интеллект
-)
-
 type ITrainerBuilder func(context.Context) (
 	[]interface{},
 	context.Context,
 	error,
 )
 
-var BuildFunctions = map[ITrainer]ITrainerBuilder{
-	ClassificationColors:      classificationColors.Build,
-	ClassificationDefinitions: classificationDefinitions.Build,
-	ClassificationWords:       classificationWords.Build,
-	ImageCarpets:              imageCarpets.Build,
-	ImageDifferences:          imageDifferences.Build,
-	ImageExpressions:          imageExpressions.Build,
-	ImageFields:               imageFields.Build,
-	MathEquation:              mathEquation.Build,
-	MathMiddle:                mathMiddle.Build,
-	MathSequence:              mathSequence.Build,
-	MathWaste:                 mathWaste.Build,
-	MatrixFillingPattern:      matrixFilling.BuildPattern,
-	MatrixFillingUnique:       matrixFilling.BuildUnique,
-	MatrixSequencePattern:     matrixSequence.BuildPattern,
-	MatrixSequenceRandom:      matrixSequence.BuildRandom,
-	Relax:                     relax.Build,
-	SpaceQuestionsWaste2D:     spaceQuestions.BuildWaste2D,
-	SpaceQuestionsWaste3D:     spaceQuestions.BuildWaste3D,
-	Storytelling:              storytelling.Build,
-	TablePipeEN:               tablePipe.BuildEN,
-	TablePipeNumber:           tablePipe.BuildNUMBERS,
-	TablePipeRU:               tablePipe.BuildRU,
-	TableWords:                tableWords.Build,
-	TextLetters:               textLetters.Build,
-	TextReading:               textReading.Build,
-	TextTezirovanie:           textTezirovanie.Build,
-	WordsColumn:               wordsColumn.Build,
-	WordsLexisAntonyms:        wordsLexis.BuildAntonyms,
-	WordsLexisParonyms:        wordsLexis.BuildParonyms,
-	WordsLexisSynonyms:        wordsLexis.BuildSynonyms,
-	WordsPairs:                wordsPairs.Build,
-	WordsQuestionsClose:       wordsQuestionClose.Build,
-	WordsQuestionsWaste:       wordsQuestionWaste.Build,
+var BuildFunctions = map[abstract.ITrainer]ITrainerBuilder{
+	abstract.ClassificationColors:      classificationColors.Build,
+	abstract.ClassificationDefinitions: classificationDefinitions.Build,
+	abstract.ClassificationWords:       classificationWords.Build,
+	abstract.ImageCarpets:              imageCarpets.Build,
+	abstract.ImageDifferences:          imageDifferences.Build,
+	abstract.ImageExpressions:          imageExpressions.Build,
+	abstract.ImageFields:               imageFields.Build,
+	abstract.MathEquation:              mathEquation.Build,
+	abstract.MathMiddle:                mathMiddle.Build,
+	abstract.MathSequence:              mathSequence.Build,
+	abstract.MathWaste:                 mathWaste.Build,
+	abstract.MatrixFillingPattern:      matrixFilling.BuildPattern,
+	abstract.MatrixFillingUnique:       matrixFilling.BuildUnique,
+	abstract.MatrixSequencePattern:     matrixSequence.BuildPattern,
+	abstract.MatrixSequenceRandom:      matrixSequence.BuildRandom,
+	abstract.Relax:                     relax.Build,
+	abstract.SpaceQuestionsWaste2D:     spaceQuestions.BuildWaste2D,
+	abstract.SpaceQuestionsWaste3D:     spaceQuestions.BuildWaste3D,
+	abstract.Storytelling:              storytelling.Build,
+	abstract.TablePipeEN:               tablePipe.BuildEN,
+	abstract.TablePipeNumber:           tablePipe.BuildNUMBERS,
+	abstract.TablePipeRU:               tablePipe.BuildRU,
+	abstract.TableWords:                tableWords.Build,
+	abstract.TextLetters:               textLetters.Build,
+	abstract.TextReading:               textReading.Build,
+	abstract.TextTezirovanie:           textTezirovanie.Build,
+	abstract.WordsColumn:               wordsColumn.Build,
+	abstract.WordsLexisAntonyms:        wordsLexis.BuildAntonyms,
+	abstract.WordsLexisParonyms:        wordsLexis.BuildParonyms,
+	abstract.WordsLexisSynonyms:        wordsLexis.BuildSynonyms,
+	abstract.WordsPairs:                wordsPairs.Build,
+	abstract.WordsQuestionsClose:       wordsQuestionClose.Build,
+	abstract.WordsQuestionsWaste:       wordsQuestionWaste.Build,
 }
 
 func Build(
 	ctx context.Context,
-	trainer ITrainer,
+	trainer abstract.ITrainer,
 ) (
 	[]interface{},
 	context.Context,

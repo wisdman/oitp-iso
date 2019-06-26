@@ -6,7 +6,7 @@ import {
 export type IWordsQuestionWasteTrainer = "words-question-waste"
 
 export interface IWordsQuestionWasteTrainerConfig extends ITrainerConfig {
-  id: IWordsQuestionWasteTrainer
+  ui: IWordsQuestionWasteTrainer
 
   playTimeLimit: number
 

@@ -10,6 +10,8 @@
   flex: 0 1 auto;
   height: auto;
   max-height: 100%;
+
+  font-size: 16px;
 }
 
 .matrix {

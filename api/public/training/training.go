@@ -1,19 +1,14 @@
 package main
 
-import (
-	"github.com/wisdman/oitp-isov/api/lib/uuid"
-)
-
 type ITrainingType string
 
 const (
-	Debug    ITrainingType = "debug"
 	Everyday ITrainingType = "everyday"
 	Once     ITrainingType = "once"
 )
 
 type Training struct {
-	ID uuid.UID `json:"id"`
+	UUID string `json:"uuid"`
 
 	Type      ITrainingType `json:"type"`
 	TimeLimit uint16        `json:"timeLimit"`
@@ -21,14 +16,16 @@ type Training struct {
 	Trainers []interface{} `json:"trainers"`
 }
 
-func newTraining(
-	trainingType ITrainingType,
-	timeLimit uint16,
-) *Training {
+func newEverydayTraining() *Training {
 	return &Training{
-		ID: uuid.UUID(),
+		Type:      Everyday,
+		TimeLimit: 1800,
+	}
+}
 
-		Type:      trainingType,
-		TimeLimit: timeLimit,
+func newOnceTraining() *Training {
+	return &Training{
+		Type:      Once,
+		TimeLimit: 300,
 	}
 }

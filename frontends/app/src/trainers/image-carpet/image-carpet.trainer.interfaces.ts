@@ -7,7 +7,7 @@ import {
 export type IImageCarpetTrainer = "image-carpet"
 
 export interface IImageCarpetTrainerConfig extends ITrainerConfig {
-  id: IImageCarpetTrainer
+  ui: IImageCarpetTrainer
 
   playTimeLimit: number
   showTimeLimit: number
@@ -16,9 +16,7 @@ export interface IImageCarpetTrainerConfig extends ITrainerConfig {
 }
 
 export interface IImageCarpetTrainerResult extends ITrainerResult {
-  id: IImageCarpetTrainer
   config: IImageCarpetTrainerConfig
-
   success: number
   error: number
 }

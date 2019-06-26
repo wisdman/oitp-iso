@@ -50,7 +50,6 @@ extends AbstractTrainerComponent<IImageExpressionsQuestionTrainerConfig, IImageE
   showResult() {
     this.setTimeout(0)
     this.isSuccess = this._prepareString(this.config.data || "") === this._prepareString(this.userData || "")
-    console.log(this._prepareString(this.config.data || ""), this._prepareString(this.userData || ""))
     this.mode = "result"
   }
 

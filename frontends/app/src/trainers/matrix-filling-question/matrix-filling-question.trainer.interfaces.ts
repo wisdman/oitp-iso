@@ -6,7 +6,7 @@ import {
 export type IMatrixFillingQuestionTrainer = "matrix-filling-question"
 
 export interface IMatrixFillingQuestionTrainerConfig extends ITrainerConfig {
-  id: IMatrixFillingQuestionTrainer
+  ui: IMatrixFillingQuestionTrainer
 
   playTimeLimit: number
 

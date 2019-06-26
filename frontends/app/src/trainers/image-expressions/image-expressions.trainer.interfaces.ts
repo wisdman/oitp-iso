@@ -7,7 +7,7 @@ import {
 export type IImageExpressionsTrainer = "image-expressions"
 
 export interface IImageExpressionsTrainerConfig extends ITrainerConfig {
-  id: IImageExpressionsTrainer
+  ui: IImageExpressionsTrainer
 
   showTimeLimit: number
 
@@ -16,9 +16,7 @@ export interface IImageExpressionsTrainerConfig extends ITrainerConfig {
 }
 
 export interface IImageExpressionsTrainerResult extends ITrainerResult {
-  id: IImageExpressionsTrainer
   config: IImageExpressionsTrainerConfig
-
   success: number
   error: number
 }

@@ -8,14 +8,10 @@ import {
 export type IResultTrainer = "result"
 
 export interface IResultTrainerConfig extends ITrainerConfig {
-  id: IResultTrainer
+  ui: IResultTrainer
   type: ITrainingType
 }
 
 export interface IResultTrainerResult extends ITrainerResult {
-  id: IResultTrainer
   config: IResultTrainerConfig
-
-  success: number
-  error: number
 }

@@ -7,7 +7,7 @@ import {
 export type IWordsColumnTrainer = "words-column"
 
 export interface IWordsColumnTrainerConfig extends ITrainerConfig {
-  id: IWordsColumnTrainer
+  ui: IWordsColumnTrainer
 
   playTimeLimit: number
   showTimeLimit: number
@@ -16,9 +16,7 @@ export interface IWordsColumnTrainerConfig extends ITrainerConfig {
 }
 
 export interface IWordsColumnTrainerResult extends ITrainerResult {
-  id: IWordsColumnTrainer
   config: IWordsColumnTrainerConfig
-
   success: number
   error: number
 }

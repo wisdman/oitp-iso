@@ -1,7 +1,43 @@
 package abstract
 
-import (
-	"github.com/wisdman/oitp-isov/api/lib/uuid"
+type UUID string
+
+type ITrainer string
+
+const (
+	ClassificationColors      ITrainer = "classification-colors"      // Активизация лексиклна
+	ClassificationDefinitions ITrainer = "classification-definitions" // Активизация лексиклна
+	ClassificationWords       ITrainer = "classification-words"       // Активизация лексиклна
+	ImageCarpets              ITrainer = "image-carpets"              // Наглядно-образная память
+	ImageDifferences          ITrainer = "image-differences"          // Наглядно-образная память
+	ImageExpressions          ITrainer = "image-expressions"          // Гармонизация работы полушарий
+	ImageFields               ITrainer = "image-fields"               // Скорость зрительного восприятия
+	MathEquation              ITrainer = "math-equation"              // Арифметико-практическое мышление
+	MathMiddle                ITrainer = "math-middle"                // Арифметико-практическое мышление
+	MathSequence              ITrainer = "math-sequence"              // Арифметико-практическое мышление
+	MathWaste                 ITrainer = "math-waste"                 // Арифметико-практическое мышление
+	MatrixFillingPattern      ITrainer = "matrix-filling-pattern"     // Индуктивность мышления
+	MatrixFillingUnique       ITrainer = "matrix-filling-unique"      // Мнемотехника
+	MatrixSequencePattern     ITrainer = "matrix-sequence-pattern"    // Индуктивность мышления
+	MatrixSequenceRandom      ITrainer = "matrix-sequence-random"     // Таблицы с произвольным рассположением чисел
+	Relax                     ITrainer = "relax"                      // Расслабление
+	SpaceQuestionsWaste2D     ITrainer = "space-waste-2d"             // Пространство и логика
+	SpaceQuestionsWaste3D     ITrainer = "space-waste-3d"             // Пространство и логика
+	Storytelling              ITrainer = "storytelling"               // Слуховая память
+	TablePipeEN               ITrainer = "table-pipe-en"              // Распределение внимания
+	TablePipeNumber           ITrainer = "table-pipe-number"          // Распределение внимания
+	TablePipeRU               ITrainer = "table-pipe-ru"              // Распределение внимания
+	TableWords                ITrainer = "table-words"                // Вариативность мышления
+	TextLetters               ITrainer = "text-letters"               // Точность восприятия - афоризмы
+	TextReading               ITrainer = "text-reading"               // Точность восприятия - тексты
+	TextTezirovanie           ITrainer = "text-tezirovanie"           // Тезирование
+	WordsColumn               ITrainer = "words-column"               // Мнемотехника. Столбики
+	WordsLexisAntonyms        ITrainer = "words-lexis-antonyms"       // Вербальный интеллект - Антонимы
+	WordsLexisParonyms        ITrainer = "words-lexis-paronyms"       // Вербальный интеллект - Паронимы
+	WordsLexisSynonyms        ITrainer = "words-lexis-synonyms"       // Вербальный интеллект - Синонимы
+	WordsPairs                ITrainer = "words-pairs"                // Точность восприятия - Столбики
+	WordsQuestionsClose       ITrainer = "words-questions-close"      // Активизация лексикона
+	WordsQuestionsWaste       ITrainer = "words-questions-waste"      // Вербальный интеллект
 )
 
 type IUITrainer string
@@ -24,13 +60,14 @@ const (
 	UIMatrixFillingQuestion     IUITrainer = "matrix-filling-question"
 	UIMatrixSequence            IUITrainer = "matrix-sequence"
 	UIRelax                     IUITrainer = "relax"
-	UIStorytelling              IUITrainer = "storytelling"
 	UISpaceQuestionWaste        IUITrainer = "space-question-waste"
+	UIStorytelling              IUITrainer = "storytelling"
+	UIStorytellingQuestion      IUITrainer = "storytelling-question"
 	UITablePipe                 IUITrainer = "table-pipe"
 	UITableWords                IUITrainer = "table-words"
 	UITextLetters               IUITrainer = "text-letters"
-	UITextQuestion              IUITrainer = "text-question"
 	UITextReading               IUITrainer = "text-reading"
+	UITextReadingQuestion       IUITrainer = "text-reading-question"
 	UITextTezirovanie           IUITrainer = "text-tezirovanie"
 	UIWordsColumn               IUITrainer = "words-column"
 	UIWordsLexis                IUITrainer = "words-lexis"
@@ -59,15 +96,15 @@ const (
 )
 
 type Config struct {
-	ID  IUITrainer `json:"id"`
-	UID uuid.UID   `json:"uid"`
+	ID   ITrainer   `json:"id"`
+	UI   IUITrainer `json:"ui"`
+	UUID UUID       `json:"uuid"`
 }
 
 func NewConfig(
-	id IUITrainer,
+	ID ITrainer,
+	UI IUITrainer,
+	UUID UUID,
 ) *Config {
-	return &Config{
-		ID:  id,
-		UID: uuid.UUID(),
-	}
+	return &Config{ID, UI, UUID}
 }

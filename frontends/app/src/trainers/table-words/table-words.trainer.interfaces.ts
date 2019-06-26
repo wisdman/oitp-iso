@@ -7,7 +7,7 @@ import {
 export type ITableWordsTrainer = "table-words"
 
 export interface ITableWordsTrainerConfig extends ITrainerConfig {
-  id: ITableWordsTrainer
+  ui: ITableWordsTrainer
 
   playTimeLimit: number
 
@@ -16,9 +16,7 @@ export interface ITableWordsTrainerConfig extends ITrainerConfig {
 }
 
 export interface ITableWordsTrainerResult extends ITrainerResult {
-  id: ITableWordsTrainer
   config: ITableWordsTrainerConfig
-
   success: number
   error: number
 }

@@ -7,7 +7,7 @@ import {
 export type IMatrixSequenceTrainer = "matrix-sequence"
 
 export interface IMatrixSequenceTrainerConfig extends ITrainerConfig {
-  id: IMatrixSequenceTrainer
+  ui: IMatrixSequenceTrainer
 
   playTimeLimit: number
 
@@ -16,7 +16,6 @@ export interface IMatrixSequenceTrainerConfig extends ITrainerConfig {
 }
 
 export interface IMatrixSequenceTrainerResult extends ITrainerResult {
-  id: IMatrixSequenceTrainer
   config: IMatrixSequenceTrainerConfig
   success: number
   error: number

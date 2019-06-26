@@ -5,11 +5,26 @@ import (
 )
 
 type Parameters struct {
+	UUID abstract.UUID `json:"uuid"`
+
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
-	ItemsCount int `json:"itemsCount"`
-	Quantity   int `json:"quantity"`
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
+}
+
+type Adjustment struct {
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
+
+	MinItems int `json:"minItems"`
+	MaxItems int `json:"maxItems"`
+
+	MinQuantity int `json:"minQuantity"`
+	MaxQuantity int `json:"maxQuantity"`
 }
 
 type Config struct {
@@ -25,7 +40,8 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config:        abstract.NewConfig(abstract.UIWordsColumn),
+		Config: abstract.NewConfig(abstract.WordsColumn, abstract.UIWordsColumn, params.UUID),
+
 		ShowTimeLimit: params.ShowTimeLimit,
 		PlayTimeLimit: params.PlayTimeLimit,
 	}

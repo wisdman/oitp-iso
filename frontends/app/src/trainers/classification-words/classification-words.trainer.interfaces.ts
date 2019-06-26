@@ -12,16 +12,14 @@ export interface IClassificationWordsTrainerItem {
 }
 
 export interface IClassificationWordsTrainerConfig extends ITrainerConfig {
-  id: IClassificationWordsTrainer
+  ui: IClassificationWordsTrainer
 
   itemTimeLimit: number
   items: Array<IClassificationWordsTrainerItem>
 }
 
 export interface IClassificationWordsTrainerResult extends ITrainerResult {
-  id: IClassificationWordsTrainer
   config: IClassificationWordsTrainerConfig
-
   success: number
   error: number
 }

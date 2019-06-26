@@ -7,7 +7,7 @@ import {
 export type IImageExpressionsQuestionTrainer = "image-expressions-question"
 
 export interface IImageExpressionsQuestionTrainerConfig extends ITrainerConfig {
-  id: IImageExpressionsQuestionTrainer
+  ui: IImageExpressionsQuestionTrainer
 
   playTimeLimit: number
 
@@ -16,9 +16,7 @@ export interface IImageExpressionsQuestionTrainerConfig extends ITrainerConfig {
 }
 
 export interface IImageExpressionsQuestionTrainerResult extends ITrainerResult {
-  id: IImageExpressionsQuestionTrainer
   config: IImageExpressionsQuestionTrainerConfig
-
   success: number
   error: number
 }

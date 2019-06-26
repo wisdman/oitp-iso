@@ -6,7 +6,7 @@ import {
 export type IImageFieldTrainer = "image-field"
 
 export interface IImageFieldTrainerConfig extends ITrainerConfig {
-  id: IImageFieldTrainer
+  ui: IImageFieldTrainer
 
   showTimeLimit: number
 

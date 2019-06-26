@@ -7,16 +7,16 @@ import {
 export type IWordsLexisTrainer = "words-lexis"
 
 export interface IWordsLexisTrainerConfig extends ITrainerConfig {
-  id: IWordsLexisTrainer
+  id: "words-lexis-antonyms" | "words-lexis-paronyms" | "words-lexis-synonyms"
+  ui: IWordsLexisTrainer
 
-  itemsType: "antonyms" | "paronyms" | "synonyms"
   items: Array<[string, string]>
 
   playTimeLimit: number
 }
 
 export interface IWordsLexisTrainerResult extends ITrainerResult {
-  id: IWordsLexisTrainer
   config: IWordsLexisTrainerConfig
   success: number
+  error: number
 }

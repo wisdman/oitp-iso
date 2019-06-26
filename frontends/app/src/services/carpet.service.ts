@@ -24,6 +24,9 @@ import { NotificationService } from "./notification.service"
 export interface ICarperItem {
   path: string
   fill: string | null
+  dx: number
+  dy: number
+  transform: string
 }
 
 export interface ICarper {
@@ -73,10 +76,10 @@ export class CarpetService {
       const width = Number.parseInt(match[3])
       const height = Number.parseInt(match[4])
 
-      const items = Array.from(div.querySelectorAll("svg > path")).map(pathNode => {
+      const items = Array.from(div.querySelectorAll("svg path")).map(pathNode => {
         const path = pathNode.getAttribute("d")
         const fill = pathNode.getAttribute("fill")
-        return {path, fill }
+        return {path, fill, dx:0, dy:0, transform:"translate(0px, 0px)" }
       }).filter(({path}) => !!path)
 
       return { width, height, items } as ICarper

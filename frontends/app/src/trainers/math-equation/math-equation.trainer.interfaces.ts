@@ -7,14 +7,13 @@ import {
 export type IMathEquationTrainer = "math-equation"
 
 export interface IMathEquationTrainerConfig extends ITrainerConfig {
-  id: IMathEquationTrainer
+  ui: IMathEquationTrainer
 
   playTimeLimit: number
   equation: string
 }
 
 export interface IMathEquationTrainerResult extends ITrainerResult {
-  id: IMathEquationTrainer
   config: IMathEquationTrainerConfig
 
   success: number

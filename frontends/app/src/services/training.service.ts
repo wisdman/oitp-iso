@@ -9,6 +9,7 @@ import {
 } from "rxjs"
 
 import {
+  map,
   mergeMap,
   share,
   switchMap,
@@ -19,6 +20,7 @@ import {
 import {
   API_TRAINING_EVERYDAY,
   API_TRAINING_ONCE,
+  API_TRAINING_RESULT,
 } from "../app.config"
 
 import {
@@ -68,15 +70,27 @@ export class TrainingService {
   )
 
   results = this._trainingConfig.pipe(
-    switchMap(() => this._results.pipe(share())),
+    switchMap(() => this._results),
+    switchMap(result => this._httpClient.post(API_TRAINING_RESULT,result).pipe(map(() => result))),
     tap(result => console.log("RESULT:", result)),
   )
 
   config = this._trainingConfig.pipe(
     mergeMap(training => concat(
-      of({ id: "greeting", uid: "" } as IGreetingTrainerConfig),
-      from(training.trainers),
-      of({ id: "result", uid: "" } as IResultTrainerConfig),
+      of({
+        id: "greeting",
+        ui: "greeting",
+        uuid: "",
+        training: training.uuid,
+        type: training.type,
+      } as IGreetingTrainerConfig),
+      from(training.trainers).pipe(map(trainer => ({...trainer, training: training.uuid }) )),
+      of({
+        id: "result",
+        ui: "result",
+        uuid: "",
+        training: training.uuid,
+      } as IResultTrainerConfig),
     )),
     zip(concat(of(undefined), this.results), value => value),
     tap(config => console.log("CONFIG:", config)),
