@@ -20,6 +20,4 @@ export interface IClassificationWordsTrainerConfig extends ITrainerConfig {
 
 export interface IClassificationWordsTrainerResult extends ITrainerResult {
   config: IClassificationWordsTrainerConfig
-  success: number
-  error: number
 }

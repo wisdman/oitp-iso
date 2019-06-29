@@ -250,18 +250,18 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
   }
 
   private _step() {
-    const {success, error, isFinish} = this.matrix.reduce( (prev, item) => {
+    const {success, isFinish} = this.matrix.reduce( (prev, item) => {
       if (item.data < 0) {
         return prev
       }
 
       prev.success += item.data === item.userData ? 1 : 0
-      prev.error += item.data !== item.userData ? 1 : 0
       prev.isFinish = prev.isFinish && item.userData >= 0
       return prev
-    }, { success: 0, error: 0, isFinish: true } as { success: number, error: number, isFinish: boolean })
+    }, { success: 0, isFinish: true } as { success: number, isFinish: boolean })
 
-    this.updateResult({ success, error })
+    const result = Math.round(success / this.config.matrix.length * 100)
+    this.updateResult({ result })
 
     if (isFinish) {
       this.showResult()

@@ -122,4 +122,11 @@ extends AbstractTrainerComponent<IWordsPairsTrainerConfig, IWordsPairsTrainerRes
         return
     }
   }
+
+  finish() {
+    const success = this.items.reduce((acc, {isSuccess}) => isSuccess ? ++acc : acc, 0)
+    const result = Math.round(success / this.items.length * 100)
+    this.updateResult({ result })
+    super.finish()
+  }
 }

@@ -22,6 +22,4 @@ export interface IMathMiddleTrainerConfig extends ITrainerConfig {
 
 export interface IMathMiddleTrainerResult extends ITrainerResult {
   config: IMathMiddleTrainerConfig
-  success: number
-  error: number
 }

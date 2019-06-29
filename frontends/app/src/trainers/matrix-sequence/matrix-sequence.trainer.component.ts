@@ -34,9 +34,11 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
 
   matrix!: Array<IMatrixItem>
   current: number = 1
+  success: number = 0
 
   init() {
     this.current = 1
+    this.success = 0
 
     const side = Math.sqrt(this.config.matrix.length)
     const columns = Math.ceil(side)
@@ -72,12 +74,20 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
     this.finish()
   }
 
-  onTouch(item: IMatrixItem) {
-    let { success, error } = this.result
+  finish() {
+    if (this.success <= 0) {
+      this.updateResult({ result: 0 })
+    } else {
+      const result = Math.round(this.success / this.config.matrix.length * 100)
+      this.updateResult({ result })
+    }
+    super.finish()
+  }
 
+  onTouch(item: IMatrixItem) {
     if (item.data === this.current) {
       this.current++
-      success++
+      this.success++
 
       if (this.config.showSucess) {
         item.isSuccess = true
@@ -89,16 +99,13 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
         }, 250)
       }
     } else {
-      error++
-
+      this.success--
       item.isError = true
       setTimeout(() => {
         item.isError = false
         this.markForCheck()
       }, 250)
     }
-
-    this.updateResult({ success, error })
 
     if (this.current > this.matrix.length) {
       this.finish()

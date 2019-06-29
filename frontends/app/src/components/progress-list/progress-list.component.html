@@ -21,18 +21,19 @@
     <h4 class="col-1 item-h4" *ngIf="item.id === 'auditory-memory'">Слуховая память</h4>
     <h4 class="col-1 item-h4" *ngIf="item.id === 'teasing'">Тезирование</h4>
     <h4 class="col-1 item-h4" *ngIf="item.id === 'accuracy'">Точность восприятия</h4>
+    <h4 class="col-1 item-h4" *ngIf="item.id === 'numeric-tables'">Числовые таблицы</h4>
     <div class="col-2 percent">{{ item.average }}%</div>
     <div
       class="col-3 percent"
       [class.up]="getTrend(item) === 'up'"
       [class.down]="getTrend(item) === 'down'"
-    >{{ item.last | slice:-1 }}%</div>
+    >{{ item.values | slice:-1 }}%</div>
     <div class="col-4 chart-wrapper">
       <chart-linear
         class="chart"
         [class.up]="getTrend(item) === 'up'"
         [class.down]="getTrend(item) === 'down'"
-        [value]="item.last" [min]="20"
+        [value]="item.values"
       ></chart-linear>
     </div>
   </li>

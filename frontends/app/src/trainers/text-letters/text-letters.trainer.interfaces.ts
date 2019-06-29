@@ -17,6 +17,4 @@ export interface ITextLettersTrainerConfig extends ITrainerConfig {
 
 export interface ITextLettersTrainerResult extends ITrainerResult {
   config: ITextLettersTrainerConfig
-  success: number
-  error: number
 }

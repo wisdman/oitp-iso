@@ -37,6 +37,8 @@ extends AbstractTrainerComponent<IImageExpressionsQuestionTrainerConfig, IImageE
   isSuccess: boolean = false
   userData: string = ""
 
+  success!: number
+
   mode: "play" | "result" = "play"
 
   init() {
@@ -59,10 +61,7 @@ extends AbstractTrainerComponent<IImageExpressionsQuestionTrainerConfig, IImageE
   }
 
   finish() {
-    this.updateResult({
-      success: this.isSuccess ? 1 : 0,
-      error: this.isSuccess ? 0 : 1,
-    })
+    this.updateResult({ result: this.isSuccess ? 100 : 0 })
     super.finish()
   }
 }

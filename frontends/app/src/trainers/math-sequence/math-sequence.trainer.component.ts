@@ -66,10 +66,7 @@ extends AbstractTrainerComponent<IMathSequenceTrainerConfig, IMathSequenceTraine
   }
 
   finish() {
-    this.updateResult({
-      success: this.isSuccess ? 1 : 0,
-      error: !this.isSuccess ? 1 : 0,
-    })
+    this.updateResult({ result: this.isSuccess ? 100 : 0 })
     super.finish()
   }
 

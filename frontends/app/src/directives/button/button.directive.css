@@ -89,6 +89,10 @@
   color: inherit;
 }
 
+.button--trainer .svg {
+  min-width: 50px;
+}
+
 .path {
   stroke: var(--trainer-border-color);
   stroke-width: 1;

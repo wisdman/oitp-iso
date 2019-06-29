@@ -17,6 +17,4 @@ export interface IMatrixFillingTrainerConfig extends ITrainerConfig {
 
 export interface IMatrixFillingTrainerResult extends ITrainerResult {
   config: IMatrixFillingTrainerConfig
-  success: number
-  error: number
 }

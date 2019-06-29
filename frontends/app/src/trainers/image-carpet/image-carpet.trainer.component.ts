@@ -52,7 +52,7 @@ extends AbstractTrainerComponent<IImageCarpetTrainerConfig, IImageCarpetTrainerR
       this.markForCheck()
 
       this.mode = "show"
-      // this.setTimeout(this.config.showTimeLimit)
+      this.setTimeout(this.config.showTimeLimit)
     })
 
     this.carpetService.getCarpet(this.config.item)

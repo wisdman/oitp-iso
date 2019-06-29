@@ -22,7 +22,5 @@ export interface ITablePipeTrainerConfig extends ITrainerConfig {
 
 export interface ITablePipeTrainerResult extends ITrainerResult {
   config: ITablePipeTrainerConfig
-  success: number
-  error: number
 }
 

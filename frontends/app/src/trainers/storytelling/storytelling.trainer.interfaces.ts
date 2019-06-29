@@ -14,6 +14,4 @@ export interface IStorytellingTrainerConfig extends ITrainerConfig {
 
 export interface IStorytellingTrainerResult extends ITrainerResult {
   config: IStorytellingTrainerConfig
-  success: number
-  error: number
 }

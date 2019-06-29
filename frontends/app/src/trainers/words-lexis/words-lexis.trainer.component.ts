@@ -195,4 +195,11 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig, IWordsLexisTrainerRes
 
     this.markForCheck()
   }
+
+  finish() {
+    const success = this.items.reduce((acc, {userPair, pair}) => userPair === pair ? ++acc : acc, 0)
+    const result = Math.round(success / this.items.length * 100)
+    this.updateResult({ result })
+    super.finish()
+  }
 }

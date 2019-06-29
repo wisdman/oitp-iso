@@ -13,6 +13,4 @@ export interface ITextReadingTrainerConfig extends ITrainerConfig {
 
 export interface ITextReadingTrainerResult extends ITrainerResult {
   config: ITextReadingTrainerConfig
-  success: number
-  error: number
 }

@@ -151,9 +151,8 @@ export interface ITrainerResult {
   isFinish?: boolean
   isTimeout?: boolean
 
-  time?: number
-  success?: number
-  error?: number
+  result: number | null
+  time: number
 }
 
 export type ITrainingType = "everyday" | "once"

@@ -17,6 +17,4 @@ export interface IImageExpressionsQuestionTrainerConfig extends ITrainerConfig {
 
 export interface IImageExpressionsQuestionTrainerResult extends ITrainerResult {
   config: IImageExpressionsQuestionTrainerConfig
-  success: number
-  error: number
 }

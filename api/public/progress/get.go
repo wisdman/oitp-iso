@@ -1,14 +1,11 @@
 package main
 
 import (
-	// "math/rand"
 	"net/http"
 
-	// "github.com/wisdman/oitp-isov/api/lib/middleware"
+	"github.com/wisdman/oitp-isov/api/lib/middleware"
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
-
-var ITEMS = [...]string{"lexicon", "arithmetic", "variability", "verbal", "harmonization", "inductance", "mnemonics", "visually-memory", "space-logic", "attention", "visually-perception", "auditory-memory", "teasing", "accuracy"}
 
 func (api *API) Get(w http.ResponseWriter, r *http.Request) {
 	progress := &Progress{
@@ -21,12 +18,66 @@ func (api *API) Get(w http.ResponseWriter, r *http.Request) {
 		Speed: []uint16{50, 50, 50, 50, 50},
 	}
 
-	for _, v := range ITEMS {
-		progress.Items = append(progress.Items, &Item{
-			Id:      v,
-			Last:    []int{50, 50, 50, 50},
-			Average: 0,
-		})
+	sql := middleware.GetDBTransaction(r)
+
+	rows, err := sql.Query(`
+    SELECT
+    	jsonb_build_object(
+    		'id', "id",
+    		'values', array_agg("data" ORDER BY "ts"),
+    		'average', ROUND(AVG("data"))
+    	)
+		FROM (
+		  SELECT
+		    r."finish" AS "ts",
+		    g."group" AS "id",
+		    ROUND(AVG(("result"->'result')::int)) AS "data"
+		  FROM (
+		    SELECT
+		      "finish",
+		      jsonb_array_elements("results") AS "result",
+		      jsonb_array_elements("trainers") AS "config"
+		    FROM (
+		      SELECT
+		        "finish",
+		        "results",
+		        "trainers"
+		      FROM public.self_training
+		      WHERE
+		        "finish" IS NOT NULL
+		        AND
+		        "type" = 'everyday'
+		      ORDER BY "finish" DESC
+		      LIMIT 7
+		    ) AS t
+		  ) AS r
+		  LEFT JOIN
+		    public.trainer_to_group AS g
+		      ON ("trainer"::text = "config"->>'id')
+		  WHERE
+		    r."result"->>'uuid' = r."config"->>'uuid'
+		    AND
+		    r."result"->>'result' IS NOT NULL
+		    AND
+		    g."group" IS NOT NULL
+		  GROUP BY "ts", "id"
+		) AS d GROUP BY "id"`,
+	)
+	if err != nil {
+		service.Fatal(w, err)
+		return
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		item := &Item{}
+
+		if err = rows.Scan(item); err != nil {
+			service.Fatal(w, err)
+			return
+		}
+
+		progress.Items = append(progress.Items, item)
 	}
 
 	service.ResponseJSON(w, progress)

@@ -16,6 +16,6 @@ export class ProgressListComponent {
   public progress = this._userService.progress
 
   getTrend(item: IProgressItem): "up" | "down" {
-    return item.last[item.last.length - 1] >= item.average ? "up" : "down"
+    return item.values[item.values.length - 1] >= item.average ? "up" : "down"
   }
 }

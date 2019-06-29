@@ -14,12 +14,12 @@ import (
 
 func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	var trainersList = []abstract.ITrainer{
-		"image-carpets", "table-pipe-ru", "table-pipe-number",
+		"table-pipe-ru", "table-pipe-number",
 	}
 
 	var trainersRandom = [][]abstract.ITrainer{
 		{"classification-colors", "classification-definitions", "classification-words"},
-		{"image-carpets", "image-differences"},
+		// {"image-carpets", "image-differences"},
 		{"image-expressions"},
 		{"image-fields"},
 		//{"math-equation"},

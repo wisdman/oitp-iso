@@ -54,4 +54,14 @@ extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResul
     super.timeout()
     this.showResult()
   }
+
+  finish() {
+    const [max, success] = this.items.reduce(([max, success], {correct, isSuccess}) => [
+      correct ? ++max : max,
+      isSuccess ? ++success : success,
+    ], [0, 0])
+
+    this.updateResult({ result: Math.round(success / max * 100) })
+    super.finish()
+  }
 }

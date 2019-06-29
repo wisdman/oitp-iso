@@ -20,6 +20,4 @@ export interface IClassificationColorsTrainerConfig extends ITrainerConfig {
 
 export interface IClassificationColorsTrainerResult extends ITrainerResult {
   config: IClassificationColorsTrainerConfig
-  success: number
-  error: number
 }

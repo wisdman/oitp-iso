@@ -97,6 +97,9 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
   }
 
   finish() {
+    const success = this.items.reduce((sum, {isSuccess}) => isSuccess ? ++sum : sum, 0)
+    const result = Math.round(success / this.config.runes.length * 100)
+    this.updateResult({ result })
     super.finish()
   }
 }

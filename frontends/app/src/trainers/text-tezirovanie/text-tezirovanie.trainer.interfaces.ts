@@ -16,6 +16,4 @@ export interface ITextTezirovanieTrainerConfig extends ITrainerConfig {
 
 export interface ITextTezirovanieTrainerResult extends ITrainerResult {
   config: ITextTezirovanieTrainerConfig
-  success: number
-  error: number
 }

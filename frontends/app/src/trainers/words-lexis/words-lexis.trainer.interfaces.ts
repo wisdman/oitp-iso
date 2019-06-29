@@ -17,6 +17,4 @@ export interface IWordsLexisTrainerConfig extends ITrainerConfig {
 
 export interface IWordsLexisTrainerResult extends ITrainerResult {
   config: IWordsLexisTrainerConfig
-  success: number
-  error: number
 }

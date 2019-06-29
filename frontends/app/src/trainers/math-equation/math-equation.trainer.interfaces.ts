@@ -15,7 +15,4 @@ export interface IMathEquationTrainerConfig extends ITrainerConfig {
 
 export interface IMathEquationTrainerResult extends ITrainerResult {
   config: IMathEquationTrainerConfig
-
-  success: number
-  error: number
 }

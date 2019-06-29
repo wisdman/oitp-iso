@@ -13,6 +13,4 @@ export interface IGreetingTrainerConfig extends ITrainerConfig {
 
 export interface IGreetingTrainerResult extends ITrainerResult {
   config: IGreetingTrainerConfig
-  success: number
-  error: number
 }

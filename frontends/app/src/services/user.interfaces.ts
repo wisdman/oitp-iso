@@ -13,7 +13,7 @@ export interface INetworkInformation {
 
 export interface IProgressItem {
   id: string
-  last: Array<number>
+  values: Array<number>
   average: number
 }
 

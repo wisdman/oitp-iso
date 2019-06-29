@@ -20,6 +20,4 @@ export interface IClassificationDefinitionsTrainerConfig extends ITrainerConfig 
 
 export interface IClassificationDefinitionsTrainerResult extends ITrainerResult {
   config: IClassificationDefinitionsTrainerConfig
-  success: number
-  error: number
 }

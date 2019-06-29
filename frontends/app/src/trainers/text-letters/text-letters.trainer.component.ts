@@ -74,8 +74,8 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
 
   finish() {
     const success = this.runes.reduce((acc, {data, userData}) => data === userData ? ++acc : acc, 0)
-    const error = this.runes.length = success
-    this.updateResult({ success, error })
+    const result = Math.round(success / this.runes.length * 100)
+    this.updateResult({ result })
     super.finish()
   }
 

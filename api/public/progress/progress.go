@@ -1,9 +1,9 @@
 package main
 
 type Item struct {
-	Id      string `json:"id"`
-	Last    []int  `json:"last"`
-	Average int    `json:"average"`
+	Id      string  `json:"id"`
+	Values  []int16 `json:"values"`
+	Average int     `json:"average"`
 }
 
 type Progress struct {

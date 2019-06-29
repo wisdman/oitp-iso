@@ -17,6 +17,4 @@ export interface IImageCarpetTrainerConfig extends ITrainerConfig {
 
 export interface IImageCarpetTrainerResult extends ITrainerResult {
   config: IImageCarpetTrainerConfig
-  success: number
-  error: number
 }

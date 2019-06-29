@@ -62,6 +62,8 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
   isError!: boolean
   isSuccess!: boolean
 
+  success!: number
+
   groups!: Array<ISelectorItem>
   item!: Partial<IClassificationColorsTrainerItem>
 
@@ -72,6 +74,7 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
   init() {
     this.transitionDuration = this.getCSSPropertyIntValue("--transition-duration")
     this.isError = this.isSuccess = false
+    this.success = 0
 
     this.groups = this.config
                       .items
@@ -115,18 +118,19 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
     this.finish()
   }
 
-  onTouch(group: ISelectorItem) {
-    let { success, error } = this.result
+  finish() {
+    const result = Math.round(this.success / this.config.items.length * 100)
+    this.updateResult({ result })
+    super.finish()
+  }
 
+  onTouch(group: ISelectorItem) {
     if (group.data === this.item.color) {
-      success++
+      this.success++
       this.isSuccess = true
     } else {
-      error++
       this.isError = true
     }
-
-    this.updateResult({ success, error })
 
     setTimeout(() => {
       this.isSuccess = this.isError = false

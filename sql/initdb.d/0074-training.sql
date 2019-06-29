@@ -33,6 +33,8 @@ CREATE TABLE private.training (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) WITH (OIDS = FALSE);
 
+CREATE INDEX training__idx__owner ON private.training USING btree ("owner");
+
 
 CREATE VIEW public.training AS
   SELECT

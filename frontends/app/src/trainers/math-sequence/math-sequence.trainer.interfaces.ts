@@ -22,6 +22,4 @@ export interface IMathSequenceTrainerConfig extends ITrainerConfig {
 
 export interface IMathSequenceTrainerResult extends ITrainerResult {
   config: IMathSequenceTrainerConfig
-  success: number
-  error: number
 }

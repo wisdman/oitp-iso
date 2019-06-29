@@ -80,6 +80,13 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
     if (this._actionSubscriber) this._actionSubscriber.unsubscribe()
   }
 
+  finish() {
+    const success = this.matrix.reduce((sum, {isSuccess}) => isSuccess ? ++sum : sum, 0)
+    const result = Math.round(success / this.config.matrix.length * 100)
+    this.updateResult({ result })
+    super.finish()
+  }
+
   private _step(action: ISwipe) {
     if (this.current >= this.matrix.length) {
       return
@@ -89,14 +96,6 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
     currentItem.isSuccess = currentItem.action === action
     currentItem.isError = !currentItem.isSuccess
     this.markForCheck()
-
-    const result = this.matrix.reduce((prev, item) => {
-      if (item.isSuccess) prev.success++
-      if (item.isError) prev.error++
-      return prev
-    },{success: 0, error: 0})
-
-    this.updateResult({...result})
 
     this.current++
     if (this.current >= this.matrix.length) {

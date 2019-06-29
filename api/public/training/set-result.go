@@ -13,8 +13,7 @@ type Result struct {
 	IsTimeout bool   `json:"isTimeout"`
 	Time      uint16 `json:"time"`
 
-	Success uint16 `json:"success"`
-	Error   uint16 `json:"error"`
+	Result *int16 `json:"result"`
 }
 
 func (api *API) SetResult(w http.ResponseWriter, r *http.Request) {

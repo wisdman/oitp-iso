@@ -252,7 +252,7 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"showTimeLimit": 5,'
     '"playTimeLimit": 20,'
 
-    '"maxLength": 5,'
+    '"maxLength": 6,'
 
     '"minQuantity": 3,'
     '"maxQuantity": 4'

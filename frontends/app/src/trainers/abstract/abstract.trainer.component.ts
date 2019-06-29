@@ -173,10 +173,10 @@ implements OnInit, OnDestroy, OnChanges {
 
     // Reset results
     this.updateResult({
-      isTimeout: false,
       isFinish: false,
-      success: 0,
-      error: 0,
+      isTimeout: false,
+      result: null,
+      time: 0,
     } as Partial<R>)
 
     // Set native element size

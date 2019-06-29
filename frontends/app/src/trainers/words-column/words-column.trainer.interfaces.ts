@@ -17,6 +17,4 @@ export interface IWordsColumnTrainerConfig extends ITrainerConfig {
 
 export interface IWordsColumnTrainerResult extends ITrainerResult {
   config: IWordsColumnTrainerConfig
-  success: number
-  error: number
 }

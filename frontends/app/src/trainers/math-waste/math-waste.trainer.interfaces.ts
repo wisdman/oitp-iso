@@ -16,6 +16,4 @@ export interface IMathWasteTrainerConfig extends ITrainerConfig {
 
 export interface IMathWasteTrainerResult extends ITrainerResult {
   config: IMathWasteTrainerConfig
-  success: number
-  error: number
 }

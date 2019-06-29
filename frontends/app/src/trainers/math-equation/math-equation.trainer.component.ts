@@ -27,6 +27,8 @@ extends AbstractTrainerComponent<IMathEquationTrainerConfig, IMathEquationTraine
 
   mode: "play" | "result" = "play"
 
+  isSuccess: boolean = false
+
   private _mathEval(equation: string): number {
     let result: number
     try {
@@ -42,6 +44,7 @@ extends AbstractTrainerComponent<IMathEquationTrainerConfig, IMathEquationTraine
 
 
   init() {
+    this.isSuccess = false
     // this.result = this._mathEval(this.config.equation)
 
     // const items = this.config.equation.replace(/[^\d]+/g, "").split("")
@@ -79,5 +82,10 @@ extends AbstractTrainerComponent<IMathEquationTrainerConfig, IMathEquationTraine
     this.setTimeout(0)
 
     console.log(this.config.equation, this._mathEval(this.config.equation))
+  }
+
+  finish() {
+    this.updateResult({ result: this.isSuccess ? 100 : 0 })
+    super.finish()
   }
 }

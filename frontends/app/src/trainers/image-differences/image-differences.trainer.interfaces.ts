@@ -18,6 +18,4 @@ export interface IImageDifferencesTrainerConfig extends ITrainerConfig {
 
 export interface IImageDifferencesTrainerResult extends ITrainerResult {
   config: IImageDifferencesTrainerConfig
-  success: number
-  error: number
 }
