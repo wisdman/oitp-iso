@@ -14,7 +14,7 @@ import (
 
 func (api *API) Everyday(w http.ResponseWriter, r *http.Request) {
 	var trainersList = []abstract.ITrainer{
-		"table-pipe-ru", "table-pipe-number",
+		"image-carpets", "table-pipe-ru", "table-pipe-number",
 	}
 
 	var trainersRandom = [][]abstract.ITrainer{

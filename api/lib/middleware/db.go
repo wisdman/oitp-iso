@@ -50,13 +50,13 @@ func DB(pool *db.DB) func(fn http.HandlerFunc) http.HandlerFunc {
 
 				if sw.status >= 500 {
 					if err := sql.Rollback(); err != nil {
-						log.Printf("FATAL: %+v\n", err)
+						log.Printf("FATAL 1: %+v\n", err)
 					}
 					return
 				}
 
 				if err := sql.Commit(); err != nil {
-					log.Printf("FATAL: %+v\n", err)
+					log.Printf("FATAL 2: %+v\n", err)
 				}
 			}()
 

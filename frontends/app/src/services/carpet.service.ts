@@ -79,6 +79,10 @@ export class CarpetService {
       const items = Array.from(div.querySelectorAll("svg path")).map(pathNode => {
         const path = pathNode.getAttribute("d")
         const fill = pathNode.getAttribute("fill")
+
+        const len = (<SVGPathElement>pathNode).pathSegList
+        console.dir(len)
+
         return {path, fill, dx:0, dy:0, transform:"translate(0px, 0px)" }
       }).filter(({path}) => !!path)
 

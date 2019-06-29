@@ -71,7 +71,12 @@ export class TrainingService {
 
   results = this._trainingConfig.pipe(
     switchMap(() => this._results),
-    switchMap(result => this._httpClient.post(API_TRAINING_RESULT,result).pipe(map(() => result))),
+    switchMap(result =>
+      !result.uuid ? of(result)
+                   : this._httpClient.post(`${API_TRAINING_RESULT}/${result.training}`,result).pipe(
+                       map(() => result)
+                     )
+    ),
     tap(result => console.log("RESULT:", result)),
   )
 

@@ -5,8 +5,6 @@ import (
 )
 
 type Parameters struct {
-	UUID abstract.UUID `json:"uuid"`
-
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
@@ -42,7 +40,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.ImageDifferences, abstract.UIImageDifferences, params.UUID),
+		Config: abstract.NewConfig(abstract.ImageDifferences, abstract.UIImageDifferences),
 
 		ShowTimeLimit: params.ShowTimeLimit,
 		PlayTimeLimit: params.PlayTimeLimit,

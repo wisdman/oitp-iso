@@ -34,6 +34,7 @@ import {
   FocusableDirective,
   InputDirective,
   KeyFilterDirective,
+  OnCreateDirective,
   TezirovanieDirective,
   TouchableDirective,
 } from "./directives"
@@ -151,6 +152,7 @@ import { ROUTES } from "./app.routing"
     FocusableDirective,
     InputDirective,
     KeyFilterDirective,
+    OnCreateDirective,
     TezirovanieDirective,
     TouchableDirective,
 

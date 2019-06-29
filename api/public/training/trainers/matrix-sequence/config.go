@@ -5,8 +5,6 @@ import (
 )
 
 type Parameters struct {
-	UUID abstract.UUID `json:"uuid"`
-
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	MatrixSize int `json:"matrixSize"`
@@ -46,7 +44,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(id, abstract.UIMatrixSequence, params.UUID),
+		Config: abstract.NewConfig(id, abstract.UIMatrixSequence),
 
 		PlayTimeLimit: params.PlayTimeLimit,
 

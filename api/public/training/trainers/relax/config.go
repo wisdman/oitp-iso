@@ -18,7 +18,7 @@ type Config struct {
 
 func newConfig() *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.Relax, abstract.UIRelax, ""),
+		Config: abstract.NewConfig(abstract.Relax, abstract.UIRelax),
 
 		ShowTimeLimit: SHOW_TIME_LIMIT,
 	}

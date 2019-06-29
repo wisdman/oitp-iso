@@ -26,7 +26,8 @@ func main() {
 	srv.GET("/everyday", api.Everyday)
 	srv.GET("/once", api.Once)
 
-	srv.POST("/result", api.Result)
+	srv.POST("/result/:training", api.SetResult)
+	srv.GET("/result/:training", api.GetResult)
 
 	srv.ListenAndServe()
 }

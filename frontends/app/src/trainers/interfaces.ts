@@ -145,7 +145,8 @@ export interface ITrainerConfig {
 }
 
 export interface ITrainerResult {
-  config: ITrainerConfig
+  uuid: string
+  training: string
 
   isFinish?: boolean
   isTimeout?: boolean

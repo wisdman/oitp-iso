@@ -13,7 +13,7 @@ import {
   SimpleChanges,
 } from "@angular/core"
 
-import { FormBuilder } from "@angular/forms"
+import { HttpClient } from  "@angular/common/http"
 
 import { DomSanitizer } from "@angular/platform-browser"
 
@@ -47,8 +47,8 @@ implements OnInit, OnDestroy, OnChanges {
     private _sanitizer: DomSanitizer,
 
     public carpetService: CarpetService,
-    public formBuilder: FormBuilder,
     public fullscreenService: FullscreenService,
+    public httpClient: HttpClient,
     public keypadService: KeypadService,
     public pointerService: PointerService,
     public timerService: TimerService,
@@ -68,7 +68,7 @@ implements OnInit, OnDestroy, OnChanges {
   resultValueChange = new EventEmitter<R>()
 
   updateResult(result: Partial<R>) {
-    this.result = {...this.result, ...result, config: this.config }
+    this.result = {...this.result, ...result, uuid: this.config.uuid, training: this.config.training }
     if (this.result.isFinish) {
       this.resultValueChange.emit(this.result)
     }

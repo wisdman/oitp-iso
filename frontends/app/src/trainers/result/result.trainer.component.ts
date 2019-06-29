@@ -3,7 +3,11 @@ import {
   Component,
 } from "@angular/core"
 
+import { Subscription } from "rxjs"
+
 import { AbstractTrainerComponent } from "../abstract"
+
+import { API_TRAINING_RESULT } from "../../app.config"
 
 import {
   IResultTrainerConfig,
@@ -21,7 +25,17 @@ extends AbstractTrainerComponent<IResultTrainerConfig, IResultTrainerResult> {
 
   r: number = 70 + Math.ceil(Math.random()*20)
 
+  private _httpSubscriber!: Subscription
+
   init() {
     this.timerService.pause()
+
+    this._httpSubscriber = this.httpClient.get<{}>(`${API_TRAINING_RESULT}/${this.config.training}`).subscribe(result => {
+      console.dir(result)
+    })
+  }
+
+  destroy() {
+    this._httpSubscriber.unsubscribe()
   }
 }

@@ -7,14 +7,8 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
 
-type Config struct {
-	Id       string `json:"id"`
-	UUID     string `json:"uuid"`
-	Training string `json:"training"`
-}
-
 type Result struct {
-	Config Config `json:"config"`
+	UUID string `json:"uuid"`
 
 	IsTimeout bool   `json:"isTimeout"`
 	Time      uint16 `json:"time"`
@@ -23,11 +17,23 @@ type Result struct {
 	Error   uint16 `json:"error"`
 }
 
-func (api *API) Result(w http.ResponseWriter, r *http.Request) {
+func (api *API) SetResult(w http.ResponseWriter, r *http.Request) {
+
+	training := service.GetParam(r, "training")
+	if training == "" {
+		service.Error(w, http.StatusBadRequest)
+		return
+	}
+
 	var result Result
 	err := service.DecodeJSONBody(r, &result)
 	if err != nil {
 		service.Error(w, http.StatusBadRequest)
+		return
+	}
+
+	if result.UUID == "" {
+		w.WriteHeader(http.StatusOK)
 		return
 	}
 
@@ -40,7 +46,7 @@ func (api *API) Result(w http.ResponseWriter, r *http.Request) {
     WHERE
       "id" = $2`,
 		[...]Result{result},
-		result.Config.Training,
+		training,
 	); err != nil {
 		service.Fatal(w, err)
 		return

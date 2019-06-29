@@ -81,6 +81,10 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
   }
 
   private _step(action: ISwipe) {
+    if (this.current >= this.matrix.length) {
+      return
+    }
+
     const currentItem = this.matrix[this.current]
     currentItem.isSuccess = currentItem.action === action
     currentItem.isError = !currentItem.isSuccess
@@ -94,11 +98,10 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
 
     this.updateResult({...result})
 
-    if (this.current + 1 >= this.matrix.length) {
+    this.current++
+    if (this.current >= this.matrix.length) {
       this.finish()
       return
     }
-
-    this.current++
   }
 }

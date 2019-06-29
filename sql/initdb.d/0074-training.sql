@@ -19,11 +19,13 @@ CREATE TABLE private.training (
   "finish"  timestamp without time zone DEFAULT NULL,
 
   "results" jsonb NOT NULL DEFAULT '[]'::jsonb,
+  "totals" jsonb NOT NULL DEFAULT '{}'::jsonb,
 
   CONSTRAINT training__idx__pkey PRIMARY KEY ("id", "owner"),
 
   CONSTRAINT training__check__trainers CHECK (jsonb_typeof("trainers") = 'array'),
   CONSTRAINT training__check__results CHECK (jsonb_typeof("results") = 'array'),
+  CONSTRAINT training__check__totals CHECK (jsonb_typeof("totals") = 'object'),
 
   CONSTRAINT training__fkey__owner
     FOREIGN KEY ("owner")
@@ -44,7 +46,8 @@ CREATE VIEW public.training AS
     t."start",
     t."finish",
 
-    t."results"
+    t."results",
+    t."totals"
   FROM
     private.training AS t
   WHERE
@@ -65,7 +68,8 @@ CREATE VIEW public.self_training AS
     t."start",
     t."finish",
 
-    t."results"
+    t."results",
+    t."totals"
   FROM
     private.training AS t
   WHERE
@@ -107,7 +111,8 @@ AS $$
 BEGIN
   UPDATE private.training SET
     "results" = NEW."results",
-    "finish" = NEW."finish"
+    "finish" = NEW."finish",
+    "totals" = NEW."totals"
   WHERE
     "id" = NEW."id"
     AND
@@ -121,3 +126,42 @@ CREATE TRIGGER self_training__update__trigger
   EXECUTE PROCEDURE public.self_training__update();
 
 GRANT UPDATE ON public.self_training TO "api-public";
+
+
+CREATE VIEW public.training_results AS
+  SELECT
+    r."id",
+    r."result",
+    r."config"
+  FROM (
+    SELECT
+      t."id",
+      jsonb_array_elements(t."results") AS "result",
+      jsonb_array_elements(t."trainers") AS "config"
+    FROM
+      public.training AS t
+  ) AS r
+  WHERE
+    "result"->>'uuid' = "config"->>'uuid';
+
+GRANT SELECT ON public.training_results TO "api-public";
+
+CREATE VIEW public.self_training_results AS
+  SELECT
+    r."id",
+    r."owner",
+    r."result",
+    r."config"
+  FROM (
+    SELECT
+      t."id",
+      t."owner",
+      jsonb_array_elements(t."results") AS "result",
+      jsonb_array_elements(t."trainers") AS "config"
+    FROM
+      public.self_training AS t
+  ) AS r
+  WHERE
+    "result"->>'uuid' = "config"->>'uuid';
+
+GRANT SELECT ON public.self_training_results TO "api-public";

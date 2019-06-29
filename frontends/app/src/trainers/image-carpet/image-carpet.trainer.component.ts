@@ -31,7 +31,7 @@ extends AbstractTrainerComponent<IImageCarpetTrainerConfig, IImageCarpetTrainerR
 
   mode: "show" | "play" | "result" = "show"
 
-  items!: Array<ICarperItem>
+  items!: Array<ICarperItem & { el?: SVGPathElement}>
 
   private _carpetSubscription!: Subscription
 
@@ -68,6 +68,16 @@ extends AbstractTrainerComponent<IImageCarpetTrainerConfig, IImageCarpetTrainerR
   }
 
   startPlay() {
+    this.setTimeout(0)
+
+    this.items.forEach(item => {
+      if (!item.el) {
+        return
+      }
+      // const box = item.el.getBBox()
+      console.dir(item.el)
+    })
+
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
     this.markForCheck()
@@ -155,5 +165,10 @@ extends AbstractTrainerComponent<IImageCarpetTrainerConfig, IImageCarpetTrainerR
     this._currentItem.dy += dy
     this._currentItem.transform = `translate(${this._currentItem.dx}px, ${this._currentItem.dy}px)`
     this.markForCheck()
+  }
+
+  onCreatePath(node: SVGPathElement, item: ICarperItem & { el?: SVGPathElement}) {
+    console.log(item)
+    item.el = node
   }
 }

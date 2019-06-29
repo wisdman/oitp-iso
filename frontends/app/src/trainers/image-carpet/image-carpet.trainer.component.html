@@ -19,6 +19,7 @@
     [attr.d]="item.path"
     [attr.fill]="item.fill"
     touchable (pointerDown)="onTouch($event, item)"
+    (onCreate)="onCreatePath($event, item)"
   ></path>
 </svg>
 

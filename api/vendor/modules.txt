@@ -1,3 +1,5 @@
+# github.com/google/uuid v1.1.1
+github.com/google/uuid
 # github.com/jackc/pgx v3.4.0+incompatible
 github.com/jackc/pgx
 github.com/jackc/pgx/internal/sanitize

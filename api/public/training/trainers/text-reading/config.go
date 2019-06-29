@@ -5,8 +5,6 @@ import (
 )
 
 type Parameters struct {
-	UUID abstract.UUID `json:"uuid"`
-
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	Completed []int `json:"completed"`
@@ -30,7 +28,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.TextReading, abstract.UITextReading, params.UUID),
+		Config: abstract.NewConfig(abstract.TextReading, abstract.UITextReading),
 	}
 }
 
@@ -52,7 +50,7 @@ func newQuestionConfig(
 	params Parameters,
 ) *QuestionConfig {
 	return &QuestionConfig{
-		Config: abstract.NewConfig(abstract.TextReading, abstract.UITextReadingQuestion, params.UUID),
+		Config: abstract.NewConfig(abstract.TextReading, abstract.UITextReadingQuestion),
 
 		PlayTimeLimit: params.PlayTimeLimit,
 	}

@@ -88,11 +88,6 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
           this.markForCheck()
         }, 250)
       }
-
-      if (this.current > this.matrix.length) {
-        this.finish()
-      }
-
     } else {
       error++
 
@@ -104,5 +99,9 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
     }
 
     this.updateResult({ success, error })
+
+    if (this.current > this.matrix.length) {
+      this.finish()
+    }
   }
 }

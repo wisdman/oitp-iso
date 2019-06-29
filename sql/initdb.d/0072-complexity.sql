@@ -39,7 +39,7 @@ CREATE TRIGGER complexity__update_ts__trigger
 CREATE VIEW public.self_complexity AS
   SELECT
     d."trainer",
-    jsonb_build_object('uuid', uuid_generate_v4()) || d."complexity" || coalesce(c."complexity", '{}'::jsonb) AS "complexity"
+    d."complexity" || coalesce(c."complexity", '{}'::jsonb) AS "complexity"
   FROM
     private.complexity_defaults AS d
   LEFT JOIN

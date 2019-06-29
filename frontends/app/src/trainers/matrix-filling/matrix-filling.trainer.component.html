@@ -117,9 +117,9 @@
 >Продолжить</button>
 
 <img
-  *ngIf = "current"
+  *ngIf = "current && currentIcon"
   class="movement"
   [style.transform] = "current.transform"
-  [src]="sanitizeUrl(defs[current.data])"
+  [src]="currentIcon"
   draggable="false"
 >

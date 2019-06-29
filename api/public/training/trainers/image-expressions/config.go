@@ -5,8 +5,6 @@ import (
 )
 
 type Parameters struct {
-	UUID abstract.UUID `json:"uuid"`
-
 	ShowTimeLimit uint16 `json:"showTimeLimit"`
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
@@ -34,7 +32,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.ImageExpressions, abstract.UIImageExpression, params.UUID),
+		Config: abstract.NewConfig(abstract.ImageExpressions, abstract.UIImageExpression),
 
 		ShowTimeLimit: params.ShowTimeLimit,
 	}
@@ -53,7 +51,7 @@ func newQuestionConfig(
 	params Parameters,
 ) *QuestionConfig {
 	return &QuestionConfig{
-		Config: abstract.NewConfig(abstract.ImageExpressions, abstract.UIImageExpressionQuestion, params.UUID),
+		Config: abstract.NewConfig(abstract.ImageExpressions, abstract.UIImageExpressionQuestion),
 
 		PlayTimeLimit: params.PlayTimeLimit,
 	}

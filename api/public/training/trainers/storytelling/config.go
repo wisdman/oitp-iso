@@ -9,8 +9,6 @@ import (
 const MAX_RELAX_ID = 45
 
 type Parameters struct {
-	UUID abstract.UUID `json:"uuid"`
-
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	Completed []int `json:"completed"`
@@ -35,7 +33,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.Storytelling, abstract.UIStorytelling, params.UUID),
+		Config: abstract.NewConfig(abstract.Storytelling, abstract.UIStorytelling),
 
 		Image: rand.Intn(MAX_RELAX_ID + 1),
 	}
@@ -59,7 +57,7 @@ func newQuestionConfig(
 	params Parameters,
 ) *QuestionConfig {
 	return &QuestionConfig{
-		Config: abstract.NewConfig(abstract.Storytelling, abstract.UIStorytellingQuestion, params.UUID),
+		Config: abstract.NewConfig(abstract.Storytelling, abstract.UIStorytellingQuestion),
 
 		PlayTimeLimit: params.PlayTimeLimit,
 	}

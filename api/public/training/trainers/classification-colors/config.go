@@ -5,8 +5,6 @@ import (
 )
 
 type Parameters struct {
-	UUID abstract.UUID `json:"uuid"`
-
 	ItemTimeLimit uint16 `json:"itemTimeLimit"`
 
 	MinItems int `json:"minItems"`
@@ -38,7 +36,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.ClassificationColors, abstract.UIClassificationColor, params.UUID),
+		Config: abstract.NewConfig(abstract.ClassificationColors, abstract.UIClassificationColor),
 
 		ItemTimeLimit: params.ItemTimeLimit,
 	}

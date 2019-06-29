@@ -5,8 +5,6 @@ import (
 )
 
 type Parameters struct {
-	UUID abstract.UUID `json:"uuid"`
-
 	PlayTimeLimit uint16 `json:"playTimeLimit"`
 
 	Completed []int `json:"completed"`
@@ -32,7 +30,7 @@ func newConfig(
 	params Parameters,
 ) *Config {
 	return &Config{
-		Config: abstract.NewConfig(abstract.TextTezirovanie, abstract.UITextTezirovanie, params.UUID),
+		Config: abstract.NewConfig(abstract.TextTezirovanie, abstract.UITextTezirovanie),
 
 		PlayTimeLimit: params.PlayTimeLimit,
 	}

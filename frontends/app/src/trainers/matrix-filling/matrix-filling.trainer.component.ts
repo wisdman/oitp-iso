@@ -3,6 +3,8 @@ import {
   ChangeDetectionStrategy,
 } from "@angular/core"
 
+import { SafeUrl } from "@angular/platform-browser"
+
 import { Subscription } from "rxjs"
 
 import {
@@ -41,6 +43,7 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     data: number,
     transform: string,
   }
+  currentIcon?: SafeUrl
 
   defs!: Array<string>
   matrix!: Array<SVGShape & { data: number, userData: number }>
@@ -142,6 +145,7 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
   startPlay() {
     this.mode = "play"
     this.current = undefined
+    this.currentIcon = undefined
 
     const gap = this.getCSSPropertyIntValue("--gap")
     this.matrixHeight += gap*4 + this.itemsHeight
@@ -195,6 +199,7 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
 
     const transform = `translate(${x}px, ${y}px)`
     this.current = { data, transform }
+    this.currentIcon = this.sanitizeUrl(this.defs[this.current.data])
     this.markForCheck()
   }
 
@@ -205,6 +210,7 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     const current = this.current
 
     this.current = undefined
+    this.currentIcon = undefined
     this.detectChanges()
 
     const dropElement = document.elementFromPoint(x,y)

@@ -14,27 +14,18 @@ import (
 
 func (api *API) Once(w http.ResponseWriter, r *http.Request) {
 	var trainersList = []abstract.ITrainer{
-		"matrix-filling-pattern", "matrix-sequence-random",
+		"matrix-filling-pattern", "matrix-filling-unique", "matrix-sequence-random",
 	}
 
-	rand.Shuffle(len(trainersList), func(i, j int) {
-		trainersList[i], trainersList[j] = trainersList[j], trainersList[i]
-	})
-
-	var configs []interface{}
-	var err error
 	ctx := icons.New(r.Context())
-
 	training := newOnceTraining()
 
-	for i, max := 0, len(trainersList); i < max; i++ {
-		configs, ctx, err = trainers.Build(ctx, trainersList[i])
-		if err != nil {
-			service.Fatal(w, err)
-			return
-		}
-		training.Trainers = append(training.Trainers, configs...)
+	configs, ctx, err := trainers.Build(ctx, trainersList[rand.Intn(len(trainersList))])
+	if err != nil {
+		service.Fatal(w, err)
+		return
 	}
+	training.Trainers = append(training.Trainers, configs...)
 
 	sql := middleware.GetDBTransactionFromContext(ctx)
 	if err := sql.QueryRow(`

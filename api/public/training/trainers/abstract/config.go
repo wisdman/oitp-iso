@@ -1,43 +1,45 @@
 package abstract
 
-type UUID string
+import (
+	"github.com/wisdman/oitp-isov/api/lib/uuid"
+)
 
 type ITrainer string
 
 const (
-	ClassificationColors      ITrainer = "classification-colors"      // Активизация лексиклна
-	ClassificationDefinitions ITrainer = "classification-definitions" // Активизация лексиклна
-	ClassificationWords       ITrainer = "classification-words"       // Активизация лексиклна
-	ImageCarpets              ITrainer = "image-carpets"              // Наглядно-образная память
-	ImageDifferences          ITrainer = "image-differences"          // Наглядно-образная память
-	ImageExpressions          ITrainer = "image-expressions"          // Гармонизация работы полушарий
-	ImageFields               ITrainer = "image-fields"               // Скорость зрительного восприятия
-	MathEquation              ITrainer = "math-equation"              // Арифметико-практическое мышление
-	MathMiddle                ITrainer = "math-middle"                // Арифметико-практическое мышление
-	MathSequence              ITrainer = "math-sequence"              // Арифметико-практическое мышление
-	MathWaste                 ITrainer = "math-waste"                 // Арифметико-практическое мышление
-	MatrixFillingPattern      ITrainer = "matrix-filling-pattern"     // Индуктивность мышления
-	MatrixFillingUnique       ITrainer = "matrix-filling-unique"      // Мнемотехника
-	MatrixSequencePattern     ITrainer = "matrix-sequence-pattern"    // Индуктивность мышления
+	ClassificationColors      ITrainer = "classification-colors"      // Активизация лексиклна - Цвета
+	ClassificationDefinitions ITrainer = "classification-definitions" // Активизация лексиклна - Определения
+	ClassificationWords       ITrainer = "classification-words"       // Активизация лексиклна - Группировка слов
+	ImageCarpets              ITrainer = "image-carpets"              // Наглядно-образная память - Коврики
+	ImageDifferences          ITrainer = "image-differences"          // Наглядно-образная память - Поиск отличий
+	ImageExpressions          ITrainer = "image-expressions"          // Гармонизация работы полушарий - Подписи к картинкам
+	ImageFields               ITrainer = "image-fields"               // Скорость зрительного восприятия - Иллюстрации
+	MathEquation              ITrainer = "math-equation"              // Арифметико-практическое мышление - Формулы
+	MathMiddle                ITrainer = "math-middle"                // Арифметико-практическое мышление - Скобки
+	MathSequence              ITrainer = "math-sequence"              // Арифметико-практическое мышление - Последовательности
+	MathWaste                 ITrainer = "math-waste"                 // Арифметико-практическое мышление - Лишнее число
+	MatrixFillingPattern      ITrainer = "matrix-filling-pattern"     // Индуктивность мышления - Паттерны
+	MatrixFillingUnique       ITrainer = "matrix-filling-unique"      // Мнемотехника - Картинки
+	MatrixSequencePattern     ITrainer = "matrix-sequence-pattern"    // Индуктивность мышления - Паттерны
 	MatrixSequenceRandom      ITrainer = "matrix-sequence-random"     // Таблицы с произвольным рассположением чисел
 	Relax                     ITrainer = "relax"                      // Расслабление
-	SpaceQuestionsWaste2D     ITrainer = "space-waste-2d"             // Пространство и логика
-	SpaceQuestionsWaste3D     ITrainer = "space-waste-3d"             // Пространство и логика
-	Storytelling              ITrainer = "storytelling"               // Слуховая память
-	TablePipeEN               ITrainer = "table-pipe-en"              // Распределение внимания
-	TablePipeNumber           ITrainer = "table-pipe-number"          // Распределение внимания
-	TablePipeRU               ITrainer = "table-pipe-ru"              // Распределение внимания
-	TableWords                ITrainer = "table-words"                // Вариативность мышления
-	TextLetters               ITrainer = "text-letters"               // Точность восприятия - афоризмы
-	TextReading               ITrainer = "text-reading"               // Точность восприятия - тексты
+	SpaceQuestionsWaste2D     ITrainer = "space-waste-2d"             // Пространство и логика - 2D
+	SpaceQuestionsWaste3D     ITrainer = "space-waste-3d"             // Пространство и логика - 3D
+	Storytelling              ITrainer = "storytelling"               // Слуховая память - Сторителинг
+	TablePipeEN               ITrainer = "table-pipe-en"              // Распределение внимания - Английский
+	TablePipeNumber           ITrainer = "table-pipe-number"          // Распределение внимания - Числа
+	TablePipeRU               ITrainer = "table-pipe-ru"              // Распределение внимания - Русский
+	TableWords                ITrainer = "table-words"                // Вариативность мышления - Существительные
+	TextLetters               ITrainer = "text-letters"               // Точность восприятия - Афоризмы
+	TextReading               ITrainer = "text-reading"               // Точность восприятия - Тексты
 	TextTezirovanie           ITrainer = "text-tezirovanie"           // Тезирование
-	WordsColumn               ITrainer = "words-column"               // Мнемотехника. Столбики
+	WordsColumn               ITrainer = "words-column"               // Мнемотехника - Столбик
 	WordsLexisAntonyms        ITrainer = "words-lexis-antonyms"       // Вербальный интеллект - Антонимы
 	WordsLexisParonyms        ITrainer = "words-lexis-paronyms"       // Вербальный интеллект - Паронимы
 	WordsLexisSynonyms        ITrainer = "words-lexis-synonyms"       // Вербальный интеллект - Синонимы
 	WordsPairs                ITrainer = "words-pairs"                // Точность восприятия - Столбики
-	WordsQuestionsClose       ITrainer = "words-questions-close"      // Активизация лексикона
-	WordsQuestionsWaste       ITrainer = "words-questions-waste"      // Вербальный интеллект
+	WordsQuestionsClose       ITrainer = "words-questions-close"      // Активизация лексикона - Похожие слова
+	WordsQuestionsWaste       ITrainer = "words-questions-waste"      // Вербальный интеллект - Лишнее слово
 )
 
 type IUITrainer string
@@ -96,15 +98,19 @@ const (
 )
 
 type Config struct {
-	ID   ITrainer   `json:"id"`
-	UI   IUITrainer `json:"ui"`
-	UUID UUID       `json:"uuid"`
+	ID ITrainer   `json:"id"`
+	UI IUITrainer `json:"ui"`
+
+	UUID uuid.UUID `json:"uuid"`
 }
 
 func NewConfig(
 	ID ITrainer,
 	UI IUITrainer,
-	UUID UUID,
 ) *Config {
-	return &Config{ID, UI, UUID}
+	return &Config{
+		ID:   ID,
+		UI:   UI,
+		UUID: uuid.New(),
+	}
 }
