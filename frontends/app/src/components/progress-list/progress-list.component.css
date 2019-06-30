@@ -93,3 +93,12 @@
 .down {
   color: var(--color-error);
 }
+
+.message {
+  text-align: center;
+}
+
+.message-h4 {
+  font-size: inherit;
+  font-weight: 400;
+}

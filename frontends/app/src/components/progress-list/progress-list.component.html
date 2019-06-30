@@ -6,6 +6,9 @@
 </h3>
 
 <ul class="items" *ngIf="progress | async as progress">
+  <li class="message" *ngIf="!progress.items || progress.items.length === 0">
+    <h3 class="message-h4" >Для оценки ваших результатов, необходимо завершить как минимум одну <a routerLink="/training/everyday">ежидневную тренировку</a></h3>
+  </li>
   <li class="item" *ngFor="let item of progress.items; let i = index">
     <h4 class="col-1 item-h4" *ngIf="item.id === 'lexicon'">Активизация лексикона</h4>
     <h4 class="col-1 item-h4" *ngIf="item.id === 'arithmetic'">Арифметико-практическое мышление</h4>
