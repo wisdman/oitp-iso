@@ -7,7 +7,7 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
 
-func (api *API) GetResult(w http.ResponseWriter, r *http.Request) {
+func (api *API) Get(w http.ResponseWriter, r *http.Request) {
 
 	training := service.GetParam(r, "training")
 	if training == "" {
@@ -17,17 +17,14 @@ func (api *API) GetResult(w http.ResponseWriter, r *http.Request) {
 
 	sql := middleware.GetDBTransaction(r)
 
-	if _, err := sql.Exec(`
-    UPDATE public.self_training
-    SET
-      "finish" = timezone('UTC', now())
-    WHERE
-      "id" = $1`,
+	var resume *string
+	if err := sql.QueryRow(`
+    SELECT "resume"::text FROM public.self_training WHERE id = $1`,
 		training,
-	); err != nil {
+	).Scan(&resume); err != nil {
 		service.Fatal(w, err)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
+	service.ResponseText(w, resume)
 }

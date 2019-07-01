@@ -53,15 +53,15 @@
   margin-bottom: auto;
 }
 
-.chart--memory {
+.wrapper .chart {
   --color: var(--color-success);
 }
 
-.chart--knowledge {
+.wrapper + .wrapper .chart{
   --color: var(--color-second);
 }
 
-.chart--intelligence {
+.wrapper + .wrapper + .wrapper .chart {
   --color: var(--color-warning);
 }
 

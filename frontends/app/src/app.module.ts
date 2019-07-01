@@ -65,8 +65,9 @@ import {
 
 import {
   DaysPipe,
-  TimerPipe,
+  ProgressItemsFilterPipe,
   SafeStylePipe,
+  TimerPipe,
 } from "./pipes"
 
 import {
@@ -168,8 +169,9 @@ import { ROUTES } from "./app.routing"
     TrainingLayoutComponent,
 
     DaysPipe,
-    TimerPipe,
+    ProgressItemsFilterPipe,
     SafeStylePipe,
+    TimerPipe,
 
     AbstractTrainerComponent,
     ClassificationColorsTrainerComponent,

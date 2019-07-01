@@ -85,19 +85,19 @@ services:
     networks:
       default:
 
-  api-public-user:
+  api-public-result:
     restart: unless-stopped
     build:
       context: ./api
       args:
-        - APP_PATH=public/user
-    image: oitp-isov/api-public-user
+        - APP_PATH=public/result
+    image: oitp-isov/api-public-result
     secrets:
       - secret-api-public
     env_file:
       - ./environment
     environment:
-      - POSTGRES_APPNAME=api-public-user
+      - POSTGRES_APPNAME=api-public-result
       - POSTGRES_USER=api-public
       - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
@@ -129,6 +129,28 @@ services:
     networks:
       default:
 
+  api-public-user:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_PATH=public/user
+    image: oitp-isov/api-public-user
+    secrets:
+      - secret-api-public
+    env_file:
+      - ./environment
+    environment:
+      - POSTGRES_APPNAME=api-public-user
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
   app:
     restart: unless-stopped
     build: ./frontends/app
@@ -144,15 +166,17 @@ services:
       - api-auth
       - api-public-info
       - api-public-progress
-      - api-public-user
+      - api-public-result
       - api-public-training
+      - api-public-user
       - app
     links:
       - api-auth
       - api-public-info
       - api-public-progress
-      - api-public-user
+      - api-public-result
       - api-public-training
+      - api-public-user
       - app
     networks:
       default:

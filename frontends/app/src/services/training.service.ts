@@ -20,7 +20,7 @@ import {
 import {
   API_TRAINING_EVERYDAY,
   API_TRAINING_ONCE,
-  API_TRAINING_RESULT,
+  API_RESULT,
 } from "../app.config"
 
 import {
@@ -73,7 +73,7 @@ export class TrainingService {
     switchMap(() => this._results),
     switchMap(result =>
       !result.uuid ? of(result)
-                   : this._httpClient.post(`${API_TRAINING_RESULT}/${result.training}`,result).pipe(
+                   : this._httpClient.post(`${API_RESULT}/${result.training}`,result).pipe(
                        map(() => result)
                      )
     ),

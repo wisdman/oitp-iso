@@ -330,14 +330,26 @@ export default {
     contentBase: PATH("../../nginx"),
 
     proxy: {
-      "/api/public/progress": {
-        target: "http://localhost",
-        pathRewrite: { "^/api/public/progress" : "" },
-      },
       "/api/auth": {
         target: "http://localhost:8081",
         pathRewrite: { "^/api/auth" : "" },
-      }
+      },
+      "/api/public/training": {
+        target: "http://localhost:8082",
+        pathRewrite: { "^/api/public/training" : "" },
+      },
+      "/api/public/result": {
+        target: "http://localhost:8083",
+        pathRewrite: { "^/api/public/result" : "" },
+      },
+      "/api/public/progress": {
+        target: "http://localhost:8084",
+        pathRewrite: { "^/api/public/progress" : "" },
+      },
+      "/api/public/user": {
+        target: "http://localhost:8085",
+        pathRewrite: { "^/api/public/user" : "" },
+      },
     }
   }
 

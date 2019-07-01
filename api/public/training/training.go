@@ -16,16 +16,8 @@ type Training struct {
 	Trainers []interface{} `json:"trainers"`
 }
 
-func newEverydayTraining() *Training {
-	return &Training{
-		Type:      Everyday,
-		TimeLimit: 1800,
-	}
-}
-
-func newOnceTraining() *Training {
-	return &Training{
-		Type:      Once,
-		TimeLimit: 300,
-	}
+func newTraining(
+	trainingType ITrainingType,
+) *Training {
+	return &Training{Type: trainingType}
 }

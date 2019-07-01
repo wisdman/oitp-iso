@@ -16,7 +16,7 @@ type Result struct {
 	Result *int16 `json:"result"`
 }
 
-func (api *API) SetResult(w http.ResponseWriter, r *http.Request) {
+func (api *API) Add(w http.ResponseWriter, r *http.Request) {
 
 	training := service.GetParam(r, "training")
 	if training == "" {
@@ -39,13 +39,9 @@ func (api *API) SetResult(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
 	if _, err := sql.Exec(`
-    UPDATE public.self_training
-    SET
-      "results" = "results" || $1
-    WHERE
-      "id" = $2`,
-		[...]Result{result},
+    SELECT public.training__add_result($1, $2)`,
 		training,
+		[...]Result{result},
 	); err != nil {
 		service.Fatal(w, err)
 		return

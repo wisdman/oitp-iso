@@ -7,7 +7,7 @@ import { Subscription } from "rxjs"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import { API_TRAINING_RESULT } from "../../app.config"
+import { API_RESULT } from "../../app.config"
 
 import {
   IResultTrainerConfig,
@@ -30,7 +30,7 @@ extends AbstractTrainerComponent<IResultTrainerConfig, IResultTrainerResult> {
   init() {
     this.timerService.pause()
 
-    this._httpSubscriber = this.httpClient.get<{}>(`${API_TRAINING_RESULT}/${this.config.training}`).subscribe(result => {
+    this._httpSubscriber = this.httpClient.get<{}>(`${API_RESULT}/${this.config.training}/finish`).subscribe(result => {
       console.dir(result)
     })
   }

@@ -19,13 +19,7 @@ export interface IProgressItem {
 
 export interface IProgress {
   charge: number // Заряд мозга
-
-  memory: number // Память
-  knowledge: number // Эрудиция
-  intelligence: number // Мышление
-
   speed: Array<number> // Скорость мышления
-
   items: Array<IProgressItem>
 }
 

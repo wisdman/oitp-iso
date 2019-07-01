@@ -2,7 +2,7 @@
 <h1 class="trainer-h1">Запомните&nbsp;название</h1>
 
 <picture
-  *ngIf="this.config.image"
+  *ngIf="this.config.image !== undefined"
   class="image"
 >
   <source [srcset]="getSrcset(this.config.image, 'jpg')">
