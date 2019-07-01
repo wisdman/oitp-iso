@@ -63,7 +63,7 @@ CREATE TABLE public.trainer_to_group (
   CONSTRAINT trainer_to_group__idx__pkey PRIMARY KEY ("trainer", "group")
 ) WITH (OIDS = FALSE);
 
-GRANT SELECT ON public.trainers_to_groups TO "api-public";
+GRANT SELECT ON public.trainer_to_group TO "api-public";
 
 INSERT INTO public.trainer_to_group("trainer", "group") VALUES
   ('classification-colors','lexicon'),
