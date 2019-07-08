@@ -34,7 +34,7 @@
   font-size: var(--font-size-0);
   line-height: 1;
 
-  opacity: 0.9;
+  opacity: 0.95;
   transition: var(--transition-hover);
   transition-property: opacity;
 }
