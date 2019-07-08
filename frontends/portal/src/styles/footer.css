@@ -75,9 +75,13 @@
 
 .footer__copy {
   display: block;
+
+  max-width: var(--max-width);
   margin: calc(var(--margin) * 2) auto 0;
+
   font-size: 80%;
   line-height: 1;
+
   text-align: center;
 }
 

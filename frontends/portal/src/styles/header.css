@@ -33,6 +33,14 @@
 
   font-size: var(--font-size-0);
   line-height: 1;
+
+  opacity: 0.9;
+  transition: var(--transition-hover);
+  transition-property: opacity;
+}
+
+.header__link:hover {
+  opacity: 1;
 }
 
 @media (min-width: 750px) {
