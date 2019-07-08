@@ -80,7 +80,7 @@
   margin: calc(var(--margin) * 2) auto 0;
 
   font-size: 80%;
-  line-height: 1;
+  line-height: 1.618;
 
   text-align: center;
 }
