@@ -85,10 +85,12 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig, IWordsColumnTrainerR
 
     this.setTimeout(this.config.playTimeLimit)
     this.markForCheck()
+    this.timeMeter()
   }
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
 
     this.items.forEach(value =>
       value.isSuccess = this._prepareString(value.data) === this._prepareString(value.userData)

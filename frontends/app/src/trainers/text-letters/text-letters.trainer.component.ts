@@ -64,10 +64,12 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     this.setTimeout(this.config.playTimeLimit)
     this.mode = "play"
     this.markForCheck()
+    this.timeMeter()
   }
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
     this.mode = "result"
     this.markForCheck()
   }

@@ -47,10 +47,12 @@ extends AbstractTrainerComponent<IImageExpressionsQuestionTrainerConfig, IImageE
 
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
     this.isSuccess = this._prepareString(this.config.data || "") === this._prepareString(this.userData || "")
     this.mode = "result"
   }

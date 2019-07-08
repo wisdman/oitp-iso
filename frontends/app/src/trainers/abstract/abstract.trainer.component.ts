@@ -68,7 +68,12 @@ implements OnInit, OnDestroy, OnChanges {
   resultValueChange = new EventEmitter<R>()
 
   updateResult(result: Partial<R>) {
-    this.result = {...this.result, ...result, uuid: this.config.uuid, training: this.config.training }
+    this.result = {
+      ...this.result,
+      ...result,
+      uuid: this.config.uuid,
+      training: this.config.training,
+    }
     if (this.result.isFinish) {
       this.resultValueChange.emit(this.result)
     }
@@ -129,6 +134,16 @@ implements OnInit, OnDestroy, OnChanges {
   }
 
 
+  // === Time Meter ===
+  private _time!: number
+  timeMeter() {
+    if (this._time > 0) {
+      this.updateResult({ time: Number(new Date()) - this._time } as Partial<R>)
+    }
+
+    this._time = Number(new Date())
+  }
+
   // === Matrix size ===
   matrixWidth: number = 0
   matrixHeight: number = 0
@@ -178,6 +193,9 @@ implements OnInit, OnDestroy, OnChanges {
       result: null,
       time: 0,
     } as Partial<R>)
+
+    // Reset time meter
+    this._time = 0
 
     // Set native element size
     const { width, height } = this._elRef.nativeElement.getBoundingClientRect()

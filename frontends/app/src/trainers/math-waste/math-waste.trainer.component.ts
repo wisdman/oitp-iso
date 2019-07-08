@@ -35,10 +35,12 @@ extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResul
 
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
     this.mode = "result"
 
     this.items.forEach(items => {

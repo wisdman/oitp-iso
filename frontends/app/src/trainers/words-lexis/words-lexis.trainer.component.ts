@@ -151,6 +151,7 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig, IWordsLexisTrainerRes
 
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   timeout() {
@@ -159,6 +160,7 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig, IWordsLexisTrainerRes
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
     this.mode = "result"
   }
 

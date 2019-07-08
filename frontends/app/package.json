@@ -57,10 +57,10 @@
   "scripts": {
     "postinstall": "find node_modules/{@types/**,terser,uglify-js}/node_modules -name 'source-map' -type d -exec rm -rf '{}' +",
     "clean": "rm -rf ./artifacts/*",
-    "build": "npm run build-es2015 && npm run build-es5 && npm run build-rootdir",
+    "build": "npm run build-es2015 && npm run build-es5 && npm run make-index",
     "build-es2015": "JS_TARGET='ES2015' TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack --config ./webpack.config.ts",
     "build-es5": "JS_TARGET='ES5' TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack --config ./webpack.config.ts",
-    "build-rootdir": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./build-rootdir.ts",
+    "make-index": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node ./make-index.ts",
     "start": "JS_TARGET='ES2015' TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack-dev-server --config ./webpack.config.ts",
     "start-es5": "JS_TARGET='ES5' TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack-dev-server --config ./webpack.config.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

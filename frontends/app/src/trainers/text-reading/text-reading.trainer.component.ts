@@ -20,5 +20,11 @@ export class TextReadingTrainerComponent
 extends AbstractTrainerComponent<ITextReadingTrainerConfig, ITextReadingTrainerResult> {
   init() {
     this.fullscreenService.unlock()
+    this.timeMeter()
+  }
+
+  finish() {
+    this.timeMeter()
+    super.finish()
   }
 }

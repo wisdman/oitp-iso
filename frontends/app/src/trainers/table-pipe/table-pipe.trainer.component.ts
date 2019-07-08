@@ -74,6 +74,7 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
     ).subscribe(action => this._step(action))
 
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   destroy() {
@@ -81,6 +82,7 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
   }
 
   finish() {
+    this.timeMeter()
     const success = this.matrix.reduce((sum, {isSuccess}) => isSuccess ? ++sum : sum, 0)
     const result = Math.round(success / this.config.matrix.length * 100)
     this.updateResult({ result })

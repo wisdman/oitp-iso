@@ -107,6 +107,7 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
 
     this._stepSubject.next()
     this.setTimeout(this.config.itemTimeLimit * this.config.items.length)
+    this.timeMeter()
   }
 
   destroy() {
@@ -119,8 +120,9 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
   }
 
   finish() {
+    this.timeMeter()
     const result = Math.round(this.success / this.config.items.length * 100)
-    this.updateResult({ result })
+    this.updateResult({ result: result < 0 ? 0 : result > 100 ? 100 : result })
     super.finish()
   }
 

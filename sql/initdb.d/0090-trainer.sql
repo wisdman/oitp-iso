@@ -1,6 +1,6 @@
 SET search_path = "$user";
 
-CREATE TYPE public.trainers__type AS ENUM (
+CREATE TYPE public.trainer__type AS ENUM (
   'classification-colors',      -- Активизация лексиклна - цвета
   'classification-definitions', -- Активизация лексиклна - дифиниции
   'classification-words',       -- Активизация лексиклна - слова по группам
@@ -35,7 +35,7 @@ CREATE TYPE public.trainers__type AS ENUM (
   'words-questions-waste'       -- Вербальный интеллект - лишнее слово
 );
 
-CREATE TYPE public.trainers__group AS ENUM (
+CREATE TYPE public.trainer__group AS ENUM (
   'lexicon',             -- Активизация лексикона
   'arithmetic',          -- Арифметико-практическое мышление
   'variability',         -- Вариативность мышления
@@ -146,3 +146,46 @@ INSERT INTO public.trainer_to_group("trainer", "group") VALUES
   ('words-questions-waste','verbal'),
   ('words-questions-waste','knowledge'),
   ('words-questions-waste','intelligence');
+
+CREATE TYPE public.trainer__ui AS ENUM (
+  'classification-colors',      -- Активизация лексиклна - цвета
+  'classification-definitions', -- Активизация лексиклна - дифиниции
+  'classification-words',       -- Активизация лексиклна - слова по группам
+  'image-carpets',              -- Коврики - составление
+  'image-carpets-preview',      -- Коврики - показ
+  'image-differences',          -- Поиск отличий - составление
+  'image-differences-preview',  -- Поиск отличий - показ
+  'image-expressions',          -- Картинка с текстом - вопрос
+  'image-expressions-preview',  -- Картинка с текстом - показ
+  'image-fields-preview',       -- Запоминание картинок - показ
+  'image-fields-question',      -- Запоминание картинок - вопрос
+  'math-equation',              -- Арифметико-практическое мышление - формулы
+  'math-middle',                -- Арифметико-практическое мышление - скобки
+  'math-sequence',              -- Арифметико-практическое мышление - последовательности
+  'math-waste',                 -- Арифметико-практическое мышление - лишнее
+  'matrix-images-filling',      -- Матрицы с картинками - заполнение
+  'matrix-images-question',     -- Матрицы с картинками - вопрос
+  'matrix-images-preview',      -- Матрицы с картинками - показ
+  'matrix-sequence-filling',    -- Числовые таблицы - восстановление
+  'matrix-sequence-play',       -- Числовые таблицы - проход
+  'matrix-sequence-preview',    -- Числовые таблицы - показ
+  'relax',                      -- Расслабление
+  'space-question-waste',       -- Лишняя фигура
+  'storytelling',               -- Адиорассказ
+  'table-pipe',                 -- Распределение внимания
+  'text-letters',               -- Афоризмы - заполнение первой буквы
+  'text-letters-preview',       -- Афоризмы - показ
+  'text-question',              -- Текстовый вопрос
+  'text-reading',               -- Тексты - чтение
+  'text-tezirovanie',           -- Тезирование
+  'words-column',               -- Столбики слов - заполнение
+  'words-column-preview',       -- Столбики слов - показ
+  'words-filling',              -- Заполнение слов
+  'words-lexis-antonyms',       -- Антонимы
+  'words-lexis-paronyms',       -- Паронимы
+  'words-lexis-synonyms',       -- Синонимы
+  'words-pairs',                -- Пары слов - заполнение
+  'words-pairs-preview',        -- Пары слов - показ
+  'words-questions-close',      -- Слово это ...
+  'words-questions-waste'       -- Лишнее слово
+);

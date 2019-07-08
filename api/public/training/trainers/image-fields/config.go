@@ -32,8 +32,6 @@ type Adjustment struct {
 type Config struct {
 	*abstract.Config
 
-	ShowTimeLimit uint16 `json:"showTimeLimit"`
-
 	Items []int `json:"items"`
 }
 
@@ -54,9 +52,6 @@ type Answer struct {
 
 type QuestionConfig struct {
 	*abstract.Config
-
-	PlayTimeLimit uint16 `json:"playTimeLimit"`
-
 	Items []*Answer `json:"items"`
 }
 

@@ -1,6 +1,6 @@
 SET search_path = "$user";
 
-INSERT INTO private.trainer_colors("data", "color") VALUES
+INSERT INTO private.trainer__classification_colors__data("data", "color") VALUES
   ('Зеленый', '#008000'),
   ('Болотный', '#acb78e'),
   ('Коричневый', '#964b00'),

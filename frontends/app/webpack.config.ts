@@ -14,12 +14,12 @@ import {
 import { AngularCompilerPlugin, PLATFORM } from "@ngtools/webpack"
 import { SuppressExtractedTextChunksWebpackPlugin } from "@angular-devkit/build-angular/src/angular-cli-files/plugins/suppress-entry-chunks-webpack-plugin"
 
+import * as CircularDependencyPlugin from "circular-dependency-plugin"
+import * as CompressionWebpackPlugin from "compression-webpack-plugin"
 import * as HtmlWebpackPlugin from "html-webpack-plugin"
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin"
-import * as TerserWebpackPlugin from "terser-webpack-plugin"
-import * as CompressionWebpackPlugin from "compression-webpack-plugin"
-import * as CircularDependencyPlugin from "circular-dependency-plugin"
 import * as ScriptExtHtmlWebpackPlugin from "script-ext-html-webpack-plugin"
+import * as TerserWebpackPlugin from "terser-webpack-plugin"
 
 import { ScriptTarget } from "typescript"
 
@@ -321,13 +321,12 @@ export default {
   devServer: {
     clientLogLevel: "warning",
     compress: isProduction,
+    contentBase: PATH("../../nginx/www"),
     disableHostCheck: true,
     historyApiFallback: true,
     hot: !isProduction,
     progress: true,
     stats: "minimal",
-
-    contentBase: PATH("../../nginx"),
 
     proxy: {
       "/api/auth": {

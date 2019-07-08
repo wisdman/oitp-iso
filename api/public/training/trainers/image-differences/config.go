@@ -27,9 +27,6 @@ type Adjustment struct {
 type Config struct {
 	*abstract.Config
 
-	ShowTimeLimit uint16 `json:"showTimeLimit"`
-	PlayTimeLimit uint16 `json:"playTimeLimit"`
-
 	ItemsA int `json:"itemsA"`
 	ItemsB int `json:"itemsB"`
 

@@ -81,9 +81,11 @@ extends AbstractTrainerComponent<IImageCarpetTrainerConfig, IImageCarpetTrainerR
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
     this.markForCheck()
+    this.timeMeter()
   }
 
   showResult() {
+    this.timeMeter()
     this.finish()
   }
 

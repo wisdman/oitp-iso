@@ -41,10 +41,12 @@ extends AbstractTrainerComponent<IMathMiddleTrainerConfig, IMathMiddleTrainerRes
 
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
 
     if (!this.userData) {
       this.userData = 0

@@ -80,6 +80,7 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
 
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   timeout() {
@@ -88,6 +89,7 @@ extends AbstractTrainerComponent<ITableWordsTrainerConfig, ITableWordsTrainerRes
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
 
     this.items.forEach( (value, i) =>
       value.isSuccess = this._prepareString(value.data)[0] === this.config.runes[i].toUpperCase()

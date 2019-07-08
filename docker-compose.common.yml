@@ -158,6 +158,13 @@ services:
     networks:
       default:
 
+  portal:
+    restart: unless-stopped
+    build: ./frontends/portal
+    image: oitp-isov/frontend-portal
+    networks:
+      default:
+
   nginx:
     restart: unless-stopped
     build: ./nginx
@@ -170,6 +177,7 @@ services:
       - api-public-training
       - api-public-user
       - app
+      - portal
     links:
       - api-auth
       - api-public-info
@@ -178,6 +186,7 @@ services:
       - api-public-training
       - api-public-user
       - app
+      - portal
     networks:
       default:
 

@@ -17,15 +17,9 @@ CREATE TABLE private.training (
   "start"  timestamp without time zone NOT NULL DEFAULt timezone('UTC', now()),
   "finish" timestamp without time zone DEFAULT NULL,
 
-  "trainers" jsonb NOT NULL DEFAULT '[]'::jsonb,
-  "results"  jsonb NOT NULL DEFAULT '[]'::jsonb,
-  "resume"   jsonb NOT NULL DEFAULT '{}'::jsonb,
+  CONSTRAINT training__idx__pkey PRIMARY KEY ("id"),
 
-  CONSTRAINT training__idx__pkey PRIMARY KEY ("id", "owner"),
-
-  CONSTRAINT training__check__trainers CHECK (jsonb_typeof("trainers") = 'array'),
-  CONSTRAINT training__check__results CHECK (jsonb_typeof("results") = 'array'),
-  CONSTRAINT training__check__resume CHECK (jsonb_typeof("resume") = 'object'),
+  CONSTRAINT training__check__timeLimit CHECK ("timeLimit" >= 0),
 
   CONSTRAINT training__fkey__owner
     FOREIGN KEY ("owner")
@@ -38,6 +32,70 @@ CREATE INDEX training__idx__finish ON private.training USING btree ("finish");
 CREATE INDEX training__idx__owner ON private.training USING btree ("owner");
 CREATE INDEX training__idx__start ON private.training USING btree ("start");
 CREATE INDEX training__idx__type ON private.training USING btree ("type");
+
+CREATE TABLE private.training_trainers (
+  "training" uuid NOT NULL,
+  "index" smallint NOT NULL,
+
+  "id" public.trainer__type NOT NULL,
+  "ui" public.trainer__ui NOT NULL,
+
+  "config" jsonb NOT NULL,
+  "result" jsonb DEFAULT NULL,
+
+  "progress" smallint DEFAULT NULL,
+
+  CONSTRAINT training_trainers__idx__pkey PRIMARY KEY ("training", "index"),
+
+  CONSTRAINT training_trainers__check__index CHECK ("index" >= 0),
+
+  CONSTRAINT training_trainers__check__config CHECK (jsonb_typeof("config") = 'object'),
+  CONSTRAINT training_trainers__check__result CHECK (jsonb_typeof("result") = 'object'),
+
+  CONSTRAINT training_trainers__check__progress CHECK ("progress" >= 0 AND "progress" <= 100),
+
+  CONSTRAINT training_trainers__check__config_id CHECK ("config"->>'id' = "id"::text),
+  CONSTRAINT training_trainers__check__config_ui CHECK ("config"->>'ui' = "ui"::text),
+  CONSTRAINT training_trainers__check__config_timeLimit CHECK (("config"->'timeLimit')::smallint >= 0),
+
+  CONSTRAINT training_trainers__fkey__training
+    FOREIGN KEY ("training")
+    REFERENCES private.training("id")
+    ON UPDATE CASCADE ON DELETE CASCADE
+) WITH (OIDS = FALSE);
+
+CREATE OR REPLACE FUNCTION public.training__new(IN _type public.training__type, OUT trainingid uuid) AS $$
+DECLARE
+  _timeLimit smallint;
+  _trainingId uuid;
+BEGIN
+  SELECT ("value"->(_type::text))::smallint INTO _timeLimit FROM private.config WHERE "key" = 'trainingTimeLimit';
+
+  INSERT INTO private.training (
+    "owner",
+    "type",
+    "timeLimit"
+  ) VALUES (
+    current_setting('app.sessionUser')::uuid,
+    _type,
+    _timeLimit
+  ) RETURNING
+    "id" INTO _trainingId;
+
+
+END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
+
+
+
+BEGIN;
+SELECT set_config('app.sessionUser', '2fc72f9a-8dd5-11e9-b3f0-cf67e1878440', true);
+SELECT * FROM public.training__new('everyday');
+ROLLBACK;
+
+
+
+
+
 
 CREATE OR REPLACE FUNCTION private.training__resume()
 RETURNS trigger AS $$

@@ -1,6 +1,6 @@
 SET search_path = "$user";
 
-INSERT INTO private.trainer_image_expressions("id","data") VALUES
+INSERT INTO private.trainer__image_expressions__data("id","data") VALUES
   (0,'21 век. Странно видеть такие картины.'),
   (1,'6 утра. Передохну. И снова в путь.'),
   (2,'А мы с мамой на поезде едем к бабушке.'),
@@ -14,7 +14,7 @@ INSERT INTO private.trainer_image_expressions("id","data") VALUES
   (10,'Верхотурье. Подвесной мост.'),
   (11,'Вести с полей.'),
   (12,'Вечерний город. Свет и тени.'),
-  (13,'Виктор Кисилев'),
+  (13,'Виктор Киселев'),
   (14,'Всевидящее око.'),
   (15,'Всегда со мной.'),
   (16,'Встреча земли и неба.'),
@@ -145,4 +145,3 @@ INSERT INTO private.trainer_image_expressions("id","data") VALUES
   (141,'Эквадор. У линии'),
   (142,'Это не они, а мы у них научились детей так носить.'),
   (143,'Эх, прокатиться бы. На ослике.');
-

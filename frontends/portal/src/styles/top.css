@@ -1,0 +1,154 @@
+
+.top {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  color: var(--color-white);
+  padding-bottom: calc(var(--margin) * 5);
+}
+
+.top__content {
+  flex: 0 1 500px;
+  max-width: 500px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top__content-text {
+  font-weight: 600;
+}
+
+.top__content-button {
+  margin-top: calc(var(--margin) * 1.5);
+}
+
+.top__content-offline {
+  margin-top: calc(var(--margin) * 1.5);
+
+  color: inherit;
+  opacity: 0.75;
+  transition: var(--transition-hover);
+  transition-property: opacity;
+}
+
+.top__content-offline:hover {
+  opacity: 1;
+}
+
+.top__ipad {
+  display: none;
+  margin-left: calc(var(--margin) * 1.5);
+}
+
+.top__ipad-picture {
+  display: block;
+  width: 346px;
+  height: 235px;
+}
+
+.top__ipad-picture img {
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  border: 1px solid #000;
+}
+
+@media (min-width: 750px) {
+  .top {
+    justify-content: space-between;
+    padding-bottom: calc(var(--margin) * 2);
+  }
+  .top__content {
+    align-items: flex-start;
+  }
+  .top__content-text {
+    text-align: left;
+  }
+  .top__ipad {
+    display: block;
+  }
+}
+
+
+
+/* .section-top {
+  position: relative;
+  display: block;
+
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  height: auto;
+
+  padding: 128px 16px 0 16px;
+
+  background-color: transparent;
+  color: var(--color-white);
+}
+
+.section-top::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 32"><path d="M320 32H0V8s23 16 63 16S143 0 200 0s120 16 120 16v16z" fill="%23fafafa"/></svg>'), var(--background-gradient);
+  background-size: 101% auto, 101% 100%;
+  background-position: center 101%, center top;
+  background-repeat: no-repeat;
+}
+
+.section-top__content-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.section-top__content-box {
+  flex: 1 1 auto;
+}
+
+.section-top__picture {
+  display: block;
+  flex: 0 0 500px;
+  max-width: 500px;
+  margin-right: -20px;
+}
+
+.section-top__picture img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.section-top .button {
+  margin-top: 32px;
+}
+
+.section-top__offline {
+  display: block;
+  margin-top: 32px;
+
+  font-size: 14px;
+  line-height: 1;
+  text-decoration: underline;
+  color: var(--color-white);
+
+  opacity: 0.75;
+  transition: opacity 250ms;
+}
+
+.section-top__offline:hover {
+  opacity: 1;
+} */

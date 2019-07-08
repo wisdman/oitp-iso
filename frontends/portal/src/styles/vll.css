@@ -1,0 +1,35 @@
+.vll {
+  background-color: var(--color-middle);
+  background-image: var(--background-gradient);
+  background-size: 101% 100%;
+  background-position: center top;
+  background-repeat: no-repeat;
+  color: var(--color-white);
+}
+
+.vll__picture {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vll__picture::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.vll__picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

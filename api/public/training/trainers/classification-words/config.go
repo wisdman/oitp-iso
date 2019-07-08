@@ -33,9 +33,7 @@ type Item struct {
 
 type Config struct {
 	*abstract.Config
-
-	ItemTimeLimit uint16  `json:"itemTimeLimit"`
-	Items         []*Item `json:"items"`
+	Items []*Item `json:"items"`
 }
 
 func newConfig(
@@ -43,7 +41,5 @@ func newConfig(
 ) *Config {
 	return &Config{
 		Config: abstract.NewConfig(abstract.ClassificationWords, abstract.UIClassificationWords),
-
-		ItemTimeLimit: params.ItemTimeLimit,
 	}
 }

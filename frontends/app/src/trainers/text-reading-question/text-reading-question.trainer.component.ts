@@ -42,10 +42,12 @@ extends AbstractTrainerComponent<ITextReadingQuestionTrainerConfig, ITextReading
 
     this.mode = "play"
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
     this.mode = "result"
 
     this.items.forEach(item => {
@@ -68,7 +70,8 @@ extends AbstractTrainerComponent<ITextReadingQuestionTrainerConfig, ITextReading
       isSuccess ? ++success : success,
     ], [0, 0])
 
-    this.updateResult({ result: Math.round(success / max * 100) })
+    const result = Math.round(success / max * 100)
+    this.updateResult({ result: result < 0 ? 0 : result > 100 ? 100 : result })
     super.finish()
   }
 }

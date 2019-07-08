@@ -27,8 +27,6 @@ type Adjustment struct {
 type Config struct {
 	*abstract.Config
 
-	PlayTimeLimit uint16 `json:"playTimeLimit"`
-
 	Runes []string `json:"runes"`
 }
 

@@ -53,9 +53,15 @@ extends AbstractTrainerComponent<IImageFieldTrainerConfig, IImageFieldTrainerRes
     })
 
     this.setTimeout(this.config.showTimeLimit)
+    this.timeMeter()
   }
 
   timeout() {
     this.finish()
+  }
+
+  finish() {
+    this.timeMeter()
+    super.finish()
   }
 }

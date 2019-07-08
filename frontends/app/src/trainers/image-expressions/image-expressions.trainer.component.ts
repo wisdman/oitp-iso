@@ -28,9 +28,15 @@ extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressio
   init() {
     this.fullscreenService.unlock()
     this.setTimeout(this.config.showTimeLimit)
+    this.timeMeter()
   }
 
   timeout() {
     this.finish()
+  }
+
+  finish() {
+    this.timeMeter()
+    super.finish()
   }
 }

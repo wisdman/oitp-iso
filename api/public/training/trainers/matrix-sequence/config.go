@@ -31,8 +31,6 @@ type Adjustment struct {
 type Config struct {
 	*abstract.Config
 
-	PlayTimeLimit uint16 `json:"playTimeLimit"`
-
 	ShowSucess bool `json:"showSucess"`
 	UseColors  bool `json:"useColors"`
 

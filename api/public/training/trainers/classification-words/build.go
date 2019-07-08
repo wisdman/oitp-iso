@@ -52,6 +52,7 @@ func Build(ctx context.Context) (
 			return nil, ctx, err
 		}
 
+		config.PlayTimeLimit = params.ItemTimeLimit * len(config.Items)
 		configs = append(configs, config)
 	}
 

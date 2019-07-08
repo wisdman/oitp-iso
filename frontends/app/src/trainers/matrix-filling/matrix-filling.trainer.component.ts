@@ -153,10 +153,12 @@ extends AbstractTrainerComponent<IMatrixFillingTrainerConfig, IMatrixFillingTrai
     this.markForCheck()
 
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
 
     this.mode = "result"
     this.current = undefined

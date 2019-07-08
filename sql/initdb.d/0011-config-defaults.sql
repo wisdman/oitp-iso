@@ -7,5 +7,7 @@ INSERT INTO private.config("key", "value") VALUES
   ('smsInterval', '"10 minutes"'::jsonb), -- Продолжительность действия смс на вход
   ('invitesInterval', '"6 mons"'::jsonb), -- Продолжительность действия индивидуального инвайта
   ('trainingTimeLimit', '{"everyday":1800,"once":300}'::jsonb), -- Лимит времени для тренировки
-  ('progressItemsLimit', '10'::jsonb); -- Максимальное число тренировок участвующее в статистике
+  ('progressItemsLimit', '10'::jsonb), -- Максимальное число тренировок участвующее в статистике
+  ('iconsSeries', '{"min":0,"max":285}'::jsonb), -- Список иконок
+  ('relaxImagesSeries', '{"min":0,"max":45}'::jsonb); -- Список картинок для релакса
 

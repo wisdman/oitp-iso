@@ -10,8 +10,6 @@ const SHOW_TIME_LIMIT = 10
 type Config struct {
 	*abstract.Config
 
-	ShowTimeLimit uint16 `json:"showTimeLimit"`
-
 	Image int    `json:"image"`
 	Text  string `json:"text"`
 }

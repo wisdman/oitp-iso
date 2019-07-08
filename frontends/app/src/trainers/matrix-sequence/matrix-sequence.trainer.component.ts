@@ -67,6 +67,7 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
     })
 
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   timeout() {
@@ -75,12 +76,10 @@ extends AbstractTrainerComponent<IMatrixSequenceTrainerConfig, IMatrixSequenceTr
   }
 
   finish() {
-    if (this.success <= 0) {
-      this.updateResult({ result: 0 })
-    } else {
-      const result = Math.round(this.success / this.config.matrix.length * 100)
-      this.updateResult({ result })
-    }
+    this.timeMeter()
+
+    const result = Math.round(this.success / this.config.matrix.length * 100)
+    this.updateResult({ result: result < 0 ? 0 : result > 100 ? 100 : result })
     super.finish()
   }
 

@@ -41,9 +41,7 @@ var operations = [...]IOperations{IInc, IDec, IMul, INil}
 
 type Config struct {
 	*abstract.Config
-
-	PlayTimeLimit uint16 `json:"playTimeLimit"`
-	Equation      string `json:"equation"`
+	Equation string `json:"equation"`
 }
 
 func newConfig(

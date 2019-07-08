@@ -98,7 +98,7 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
 
     '"complexity": 0,'
 
-    '"examplesCount": 2,'
+    '"itemsCount": 2,'
 
     '"minQuantity": 3,'
     '"maxQuantity": 4'
@@ -119,6 +119,7 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"playTimeLimit": 60,'
 
     '"complexity": 0,'
+    '"itemsCount": 20,'
 
     '"minQuantity": 2,'
     '"maxQuantity": 3'
@@ -130,7 +131,6 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"playTimeLimit": 60,'
 
     '"matrixSize": 9,'
-    '"itemsCount": 8,'
 
     '"minQuantity": 3,'
     '"maxQuantity": 4,'

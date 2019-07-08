@@ -102,6 +102,9 @@ type Config struct {
 	UI IUITrainer `json:"ui"`
 
 	UUID uuid.UUID `json:"uuid"`
+
+	ShowTimeLimit uint16 `json:"showTimeLimit"`
+	PlayTimeLimit uint16 `json:"playTimeLimit"`
 }
 
 func NewConfig(

@@ -29,10 +29,12 @@ extends AbstractTrainerComponent<ITextTezirovanieTrainerConfig, ITextTezirovanie
     this.value = this.config.data
 
     this.setTimeout(this.config.playTimeLimit)
+    this.timeMeter()
   }
 
   showResult() {
     this.setTimeout(0)
+    this.timeMeter()
     this.mode = "result"
     this.markForCheck()
   }

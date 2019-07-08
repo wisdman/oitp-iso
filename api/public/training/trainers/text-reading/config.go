@@ -40,8 +40,6 @@ type Question struct {
 type QuestionConfig struct {
 	*abstract.Config
 
-	PlayTimeLimit uint16 `json:"playTimeLimit"`
-
 	Data    *string `json:"data"`
 	Correct *bool   `json:"correct"`
 }
