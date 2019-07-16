@@ -51,8 +51,6 @@ CREATE TABLE private.training_trainers (
   CONSTRAINT training_trainers__check__config CHECK (jsonb_typeof("config") = 'object'),
   CONSTRAINT training_trainers__check__result CHECK (jsonb_typeof("result") = 'object'),
 
-  CONSTRAINT training_trainers__check__progress CHECK ("progress" >= 0 AND "progress" <= 100),
-
   CONSTRAINT training_trainers__check__config_id CHECK ("config"->>'id' = "id"::text),
   CONSTRAINT training_trainers__check__config_ui CHECK ("config"->>'ui' = "ui"::text),
   CONSTRAINT training_trainers__check__config_timeLimit CHECK (("config"->'timeLimit')::smallint >= 0),
