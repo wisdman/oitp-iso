@@ -1,16 +1,14 @@
 import {
   ITrainerConfig,
-  ITrainerResult,
   ITrainingType,
 } from "../interfaces"
 
-export type IGreetingTrainer = "greeting"
+export type IGreetingTrainerID = "greeting"
+export type IGreetingTrainerUI = "greeting"
 
 export interface IGreetingTrainerConfig extends ITrainerConfig {
-  ui: IGreetingTrainer
-  type: ITrainingType
-}
+  id: IGreetingTrainerID
+  ui: IGreetingTrainerUI
 
-export interface IGreetingTrainerResult extends ITrainerResult {
-  config: IGreetingTrainerConfig
+  type: ITrainingType
 }

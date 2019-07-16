@@ -1,0 +1,9 @@
+<svg version="1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8192 5548">
+  <g  stroke="#000" stroke-width="50">
+    <path fill="red" d="M172 179h2426v1611H172V179z"/>
+    <path fill="red" d="M5617 3778h2426v1610H5617V3778z"/>
+    <path fill="#FF0" d="M5617 179h2426v1611H5617V179z"/>
+    <path fill="#FF0" d="M172 3778h2426v1610H172V3778z"/>
+  </g>
+  <g><path fill="red" d="M4096 1899a875 875 0 1 1 0 1750 875 875 0 0 1 0-1750z"/></g>
+</svg>

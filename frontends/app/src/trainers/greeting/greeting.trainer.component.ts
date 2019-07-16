@@ -7,7 +7,6 @@ import { AbstractTrainerComponent } from "../abstract"
 
 import {
   IGreetingTrainerConfig,
-  IGreetingTrainerResult,
 } from "./greeting.trainer.interfaces"
 
 @Component({
@@ -17,7 +16,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GreetingTrainerComponent
-extends AbstractTrainerComponent<IGreetingTrainerConfig, IGreetingTrainerResult> {
+  extends AbstractTrainerComponent<IGreetingTrainerConfig> {
 
   finish() {
     this.timerService.continue()

@@ -1,5 +1,3 @@
-export * from "./carpet.service"
-export * from "./focus.service"
 export * from "./fullscreen.service"
 export * from "./info.service"
 export * from "./keypad.service"

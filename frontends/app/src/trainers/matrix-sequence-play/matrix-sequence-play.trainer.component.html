@@ -1,0 +1,48 @@
+<!-- Индуктивность мышления -->
+<h1 class="trainer-h1">Пройдите&nbsp;таблицу<br>от&nbsp;1&nbsp;до&nbsp;25</h1>
+
+<svg
+  *ngIf="matrix && matrix.length > 0"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  version="1.1"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <defs>
+    <path id="success" d="M15 40l4-4 14 9c11-12 18-19 31-27l1 4c-11 9-18 19-30 40-7-9-11-14-20-22z"></path>
+  </defs>
+  <g
+    *ngFor="let item of matrix"
+    class="item"
+    [class.item-active]="item.isActive"
+    [class.item-error]="item.isError"
+    [class.item-success]="item.isSuccess"
+    touchable (pointerDown)="onTouch(item)"
+  >
+    <path
+      class="fill-path"
+      [attr.d]="item.fillPath"
+    ></path>
+    <path
+      class="path"
+      [attr.d]="item.path"
+    ></path>
+    <text
+      class="text"
+      [attr.x]="item.x + item.width / 2 + 2"
+      [attr.y]="item.y + item.height / 2 + 2"
+      dominant-baseline="middle"
+      text-anchor="middle"
+    >{{ item.data }}</text>
+    <use
+      class="success-icon"
+      xlink:href="#success"
+      [attr.x]="item.x + (item.width - 80) / 2"
+      [attr.y]="item.y + (item.height - 80) / 2"
+    ></use>
+  </g>
+</svg>

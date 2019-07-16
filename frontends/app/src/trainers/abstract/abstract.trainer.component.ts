@@ -9,18 +9,14 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  Renderer2,
   SimpleChanges,
 } from "@angular/core"
-
-import { HttpClient } from  "@angular/common/http"
 
 import { DomSanitizer } from "@angular/platform-browser"
 
 import { Subscription } from "rxjs"
 
 import {
-  CarpetService,
   FullscreenService,
   KeypadService,
   PointerService,
@@ -29,7 +25,7 @@ import {
 
 import {
   ITrainerConfigs,
-  ITrainerResults,
+  ITrainerResult,
 } from "../interfaces"
 
 @Component({
@@ -37,18 +33,14 @@ import {
   template: "",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AbstractTrainerComponent<C extends ITrainerConfigs, R extends ITrainerResults>
-implements OnInit, OnDestroy, OnChanges {
+export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private _cdr: ChangeDetectorRef,
     private _elRef:ElementRef<HTMLElement>,
-    private _renderer: Renderer2,
     private _sanitizer: DomSanitizer,
 
-    public carpetService: CarpetService,
     public fullscreenService: FullscreenService,
-    public httpClient: HttpClient,
     public keypadService: KeypadService,
     public pointerService: PointerService,
     public timerService: TimerService,
@@ -62,20 +54,20 @@ implements OnInit, OnDestroy, OnChanges {
   @Input("config")
   config!: C
 
-  result!: R
+  private _result!: ITrainerResult
 
   @Output("result")
-  resultValueChange = new EventEmitter<R>()
+  resultValueChange = new EventEmitter<ITrainerResult>()
 
-  updateResult(result: Partial<R>) {
-    this.result = {
-      ...this.result,
+  private _updateResult(result: Partial<ITrainerResult>) {
+    this._result = {
+      ...this._result,
       ...result,
-      uuid: this.config.uuid,
       training: this.config.training,
+      idx: this.config.idx,
     }
-    if (this.result.isFinish) {
-      this.resultValueChange.emit(this.result)
+    if (this._result.isFinish) {
+      this.resultValueChange.emit(this._result)
     }
   }
 
@@ -89,10 +81,6 @@ implements OnInit, OnDestroy, OnChanges {
   getCSSPropertyIntValue(property: string): number {
     const value = this._style.getPropertyValue(property)
     return Number.parseInt(value)
-  }
-
-  getCSSPropertyStringValue(property: string): string {
-    return this._style.getPropertyValue(property)
   }
 
 
@@ -110,12 +98,6 @@ implements OnInit, OnDestroy, OnChanges {
   }
   detectChanges() {
     this._cdr.detectChanges()
-  }
-
-
-  // Renderer2
-  appendChild(newChild: Node, parent?: Node) {
-    this._renderer.appendChild(parent || this._elRef.nativeElement, newChild)
   }
 
 
@@ -138,7 +120,9 @@ implements OnInit, OnDestroy, OnChanges {
   private _time!: number
   timeMeter() {
     if (this._time > 0) {
-      this.updateResult({ time: Number(new Date()) - this._time } as Partial<R>)
+      this._updateResult({ time: Number(new Date()) - this._time })
+      this._time = 0
+      return
     }
 
     this._time = Number(new Date())
@@ -157,42 +141,27 @@ implements OnInit, OnDestroy, OnChanges {
   height: number = 0
 
 
-  // === Loading status ===
-  private _isLoading: boolean = true
-
-  @Output()
-  loadingChange: EventEmitter<boolean> = new EventEmitter<boolean>()
-
-  @Input()
-  get loading(){
-    return this._isLoading
-  }
-
-  set loading(value: boolean) {
-    this._isLoading = value;
-    this.loadingChange.emit(this._isLoading)
-  }
+  // === Game mode ===
+  mode: "init" | "play" | "result" = "init"
 
   private _lapTimerSubscriber!: Subscription
 
   ngOnInit() {
+    this.mode = "init"
     this.fullscreenService.lock()
 
-    // Enable loader
-    this.loading = true
-
     // Lap timer subscribe
-    this.timerService.setLapTimeout(0)
+    this.setTimeout(0)
     if (this._lapTimerSubscriber) this._lapTimerSubscriber.unsubscribe()
     this._lapTimerSubscriber = this.timerService.lapTimeout.subscribe(() => this.timeout())
 
     // Reset results
-    this.updateResult({
+    this._updateResult({
       isFinish: false,
       isTimeout: false,
       result: null,
       time: 0,
-    } as Partial<R>)
+    })
 
     // Reset time meter
     this._time = 0
@@ -205,8 +174,8 @@ implements OnInit, OnDestroy, OnChanges {
     // Init trainer
     this.init()
 
-    // Disable loader
-    this.loading = false
+    // Start trainer
+    this.start()
   }
 
   ngOnChanges(sc: SimpleChanges ) {
@@ -219,6 +188,7 @@ implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy() {
     // Lap timer unsubscribe
     this._lapTimerSubscriber.unsubscribe()
+    this.setTimeout(0)
 
     // Destroy trainer
     this.destroy()
@@ -229,6 +199,35 @@ implements OnInit, OnDestroy, OnChanges {
   // Default functions
   init() {}
   destroy() {}
-  finish() { this.updateResult({ isFinish: true } as Partial<R>) }
-  timeout() { this.updateResult({ isTimeout: true } as Partial<R>) }
+
+  start() {
+    this.mode = "play"
+    this.setTimeout(this.config.timeLimit)
+    this.timeMeter()
+    this.markForCheck()
+  }
+
+  result() {
+    this.setTimeout(0)
+    this.timeMeter()
+    this.mode = "result"
+    this.markForCheck()
+  }
+
+  timeout() {
+    this._updateResult({ isTimeout: true })
+  }
+
+  finish(result: number | null = null) {
+    this.setTimeout(0)
+    this.timeMeter()
+
+    this._updateResult({
+      result: result === null ? null : result < 0 ? 0 : result > 100 ? 100 : Math.round(result),
+      isFinish: true,
+    })
+  }
+
 }
+
+

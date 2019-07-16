@@ -24,8 +24,6 @@ CREATE TABLE private.tariffs (
 
 CREATE UNIQUE INDEX tariffs__idx__unique_default ON private.tariffs USING btree ("default") WHERE "default" = TRUE;
 
-CREATE OR REPLACE FUNCTION public.default_tariff()
-RETURNS uuid
-AS $$
-  SELECT t."id" FROM private.tariffs t WHERE t."default" LIMIT 1;
+CREATE OR REPLACE FUNCTION public.default_tariff() RETURNS uuid AS $$
+  SELECT "id" FROM private.tariffs WHERE "default" LIMIT 1;
 $$ LANGUAGE sql SECURITY DEFINER;

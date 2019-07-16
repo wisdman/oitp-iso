@@ -9,10 +9,7 @@ import { ASSETS_RELAX } from "../../app.config"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IRelaxTrainerConfig,
-  IRelaxTrainerResult,
-} from "./relax.trainer.interfaces"
+import { IRelaxTrainerConfig } from "./relax.trainer.interfaces"
 
 @Component({
   selector: "trainer-relax",
@@ -21,7 +18,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RelaxTrainerComponent
-extends AbstractTrainerComponent<IRelaxTrainerConfig, IRelaxTrainerResult> {
+  extends AbstractTrainerComponent<IRelaxTrainerConfig> {
 
   getSrcset(id: number, type: "jpg" | "webp" = "jpg") {
     return `${ASSETS_RELAX}/${id}.${type}`
@@ -35,12 +32,10 @@ extends AbstractTrainerComponent<IRelaxTrainerConfig, IRelaxTrainerResult> {
       h1.style.transition = "none"
       h1.style.transform = "scale(0, 0)"
       window.requestAnimationFrame(() => {
-        h1.style.transition = `transform ${this.config.showTimeLimit}s`
+        h1.style.transition = `transform ${this.config.timeLimit}s`
         h1.style.transform = "scale(1, 1)"
       })
     })
-
-    this.setTimeout(this.config.showTimeLimit)
   }
 
   timeout() {

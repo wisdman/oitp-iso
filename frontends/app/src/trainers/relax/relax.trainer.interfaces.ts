@@ -1,20 +1,12 @@
+import { ITrainerConfig } from "../interfaces"
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
-
-export type IRelaxTrainer = "relax"
+export type IRelaxTrainerID = "relax"
+export type IRelaxTrainerUI = "relax"
 
 export interface IRelaxTrainerConfig extends ITrainerConfig {
-  ui: IRelaxTrainer
-
-  showTimeLimit: number
+  id: IRelaxTrainerID
+  ui: IRelaxTrainerUI
 
   image: number
-  text: string
-}
-
-export interface IRelaxTrainerResult extends ITrainerResult {
-  config: IRelaxTrainerConfig
+  data: string
 }

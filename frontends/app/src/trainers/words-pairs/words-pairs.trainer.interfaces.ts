@@ -1,20 +1,11 @@
+import { ITrainerConfig } from "../interfaces"
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
-
-export type IWordsPairsTrainer = "words-pairs"
+export type IWordsPairsTrainerID = "words-pairs"
+export type IWordsPairsTrainerUI = "words-pairs"
 
 export interface IWordsPairsTrainerConfig extends ITrainerConfig {
-  ui: IWordsPairsTrainer
-
-  playTimeLimit: number
-  showTimeLimit: number
+  id: IWordsPairsTrainerID
+  ui: IWordsPairsTrainerUI
 
   items: Array<[string, string]>
-}
-
-export interface IWordsPairsTrainerResult extends ITrainerResult {
-  config: IWordsPairsTrainerConfig
 }

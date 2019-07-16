@@ -1,18 +1,12 @@
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
-export type IMathEquationTrainer = "math-equation"
+export type IMathEquationTrainerID = "math-equation"
+export type IMathEquationTrainerUI = "math-equation"
 
 export interface IMathEquationTrainerConfig extends ITrainerConfig {
-  ui: IMathEquationTrainer
+  id: IMathEquationTrainerID
+  ui: IMathEquationTrainerUI
 
-  playTimeLimit: number
   equation: string
-}
-
-export interface IMathEquationTrainerResult extends ITrainerResult {
-  config: IMathEquationTrainerConfig
 }

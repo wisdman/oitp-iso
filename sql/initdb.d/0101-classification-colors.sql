@@ -22,14 +22,14 @@ BEGIN
     ("complexity"->'itemTimeLimit')::smallint,
     ("complexity"->'minItems')::smallint,
     ("complexity"->'maxItems')::smallint,
-    ("complexity"->'quantity')::smallint
+    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
   INTO
     _itemTimeLimit,
     _minItems,
     _maxItems,
     _quantity
-  FROM private.complexity_defaults
-  -- FROM public.self_complexity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
   WHERE "trainer" = 'classification-colors';
 
   RETURN QUERY (
@@ -48,12 +48,11 @@ BEGIN
           SELECT "color", "data"
           FROM private.trainer__classification_colors__data
           ORDER BY random()
-          LIMIT public.random_in_range(_minItems, _maxItems)
+          LIMIT public.random(_minItems, _maxItems)
         ) AS t
       ) AS t
       WHERE s = s
     ) AS "config"
     FROM generate_series(1,_quantity) AS s
   );
-
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

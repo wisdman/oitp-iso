@@ -18,6 +18,9 @@ import {
 } from "rxjs/operators"
 
 import {
+  DEBUG,
+
+  API_TRAINING_DEBUG,
   API_TRAINING_EVERYDAY,
   API_TRAINING_ONCE,
   API_RESULT,
@@ -52,6 +55,9 @@ export class TrainingService {
   private _training: Subject<string> = new Subject<string>()
   initTraining(type: ITrainingType) {
     switch (type) {
+      case "debug":
+        this._training.next(API_TRAINING_DEBUG)
+        return
       case "everyday":
         this._training.next(API_TRAINING_EVERYDAY)
         return
@@ -64,7 +70,7 @@ export class TrainingService {
 
   private _trainingConfig = this._training.pipe(
     tap(() => this._timerService.pause()),
-    switchMap(url => this._httpClient.get<ITraining>(url)),
+    switchMap(url => this._httpClient.post<ITraining>(url, {})),
     tap(training => this._timerService.setGlobalTimeout(training.timeLimit || 0)),
     share(),
   )
@@ -72,12 +78,12 @@ export class TrainingService {
   results = this._trainingConfig.pipe(
     switchMap(() => this._results),
     switchMap(result =>
-      !result.uuid ? of(result)
-                   : this._httpClient.post(`${API_RESULT}/${result.training}`,result).pipe(
-                       map(() => result)
-                     )
+      !result.idx ? of(result)
+                  : this._httpClient.post(`${API_RESULT}/${result.training}`,result).pipe(
+                      map(() => result)
+                    )
     ),
-    tap(result => console.log("RESULT:", result)),
+    tap(result => DEBUG && console.log("RESULT:", result)),
   )
 
   config = this._trainingConfig.pipe(
@@ -85,20 +91,21 @@ export class TrainingService {
       of({
         id: "greeting",
         ui: "greeting",
-        uuid: "",
-        training: training.uuid,
+        training: training.id,
         type: training.type,
+        timeLimit: 0,
       } as IGreetingTrainerConfig),
-      from(training.trainers).pipe(map(trainer => ({...trainer, training: training.uuid }) )),
+      from(training.trainers).pipe(map(trainer => ({...trainer, training: training.id }) )),
       of({
         id: "result",
         ui: "result",
-        uuid: "",
-        training: training.uuid,
+        training: training.id,
+        type: training.type,
+        timeLimit: 0,
       } as IResultTrainerConfig),
     )),
     zip(concat(of(undefined), this.results), value => value),
-    tap(config => console.log("CONFIG:", config)),
+    tap(config => DEBUG && console.log("CONFIG:", config)),
     share(),
   )
 }

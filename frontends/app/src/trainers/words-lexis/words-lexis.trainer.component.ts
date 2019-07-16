@@ -14,10 +14,7 @@ import { textSize } from "../../lib/util"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IWordsLexisTrainerConfig,
-  IWordsLexisTrainerResult,
-} from "./words-lexis.trainer.interfaces"
+import { IWordsLexisTrainerConfig } from "./words-lexis.trainer.interfaces"
 
 interface IItem extends SVGShape {
   data: string
@@ -43,7 +40,7 @@ interface IItem extends SVGShape {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WordsLexisTrainerComponent
-extends AbstractTrainerComponent<IWordsLexisTrainerConfig, IWordsLexisTrainerResult> {
+extends AbstractTrainerComponent<IWordsLexisTrainerConfig> {
 
   mode: "play" | "result" = "play"
 
@@ -148,20 +145,11 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig, IWordsLexisTrainerRes
 
       return [leftItem, rightItem]
     }).flat()
-
-    this.mode = "play"
-    this.setTimeout(this.config.playTimeLimit)
-    this.timeMeter()
   }
 
   timeout() {
-    this.showResult()
-  }
-
-  showResult() {
-    this.setTimeout(0)
-    this.timeMeter()
-    this.mode = "result"
+    super.timeout()
+    this.result()
   }
 
   onTouch(item: IItem) {
@@ -191,7 +179,7 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig, IWordsLexisTrainerRes
     })
 
     if (this.items.every(value => !!value.userPair)) {
-      this.showResult()
+      this.result()
       return
     }
 
@@ -200,8 +188,6 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig, IWordsLexisTrainerRes
 
   finish() {
     const success = this.items.reduce((acc, {userPair, pair}) => userPair === pair ? ++acc : acc, 0)
-    const result = Math.round(success / this.items.length * 100)
-    this.updateResult({ result })
-    super.finish()
+    super.finish(success / this.items.length * 100)
   }
 }

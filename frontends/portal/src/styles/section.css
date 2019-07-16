@@ -26,6 +26,10 @@
   background-repeat: no-repeat;
 }
 
+.section--trainer {
+  border-top: 0 none;
+}
+
 .section__content-wrapper {
   position: relative;
   max-width: var(--max-width);

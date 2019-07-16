@@ -31,7 +31,7 @@
 }
 
 .item-data--input {
-  width: 50px;
+  width: 60px;
 }
 
 .item-answer-bottom {
@@ -40,6 +40,8 @@
   font-size: 80%;
   font-weight: 400;
   white-space: nowrap;
+
+  text-align: center;
 }
 
 .item-answer-correct {
@@ -49,16 +51,13 @@
 
   font-size: 140%;
   font-weight: 600;
+
+  width: 100%;
+  text-align: center;
 }
 
 .input {
   padding: 0;
-}
-
-.button {
-  margin: 0;
-  margin-top: calc(var(--trainer-margin) * 4);
-  margin-bottom: auto;
 }
 
 .button--answer {

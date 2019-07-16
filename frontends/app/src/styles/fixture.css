@@ -16,6 +16,11 @@ template {
   display: none;
 }
 
+[invisible] {
+  opacity: 0;
+  visibility: hidden;
+}
+
 input[type=number] {
   appearance: textfield;
 }

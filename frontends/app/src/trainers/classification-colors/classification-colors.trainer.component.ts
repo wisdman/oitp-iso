@@ -24,11 +24,7 @@ import { ISelectorItem } from "../../components/trainer-selector"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IClassificationColorsTrainerConfig,
-  IClassificationColorsTrainerItem,
-  IClassificationColorsTrainerResult,
-} from "./classification-colors.trainer.interfaces"
+import { IClassificationColorsTrainerConfig } from "./classification-colors.trainer.interfaces"
 
 @Component({
   selector: "trainer-classification-colors",
@@ -37,7 +33,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassificationColorsTrainerComponent
-extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassificationColorsTrainerResult> {
+  extends AbstractTrainerComponent<IClassificationColorsTrainerConfig> {
 
   @ViewChild("textNode", { static: true }) dataNodeRef!: ElementRef<HTMLSpanElement>
   private _resetTextAnimation() {
@@ -52,20 +48,25 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
   }
   private _setTextAnimation(value: number) {
     const element = this.dataNodeRef.nativeElement
-    const topValue = Math.round(value / (this.config.itemTimeLimit - 1) * 100000) / 1000
+    const topValue = Math.round(value / (this.itemTimeLimit - 1) * 100000) / 1000
     window.requestAnimationFrame(() => {
       element.style.setProperty("--top", String(topValue))
     })
   }
 
   transitionDuration!: number
+  itemTimeLimit!: number
+
   isError!: boolean
   isSuccess!: boolean
 
   success!: number
 
   groups!: Array<ISelectorItem>
-  item!: Partial<IClassificationColorsTrainerItem>
+  item!: Partial<{
+    color: string
+    data: string
+  }>
 
   private _stepSubject: Subject<undefined> = new Subject<undefined>()
   private _itemTimeoutSubject: Subject<number> = new Subject<number>()
@@ -81,15 +82,16 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
                       .map( ({color: data}) => ({data}) )
                       .sort(() => Math.random() - 0.5)
 
-    if (this._itemSubscription) this._itemSubscription.unsubscribe()
+    this.itemTimeLimit = Math.floor(this.config.timeLimit / this.config.items.length)
+
     this._itemSubscription = zip(
-      from([...this.config.items.sort(() => Math.random() - 0.5), undefined]),
+      from([...this.config.items, undefined]),
       merge(
         this._stepSubject,
         this._itemTimeoutSubject.pipe(
           switchMap(() => this.timerService.globalTimer.pipe(scan(current => ++current, 0))),
           tap(value => this._setTextAnimation(value)),
-          filter(value => value === this.config.itemTimeLimit),
+          filter(value => value === this.itemTimeLimit),
         )
       ),
       value => ({...value}),
@@ -101,29 +103,22 @@ extends AbstractTrainerComponent<IClassificationColorsTrainerConfig, IClassifica
         this._resetTextAnimation()
         this._itemTimeoutSubject.next()
       },
-      error => console.error(error),
+      undefined,
       () => setTimeout(() => this.finish(), this.transitionDuration),
     )
-
-    this._stepSubject.next()
-    this.setTimeout(this.config.itemTimeLimit * this.config.items.length)
-    this.timeMeter()
   }
 
   destroy() {
-    if (this._itemSubscription) this._itemSubscription.unsubscribe()
+    this._itemSubscription.unsubscribe()
   }
 
-  timeout() {
-    super.timeout()
-    this.finish()
+  start() {
+    this._stepSubject.next()
+    super.start()
   }
 
   finish() {
-    this.timeMeter()
-    const result = Math.round(this.success / this.config.items.length * 100)
-    this.updateResult({ result: result < 0 ? 0 : result > 100 ? 100 : result })
-    super.finish()
+    super.finish(this.success / this.config.items.length * 100)
   }
 
   onTouch(group: ISelectorItem) {

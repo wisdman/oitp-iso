@@ -9,7 +9,6 @@ import {
   selector: '[onCreate]'
 })
 export class OnCreateDirective {
-
    constructor(
     private _elRef: ElementRef<Element>,
   ){}
@@ -19,5 +18,4 @@ export class OnCreateDirective {
   ngOnInit() {
      this.onCreate.emit(this._elRef.nativeElement)
   }
-
 }

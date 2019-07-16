@@ -3,73 +3,16 @@
   --gap: 2px;
 }
 
-.matrix {
-  display: block;
-  width: auto;
-  max-width: 100%;
-  height: auto;
-
-  margin-top: calc(var(--trainer-margin) * 4);
-
-  font-family: inherit;
-  font-size: 18px;
-}
-
 .item {
-  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: min-content;
 }
 
-.path {
-  stroke: var(--trainer-border-color);
-  stroke-width: 1;
-  fill: none;
-
-  position: relative;
-  z-index: 999;
-
-  transition: stroke .25s;
-}
-
-.item--selected .path {
-  stroke: var(--trainer-selected-color);
-  stroke-width: 2;
-}
-
-.item--success .path {
-  stroke: var(--trainer-success-color);
-  stroke-width: 2;
-}
-
-.item--error .path {
-  stroke: var(--trainer-error-color);
-  stroke-width: 2;
-}
-
-.fill-path {
-  stroke: none;
-  stroke-width: 0;
-  fill: transparent;
-  transition: fill .25s;
-}
-
-.text {
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--trainer-text-color);
-  fill: currentColor;
-
-  font-size: 16px;
-  font-weight: 400;
-}
-
-.button {
-  margin: 0;
+.item:first-of-type {
   margin-top: calc(var(--trainer-margin) * 4);
-  margin-bottom: auto;
 }
 
 .input {
-  padding: 0 .7em;
+  max-width: 200px;
 }

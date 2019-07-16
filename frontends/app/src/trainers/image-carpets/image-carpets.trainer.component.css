@@ -1,0 +1,50 @@
+:host {
+  --move-duration: 500ms;
+}
+
+.matrix {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+
+  margin-top: calc(var(--trainer-margin) * 4);
+  margin-bottom: auto;
+
+  overflow: hidden;
+}
+
+.path {
+  stroke: var(--trainer-text-color);
+  stroke-width: 2;
+  opacity: .82;
+  transition: transform var(--move-duration);
+}
+
+.border-path {
+  stroke: var(--trainer-border-color);
+  stroke-width: 2;
+  fill: none;
+}
+
+.result-icon {
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+
+  width: 100px;
+  height: 100px;
+
+
+  stroke-width: 1;
+}
+
+.result-icon--error {
+  stroke: var(--trainer-error-color);
+  fill: var(--trainer-error-color-light);
+}
+
+.result-icon--success {
+  stroke: var(--trainer-success-color);
+  fill: var(--trainer-success-color-light);
+}

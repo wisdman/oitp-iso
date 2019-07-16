@@ -1,19 +1,15 @@
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
-export type IMathWasteTrainer = "math-waste"
+export type IMathWasteTrainerID = "math-waste"
+export type IMathWasteTrainerUI = "math-waste"
 
 export interface IMathWasteTrainerConfig extends ITrainerConfig {
-  ui: IMathWasteTrainer
+  id: IMathWasteTrainerID
+  ui: IMathWasteTrainerUI
 
-  playTimeLimit: number
-
-  items: Array<number>
-}
-
-export interface IMathWasteTrainerResult extends ITrainerResult {
-  config: IMathWasteTrainerConfig
+  items: Array<{
+    data: number
+    correct: boolean
+  }>
 }

@@ -7,10 +7,7 @@ import { ISelectorItem } from "../../components/trainer-selector"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IMathWasteTrainerConfig,
-  IMathWasteTrainerResult,
-} from "./math-waste.trainer.interfaces"
+import { IMathWasteTrainerConfig } from "./math-waste.trainer.interfaces"
 
 @Component({
   selector: "trainer-math-waste",
@@ -19,29 +16,26 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MathWasteTrainerComponent
-extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResult> {
-
-  mode: "play" | "result" = "play"
+  extends AbstractTrainerComponent<IMathWasteTrainerConfig> {
 
   items!: Array<ISelectorItem & { correct: boolean }>
 
   init() {
     this.items = this.config.items
-                            .map((data, i) => ({
+                            .map(({data, correct}) => ({
                               data: String(data),
-                              correct: i === this.config.items.length - 1
+                              correct
                             }))
                             .sort(() => Math.random() - 0.5)
-
-    this.mode = "play"
-    this.setTimeout(this.config.playTimeLimit)
-    this.timeMeter()
   }
 
-  showResult() {
-    this.setTimeout(0)
-    this.timeMeter()
-    this.mode = "result"
+  timeout() {
+    super.timeout()
+    this.result()
+  }
+
+  result() {
+    super.result()
 
     this.items.forEach(items => {
       items.isSuccess = items.isActive && items.correct
@@ -52,18 +46,12 @@ extends AbstractTrainerComponent<IMathWasteTrainerConfig, IMathWasteTrainerResul
     this.markForCheck()
   }
 
-  timeout() {
-    super.timeout()
-    this.showResult()
-  }
-
   finish() {
     const [max, success] = this.items.reduce(([max, success], {correct, isSuccess}) => [
       correct ? ++max : max,
       isSuccess ? ++success : success,
     ], [0, 0])
 
-    this.updateResult({ result: Math.round(success / max * 100) })
-    super.finish()
+    super.finish(Math.round(success / max * 100))
   }
 }

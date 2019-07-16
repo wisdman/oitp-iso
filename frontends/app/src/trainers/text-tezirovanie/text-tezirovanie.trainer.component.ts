@@ -5,10 +5,7 @@ import {
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  ITextTezirovanieTrainerConfig,
-  ITextTezirovanieTrainerResult,
-} from "./text-tezirovanie.trainer.interfaces"
+import { ITextTezirovanieTrainerConfig } from "./text-tezirovanie.trainer.interfaces"
 
 @Component({
   selector: "trainer-text-tezirovanie",
@@ -17,30 +14,17 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextTezirovanieTrainerComponent
-extends AbstractTrainerComponent<ITextTezirovanieTrainerConfig, ITextTezirovanieTrainerResult> {
+  extends AbstractTrainerComponent<ITextTezirovanieTrainerConfig> {
 
-  mode: "play" | "result" = "play"
   value!: string
 
   init() {
     this.fullscreenService.unlock()
-
-    this.mode = "play"
     this.value = this.config.data
-
-    this.setTimeout(this.config.playTimeLimit)
-    this.timeMeter()
-  }
-
-  showResult() {
-    this.setTimeout(0)
-    this.timeMeter()
-    this.mode = "result"
-    this.markForCheck()
   }
 
   timeout() {
     super.timeout()
-    this.showResult()
+    this.result()
   }
 }

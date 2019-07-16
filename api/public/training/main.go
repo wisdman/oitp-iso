@@ -23,8 +23,8 @@ func main() {
 		middleware.Auth,
 	)
 
-	srv.GET("/everyday", api.Everyday)
-	srv.GET("/once", api.Once)
+	srv.POST("/:type", api.New)
+	srv.GET("/:id", api.Get)
 
 	srv.ListenAndServe()
 }

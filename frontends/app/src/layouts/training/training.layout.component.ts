@@ -20,7 +20,7 @@ import {
 
 import {
   ITrainerConfigs,
-  ITrainerResults,
+  ITrainerResult,
 } from "../../trainers"
 
 @Component({
@@ -42,7 +42,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
   config!: ITrainerConfigs
 
-  onResult(result: ITrainerResults) {
+  onResult(result: ITrainerResult) {
     if (this.config.ui === "result") {
       this._router.navigate(["/"])
       return

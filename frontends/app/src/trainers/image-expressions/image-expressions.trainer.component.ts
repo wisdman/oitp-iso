@@ -7,10 +7,7 @@ import { ASSETS_EXPRESSIONS } from "../../app.config"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IImageExpressionsTrainerConfig,
-  IImageExpressionsTrainerResult,
-} from "./image-expressions.trainer.interfaces"
+import { IImageExpressionsTrainerConfig } from "./image-expressions.trainer.interfaces"
 
 @Component({
   selector: "trainer-image-expressions",
@@ -19,24 +16,40 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageExpressionsTrainerComponent
-extends AbstractTrainerComponent<IImageExpressionsTrainerConfig, IImageExpressionsTrainerResult> {
+  extends AbstractTrainerComponent<IImageExpressionsTrainerConfig> {
 
   getSrcset(id: number, type: "jpg" | "webp" = "jpg") {
     return `${ASSETS_EXPRESSIONS}/${id}.${type}`
   }
 
+  private _prepareString(value: string): string {
+    return value.toUpperCase()
+                .replace("Й", "И")
+                .replace("Ё", "Е")
+                .replace(/[^0-9A-ZА-Я\s]+/ig,"")
+                .replace(/\s+/ig, " ")
+                .trim()
+  }
+
+  isSuccess: boolean = false
+  userData: string = ""
+
   init() {
-    this.fullscreenService.unlock()
-    this.setTimeout(this.config.showTimeLimit)
-    this.timeMeter()
+    this.isSuccess = false
+    this.userData = ""
   }
 
   timeout() {
-    this.finish()
+    super.timeout()
+    this.result()
+  }
+
+  result() {
+    this.isSuccess = this._prepareString(this.config.data || "") === this._prepareString(this.userData || "")
+    super.result()
   }
 
   finish() {
-    this.timeMeter()
-    super.finish()
+    super.finish(this.isSuccess ? 100 : 0)
   }
 }

@@ -29,11 +29,11 @@ class="field"
       (result)="onResult($event)"
     ></trainer-greeting>
 
-    <trainer-image-carpet
-      *ngIf="config.ui === 'image-carpet'"
+    <trainer-image-carpets
+      *ngIf="config.ui === 'image-carpets'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-image-carpet>
+    ></trainer-image-carpets>
 
     <trainer-image-differences
       *ngIf="config.ui === 'image-differences'"
@@ -47,23 +47,23 @@ class="field"
       (result)="onResult($event)"
     ></trainer-image-expressions>
 
-    <trainer-image-expressions-question
-      *ngIf="config.ui === 'image-expressions-question'"
+    <trainer-image-expressions-preview
+      *ngIf="config.ui === 'image-expressions-preview'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-image-expressions-question>
+    ></trainer-image-expressions-preview>
 
-    <trainer-image-field
-      *ngIf="config.ui === 'image-field'"
+    <trainer-image-fields-preview
+      *ngIf="config.ui === 'image-fields-preview'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-image-field>
+    ></trainer-image-fields-preview>
 
-    <trainer-image-field-question
-      *ngIf="config.ui === 'image-field-question'"
+    <trainer-image-fields-question
+      *ngIf="config.ui === 'image-fields-question'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-image-field-question>
+    ></trainer-image-fields-question>
 
     <trainer-math-equation
       *ngIf="config.ui === 'math-equation'"
@@ -89,23 +89,35 @@ class="field"
       (result)="onResult($event)"
     ></trainer-math-waste>
 
-    <trainer-matrix-filling
-      *ngIf="config.ui === 'matrix-filling'"
+    <trainer-matrix-images-filling
+      *ngIf="config.ui === 'matrix-images-filling'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-matrix-filling>
+    ></trainer-matrix-images-filling>
 
-    <trainer-matrix-filling-question
-      *ngIf="config.ui === 'matrix-filling-question'"
+    <trainer-matrix-images-preview
+      *ngIf="config.ui === 'matrix-images-preview'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-matrix-filling-question>
+    ></trainer-matrix-images-preview>
 
-    <trainer-matrix-sequence
-      *ngIf="config.ui === 'matrix-sequence'"
+    <trainer-matrix-images-question
+      *ngIf="config.ui === 'matrix-images-question'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-matrix-sequence>
+    ></trainer-matrix-images-question>
+
+    <trainer-matrix-sequence-filling
+      *ngIf="config.ui === 'matrix-sequence-filling'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-matrix-sequence-filling>
+
+    <trainer-matrix-sequence-play
+      *ngIf="config.ui === 'matrix-sequence-play'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-matrix-sequence-play>
 
     <trainer-relax
       *ngIf="config.ui === 'relax'"
@@ -131,23 +143,11 @@ class="field"
       (result)="onResult($event)"
     ></trainer-storytelling>
 
-    <trainer-storytelling-question
-      *ngIf="config.ui === 'storytelling-question'"
-      [config]="config"
-      (result)="onResult($event)"
-    ></trainer-storytelling-question>
-
     <trainer-table-pipe
       *ngIf="config.ui === 'table-pipe'"
       [config]="config"
       (result)="onResult($event)"
     ></trainer-table-pipe>
-
-    <trainer-table-words
-      *ngIf="config.ui === 'table-words'"
-      [config]="config"
-      (result)="onResult($event)"
-    ></trainer-table-words>
 
     <trainer-text-letters
       *ngIf="config.ui === 'text-letters'"
@@ -155,17 +155,23 @@ class="field"
       (result)="onResult($event)"
     ></trainer-text-letters>
 
+    <trainer-text-letters-preview
+      *ngIf="config.ui === 'text-letters-preview'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-text-letters-preview>
+
+    <trainer-text-question-tof
+      *ngIf="config.ui === 'text-question-tof'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-text-question-tof>
+
     <trainer-text-reading
       *ngIf="config.ui === 'text-reading'"
       [config]="config"
       (result)="onResult($event)"
     ></trainer-text-reading>
-
-    <trainer-text-reading-question
-      *ngIf="config.ui === 'text-reading-question'"
-      [config]="config"
-      (result)="onResult($event)"
-    ></trainer-text-reading-question>
 
     <trainer-text-tezirovanie
       *ngIf="config.ui === 'text-tezirovanie'"
@@ -179,6 +185,12 @@ class="field"
       (result)="onResult($event)"
     ></trainer-words-column>
 
+    <trainer-words-filling
+      *ngIf="config.ui === 'words-filling'"
+      [config]="config"
+      (result)="onResult($event)"
+    ></trainer-words-filling>
+
     <trainer-words-lexis
       *ngIf="config.ui === 'words-lexis'"
       [config]="config"
@@ -191,17 +203,17 @@ class="field"
       (result)="onResult($event)"
     ></trainer-words-pairs>
 
-    <trainer-words-question-close
-      *ngIf="config.ui === 'words-question-close'"
+    <trainer-words-questions-close
+      *ngIf="config.ui === 'words-questions-close'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-words-question-close>
+    ></trainer-words-questions-close>
 
-    <trainer-words-question-waste
-      *ngIf="config.ui === 'words-question-waste'"
+    <trainer-words-questions-waste
+      *ngIf="config.ui === 'words-questions-waste'"
       [config]="config"
       (result)="onResult($event)"
-    ></trainer-words-question-waste>
+    ></trainer-words-questions-waste>
   </div>
 
   <timer-lap></timer-lap>

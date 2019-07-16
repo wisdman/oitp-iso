@@ -22,14 +22,14 @@ BEGIN
     ("complexity"->'playTimeLimit')::smallint,
     ("complexity"->'minItems')::smallint,
     ("complexity"->'maxItems')::smallint,
-    ("complexity"->'quantity')::smallint
+    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
   INTO
     _playTimeLimit,
     _minItems,
     _maxItems,
     _quantity
-  FROM private.complexity_defaults
-  -- FROM public.self_complexity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
   WHERE "trainer" = 'classification-definitions';
 
   RETURN QUERY (
@@ -59,7 +59,7 @@ BEGIN
               SELECT "definitions", "word"
               FROM private.trainer__classification_definitions__data
               ORDER BY random()
-              LIMIT public.random_in_range(_minItems, _maxItems)
+              LIMIT public.random(_minItems, _maxItems)
             ) AS t
             ORDER BY random()
           ) AS t

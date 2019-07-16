@@ -3,7 +3,7 @@
 </main>
 
 <header class="header" [class.header--shadow]="headerShadow">
-  <button type="button" class="sidebar-toggle" (click)="isSidebarActive=true; $event.stopPropagation()">
+  <button type="button" class="button button--round button--transparent" (click)="isSidebarActive=true; $event.stopPropagation()">
     <div class="hamburger" aria-hidden="true"></div>
     <span class="visually-hidden">Меню</span>
   </button>
@@ -82,7 +82,7 @@
     </a>
   </nav>
 
-  <button type="button" class="sidebar-toggle sidebar-toggle--bg" (click)="isSidebarActive=false">
+  <button type="button" class="button button--round sidebar-close" (click)="isSidebarActive=false">
     <div class="hamburger hamburger--arrow" aria-hidden="true"></div>
     <span class="visually-hidden">Меню</span>
   </button>

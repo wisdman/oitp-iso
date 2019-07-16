@@ -1,13 +1,6 @@
 <!-- Наглядно-образная память -->
-<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните картинку</h1>
-<h1 *ngIf="mode==='play'" class="trainer-h1">Найдите отличия</h1>
+<h1 class="trainer-h1">Найдите отличия</h1>
 <img
-  *ngIf="mode == 'show'"
-  class="image"
-  [src]="sanitizeUrl('/assets/differences/' + this.config.A + '.svg')"
->
-<img
-  *ngIf="mode == 'play'"
   class="image"
   [src]="sanitizeUrl('/assets/differences/' + this.config.B + '.svg')"
 >

@@ -1,0 +1,50 @@
+<!-- Вариативность мышления -->
+<h1 class="trainer-h1">Заполните&nbsp;таблицу<br>существительными,&nbsp;орентируясь<br>на&nbsp;первую&nbsp;букву&nbsp;слова</h1>
+
+<div
+  *ngFor="let item of items"
+  class="item"
+>
+  <div class="rune">
+    <svg
+      class="matrix"
+      [attr.viewBox]="matrixViewBox"
+      [attr.width]="matrixWidth"
+      [attr.height]="matrixHeight"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      preserveAspectRatio="none"
+    >
+      <path
+        class="fill-path"
+        [attr.d]="item.fillPath"
+      ></path>
+      <path
+        class="path"
+        [attr.d]="item.path"
+        vector-effect="non-scaling-stroke"
+      ></path>
+    </svg>
+    <span class="rune-text">{{ item.rune }}</span>
+  </div>
+
+  <input
+    type="text"
+    class="input input--trainer"
+    [disabled]="mode !== 'play'"
+    [result]="mode === 'result' && (item.isSuccess && 'success' || 'error')"
+    [(ngModel)]="item.word"
+  >
+</div>
+
+<button
+  *ngIf="mode==='play'"
+  class="button button--trainer"
+  (click)="result()"
+>Проверить</button>
+
+<button
+  *ngIf="mode === 'result'"
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

@@ -26,8 +26,7 @@ DECLARE
 
   _matrixSize smallint;
 
-  _minQuantity smallint;
-  _maxQuantity smallint;
+  _quantity smallint;
 
   _answersCount smallint;
 
@@ -38,19 +37,17 @@ BEGIN
     ("complexity"->'playTimeLimit')::smallint,
     ("complexity"->'questionTimeLimit')::smallint,
     ("complexity"->'matrixSize')::smallint,
-    ("complexity"->'minQuantity')::smallint,
-    ("complexity"->'maxQuantity')::smallint,
+    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int),
     ("complexity"->'answersCount')::smallint
   INTO
     _showTimeLimit,
     _playTimeLimit,
     _questionTimeLimit,
     _matrixSize,
-    _minQuantity,
-    _maxQuantity,
+    _quantity,
     _answersCount
-  FROM private.complexity_defaults
-  -- FROM public.self_complexity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
   WHERE "trainer" = 'matrix-filling-pattern';
 
   RETURN QUERY (
@@ -66,47 +63,54 @@ BEGIN
         FROM private.trainer__matrix_filling_pattern__data
         WHERE array_length("data", 1) = _matrixSize
         ORDER BY random()
-        LIMIT public.random_in_range(_minQuantity, _maxQuantity)
+        LIMIT _quantity
       ) AS p
     )
 
     SELECT
-      unnest(ARRAY[jsonb_build_object(
-        'id', 'matrix-filling-pattern',
-        'ui', 'matrix-images-preview',
-        'timeLimit', _showTimeLimit,
-        'items', "correct",
-        'matrix', "data"
-      ),
-      jsonb_build_object(
-        'id', 'matrix-filling-pattern',
-        'ui', 'matrix-images-filling',
-        'timeLimit', _playTimeLimit,
-        'items', "correct" || "incorrect",
-        'matrix', "data"
-      )])
-    FROM patterns
-
-    UNION ALL
-
-    SELECT
-      jsonb_build_object(
-        'id', 'matrix-filling-pattern',
-        'ui', 'matrix-images-question',
-        'timeLimit', _questionTimeLimit,
-        'items', array_agg("item")
-      ) AS "config"
+      "config"
     FROM (
-      SELECT "item"
+      SELECT
+        1 AS "ord",
+        unnest(ARRAY[jsonb_build_object(
+          'id', 'matrix-filling-pattern',
+          'ui', 'matrix-images-preview',
+          'timeLimit', _showTimeLimit,
+          'items', "correct",
+          'matrix', "data"
+        ),
+        jsonb_build_object(
+          'id', 'matrix-filling-pattern',
+          'ui', 'matrix-images-filling',
+          'timeLimit', _playTimeLimit,
+          'items', "correct" || "incorrect",
+          'matrix', "data"
+        )]) AS "config"
+      FROM patterns
+
+      UNION ALL
+
+      SELECT
+        2 AS "ord",
+        jsonb_build_object(
+          'id', 'matrix-filling-pattern',
+          'ui', 'matrix-images-question',
+          'timeLimit', _questionTimeLimit,
+          'items', array_agg("item")
+        ) AS "config"
       FROM (
-        SELECT jsonb_build_object('icon', "icon", 'correct', TRUE) AS "item"
-        FROM (SELECT unnest("correct") AS "icon" FROM patterns) AS t
-        UNION ALL
-        SELECT jsonb_build_object('icon', "icon", 'correct', FALSE) AS "item"
-        FROM private.icons_get(_answersCount) AS t("icon" int)
-      ) AS i
-      ORDER BY random()
-      LIMIT _answersCount
+        SELECT "item"
+        FROM (
+          SELECT jsonb_build_object('icon', "icon", 'correct', TRUE) AS "item"
+          FROM (SELECT unnest("correct") AS "icon" FROM patterns) AS t
+          UNION ALL
+          SELECT jsonb_build_object('icon', "icon", 'correct', FALSE) AS "item"
+          FROM private.icons_get(_answersCount) AS t("icon" int)
+        ) AS i
+        ORDER BY random()
+        LIMIT _answersCount
+      ) AS t
     ) AS t
+    ORDER BY "ord"
   );
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

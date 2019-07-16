@@ -1,17 +1,13 @@
-
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
 import { ISwipe } from "../../services"
 
-export type ITablePipeTrainer = "table-pipe"
+export type ITablePipeTrainerID = "table-pipe"
+export type ITablePipeTrainerUI = "table-pipe"
 
 export interface ITablePipeTrainerConfig extends ITrainerConfig {
-  ui: ITablePipeTrainer
-
-  playTimeLimit: number
+  id: ITablePipeTrainerID
+  ui: ITablePipeTrainerUI
 
   items: Array<{
     data: string
@@ -19,8 +15,3 @@ export interface ITablePipeTrainerConfig extends ITrainerConfig {
   }>
   matrix: Array<number>
 }
-
-export interface ITablePipeTrainerResult extends ITrainerResult {
-  config: ITablePipeTrainerConfig
-}
-

@@ -1,20 +1,13 @@
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
-export type IImageExpressionsTrainer = "image-expressions"
+export type IImageExpressionsTrainerID = "image-expressions"
+export type IImageExpressionsTrainerUI = "image-expressions"
 
 export interface IImageExpressionsTrainerConfig extends ITrainerConfig {
-  ui: IImageExpressionsTrainer
-
-  showTimeLimit: number
+  id: IImageExpressionsTrainerID
+  ui: IImageExpressionsTrainerUI
 
   image: number
   data: string
-}
-
-export interface IImageExpressionsTrainerResult extends ITrainerResult {
-  config: IImageExpressionsTrainerConfig
 }

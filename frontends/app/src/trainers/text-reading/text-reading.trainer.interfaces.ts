@@ -1,16 +1,11 @@
+import { ITrainerConfig } from "../interfaces"
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
-
-export type ITextReadingTrainer = "text-reading"
+export type ITextReadingTrainerID = "text-reading"
+export type ITextReadingTrainerUI = "text-reading"
 
 export interface ITextReadingTrainerConfig extends ITrainerConfig {
-  ui: ITextReadingTrainer
-  data: string
-}
+  id: ITextReadingTrainerID
+  ui: ITextReadingTrainerUI
 
-export interface ITextReadingTrainerResult extends ITrainerResult {
-  config: ITextReadingTrainerConfig
+  data: string
 }

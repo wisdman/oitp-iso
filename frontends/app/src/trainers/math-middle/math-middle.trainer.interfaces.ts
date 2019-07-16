@@ -1,25 +1,15 @@
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
-export type IMathMiddleTrainer = "math-middle"
-
-export interface IMathMiddleTrainerItem {
-  data: Array<number>,
-  answer: string,
-}
+export type IMathMiddleTrainerID = "math-middle"
+export type IMathMiddleTrainerUI = "math-middle"
 
 export interface IMathMiddleTrainerConfig extends ITrainerConfig {
-  ui: IMathMiddleTrainer
+  id: IMathMiddleTrainerID
+  ui: IMathMiddleTrainerUI
 
-  playTimeLimit: number
-
-  type: "middle" | "sequence"
-  items: Array<IMathMiddleTrainerItem>
-}
-
-export interface IMathMiddleTrainerResult extends ITrainerResult {
-  config: IMathMiddleTrainerConfig
+  items: Array<{
+    data: Array<number>,
+    answer: string,
+  }>
 }

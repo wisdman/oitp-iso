@@ -232,21 +232,7 @@
 
 /* ======= Sidebar toggle button ======= */
 
-.sidebar-toggle {
-  width: 40px;
-  height: 40px;
-  padding: 0;
-
-  border-radius: 50%;
-}
-
-.sidebar-toggle--bg {
-  color: var(--color-text);
-  background-color: var(--color-background);
-  box-shadow: 0 2px 32px -8px rgba(0,0,0,.87);
-}
-
-.sidebar .sidebar-toggle {
+.sidebar-close {
   position: absolute;
   right: -20px;
   top: 12px;

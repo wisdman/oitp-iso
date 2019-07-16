@@ -1,0 +1,6 @@
+.matrix {
+  margin: 0;
+  margin-top: calc(var(--trainer-margin) * 4);
+  max-width: 100%;
+  max-height: 100%;
+}

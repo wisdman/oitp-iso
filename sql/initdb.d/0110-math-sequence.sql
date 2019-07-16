@@ -6,8 +6,6 @@ DECLARE
 
   _complexity smallint;
 
-  _minQuantity smallint;
-  _maxQuantity smallint;
   _quantity smallint;
 
   _length int := 8;
@@ -15,18 +13,14 @@ BEGIN
   SELECT
     ("complexity"->'playTimeLimit')::smallint,
     ("complexity"->'complexity')::smallint,
-    ("complexity"->'minQuantity')::smallint,
-    ("complexity"->'maxQuantity')::smallint
+    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
   INTO
     _playTimeLimit,
     _complexity,
-    _minQuantity,
-    _maxQuantity
-  FROM private.complexity_defaults
-  -- FROM public.self_complexity
+    _quantity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
   WHERE "trainer" = 'math-sequence';
-
-  _quantity := public.random_in_range(_minQuantity, _maxQuantity);
 
   RETURN QUERY (
     SELECT

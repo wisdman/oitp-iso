@@ -1,19 +1,11 @@
+import { ITrainerConfig } from "../interfaces"
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
-
-export type ITextTezirovanieTrainer = "text-tezirovanie"
+export type ITextTezirovanieTrainerID = "text-tezirovanie"
+export type ITextTezirovanieTrainerUI = "text-tezirovanie"
 
 export interface ITextTezirovanieTrainerConfig extends ITrainerConfig {
-  ui: ITextTezirovanieTrainer
-
-  playTimeLimit: number
+  id: ITextTezirovanieTrainerID
+  ui: ITextTezirovanieTrainerUI
 
   data: string
-}
-
-export interface ITextTezirovanieTrainerResult extends ITrainerResult {
-  config: ITextTezirovanieTrainerConfig
 }

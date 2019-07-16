@@ -22,10 +22,7 @@ import { ISwipe } from "../../services"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  ITablePipeTrainerConfig,
-  ITablePipeTrainerResult,
-} from "./table-pipe.trainer.interfaces"
+import { ITablePipeTrainerConfig } from "./table-pipe.trainer.interfaces"
 
 interface IItem extends SVGShape {
   data: string
@@ -40,7 +37,8 @@ interface IItem extends SVGShape {
   styleUrls: [ "./table-pipe.trainer.component.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePipeTrainerConfig, ITablePipeTrainerResult> {
+export class TablePipeTrainerComponent
+  extends AbstractTrainerComponent<ITablePipeTrainerConfig> {
 
   current: number = 0
   rules!: Array<IItem>
@@ -72,21 +70,20 @@ export class TablePipeTrainerComponent extends AbstractTrainerComponent<ITablePi
         })
       ),
     ).subscribe(action => this._step(action))
-
-    this.setTimeout(this.config.playTimeLimit)
-    this.timeMeter()
   }
 
   destroy() {
-    if (this._actionSubscriber) this._actionSubscriber.unsubscribe()
+    this._actionSubscriber.unsubscribe()
+  }
+
+  timeout() {
+    super.timeout()
+    this.finish()
   }
 
   finish() {
-    this.timeMeter()
     const success = this.matrix.reduce((sum, {isSuccess}) => isSuccess ? ++sum : sum, 0)
-    const result = Math.round(success / this.config.matrix.length * 100)
-    this.updateResult({ result })
-    super.finish()
+    super.finish(success / this.config.matrix.length * 100)
   }
 
   private _step(action: ISwipe) {

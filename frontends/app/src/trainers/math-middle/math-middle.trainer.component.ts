@@ -5,11 +5,7 @@ import {
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IMathMiddleTrainerItem,
-  IMathMiddleTrainerConfig,
-  IMathMiddleTrainerResult,
-} from "./math-middle.trainer.interfaces"
+import { IMathMiddleTrainerConfig } from "./math-middle.trainer.interfaces"
 
 @Component({
   selector: "trainer-math-middle",
@@ -18,12 +14,16 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MathMiddleTrainerComponent
-extends AbstractTrainerComponent<IMathMiddleTrainerConfig, IMathMiddleTrainerResult> {
+  extends AbstractTrainerComponent<IMathMiddleTrainerConfig> {
 
-  mode: "play" | "result" = "play"
-
-  items!: Array<IMathMiddleTrainerItem>
-  item!: IMathMiddleTrainerItem
+  items!: Array<{
+    data: Array<number>,
+    answer: string,
+  }>
+  item!: {
+    data: Array<number>,
+    answer: string,
+  }
 
   userData?: number
   isSuccess: boolean = false
@@ -38,37 +38,28 @@ extends AbstractTrainerComponent<IMathMiddleTrainerConfig, IMathMiddleTrainerRes
 
     this.items = this.config.items.slice(0,-1)
     this.item = this.config.items[this.config.items.length - 1]
-
-    this.mode = "play"
-    this.setTimeout(this.config.playTimeLimit)
-    this.timeMeter()
   }
 
-  showResult() {
-    this.setTimeout(0)
-    this.timeMeter()
+  timeout() {
+    super.timeout()
+    this.result()
+  }
+
+  result() {
+    super.result()
 
     if (!this.userData) {
       this.userData = 0
     }
 
     this.isSuccess = this.userData === this.item.data[1]
-
-    this.mode = "result"
-    this.markForCheck()
   }
 
   showAnswer() {
     this.isAnswerShown = true
   }
 
-  timeout() {
-    super.timeout()
-    this.showResult()
-  }
-
   finish() {
-    this.updateResult({ result: this.isSuccess ? 100 : 0 })
-    super.finish()
+    super.finish(this.isSuccess ? 100 : 0)
   }
 }

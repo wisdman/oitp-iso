@@ -8,7 +8,8 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"minItems": 3,'
     '"maxItems": 5,'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 1'
   '}')::jsonb),
 
   -- Активизация лексиклна - дифиниции
@@ -18,7 +19,8 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"minItems": 3,'
     '"maxItems": 5,'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 1'
   '}')::jsonb),
 
   -- Активизация лексиклна - слова по группам
@@ -31,12 +33,13 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"minItems": 3,'
     '"maxItems": 4,'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 1'
   '}')::jsonb),
 
   -- Наглядно-образная память - коврики
   ('image-carpets', ('{'
-    '"showTimeLimit": 5,'
+    '"previewTimeLimit": 5,'
     '"playTimeLimit": 30,'
 
     '"complexity": 0,'
@@ -98,7 +101,7 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
 
     '"complexity": 0,'
 
-    '"itemsCount": 2,'
+    '"itemsCount": 3,'
 
     '"minQuantity": 3,'
     '"maxQuantity": 4'
@@ -205,46 +208,18 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
 
     '"completed": [],'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 1'
   '}')::jsonb),
 
-  -- Распределение внимания - английские буквы
-  ('table-pipe-en', ('{'
+  -- Распределение внимания
+  ('table-pipe', ('{'
     '"playTimeLimit": 120,'
 
     '"matrixSize": 30,'
 
-    '"quantity": 1'
-  '}')::jsonb),
-
-  -- Распределение внимания - числа
-  ('table-pipe-number', ('{'
-    '"playTimeLimit": 120,'
-
-    '"matrixSize": 30,'
-
-    '"quantity": 1'
-  '}')::jsonb),
-
-  -- Распределение внимания - русские буквы
-  ('table-pipe-ru', ('{'
-    '"playTimeLimit": 120,'
-
-    '"matrixSize": 30,'
-
-    '"quantity": 1'
-  '}')::jsonb),
-
-  -- Вариативность мышления - существительные
-  ('table-words', ('{'
-    '"playTimeLimit": 60,'
-
-    '"minItems": 4,'
-    '"maxItems": 5,'
-
-    '"runesCount": 1,'
-
-    '"quantity": 1'
+    '"minQuantity": 2,'
+    '"maxQuantity": 3'
   '}')::jsonb),
 
   -- Точность восприятия - афоризмы
@@ -264,7 +239,8 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
 
     '"completed": [],'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 1'
   '}')::jsonb),
 
   -- Тезирование
@@ -273,12 +249,24 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
 
     '"completed": [],'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 2'
   '}')::jsonb),
 
   -- Мнемотехника - столбики
   ('words-column', ('{'
-    '"showTimeLimit": 30,'
+    '"itemTimeLimit": 3,'
+    '"playTimeLimit": 60,'
+
+    '"minItems": 4,'
+    '"maxItems": 5,'
+
+    '"minQuantity": 1,'
+    '"maxQuantity": 2'
+  '}')::jsonb),
+
+  -- Вариативность мышления - существительные
+  ('words-filling', ('{'
     '"playTimeLimit": 60,'
 
     '"minItems": 4,'
@@ -295,7 +283,8 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"minItems": 4,'
     '"maxItems": 5,'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 2'
   '}')::jsonb),
 
   -- Вербальный интеллект - паронимы
@@ -305,7 +294,8 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"minItems": 4,'
     '"maxItems": 5,'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 2'
   '}')::jsonb),
 
   -- Вербальный интеллект - синонимы
@@ -315,12 +305,13 @@ INSERT INTO private.complexity_defaults("trainer", "complexity") VALUES
     '"minItems": 4,'
     '"maxItems": 5,'
 
-    '"quantity": 1'
+    '"minQuantity": 1,'
+    '"maxQuantity": 2'
   '}')::jsonb),
 
   -- Точность восприятия - пары слов
   ('words-pairs', ('{'
-    '"showTimeLimit": 30,'
+    '"itemTimeLimit": 5,'
     '"playTimeLimit": 40,'
 
     '"minItems": 4,'

@@ -17,13 +17,11 @@ import { ISelectorItem } from "../../components/trainer-selector"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IClassificationDefinitionsTrainerConfig,
-  IClassificationDefinitionsTrainerItem,
-  IClassificationDefinitionsTrainerResult,
-} from "./classification-definitions.trainer.interfaces"
+import { IClassificationDefinitionsTrainerConfig } from "./classification-definitions.trainer.interfaces"
 
-interface IItem extends IClassificationDefinitionsTrainerItem {
+interface IItem {
+  definition: string
+  data: string
   isSuccess?: boolean
 }
 
@@ -34,7 +32,7 @@ interface IItem extends IClassificationDefinitionsTrainerItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassificationDefinitionsTrainerComponent
-extends AbstractTrainerComponent<IClassificationDefinitionsTrainerConfig, IClassificationDefinitionsTrainerResult> {
+  extends AbstractTrainerComponent<IClassificationDefinitionsTrainerConfig> {
 
   transitionDuration!: number
   isError!: boolean
@@ -57,9 +55,8 @@ extends AbstractTrainerComponent<IClassificationDefinitionsTrainerConfig, IClass
     this.groups = [...new Set(this.config.items.map( ({data}) => ({data}) ))]
                   .sort(() => Math.random() - 0.5)
 
-    this.items = this.config.items.sort(() => Math.random() - 0.5)
+    this.items = this.config.items
 
-    if (this._itemSubscription) this._itemSubscription.unsubscribe()
     this._itemSubscription = this._stepSubject.pipe(
       map(() => this.items.find(item => !item.isSuccess)),
       takeWhile(item => item !== undefined),
@@ -72,26 +69,19 @@ extends AbstractTrainerComponent<IClassificationDefinitionsTrainerConfig, IClass
       error => console.error(error),
       () => this.finish(),
     )
-
-    this._stepSubject.next()
-    this.setTimeout(this.config.playTimeLimit)
-    this.timeMeter()
   }
 
   destroy() {
-    if (this._itemSubscription) this._itemSubscription.unsubscribe()
+    this._itemSubscription.unsubscribe()
   }
 
-  timeout() {
-    super.timeout()
-    this.finish()
+  start() {
+    this._stepSubject.next()
+    super.start()
   }
 
   finish() {
-    this.timeMeter()
-    const result = Math.round(this.success / this.config.items.length * 100)
-    this.updateResult({ result: result < 0 ? 0 : result > 100 ? 100 : result })
-    super.finish()
+    super.finish(this.success / this.config.items.length * 100)
   }
 
   onTouch(group: ISelectorItem) {

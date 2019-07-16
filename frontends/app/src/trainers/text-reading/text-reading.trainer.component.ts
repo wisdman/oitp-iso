@@ -5,10 +5,7 @@ import {
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  ITextReadingTrainerConfig,
-  ITextReadingTrainerResult,
-} from "./text-reading.trainer.interfaces"
+import { ITextReadingTrainerConfig } from "./text-reading.trainer.interfaces"
 
 @Component({
   selector: "trainer-text-reading",
@@ -17,14 +14,9 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextReadingTrainerComponent
-extends AbstractTrainerComponent<ITextReadingTrainerConfig, ITextReadingTrainerResult> {
+  extends AbstractTrainerComponent<ITextReadingTrainerConfig> {
+
   init() {
     this.fullscreenService.unlock()
-    this.timeMeter()
-  }
-
-  finish() {
-    this.timeMeter()
-    super.finish()
   }
 }

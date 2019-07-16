@@ -52,6 +52,13 @@
 </svg>
 
 <button
+  *ngIf="mode === 'play'"
+  class="button button--trainer"
+  invisible disabled
+  (click)="result()"
+>Проверить</button>
+
+<button
   *ngIf="mode === 'result'"
   class="button button--trainer"
   (click)="finish()"

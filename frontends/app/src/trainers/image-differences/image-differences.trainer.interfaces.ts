@@ -1,21 +1,14 @@
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
-export type IImageDifferencesTrainer = "image-differences"
+export type IImageDifferencesTrainerID = "image-differences"
+export type IImageDifferencesTrainerUI = "image-differences"
 
 export interface IImageDifferencesTrainerConfig extends ITrainerConfig {
-  ui: IImageDifferencesTrainer
-
-  timeLimit: number
+  id: IImageDifferencesTrainerID
+  ui: IImageDifferencesTrainerUI
 
   A: number,
   B: number,
   differences?: Array<string>
-}
-
-export interface IImageDifferencesTrainerResult extends ITrainerResult {
-  config: IImageDifferencesTrainerConfig
 }

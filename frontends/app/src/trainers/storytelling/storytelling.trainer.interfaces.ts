@@ -1,17 +1,12 @@
+import { ITrainerConfig } from "../interfaces"
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
-
-export type IStorytellingTrainer = "storytelling"
+export type IStorytellingTrainerID = "storytelling"
+export type IStorytellingTrainerUI = "storytelling"
 
 export interface IStorytellingTrainerConfig extends ITrainerConfig {
-  ui: IStorytellingTrainer
+  id: IStorytellingTrainerID
+  ui: IStorytellingTrainerUI
+
   image: number
   audio: number
-}
-
-export interface IStorytellingTrainerResult extends ITrainerResult {
-  config: IStorytellingTrainerConfig
 }

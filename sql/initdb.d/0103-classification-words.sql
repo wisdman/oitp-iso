@@ -26,7 +26,7 @@ BEGIN
     ("complexity"->'maxGroups')::smallint,
     ("complexity"->'minItems')::smallint,
     ("complexity"->'maxItems')::smallint,
-    ("complexity"->'quantity')::smallint
+    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
   INTO
     _itemTimeLimit,
     _minGroups,
@@ -34,8 +34,8 @@ BEGIN
     _minItems,
     _maxItems,
     _quantity
-  FROM private.complexity_defaults
-  -- FROM public.self_complexity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
   WHERE "trainer" = 'classification-words';
 
   RETURN QUERY (
@@ -65,10 +65,10 @@ BEGIN
               SELECT "group", "words"
               FROM private.trainer__classification_words__data
               ORDER BY random()
-              LIMIT public.random_in_range(_minGroups, _maxGroups)
+              LIMIT public.random(_minGroups, _maxGroups)
             ) AS t
           ) AS t
-        ) AS t WHERE cnt <= public.random_in_range(_minItems, _maxItems)
+        ) AS t WHERE cnt <= public.random(_minItems, _maxItems)
       ) AS t
       WHERE s = s
     ) AS "config"

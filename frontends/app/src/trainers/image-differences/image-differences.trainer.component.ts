@@ -3,14 +3,9 @@ import {
   ChangeDetectionStrategy,
 } from "@angular/core"
 
-import {
-  AbstractTrainerComponent,
-} from "../abstract"
+import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IImageDifferencesTrainerConfig,
-  IImageDifferencesTrainerResult,
-} from "./image-differences.trainer.interfaces"
+import { IImageDifferencesTrainerConfig } from "./image-differences.trainer.interfaces"
 
 @Component({
   selector: "trainer-image-differences",
@@ -19,11 +14,4 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageDifferencesTrainerComponent
-extends AbstractTrainerComponent<IImageDifferencesTrainerConfig, IImageDifferencesTrainerResult> {
-
-  mode: "show" | "play" = "show"
-
-  init() {
-    this.setTimeout(this.config.timeLimit)
-  }
-}
+  extends AbstractTrainerComponent<IImageDifferencesTrainerConfig> {}

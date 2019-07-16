@@ -8,12 +8,12 @@ import (
 )
 
 type Result struct {
-	UUID string `json:"uuid"`
-
-	IsTimeout bool   `json:"isTimeout"`
-	Time      uint16 `json:"time"`
+	Idx uint16 `json:"idx"`
 
 	Result *int16 `json:"result"`
+	Time   uint32 `json:"time"`
+
+	IsTimeout bool `json:"isTimeout"`
 }
 
 func (api *API) Add(w http.ResponseWriter, r *http.Request) {
@@ -31,17 +31,13 @@ func (api *API) Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if result.UUID == "" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
-
 	sql := middleware.GetDBTransaction(r)
 
 	if _, err := sql.Exec(`
-    SELECT public.training__add_result($1, $2)`,
+    SELECT public.training__add_result($1, $2, $3)`,
 		training,
-		[...]Result{result},
+		result.Idx,
+		result,
 	); err != nil {
 		service.Fatal(w, err)
 		return

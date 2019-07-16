@@ -1,5 +1,4 @@
 <!-- Точность восприятия - афоризмы -->
-<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните&nbsp;афоризм<br>&nbsp;</h1>
 <h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>первую&nbsp;букву&nbsp;каждого&nbsp;слова</h1>
 <h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
@@ -19,32 +18,25 @@
     [class.rune-success] = "mode === 'result' && item.data === item.userData"
   >{{ item.userData }}</span>
 </div>
+
 <input
   type="text"
   class="hidden"
   [disabled]="mode !== 'play'"
   [(ngModel)]="userData"
   keyfilter="0-9a-zA-Zа-яА-ЯйЙёЁ"
-  focusable
+  autoFocus
 >
 
 <button
-  *ngIf="mode === 'show'"
-  class="button button--trainer"
-  (click)="startPlay()"
-  focusable
->Продолжить</button>
-
-<button
   *ngIf="mode === 'play'"
-  class="button button--trainer invisible"
-  (click)="showResult()"
+  class="button button--trainer"
+  invisible
+  (click)="result()"
 >Проверить</button>
 
 <button
   *ngIf="mode === 'result'"
   class="button button--trainer"
   (click)="finish()"
-  focusable
 >Продолжить</button>
-

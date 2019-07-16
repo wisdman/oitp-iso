@@ -1,0 +1,26 @@
+:host {
+  --gap: 6px;
+}
+
+.matrix {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  flex: 1 1 auto;
+  height: auto;
+
+  margin: 0;
+  margin-top: calc(var(--trainer-margin) * 4);
+}
+
+.path {
+  stroke: var(--trainer-border-color);
+  stroke-width: 1;
+  fill: none;
+}
+
+.fill-path {
+  stroke: none;
+  stroke-width: 0;
+  fill: var(--trainer-background-color);
+}

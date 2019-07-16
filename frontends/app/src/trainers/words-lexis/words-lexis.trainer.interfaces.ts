@@ -1,20 +1,11 @@
+import { ITrainerConfig } from "../interfaces"
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
-
-export type IWordsLexisTrainer = "words-lexis"
+export type IWordsLexisTrainerID = "words-lexis-antonyms" | "words-lexis-paronyms" | "words-lexis-synonyms"
+export type IWordsLexisTrainerUI = "words-lexis"
 
 export interface IWordsLexisTrainerConfig extends ITrainerConfig {
-  id: "words-lexis-antonyms" | "words-lexis-paronyms" | "words-lexis-synonyms"
-  ui: IWordsLexisTrainer
+  id: IWordsLexisTrainerID
+  ui: IWordsLexisTrainerUI
 
   items: Array<[string, string]>
-
-  playTimeLimit: number
-}
-
-export interface IWordsLexisTrainerResult extends ITrainerResult {
-  config: IWordsLexisTrainerConfig
 }

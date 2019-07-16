@@ -19,7 +19,7 @@ export interface IKeyboardEvent {
 export class KeypadService {
 
   private _keydownObservable:Observable<KeyboardEvent> =
-    fromEvent<KeyboardEvent>(window, "keydown", { passive: false, capture: true })
+    fromEvent<KeyboardEvent>(window, "keydown", { passive: false, capture: true }).pipe(share())
 
   keydown: Observable<IKeyboardEvent> = this._keydownObservable.pipe(
     map(event => {

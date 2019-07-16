@@ -1,20 +1,12 @@
+import { ITrainerConfig } from "../interfaces"
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
-
-export type ITextLettersTrainer = "text-letters"
+export type ITextLettersTrainerID = "text-letters"
+export type ITextLettersTrainerUI = "text-letters"
 
 export interface ITextLettersTrainerConfig extends ITrainerConfig {
-  ui: ITextLettersTrainer
-
-  showTimeLimit: number
-  playTimeLimit: number
+  id: ITextLettersTrainerID
+  ui: ITextLettersTrainerUI
 
   data: string
-}
-
-export interface ITextLettersTrainerResult extends ITrainerResult {
-  config: ITextLettersTrainerConfig
+  runes: Array<string>
 }

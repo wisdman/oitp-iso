@@ -1,0 +1,27 @@
+<!-- Активизация лексикона. Слово - это -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Закончите&nbsp;мысль<br>&nbsp;</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+
+<h2 class="trainer-h2">{{ this.config.word }}&nbsp;-&nbsp;это&nbsp;...</h2>
+
+<trainer-selector
+  class="selector"
+  type="text"
+  [readonly]="mode==='result'"
+  [items]="items"
+  (touch)="result()"
+></trainer-selector>
+
+<button
+  *ngIf="mode==='play'"
+  class="button button--trainer"
+  invisible disabled
+  (click)="result()"
+>Проверить</button>
+
+<button
+  *ngIf="mode==='result'"
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>

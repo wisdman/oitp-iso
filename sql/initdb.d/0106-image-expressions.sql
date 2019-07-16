@@ -16,21 +16,18 @@ DECLARE
   _showTimeLimit smallint;
   _playTimeLimit smallint;
 
-  _minQuantity smallint;
-  _maxQuantity smallint;
+  _quantity smallint;
 BEGIN
   SELECT
     ("complexity"->'showTimeLimit')::smallint,
     ("complexity"->'playTimeLimit')::smallint,
-    ("complexity"->'minQuantity')::smallint,
-    ("complexity"->'maxQuantity')::smallint
+    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
   INTO
     _showTimeLimit,
     _playTimeLimit,
-    _minQuantity,
-    _maxQuantity
-  FROM private.complexity_defaults
-  -- FROM public.self_complexity
+    _quantity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
   WHERE "trainer" = 'image-expressions';
 
   RETURN QUERY (
@@ -52,10 +49,14 @@ BEGIN
         ) AS "config"
       FROM private.trainer__image_expressions__data
       ORDER BY random()
-      LIMIT public.random_in_range(_minQuantity, _maxQuantity)
+      LIMIT _quantity
     )
-    SELECT "config" FROM (SELECT "preview" AS "config" FROM d ORDER BY random()) AS t1
-    UNION ALL
-    SELECT "config" FROM (SELECT "config" AS "config" FROM d ORDER BY random()) AS t2
+    SELECT "config"
+    FROM (
+      SELECT 1 AS "ord", "config" FROM (SELECT "preview" AS "config" FROM d ORDER BY random()) AS t1
+      UNION ALL
+      SELECT 2 AS "ord", "config" FROM (SELECT "config" AS "config" FROM d ORDER BY random()) AS t2
+    ) AS t
+    ORDER BY "ord"
   );
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

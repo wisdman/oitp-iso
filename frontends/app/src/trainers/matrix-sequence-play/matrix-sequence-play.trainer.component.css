@@ -1,0 +1,66 @@
+:host {
+  --gap: 6px;
+}
+
+.matrix {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+
+  margin: 0;
+  margin-top: calc(var(--trainer-margin) * 4);
+  margin-bottom: auto;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.path {
+  stroke: var(--trainer-border-color);
+  stroke-width: 1;
+  fill: none;
+}
+
+.fill-path {
+  stroke: none;
+  stroke-width: 0;
+  fill: var(--trainer-background-color);
+
+  transition: fill .25s;
+}
+
+.item-active .fill-path {
+  fill: var(--trainer-success-background-color);
+}
+
+.item-error .fill-path {
+  fill: var(--trainer-error-background-color);
+}
+
+.text {
+  font-family: inherit;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--trainer-text-color);
+
+  opacity: 1;
+  transition: opacity .15s linear;
+}
+
+.item-success .text {
+  opacity: 0;
+}
+
+.success-icon {
+  fill: var(--trainer-success-color-light);
+
+  opacity: 0;
+  transition: opacity .15s linear;
+}
+
+.item-success .success-icon {
+  opacity: 1;
+}

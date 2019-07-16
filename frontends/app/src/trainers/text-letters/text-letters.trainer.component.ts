@@ -5,10 +5,7 @@ import {
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  ITextLettersTrainerConfig,
-  ITextLettersTrainerResult,
-} from "./text-letters.trainer.interfaces"
+import { ITextLettersTrainerConfig } from "./text-letters.trainer.interfaces"
 
 @Component({
   selector: "trainer-text-letters",
@@ -17,25 +14,12 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TextLettersTrainerComponent
-extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerResult> {
-
-  mode: "show" | "play" | "result" = "show"
+  extends AbstractTrainerComponent<ITextLettersTrainerConfig> {
 
   runes!: Array<{
     data: string
     userData: string
   }>
-
-  private _getRunes(value: string): Array<string> {
-    return value.toUpperCase()
-                .replace(/[^0-9A-ZА-ЯЙЁ\s]+/ig,"")
-                .replace(/\s+/, " ")
-                .trim()
-                .split(/\s+/)
-                .map(s => s.charAt(0).toUpperCase())
-  }
-
-
 
   private _userData: string = ""
   get userData() {
@@ -45,7 +29,7 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     this._userData = value
     this.runes = this.runes.map(({data}, i) => ({data, userData: (this._userData[i] || "").toUpperCase() }))
     if (this._userData.length >= this.runes.length) {
-      this.showResult()
+      this.result()
     }
   }
 
@@ -53,43 +37,16 @@ extends AbstractTrainerComponent<ITextLettersTrainerConfig, ITextLettersTrainerR
     this.fullscreenService.unlock()
 
     this._userData = ""
-    this.runes = this._getRunes(this.config.data)
-                     .map(data => ({data, userData:""}))
-
-    this.mode = "show"
-    this.setTimeout(this.config.showTimeLimit)
+    this.runes = this.config.runes.map(data =>({data, userData: ""}))
   }
 
-  startPlay() {
-    this.setTimeout(this.config.playTimeLimit)
-    this.mode = "play"
-    this.markForCheck()
-    this.timeMeter()
-  }
-
-  showResult() {
-    this.setTimeout(0)
-    this.timeMeter()
-    this.mode = "result"
-    this.markForCheck()
+  timeout() {
+    super.timeout()
+    this.result()
   }
 
   finish() {
     const success = this.runes.reduce((acc, {data, userData}) => data === userData ? ++acc : acc, 0)
-    const result = Math.round(success / this.runes.length * 100)
-    this.updateResult({ result })
-    super.finish()
-  }
-
-  timeout() {
-    switch (this.mode) {
-      case "show":
-        this.startPlay()
-        return
-      case "play":
-        super.timeout()
-        this.showResult()
-        return
-    }
+    super.finish(success / this.runes.length * 100)
   }
 }

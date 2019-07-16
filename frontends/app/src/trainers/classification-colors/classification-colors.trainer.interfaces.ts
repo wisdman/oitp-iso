@@ -1,23 +1,15 @@
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
-export type IClassificationColorsTrainer = "classification-colors"
-
-export interface IClassificationColorsTrainerItem {
-  color: string,
-  data: string,
-}
+export type IClassificationColorsTrainerID = "classification-colors"
+export type IClassificationColorsTrainerUI = "classification-colors"
 
 export interface IClassificationColorsTrainerConfig extends ITrainerConfig {
-  ui: IClassificationColorsTrainer
+  id: IClassificationColorsTrainerID
+  ui: IClassificationColorsTrainerUI
 
-  itemTimeLimit: number
-  items: Array<IClassificationColorsTrainerItem>
-}
-
-export interface IClassificationColorsTrainerResult extends ITrainerResult {
-  config: IClassificationColorsTrainerConfig
+  items: Array<{
+    color: string
+    data: string
+  }>
 }

@@ -1,7 +1,8 @@
 <section class="cards">
   <card-everyday routerLink="/training/everyday"></card-everyday>
   <card-info class="cards__recommendations"></card-info>
-  <card-charger routerLink="/training/once"></card-charger>
+  <card-charger *ngIf="!debig" routerLink="/training/once"></card-charger>
+  <card-debug *ngIf="debig" routerLink="/training/debug"></card-debug>
 </section>
 
 <section class="indicators">

@@ -7,10 +7,7 @@ import { AbstractTrainerComponent } from "../abstract"
 
 import { ISelectorItem } from "../../components/trainer-selector"
 
-import {
-  ISpaceQuestionWasteTrainerConfig,
-  ISpaceQuestionWasteTrainerResult,
-} from "./space-question-waste.trainer.interfaces"
+import { ISpaceQuestionWasteTrainerConfig } from "./space-question-waste.trainer.interfaces"
 
 @Component({
   selector: "trainer-space-question-waste",
@@ -19,24 +16,21 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpaceQuestionWasteTrainerComponent
-extends AbstractTrainerComponent<ISpaceQuestionWasteTrainerConfig, ISpaceQuestionWasteTrainerResult> {
-
-  mode: "play" | "result" = "play"
+  extends AbstractTrainerComponent<ISpaceQuestionWasteTrainerConfig> {
 
   items!: Array<ISelectorItem & { correct: boolean }>
 
   init() {
     this.items = this.config.items
-
-    this.mode = "play"
-    this.setTimeout(this.config.playTimeLimit)
-    this.timeMeter()
   }
 
-  showResult() {
-    this.setTimeout(0)
-    this.timeMeter()
-    this.mode = "result"
+  timeout() {
+    super.timeout()
+    this.result()
+  }
+
+  result() {
+    super.result()
 
     this.items.forEach(item => {
       item.isSuccess = item.isActive && item.correct
@@ -47,19 +41,12 @@ extends AbstractTrainerComponent<ISpaceQuestionWasteTrainerConfig, ISpaceQuestio
     this.markForCheck()
   }
 
-  timeout() {
-    super.timeout()
-    this.showResult()
-  }
-
   finish() {
     const [max, success] = this.items.reduce(([max, success], {correct, isSuccess}) => [
       correct ? ++max : max,
       isSuccess ? ++success : success,
     ], [0, 0])
 
-    const result = Math.round(success / max * 100)
-    this.updateResult({ result: result < 0 ? 0 : result > 100 ? 100 : result })
-    super.finish()
+    super.finish(success / max * 100)
   }
 }

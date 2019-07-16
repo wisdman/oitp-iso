@@ -1,23 +1,15 @@
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
-export type IClassificationDefinitionsTrainer = "classification-definitions"
-
-export interface IClassificationDefinitionsTrainerItem {
-  definition: string
-  data: string
-}
+export type IClassificationDefinitionsTrainerID = "classification-definitions"
+export type IClassificationDefinitionsTrainerUI = "classification-definitions"
 
 export interface IClassificationDefinitionsTrainerConfig extends ITrainerConfig {
-  ui: IClassificationDefinitionsTrainer
+  id: IClassificationDefinitionsTrainerID
+  ui: IClassificationDefinitionsTrainerUI
 
-  playTimeLimit: number
-  items: Array<IClassificationDefinitionsTrainerItem>
-}
-
-export interface IClassificationDefinitionsTrainerResult extends ITrainerResult {
-  config: IClassificationDefinitionsTrainerConfig
+  items: Array<{
+    definition: string
+    data: string
+  }>
 }

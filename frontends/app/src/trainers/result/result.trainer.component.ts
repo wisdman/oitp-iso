@@ -3,16 +3,13 @@ import {
   Component,
 } from "@angular/core"
 
-import { Subscription } from "rxjs"
+// import { Subscription } from "rxjs"
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import { API_RESULT } from "../../app.config"
+// import { API_RESULT } from "../../app.config"
 
-import {
-  IResultTrainerConfig,
-  IResultTrainerResult,
-} from "./result.trainer.interfaces"
+import { IResultTrainerConfig } from "./result.trainer.interfaces"
 
 @Component({
   selector: "trainer-result",
@@ -21,21 +18,21 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResultTrainerComponent
-extends AbstractTrainerComponent<IResultTrainerConfig, IResultTrainerResult> {
+  extends AbstractTrainerComponent<IResultTrainerConfig> {
 
   r: number = 70 + Math.ceil(Math.random()*20)
 
-  private _httpSubscriber!: Subscription
+  // private _httpSubscriber!: Subscription
 
   init() {
     this.timerService.pause()
 
-    this._httpSubscriber = this.httpClient.get<{}>(`${API_RESULT}/${this.config.training}/finish`).subscribe(result => {
-      console.dir(result)
-    })
+    // this._httpSubscriber = this.httpClient.get<{}>(`${API_RESULT}/${this.config.training}/finish`).subscribe(result => {
+    //   console.dir(result)
+    // })
   }
 
-  destroy() {
-    this._httpSubscriber.unsubscribe()
-  }
+  // destroy() {
+  //   this._httpSubscriber.unsubscribe()
+  // }
 }

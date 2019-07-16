@@ -1,25 +1,16 @@
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
+import { ITrainerConfig } from "../interfaces"
 
-export type IMathSequenceTrainer = "math-sequence"
-
-export interface IMathSequenceTrainerItem {
-  rune: string,
-  data: number,
-  act: string,
-}
+export type IMathSequenceTrainerID = "math-sequence"
+export type IMathSequenceTrainerUI = "math-sequence"
 
 export interface IMathSequenceTrainerConfig extends ITrainerConfig {
-  ui: IMathSequenceTrainer
+  id: IMathSequenceTrainerID
+  ui: IMathSequenceTrainerUI
 
-  playTimeLimit: number
-
-  items: Array<IMathSequenceTrainerItem>
-}
-
-export interface IMathSequenceTrainerResult extends ITrainerResult {
-  config: IMathSequenceTrainerConfig
+  items: Array<{
+    rune: string
+    data: number
+    act: string
+  }>
 }

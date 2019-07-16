@@ -25,12 +25,11 @@
     <input
       type="number"
       min="0" max="99999"
-      class="input--trainer"
+      class="input input--trainer"
       [disabled]="mode === 'result'"
-      [message]="mode === 'result' && (isSuccess && 'success' || 'error') || undefined"
+      [result]="mode === 'result' && (isSuccess && 'success' || 'error')"
       [(ngModel)]="userData"
-      (enter)="mode === 'result' && finish() || showResult()"
-      focusable
+      (enter)="mode === 'result' && finish() || result()"
     >
   </div>
   <div class="item-box">)</div>
@@ -50,12 +49,11 @@
 <button
   *ngIf="mode === 'play'"
   class="button button--trainer"
-  (click)="showResult()"
+  (click)="result()"
 >Проверить</button>
 
 <button
   *ngIf="mode === 'result'"
   class="button button--trainer"
   (click)="finish()"
-  focusable
 >Продолжить</button>

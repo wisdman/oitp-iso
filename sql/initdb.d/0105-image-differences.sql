@@ -1,19 +1,20 @@
 SET search_path = "$user";
 
 CREATE TABLE private.trainer__image_differences__data (
-  "id" integer NOT NULL,
-
-  "complexity" smallint NOT NULL DEFAULT 0,
-  "carpet" jsonb NOT NULL,
+  "imageA" smallint NOT NULL,
+  "imageB" smallint NOT NULL,
+  "differences" jsonb NOT NULL,
 
   "enabled" boolean NOT NULL DEFAULT TRUE,
   "deleted" timestamp without time zone DEFAULT NULL,
 
-  CONSTRAINT trainer__image_differences__data__idx__pkey PRIMARY KEY ("group"),
+  CONSTRAINT trainer__image_differences__data__idx__pkey PRIMARY KEY ("imageA", "imageB"),
 
-  CONSTRAINT trainer__image_differences__data__check__complexity CHECK ("complexity" >= 0),
-  CONSTRAINT trainer__image_differences__data__check__carpet
-    CHECK (jsonb_typeof("carpet") = 'array' AND jsonb_array_length("carpet") > 0)
+  CONSTRAINT trainer__image_differences__data__check__imageA CHECK ("imageA" >= 0),
+  CONSTRAINT trainer__image_differences__data__check__imageB CHECK ("imageB" >= 0),
+
+  CONSTRAINT trainer__image_differences__data__check__differences
+    CHECK (jsonb_typeof("differences") = 'array' AND jsonb_array_length("differences") > 0)
 ) WITH (OIDS = FALSE);
 
 CREATE OR REPLACE FUNCTION private.trainer__image_differences__config() RETURNS SETOF RECORD AS $$
@@ -23,8 +24,7 @@ DECLARE
 
   _complexity smallint;
 
-  _minQuantity smallint;
-  _maxQuantity smallint;
+  _quantity smallint;
 
   _config RECORD;
 BEGIN
@@ -32,29 +32,14 @@ BEGIN
     ("complexity"->'showTimeLimit')::smallint,
     ("complexity"->'playTimeLimit')::smallint,
     ("complexity"->'complexity')::smallint,
-    ("complexity"->'minQuantity')::smallint,
-    ("complexity"->'maxQuantity')::smallint
+    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
   INTO
     _showTimeLimit,
     _playTimeLimit,
     _complexity,
-    _minQuantity,
-    _maxQuantity
-  FROM private.complexity_defaults
-  -- FROM public.self_complexity
+    _quantity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
   WHERE "trainer" = 'image-differences';
 
-  FOR counter in 1.._quantity LOOP
-    SELECT
-      'image-differences' AS "id",
-      'image-differences' AS "ui",
-      (jsonb_array_length("items") * _itemTimeLimit)::smallint AS "timeLimit",
-      jsonb_build_object('items', "items") AS "config"
-    INTO
-      _config
-    FROM (
-
-    ) AS t;
-    RETURN NEXT _config;
-  END LOOP;
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

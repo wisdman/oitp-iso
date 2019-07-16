@@ -1,8 +1,9 @@
 <!-- Гармонизация работы полушарий -->
-<h1 class="trainer-h1">Запомните&nbsp;название</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>название&nbsp;по&nbsp;памяти</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
 <picture
-  *ngIf="this.config.image !== undefined"
+  *ngIf="this.config.image >= 0"
   class="image"
 >
   <source [srcset]="getSrcset(this.config.image, 'jpg')">
@@ -10,10 +11,29 @@
   <img [src]="getSrcset(this.config.image, 'jpg')">
 </picture>
 
-<h2 class="trainer-h2 text">{{this.config && this.config.data || ''}}</h2>
+<h2
+  *ngIf="mode==='result'"
+  class="trainer-h2 text"
+>{{this.config && this.config.data || ''}}</h2>
+
+<input
+  type="text"
+  class="input input--trainer"
+  [disabled]="mode === 'result'"
+  [result]="mode === 'result' && (isSuccess && 'success' || 'error')"
+  [(ngModel)]="userData"
+  (enter)="mode === 'result' && finish() || result()"
+  autofocus
+>
 
 <button
+  *ngIf="mode === 'play'"
   class="button button--trainer"
-  focusable
+  (click)="result()"
+>Проверить</button>
+
+<button
+  *ngIf="mode === 'result'"
+  class="button button--trainer"
   (click)="finish()"
 >Продолжить</button>

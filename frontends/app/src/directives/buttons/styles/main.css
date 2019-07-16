@@ -1,0 +1,29 @@
+.main {
+  padding: 0 1em;
+  border-radius: 4px;
+
+  color: var(--color-white);
+  font-size: 16px;
+
+  background-color: var(--bg-color-start);
+  background-image:
+    linear-gradient(var(--color-hover), var(--color-hover)),
+    linear-gradient(90deg, var(--color-second), var(--color-middle));
+  background-size: 0% 0%, 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  transition-duration: 100ms;
+  transition-timing-function: ease;
+  transition-property: background-size;
+}
+
+.main:hover {
+  background-size: 100% 100%, 100%;
+}
+
+.main[disabled] {
+  background-color: var(--color-disabled);
+  background-image: none;
+  cursor: default;
+}

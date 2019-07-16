@@ -7,8 +7,6 @@ DECLARE
 
   _matrixSize smallint;
 
-  _minQuantity smallint;
-  _maxQuantity smallint;
   _quantity smallint;
 
   _itemsRowLength smallint := 5;
@@ -18,19 +16,16 @@ BEGIN
     ("complexity"->'showTimeLimit')::smallint,
     ("complexity"->'playTimeLimit')::smallint,
     ("complexity"->'matrixSize')::smallint,
-    ("complexity"->'minQuantity')::smallint,
-    ("complexity"->'maxQuantity')::smallint
+    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
   INTO
     _showTimeLimit,
     _playTimeLimit,
     _matrixSize,
-    _minQuantity,
-    _maxQuantity
-  FROM private.complexity_defaults
-  -- FROM public.self_complexity
+    _quantity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
   WHERE "trainer" = 'matrix-filling-unique';
 
-  _quantity := public.random_in_range(_minQuantity, _maxQuantity);
   _itemsCount := ceil(_matrixSize::float / _itemsRowLength)::smallint * _itemsRowLength + _itemsRowLength;
 
   RETURN QUERY (

@@ -3,18 +3,9 @@ import {
   Component,
 } from "@angular/core"
 
-// import {
-//   genSVGEllipse,
-//   genSVGRectangle,
-//   SVGRectangle,
-// } from "../../lib/svg"
-
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IMathEquationTrainerConfig,
-  IMathEquationTrainerResult,
-} from "./math-equation.trainer.interfaces"
+import { IMathEquationTrainerConfig } from "./math-equation.trainer.interfaces"
 
 @Component({
   selector: "trainer-math-equation",
@@ -23,21 +14,19 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MathEquationTrainerComponent
-extends AbstractTrainerComponent<IMathEquationTrainerConfig, IMathEquationTrainerResult> {
-
-  mode: "play" | "result" = "play"
+  extends AbstractTrainerComponent<IMathEquationTrainerConfig> {
 
   isSuccess: boolean = false
 
-  private _mathEval(equation: string): number {
-    let result: number
-    try {
-      result = (new Function(`return (${equation}`))()
-    } catch {
-      return NaN
-    }
-    return result
-  }
+  // private _mathEval(equation: string): number {
+  //   let result: number
+  //   try {
+  //     result = (new Function(`return (${equation}`))()
+  //   } catch {
+  //     return NaN
+  //   }
+  //   return result
+  // }
 
   // result!: number
   // matrix!: Array<SVGRectangle & { data: string }>
@@ -72,20 +61,14 @@ extends AbstractTrainerComponent<IMathEquationTrainerConfig, IMathEquationTraine
 
     //     })
 
+  }
 
-
-
-
-
-    this.mode = "play"
-    this.setTimeout(this.config.playTimeLimit)
-    this.setTimeout(0)
-
-    console.log(this.config.equation, this._mathEval(this.config.equation))
+  timeout() {
+    super.timeout()
+    this.result()
   }
 
   finish() {
-    this.updateResult({ result: this.isSuccess ? 100 : 0 })
-    super.finish()
+    super.finish(this.isSuccess ? 100 : 0)
   }
 }

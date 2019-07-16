@@ -10,10 +10,7 @@ import {
 
 import { AbstractTrainerComponent } from "../abstract"
 
-import {
-  IStorytellingTrainerConfig,
-  IStorytellingTrainerResult,
-} from "./storytelling.trainer.interfaces"
+import { IStorytellingTrainerConfig } from "./storytelling.trainer.interfaces"
 
 @Component({
   selector: "trainer-storytelling",
@@ -22,29 +19,38 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StorytellingTrainerComponent
-extends AbstractTrainerComponent<IStorytellingTrainerConfig, IStorytellingTrainerResult> {
+  extends AbstractTrainerComponent<IStorytellingTrainerConfig> {
+
+  audio!: HTMLAudioElement
 
   getSrcset(id: number, type: "jpg" | "webp" = "jpg") {
     return `${ASSETS_RELAX}/${id}.${type}`
   }
 
-  mode: "greeting" | "play" = "greeting"
-
   init() {
-    this.mode = "greeting"
+    this.audio = new Audio()
+    this.audio.addEventListener("error", () => this.finish())
+    this.audio.addEventListener("ended", () => this.finish())
+    this.audio.addEventListener("canplaythrough", () => {
+      this.audio.play()
+      super.start()
+      this.setTimeout(Math.ceil(this.audio.duration))
+    })
   }
 
-  startPlay() {
-    this.mode = "play"
+  destroy() {
+    this.audio.pause()
+    this.audio.remove()
+  }
 
-    const audio = new Audio()
-    audio.addEventListener("error", () => this.finish())
-    audio.addEventListener("ended", () => this.finish())
-    audio.addEventListener("canplaythrough", () => {
-      this.setTimeout(Math.ceil(audio.duration))
-      audio.play()
-    })
-    audio.src = `${ASSETS_STORYTELLING}/${this.config.audio}.mp3`
-    audio.load()
+  start() {}
+
+  finish() {
+    super.finish(100)
+  }
+
+  play() {
+    this.audio.src = `${ASSETS_STORYTELLING}/${this.config.audio}.mp3`
+    this.audio.load()
   }
 }

@@ -1,20 +1,13 @@
+import { ITrainerConfig } from "../interfaces"
 
-import {
-  ITrainerConfig,
-  ITrainerResult,
-} from "../interfaces"
-
-export type IWordsColumnTrainer = "words-column"
+export type IWordsColumnTrainerID = "words-column"
+export type IWordsColumnTrainerUI = "words-column"
 
 export interface IWordsColumnTrainerConfig extends ITrainerConfig {
-  ui: IWordsColumnTrainer
-
-  playTimeLimit: number
-  showTimeLimit: number
+  id: IWordsColumnTrainerID
+  ui: IWordsColumnTrainerUI
 
   items: Array<string>
-}
 
-export interface IWordsColumnTrainerResult extends ITrainerResult {
-  config: IWordsColumnTrainerConfig
+  previewTimeLimit: number
 }

@@ -1,55 +1,30 @@
 <!-- Точность восприятия. Столбики -->
-<h1 *ngIf="mode==='show'" class="trainer-h1">Запомните&nbsp;<br>пары&nbsp;слов</h1>
+<h1 *ngIf="mode==='init'" class="trainer-h1">Запомните&nbsp;<br>пары&nbsp;слов</h1>
 <h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>пары&nbsp;слов&nbsp;по&nbsp;памяти</h1>
 <h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
-<svg
-  class="matrix"
-  [attr.viewBox]="matrixViewBox"
-  [attr.width]="matrixWidth"
-  [attr.height]="matrixHeight"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  preserveAspectRatio="xMidYMid meet"
+<div
+  *ngFor="let item of items"
+  class="item"
 >
-  <g
-    *ngFor="let item of items"
-    class="item"
-    [class.item--selected]="mode === 'play' && item.isSelected"
-    [class.item--success]="mode === 'result' && item.type === hiddenColumn && item.isSuccess"
-    [class.item--error]="mode === 'result' && item.type === hiddenColumn && !item.isSuccess"
+  <input
+    type="text"
+    class="input input--trainer"
+    [disabled]="mode !== 'play'"
+    [result]="mode === 'result' && hidden === 0 && (item[0].isSuccess && 'success' || 'error')"
+    [(ngModel)]="item[0].userData"
   >
-    <path
-      class="fill-path"
-      [attr.d]="item.fillPath"
-    ></path>
-    <path
-      class="path"
-      [attr.d]="item.path"
-    ></path>
-    <foreignObject
-      [attr.x]="item.x"
-      [attr.y]="item.y"
-      [attr.width]="item.width"
-      [attr.height]="item.height"
-    >
-      <xhtml:input
-        type="text"
-        class="input input--trainer"
-        [message]="mode === 'result' && item.type === hiddenColumn && (item.isSuccess && 'success' || 'error') || undefined"
-        [disabled]="mode !== 'play' || item.type !== hiddenColumn"
-        [(ngModel)]="item.userData"
-        (enter)="mode === 'result' && finish()"
-        (focus)="item.isSelected = true"
-        (blur)="item.isSelected = false"
-        focusable
-      />
-    </foreignObject>
-  </g>
-</svg>
+  <input
+    type="text"
+    class="input input--trainer"
+    [disabled]="mode !== 'play'"
+    [result]="mode === 'result' && hidden === 1 && (item[1].isSuccess && 'success' || 'error')"
+    [(ngModel)]="item[1].userData"
+  >
+</div>
 
 <button
-  *ngIf="mode==='show'"
+  *ngIf="mode==='init'"
   class="button button--trainer"
   (click)="startPlay()"
 >Продолжить</button>
@@ -57,11 +32,11 @@
 <button
   *ngIf="mode==='play'"
   class="button button--trainer"
-  (click)="showResult()"
+  (click)="result()"
 >Проверить</button>
 
 <button
-  *ngIf="mode === 'result'"
+  *ngIf="mode==='result'"
   class="button button--trainer"
   (click)="finish()"
 >Продолжить</button>

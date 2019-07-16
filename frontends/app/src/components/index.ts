@@ -1,4 +1,5 @@
 export * from "./card-charger"
+export * from "./card-debug"
 export * from "./card-everyday"
 export * from "./card-info"
 export * from "./chart-circular"

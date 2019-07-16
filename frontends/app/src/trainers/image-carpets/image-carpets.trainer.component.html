@@ -1,0 +1,94 @@
+<!-- Наглядно-образная память -->
+<h1 *ngIf="mode==='init'" class="trainer-h1">Запомните&nbsp;картинку<br>&nbsp;</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;картинку<br>по&nbsp;памяти</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<svg
+  *ngIf="mode==='result'"
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <path
+    class="border-path"
+    [attr.d]="border"
+    vector-effect="non-scaling-stroke"
+  ></path>
+  <path
+    *ngFor="let item of items"
+    class="path"
+    [attr.d]="item.path"
+    [attr.fill]="item.fill"
+    [attr.data-group]="item.group"
+    vector-effect="non-scaling-stroke"
+  ></path>
+</svg>
+
+<svg
+  #matrixNode
+  class="matrix"
+  [attr.viewBox]="matrixViewBox"
+  [attr.width]="matrixWidth"
+  [attr.height]="matrixHeight"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  preserveAspectRatio="xMidYMid meet"
+>
+  <path
+    class="border-path"
+    [attr.d]="border"
+    vector-effect="non-scaling-stroke"
+  ></path>
+  <path
+    *ngFor="let item of items"
+    class="path"
+    [style.transform] = "item.transform"
+    [attr.d]="item.path"
+    [attr.fill]="item.fill"
+    [attr.data-group]="item.group"
+    vector-effect="non-scaling-stroke"
+    touchable (pointerDown)="onTouch($event, item)"
+    (onCreate)="onCreatePath($event, item)"
+  ></path>
+</svg>
+
+<svg
+  *ngIf="mode === 'result' && errors === 0"
+  class="result-icon result-icon--success"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+>
+  <path d="M0 12l2-2 7 4c5-6 8-8 14-12l1 1c-5 5-9 10-14 19L0 12z" vector-effect="non-scaling-stroke"></path>
+</svg>
+<svg
+  *ngIf="mode === 'result' && errors > 0"
+  class="result-icon result-icon--error"
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+>
+  <path d="M24 4l-4-4-8 9-8-9-4 4 8 9-8 9 2 2 10-8 10 8 1-1-8-10 9-9z" vector-effect="non-scaling-stroke"></path>
+</svg>
+
+<button
+  *ngIf="mode === 'init'"
+  class="button button--trainer"
+  (click)="moveItems()"
+>Продолжить</button>
+
+<button
+  *ngIf="mode === 'play'"
+  class="button button--trainer"
+  (click)="result()"
+>Проверить</button>
+
+<button
+  *ngIf="mode === 'result'"
+  class="button button--trainer"
+  (click)="finish()"
+>Продолжить</button>
