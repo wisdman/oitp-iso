@@ -33,22 +33,22 @@ BEGIN
       ) || "config"
     FROM (
       SELECT private.trainer__math_waste__complexity_1(_itemsCount) AS "config"
-      FROM generate_series(0,random()::int) AS s WHERE TRUE _complexity >= 1
+      FROM generate_series(0,random()::int) AS s WHERE _complexity >= 1
       UNION ALL
       SELECT private.trainer__math_waste__complexity_2(_itemsCount) AS "config"
-      FROM generate_series(0,random()::int) AS s WHERE TRUE _complexity >= 2
+      FROM generate_series(0,random()::int) AS s WHERE _complexity >= 2
       UNION ALL
       SELECT private.trainer__math_waste__complexity_3(_itemsCount) AS "config"
-      FROM generate_series(0,random()::int) AS s WHERE TRUE _complexity >= 3
+      FROM generate_series(0,random()::int) AS s WHERE _complexity >= 3
       UNION ALL
       SELECT private.trainer__math_waste__complexity_4(_itemsCount) AS "config"
-      FROM generate_series(0,random()::int) AS s WHERE TRUE _complexity >= 4
+      FROM generate_series(0,random()::int) AS s WHERE _complexity >= 4
       UNION ALL
       SELECT private.trainer__math_waste__complexity_5(_itemsCount) AS "config"
-      FROM generate_series(0,random()::int) AS s WHERE TRUE _complexity >= 5
+      FROM generate_series(0,random()::int) AS s WHERE _complexity >= 5
       UNION ALL
       SELECT private.trainer__math_waste__complexity_6(_itemsCount) AS "config"
-      FROM generate_series(0,random()::int) AS s WHERE TRUE _complexity >= 6
+      FROM generate_series(0,random()::int) AS s WHERE _complexity >= 6
     ) AS t
     ORDER BY random()
   );
