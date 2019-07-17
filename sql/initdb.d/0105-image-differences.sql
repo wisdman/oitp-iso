@@ -17,29 +17,32 @@ CREATE TABLE private.trainer__image_differences__data (
     CHECK (jsonb_typeof("differences") = 'array' AND jsonb_array_length("differences") > 0)
 ) WITH (OIDS = FALSE);
 
+-- SELECT * FROM private.trainer__image_differences__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__image_differences__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _showTimeLimit smallint;
-  _playTimeLimit smallint;
-
-  _complexity smallint;
-
+  _minQuantity smallint := 2;
+  _maxQuantity smallint := 10;
   _quantity smallint;
 
-  _config RECORD;
+  _previewTimeLimit smallint;
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'showTimeLimit')::smallint,
-    ("complexity"->'playTimeLimit')::smallint,
-    ("complexity"->'complexity')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "previewTimeLimit",
+    "timeLimit",
+    "complexity"
   INTO
-    _showTimeLimit,
-    _playTimeLimit,
-    _complexity,
-    _quantity
+    _previewTimeLimit,
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'image-differences';
 
+  _quantity := LEAST(_minQuantity + _complexity, _maxQuantity) - random()::smallint;
+
+  RETURN QUERY (
+    SELECT WHERE FALSE
+  );
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

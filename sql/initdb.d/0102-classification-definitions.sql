@@ -11,62 +11,47 @@ CREATE TABLE private.trainer__classification_definitions__data (
   CONSTRAINT trainer__classification_definitions__data__check__definitions CHECK (array_length("definitions", 1) > 0)
 ) WITH (OIDS = FALSE);
 
+-- SELECT * FROM private.trainer__classification_definitions__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__classification_definitions__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _playTimeLimit smallint;
-  _minItems smallint;
-  _maxItems smallint;
-  _quantity int;
+  _minItems smallint := 3;
+  _maxItems smallint := 12;
+  _itemsCount smallint;
+
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'playTimeLimit')::smallint,
-    ("complexity"->'minItems')::smallint,
-    ("complexity"->'maxItems')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _playTimeLimit,
-    _minItems,
-    _maxItems,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'classification-definitions';
 
+  _itemsCount := LEAST(_minItems + _complexity, _maxItems) - random()::smallint;
+
   RETURN QUERY (
-    SELECT (
-      SELECT
-        jsonb_build_object(
-          'id', 'classification-definitions',
-          'ui', 'classification-definitions',
-          'timeLimit', _playTimeLimit,
-          'items', "items"
-        )
-      FROM (
-        SELECT
-          jsonb_agg(
-            jsonb_build_object(
-              'data', "data",
-              'definition', "definition"
-            )
-          ) AS "items"
-        FROM (
-          SELECT *, ROW_NUMBER() OVER (PARTITION BY "data" ORDER BY random()) AS cnt
-          FROM (
-            SELECT
-              "word" AS "data",
-              unnest("definitions") AS "definition"
-            FROM (
-              SELECT "definitions", "word"
-              FROM private.trainer__classification_definitions__data
-              ORDER BY random()
-              LIMIT public.random(_minItems, _maxItems)
-            ) AS t
-            ORDER BY random()
-          ) AS t
-        ) AS t WHERE cnt = 1
-      ) AS t
-      WHERE s = s
-    ) AS "config"
-    FROM generate_series(1,_quantity) AS s
+    SELECT
+      jsonb_build_object(
+        'id', 'classification-definitions',
+        'ui', 'classification-definitions',
+
+        'timeLimit', _timeLimit * _itemsCount,
+        'complexity', _complexity,
+
+        'items', jsonb_agg(jsonb_build_object(
+          'data', "word",
+          'definition', (SELECT array_agg(v ORDER BY random()) FROM unnest("definitions") v)[1]
+        ))
+      )
+    FROM (
+      SELECT "word", "definitions"
+      FROM private.trainer__classification_definitions__data
+      ORDER BY random()
+      LIMIT _itemsCount
+    ) AS t
   );
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

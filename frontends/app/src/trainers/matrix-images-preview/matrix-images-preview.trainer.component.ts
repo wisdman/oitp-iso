@@ -63,6 +63,6 @@ export class MatrixImagesPreviewTrainerComponent
 
   timeout() {
     super.timeout()
-    // this.finish()
+    this.finish()
   }
 }

@@ -24,44 +24,50 @@ SET DEFAULT nextval('private.trainer__words_column__data__id__seq'::regclass);
 CREATE UNIQUE INDEX trainer__words_column__data__idx__unique__word
   ON private.trainer__words_column__data USING btree ("word");
 
+-- SELECT * FROM private.trainer__words_column__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__words_column__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _itemTimeLimit smallint;
-  _playTimeLimit smallint;
-
-  _minItems smallint;
-  _maxItems smallint;
-
+  _minQuantity smallint := 2;
+  _maxQuantity smallint := 6;
   _quantity smallint;
+
+  _minItems smallint := 4;
+  _maxItems smallint := 15;
+  _itemsCount smallint;
+
+  _previewTimeLimit smallint;
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'itemTimeLimit')::smallint,
-    ("complexity"->'playTimeLimit')::smallint,
-    ("complexity"->'minItems')::smallint,
-    ("complexity"->'maxItems')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "previewTimeLimit",
+    "timeLimit",
+    "complexity"
   INTO
-    _itemTimeLimit,
-    _playTimeLimit,
-    _minItems,
-    _maxItems,
-    _quantity
+    _previewTimeLimit,
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'words-column';
+
+  _quantity := LEAST(_minQuantity + _complexity, _maxQuantity) - random()::smallint;
+  _itemsCount := LEAST(_minItems + _complexity, _maxItems) - random()::smallint;
 
   RETURN QUERY (
     SELECT
       jsonb_build_object(
         'id', 'words-column',
         'ui', 'words-column',
-        'previewTimeLimit', _itemTimeLimit * array_length("items", 1),
-        'timeLimit', _playTimeLimit,
+
+        'previewTimeLimit', _previewTimeLimit * array_length("items", 1),
+        'timeLimit', _timeLimit * array_length("items", 1),
+        'complexity', _complexity,
+
         'items', "items"
       ) AS "config"
     FROM (
-      SELECT
-        (array_agg("word"))[1:public.random(_minItems, _maxItems)] AS "items"
+      SELECT (array_agg("word"))[1:_itemsCount] AS "items"
       FROM (
         SELECT
           (ROW_NUMBER() OVER() - 1) % _quantity AS "grp",
@@ -70,7 +76,7 @@ BEGIN
           SELECT "word"
           FROM private.trainer__words_column__data
           ORDER BY random()
-          LIMIT _quantity * _maxItems
+          LIMIT _quantity * _itemsCount
         ) AS t
       ) AS t
       GROUP BY "grp"

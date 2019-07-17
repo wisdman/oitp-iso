@@ -42,8 +42,6 @@ interface IItem extends SVGShape {
 export class WordsLexisTrainerComponent
 extends AbstractTrainerComponent<IWordsLexisTrainerConfig> {
 
-  mode: "play" | "result" = "play"
-
   items!: Array<IItem>
 
   init() {
@@ -152,6 +150,11 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig> {
     this.result()
   }
 
+  finish() {
+    const success = this.items.reduce((acc, {userPair, pair}) => userPair === pair ? ++acc : acc, 0)
+    super.finish(success / this.items.length * 100)
+  }
+
   onTouch(item: IItem) {
     if (this.mode !== "play") {
       return
@@ -184,10 +187,5 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig> {
     }
 
     this.markForCheck()
-  }
-
-  finish() {
-    const success = this.items.reduce((acc, {userPair, pair}) => userPair === pair ? ++acc : acc, 0)
-    super.finish(success / this.items.length * 100)
   }
 }

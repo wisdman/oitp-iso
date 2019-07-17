@@ -1,29 +1,33 @@
 SET search_path = "$user";
 
+-- SELECT * FROM private.trainer__space_waste_2d__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__space_waste_2d__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _playTimeLimit smallint;
+  _pointsCount smallint := 5;
 
-  _minItems smallint;
-  _maxItems smallint;
+  _minItems smallint := 3;
+  _maxItems smallint := 15;
+  _itemsCount smallint;
 
+  _minQuantity smallint := 2;
+  _maxQuantity smallint := 5;
   _quantity smallint;
 
-  _pointsCount smallint := 5;
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'playTimeLimit')::smallint,
-    ("complexity"->'minItems')::smallint,
-    ("complexity"->'maxItems')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _playTimeLimit,
-    _minItems,
-    _maxItems,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'space-waste-2d';
+
+  _itemsCount := LEAST(_minItems + _complexity, _maxItems) - random()::smallint;
+  _quantity := LEAST(_minQuantity + _complexity, _maxQuantity) - random()::smallint;
 
   RETURN QUERY (
     WITH groups AS (
@@ -58,7 +62,7 @@ BEGIN
         floor(random() * 180) AS "fi",
         FALSE AS "correct"
       FROM groups
-      FULL JOIN generate_series(1, public.random(_minItems - 1,_maxItems - 1)) ON TRUE
+      FULL JOIN generate_series(1, _itemsCount - 1) ON TRUE
     ), items AS (
       SELECT
         "grp",
@@ -100,7 +104,10 @@ BEGIN
       jsonb_build_object(
         'id', 'space-waste-2d',
         'ui', 'space-question-waste',
-        'timeLimit', _playTimeLimit,
+
+        'timeLimit', _timeLimit,
+        'complexity', _complexity,
+
         'items', array_agg("item" ORDER BY random())
       )
     FROM items

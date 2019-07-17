@@ -11,48 +11,44 @@ CREATE TABLE private.trainer__classification_colors__data (
   CONSTRAINT trainer__classification_colors__data__check__color CHECK ("color" ~ '^#[0-9a-f]{6}$')
 ) WITH (OIDS = FALSE);
 
+-- SELECT * FROM private.trainer__classification_colors__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__classification_colors__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _itemTimeLimit smallint;
-  _minItems smallint;
-  _maxItems smallint;
-  _quantity int;
+  _minItems smallint := 3;
+  _maxItems smallint := 9;
+  _itemsCount smallint;
+
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'itemTimeLimit')::smallint,
-    ("complexity"->'minItems')::smallint,
-    ("complexity"->'maxItems')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _itemTimeLimit,
-    _minItems,
-    _maxItems,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'classification-colors';
 
+  _itemsCount := LEAST(_minItems + _complexity, _maxItems) - random()::smallint;
+
   RETURN QUERY (
-    SELECT (
-      SELECT
-        jsonb_build_object(
-          'id', 'classification-colors',
-          'ui', 'classification-colors',
-          'timeLimit', jsonb_array_length("items") * _itemTimeLimit,
-          'items', "items"
-        )
-      FROM (
-        SELECT
-          jsonb_agg(to_jsonb(t)) AS "items"
-        FROM (
-          SELECT "color", "data"
-          FROM private.trainer__classification_colors__data
-          ORDER BY random()
-          LIMIT public.random(_minItems, _maxItems)
-        ) AS t
-      ) AS t
-      WHERE s = s
-    ) AS "config"
-    FROM generate_series(1,_quantity) AS s
+    SELECT
+      jsonb_build_object(
+        'id', 'classification-colors',
+        'ui', 'classification-colors',
+
+        'timeLimit', _timeLimit * _itemsCount,
+        'complexity', _complexity,
+
+        'items', jsonb_agg(to_jsonb(t))
+      )
+    FROM (
+      SELECT "color", "data"
+      FROM private.trainer__classification_colors__data
+      ORDER BY random()
+      LIMIT _itemsCount
+    ) AS t
   );
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

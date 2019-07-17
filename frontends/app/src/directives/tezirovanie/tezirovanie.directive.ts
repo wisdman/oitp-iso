@@ -1,11 +1,13 @@
 import {
   Directive,
   ElementRef,
+  HostBinding,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Renderer2,
-  HostBinding,
+  SimpleChanges,
 } from "@angular/core"
 
 import { Subscription } from "rxjs"
@@ -22,17 +24,17 @@ import STYLE from "./tezirovanie.directive.css"
 @Directive({
   selector: "[tezirovanie]"
 })
-export class TezirovanieDirective implements OnInit, OnDestroy {
+export class TezirovanieDirective implements OnInit, OnDestroy, OnChanges {
   constructor(
     private _elRef: ElementRef<HTMLElement | SVGElement>,
     private _renderer: Renderer2,
   ) {}
 
   @Input("tezirovanie")
-  value: string = ""
+  tezirovanie: string = ""
 
   @Input("mode")
-  mode: "play" | "result" = "play"
+  mode: "init" | "preview" | "play" | "result" = "init"
 
   @HostBinding(`class`)
   get isResult() {
@@ -68,19 +70,28 @@ export class TezirovanieDirective implements OnInit, OnDestroy {
     const div = document.createElement("div")
     div.innerHTML = v.replace(/<mark>/ig, `<mark class="${STYLE.mark}">`)
     this._wrapNodeWords(div)
+    this._elRef.nativeElement.innerHTML = ""
     this._renderer.appendChild(this._elRef.nativeElement, div)
   }
 
   private _pointerUpSubscriber!: Subscription
 
   ngOnInit() {
-    this._prepareText(this.value)
+    this._prepareText(this.tezirovanie)
+
+    if (this._pointerUpSubscriber) this._pointerUpSubscriber.unsubscribe()
     this._pointerUpSubscriber = initPointerUp(this._elRef.nativeElement).pipe(
                                   filter(() => this.mode === 'play'),
                                   filter(({originalEvent}) => originalEvent.cancelable),
                                   map(({originalEvent}) => originalEvent.target),
                                   filter((t: EventTarget | null): t is HTMLSpanElement => t instanceof HTMLSpanElement),
                                 ).subscribe(span => span.classList.toggle(STYLE["user-mark"]))
+  }
+
+  ngOnChanges(sc: SimpleChanges ) {
+    if (sc.tezirovanie !== undefined && !sc.tezirovanie.firstChange) {
+      this.ngOnInit()
+    }
   }
 
   ngOnDestroy() {

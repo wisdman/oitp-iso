@@ -35,6 +35,8 @@ export class ImageExpressionsTrainerComponent
   userData: string = ""
 
   init() {
+    this.fullscreenService.unlock()
+
     this.isSuccess = false
     this.userData = ""
   }
@@ -45,8 +47,8 @@ export class ImageExpressionsTrainerComponent
   }
 
   result() {
-    this.isSuccess = this._prepareString(this.config.data || "") === this._prepareString(this.userData || "")
     super.result()
+    this.isSuccess = this._prepareString(this.config.data || "") === this._prepareString(this.userData || "")
   }
 
   finish() {

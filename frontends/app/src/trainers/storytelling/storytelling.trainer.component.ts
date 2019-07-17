@@ -33,9 +33,10 @@ export class StorytellingTrainerComponent
     this.audio.addEventListener("ended", () => this.finish())
     this.audio.addEventListener("canplaythrough", () => {
       this.audio.play()
-      super.start()
-      this.setTimeout(Math.ceil(this.audio.duration))
+      super.start(Math.ceil(this.audio.duration))
     })
+
+    this.preview()
   }
 
   destroy() {
@@ -43,13 +44,7 @@ export class StorytellingTrainerComponent
     this.audio.remove()
   }
 
-  start() {}
-
-  finish() {
-    super.finish(100)
-  }
-
-  play() {
+  start() {
     this.audio.src = `${ASSETS_STORYTELLING}/${this.config.audio}.mp3`
     this.audio.load()
   }

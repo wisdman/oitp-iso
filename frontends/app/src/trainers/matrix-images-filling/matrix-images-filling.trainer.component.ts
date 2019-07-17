@@ -141,10 +141,8 @@ export class MatrixImagesFillingTrainerComponent
 
   result() {
     super.result()
-
     this.current = undefined
     this.currentIcon = undefined
-    this.markForCheck()
   }
 
   finish() {

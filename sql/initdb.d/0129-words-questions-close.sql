@@ -28,27 +28,37 @@ SET DEFAULT nextval('private.trainer__words_questions_close__data__id__seq'::reg
 CREATE UNIQUE INDEX trainer__words_questions_close__data__idx__unique__word
   ON private.trainer__words_questions_close__data USING btree ("word");
 
+-- SELECT * FROM private.trainer__words_questions_close__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__words_questions_close__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _playTimeLimit smallint;
+  _minQuantity smallint := 3;
+  _maxQuantity smallint := 6;
   _quantity smallint;
+
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'playTimeLimit')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _playTimeLimit,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'words-questions-close';
+
+  _quantity := LEAST(_minQuantity + _complexity, _maxQuantity) - random()::smallint;
 
   RETURN QUERY (
     SELECT
       jsonb_build_object(
         'id', 'words-questions-close',
         'ui', 'words-questions-close',
-        'timeLimit', _playTimeLimit,
+
+        'timeLimit', _timeLimit,
+        'complexity', _complexity,
+
         'word', "word",
         'items', (SELECT array_agg(v ORDER BY random()) FROM unnest("items") AS v)
       )

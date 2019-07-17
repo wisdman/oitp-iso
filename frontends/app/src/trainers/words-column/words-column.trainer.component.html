@@ -1,5 +1,5 @@
 <!-- Мнемотехника. Столбики -->
-<h1 *ngIf="mode==='init'" class="trainer-h1">Заполните&nbsp;слова,<br>соединив&nbsp;их&nbsp;нелепой&nbsp;связью</h1>
+<h1 *ngIf="mode==='preview'" class="trainer-h1">Запомните&nbsp;слова,<br>соединив&nbsp;их&nbsp;нелепой&nbsp;связью</h1>
 <h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;слова,<br>по&nbsp;памяти</h1>
 <h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
@@ -14,9 +14,9 @@
 </div>
 
 <button
-  *ngIf="mode==='init'"
+  *ngIf="mode==='preview'"
   class="button button--trainer"
-  (click)="startPlay()"
+  (click)="start()"
   autoFocus
 >Продолжить</button>
 

@@ -32,39 +32,53 @@ CREATE TRIGGER trainer__text_letters__data__length_and_runes__trigger
   BEFORE INSERT OR UPDATE ON private.trainer__text_letters__data FOR EACH ROW
   EXECUTE PROCEDURE private.trainer__text_letters__data__length_and_runes();
 
+-- SELECT * FROM private.trainer__text_letters__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__text_letters__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _showTimeLimit smallint;
-  _playTimeLimit smallint;
+  _lengths smallint[] := ARRAY(SELECT DISTINCT "length" FROM private.trainer__text_letters__data ORDER BY "length");
   _maxLength smallint;
+
+  _minQuantity smallint := 3;
+  _maxQuantity smallint := 10;
   _quantity smallint;
+
+  _previewTimeLimit smallint;
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'showTimeLimit')::smallint,
-    ("complexity"->'playTimeLimit')::smallint,
-    ("complexity"->'maxLength')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "previewTimeLimit",
+    "timeLimit",
+    "complexity"
   INTO
-    _showTimeLimit,
-    _playTimeLimit,
-    _maxLength,
-    _quantity
+    _previewTimeLimit,
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'text-letters';
+
+  _maxLength := _lengths[LEAST(_complexity, array_length(_lengths, 1))];
+  _quantity := LEAST(GREATEST(_complexity, _minQuantity) + random()::smallint, _maxQuantity);
 
   RETURN QUERY (
     SELECT
       unnest(ARRAY[jsonb_build_object(
         'id', 'text-letters',
         'ui', 'text-letters-preview',
-        'timeLimit', _showTimeLimit,
+
+        'timeLimit', _previewTimeLimit,
+        'complexity', _complexity,
+
         'data', "data"
       ),
       jsonb_build_object(
         'id', 'text-letters',
         'ui', 'text-letters',
-        'timeLimit', _playTimeLimit,
+
+        'timeLimit', _timeLimit,
+        'complexity', _complexity,
+
         'runes', "runes",
         'data', "data"
       )])

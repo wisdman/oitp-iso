@@ -20,13 +20,14 @@ export class MathWasteTrainerComponent
 
   items!: Array<ISelectorItem & { correct: boolean }>
 
+  isAnswerShown: boolean = false
+
   init() {
     this.items = this.config.items
                             .map(({data, correct}) => ({
                               data: String(data),
                               correct
                             }))
-                            .sort(() => Math.random() - 0.5)
   }
 
   timeout() {
@@ -36,14 +37,11 @@ export class MathWasteTrainerComponent
 
   result() {
     super.result()
-
     this.items.forEach(items => {
       items.isSuccess = items.isActive && items.correct
       items.isError = items.isActive && !items.correct
       items.isMark = !items.isActive && items.correct
     })
-
-    this.markForCheck()
   }
 
   finish() {

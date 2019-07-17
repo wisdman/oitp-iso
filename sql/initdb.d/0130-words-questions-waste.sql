@@ -21,27 +21,37 @@ OWNED BY private.trainer__words_questions_waste__data.id;
 ALTER TABLE ONLY private.trainer__words_questions_waste__data ALTER COLUMN id
 SET DEFAULT nextval('private.trainer__words_questions_waste__data__id__seq'::regclass);
 
+-- SELECT * FROM private.trainer__words_questions_waste__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__words_questions_waste__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _playTimeLimit smallint;
+  _minQuantity smallint := 3;
+  _maxQuantity smallint := 6;
   _quantity smallint;
+
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'playTimeLimit')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _playTimeLimit,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'words-questions-waste';
+
+  _quantity := LEAST(_minQuantity + _complexity, _maxQuantity) - random()::smallint;
 
   RETURN QUERY (
     SELECT
       jsonb_build_object(
         'id', 'words-questions-waste',
         'ui', 'words-questions-waste',
-        'timeLimit', _playTimeLimit,
+
+        'timeLimit', _timeLimit,
+        'complexity', _complexity,
+
         'items', (SELECT array_agg(v ORDER BY random()) FROM unnest("items") AS v)
       )
     FROM private.trainer__words_questions_waste__data

@@ -18,30 +18,41 @@ OWNED BY private.trainer__table_pipe__data.id;
 ALTER TABLE ONLY private.trainer__table_pipe__data ALTER COLUMN id
 SET DEFAULT nextval('private.trainer__table_pipe__data__id__seq'::regclass);
 
+-- SELECT * FROM private.trainer__table_pipe__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__table_pipe__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _playTimeLimit smallint;
+  _matrixSizes smallint[] := ARRAY[10, 20, 30];
   _matrixSize smallint;
+
+  _minQuantity smallint := 2;
+  _maxQuantity smallint := 3;
   _quantity smallint;
+
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'playTimeLimit')::smallint,
-    ("complexity"->'matrixSize')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _playTimeLimit,
-    _matrixSize,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'table-pipe';
+
+  _matrixSize := _matrixSizes[LEAST(_complexity, array_length(_matrixSizes, 1))];
+  _quantity := LEAST(GREATEST(_complexity, _minQuantity), _maxQuantity);
 
   RETURN QUERY (
     SELECT
       jsonb_build_object(
         'id', 'table-pipe',
         'ui', 'table-pipe',
-        'timeLimit', _playTimeLimit,
+
+        'timeLimit', _timeLimit * _matrixSize,
+        'complexity', _complexity,
+
         'items', ARRAY[
           jsonb_build_object(
             'data', "runes"[1],
@@ -60,21 +71,16 @@ BEGIN
             'action', 'RIGHT'
           )
         ],
-        'matrix', (SELECT array_agg(floor(random() * 4)) FROM generate_series(1, _matrixSize) AS s)
+        'matrix', "matrix"
       ) AS "config"
     FROM (
       SELECT
+        (SELECT array_agg((random()*3)::smallint) FROM generate_series(1, _matrixSize) AS v WHERE s = s) AS "matrix",
         (SELECT (array_agg(r ORDER BY random()))[1:4] FROM unnest("runes") AS r) AS "runes"
-      FROM (
-        SELECT
-          "runes"
-        FROM (
-          SELECT "runes" FROM private.trainer__table_pipe__data
-          FULL JOIN generate_series(1, _quantity) ON TRUE
-        ) AS t
-        ORDER BY random()
-        LIMIT _quantity
-      ) AS t
+      FROM private.trainer__table_pipe__data
+      FULL JOIN generate_series(1, _quantity) AS s ON TRUE
+      ORDER BY random()
+      LIMIT _quantity
     ) AS t
   );
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

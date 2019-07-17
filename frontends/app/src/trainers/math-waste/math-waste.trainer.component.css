@@ -1,0 +1,10 @@
+
+.text {
+  margin-top: calc(var(--trainer-margin) * 4);
+  text-align: center;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}

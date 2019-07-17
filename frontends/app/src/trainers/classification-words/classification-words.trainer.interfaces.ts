@@ -9,7 +9,7 @@ export interface IClassificationWordsTrainerConfig extends ITrainerConfig {
   ui: IClassificationWordsTrainerUI
 
   items: Array<{
-    word: string
-    data: string
+    group: string
+    words: Array<string>
   }>
 }

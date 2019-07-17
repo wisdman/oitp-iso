@@ -1,23 +1,20 @@
 SET search_path = "$user";
 
-CREATE TABLE private.complexity_defaults (
-  "trainer" public.trainer__type NOT NULL,
-  "complexity" jsonb NOT NULL DEFAULT '{}'::jsonb,
-
-  CONSTRAINT complexity_defaults__idx__pkey PRIMARY KEY ("trainer"),
-  CONSTRAINT complexity_defaults__check__complexity CHECK (jsonb_typeof("complexity") = 'object')
-) WITH (OIDS = FALSE);
-
 CREATE TABLE private.complexity (
   "owner" uuid NOT NULL,
   "trainer" public.trainer__type NOT NULL,
 
   "ts" timestamp without time zone NOT NULL,
-  "complexity" jsonb NOT NULL DEFAULT '{}'::jsonb,
+
+  "previewTimeLimit" smallint NOT NULL DEFAULT 0,
+  "timeLimit"        smallint NOT NULL DEFAULT 0,
+  "complexity"       smallint NOT NULL DEFAULT 1,
 
   CONSTRAINT complexity__idx__pkey PRIMARY KEY ("owner", "trainer"),
 
-  CONSTRAINT complexity__check__complexity CHECK (jsonb_typeof("complexity") = 'object'),
+  CONSTRAINT complexity__check__previewTimeLimit CHECK ("previewTimeLimit" >= 0),
+  CONSTRAINT complexity__check__timeLimit CHECK ("timeLimit" >= 0),
+  CONSTRAINT complexity__check__complexity CHECK ("complexity" > 0),
 
   CONSTRAINT complexity__fkey__owner
     FOREIGN KEY ("owner")
@@ -37,14 +34,14 @@ CREATE TRIGGER complexity__ts__trigger
 CREATE VIEW self.complexity AS
   SELECT
     d."trainer",
-    d."complexity" || coalesce(c."complexity", '{}'::jsonb) AS "complexity"
-  FROM
-    private.complexity_defaults AS d
-  LEFT JOIN
-    private.complexity AS c ON (
-      c."trainer" = d."trainer"
-      AND
-      c."owner" = current_setting('app.sessionUser')::uuid
-    );
+    coalesce(c."previewTimeLimit", d."previewTimeLimit") AS "previewTimeLimit",
+    coalesce(c."timeLimit", d."timeLimit") AS "timeLimit",
+    coalesce(c."complexity", d."complexity") AS "complexity"
+  FROM private.complexity_defaults AS d
+  LEFT JOIN private.complexity AS c ON (
+    c."trainer" = d."trainer"
+    AND
+    c."owner" = current_setting('app.sessionUser')::uuid
+  );
 
 GRANT SELECT ON self.complexity TO "api-public";

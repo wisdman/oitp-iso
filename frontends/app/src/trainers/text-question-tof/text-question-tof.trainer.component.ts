@@ -43,14 +43,11 @@ export class TextQuestionToFTrainerComponent
 
   result() {
     super.result()
-
     this.items.forEach(item => {
       item.isSuccess = item.isActive && item.correct
       item.isError = item.isActive && !item.correct
       item.isMark = !item.isActive && item.correct
     })
-
-    this.markForCheck()
   }
 
   finish() {

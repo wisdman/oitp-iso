@@ -62,9 +62,6 @@ export class MatrixSequenceFillingTrainerComponent
         data,
       }
     })
-
-    this.setTimeout(this.config.timeLimit)
-    this.timeMeter()
   }
 
   timeout() {
@@ -73,7 +70,6 @@ export class MatrixSequenceFillingTrainerComponent
   }
 
   finish() {
-    this.timeMeter()
     super.finish(this.success / this.config.matrix.length * 100)
   }
 

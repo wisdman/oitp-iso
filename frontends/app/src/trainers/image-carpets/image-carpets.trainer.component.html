@@ -1,5 +1,5 @@
 <!-- Наглядно-образная память -->
-<h1 *ngIf="mode==='init'" class="trainer-h1">Запомните&nbsp;картинку<br>&nbsp;</h1>
+<h1 *ngIf="mode==='preview'" class="trainer-h1">Запомните&nbsp;картинку<br>&nbsp;</h1>
 <h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;картинку<br>по&nbsp;памяти</h1>
 <h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
 
@@ -76,9 +76,9 @@
 </svg>
 
 <button
-  *ngIf="mode === 'init'"
+  *ngIf="mode === 'preview'"
   class="button button--trainer"
-  (click)="moveItems()"
+  (click)="start()"
 >Продолжить</button>
 
 <button

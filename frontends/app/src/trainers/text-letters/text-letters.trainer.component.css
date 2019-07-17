@@ -47,3 +47,8 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}

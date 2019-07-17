@@ -55,7 +55,7 @@ export class ClassificationDefinitionsTrainerComponent
     this.groups = [...new Set(this.config.items.map( ({data}) => ({data}) ))]
                   .sort(() => Math.random() - 0.5)
 
-    this.items = this.config.items
+    this.items = this.config.items.sort(() => Math.random() - 0.5)
 
     this._itemSubscription = this._stepSubject.pipe(
       map(() => this.items.find(item => !item.isSuccess)),
@@ -76,8 +76,13 @@ export class ClassificationDefinitionsTrainerComponent
   }
 
   start() {
-    this._stepSubject.next()
     super.start()
+    this._stepSubject.next()
+  }
+
+  timeout() {
+    super.timeout()
+    this.finish()
   }
 
   finish() {

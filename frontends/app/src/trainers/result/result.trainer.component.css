@@ -1,0 +1,12 @@
+.wrapper {
+  width: 300px;
+}
+
+.trainer-p {
+  text-align: center;
+}
+
+.button {
+  margin-top: calc(var(--trainer-margin) * 4);
+  margin-bottom: auto;
+}

@@ -8,6 +8,4 @@ export interface IWordsColumnTrainerConfig extends ITrainerConfig {
   ui: IWordsColumnTrainerUI
 
   items: Array<string>
-
-  previewTimeLimit: number
 }

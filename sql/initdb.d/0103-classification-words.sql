@@ -11,67 +11,54 @@ CREATE TABLE private.trainer__classification_words__data (
   CONSTRAINT trainer__classification_words__data__check__words CHECK (array_length("words", 1) > 0)
 ) WITH (OIDS = FALSE);
 
+-- SELECT * FROM private.trainer__classification_words__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__classification_words__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _itemTimeLimit smallint;
-  _minGroups smallint;
-  _maxGroups smallint;
-  _minItems smallint;
-  _maxItems smallint;
-  _quantity int;
+  _minGroups smallint := 2;
+  _maxGroups smallint := 6;
+  _groupsCount smallint;
+
+  _minItems smallint := 3;
+  _maxItems smallint := 5;
+  _itemsCount smallint;
+
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'itemTimeLimit')::smallint,
-    ("complexity"->'minGroups')::smallint,
-    ("complexity"->'maxGroups')::smallint,
-    ("complexity"->'minItems')::smallint,
-    ("complexity"->'maxItems')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _itemTimeLimit,
-    _minGroups,
-    _maxGroups,
-    _minItems,
-    _maxItems,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'classification-words';
 
+  _groupsCount := LEAST(_minGroups + _complexity, _maxItems) - random()::smallint;
+  _itemsCount := LEAST(_minItems + _complexity, _maxItems) - random()::smallint;
+
   RETURN QUERY (
-    SELECT (
+    SELECT
+      jsonb_build_object(
+        'id', 'classification-words',
+        'ui', 'classification-words',
+
+        'timeLimit', _timeLimit * _itemsCount * _groupsCount,
+        'complexity', _complexity,
+
+        'items', jsonb_agg(jsonb_build_object(
+          'group', "group",
+          'words', "words"
+        ))
+      )
+    FROM (
       SELECT
-        jsonb_build_object(
-          'id', 'classification-words',
-          'ui', 'classification-words',
-          'timeLimit', jsonb_array_length("items") * _itemTimeLimit,
-          'items', "items"
-        )
-      FROM (
-        SELECT
-          jsonb_agg(
-            jsonb_build_object(
-              'data', "data",
-              'word', "word"
-            )
-          ) AS "items"
-        FROM (
-          SELECT *, ROW_NUMBER() OVER (PARTITION BY "data" ORDER BY random()) AS cnt
-          FROM (
-            SELECT
-              "group" AS "data",
-              unnest("words") AS "word"
-            FROM (
-              SELECT "group", "words"
-              FROM private.trainer__classification_words__data
-              ORDER BY random()
-              LIMIT public.random(_minGroups, _maxGroups)
-            ) AS t
-          ) AS t
-        ) AS t WHERE cnt <= public.random(_minItems, _maxItems)
-      ) AS t
-      WHERE s = s
-    ) AS "config"
-    FROM generate_series(1,_quantity) AS s
+        "group",
+        (SELECT array_agg(v ORDER BY random()) FROM unnest("words") v)[1:_itemsCount] AS "words"
+      FROM private.trainer__classification_words__data
+      ORDER BY random()
+      LIMIT _groupsCount
+    ) AS t
   );
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

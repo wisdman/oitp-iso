@@ -148,6 +148,7 @@ export interface ITrainerConfig {
   ui: ITrainerUI
 
   timeLimit: number
+  previewTimeLimit?: number
 
   training: string
   idx: number
@@ -161,7 +162,7 @@ export interface ITrainerResult {
   isTimeout?: boolean
 
   result: number | null
-  time: number
+  time: number | null
 }
 
 export type ITrainingType = "debug" | "everyday" | "once"

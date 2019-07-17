@@ -21,6 +21,11 @@ export class TextTezirovanieTrainerComponent
   init() {
     this.fullscreenService.unlock()
     this.value = this.config.data
+    this.markForCheck()
+  }
+
+  destroy() {
+    this.value = ""
   }
 
   timeout() {

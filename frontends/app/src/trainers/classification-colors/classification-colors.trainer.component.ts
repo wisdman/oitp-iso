@@ -85,7 +85,7 @@ export class ClassificationColorsTrainerComponent
     this.itemTimeLimit = Math.floor(this.config.timeLimit / this.config.items.length)
 
     this._itemSubscription = zip(
-      from([...this.config.items, undefined]),
+      from([...this.config.items.sort(() => Math.random() - 0.5), undefined]),
       merge(
         this._stepSubject,
         this._itemTimeoutSubject.pipe(
@@ -113,8 +113,13 @@ export class ClassificationColorsTrainerComponent
   }
 
   start() {
-    this._stepSubject.next()
     super.start()
+    this._stepSubject.next()
+  }
+
+  timeout() {
+    super.timeout()
+    this.finish()
   }
 
   finish() {

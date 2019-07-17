@@ -21,30 +21,37 @@ OWNED BY private.trainer__text_tezirovanie__data.id;
 ALTER TABLE ONLY private.trainer__text_tezirovanie__data ALTER COLUMN id
 SET DEFAULT nextval('private.trainer__text_tezirovanie__data__id__seq'::regclass);
 
+-- SELECT * FROM private.trainer__text_tezirovanie__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__text_tezirovanie__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _playTimeLimit smallint;
-  _completed int[];
+  _minQuantity smallint := 1;
+  _maxQuantity smallint := 5;
   _quantity smallint;
+
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'playTimeLimit')::smallint,
-    COALESCE((SELECT array_agg("value"::int) FROM jsonb_array_elements("complexity"->'completed')), '{}'::int[]),
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _playTimeLimit,
-    _completed,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'text-tezirovanie';
+
+  _quantity := LEAST(GREATEST(_complexity, _minQuantity) + random()::smallint, _maxQuantity);
 
   RETURN QUERY (
     SELECT
       jsonb_build_object(
         'id', 'text-tezirovanie',
         'ui', 'text-tezirovanie',
-        'timeLimit', _playTimeLimit,
+
+        'timeLimit', _timeLimit,
+        'complexity', _complexity,
+
         'data', "data"
       )
     FROM private.trainer__text_tezirovanie__data

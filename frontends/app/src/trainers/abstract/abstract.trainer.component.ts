@@ -118,14 +118,14 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
 
   // === Time Meter ===
   private _time!: number
-  timeMeter() {
+  startTimeMeter() {
+    this._time = Number(new Date())
+  }
+  finishTimeMeter() {
     if (this._time > 0) {
       this._updateResult({ time: Number(new Date()) - this._time })
-      this._time = 0
-      return
     }
-
-    this._time = Number(new Date())
+    this._time = 0
   }
 
   // === Matrix size ===
@@ -136,13 +136,8 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
   }
 
 
-  // === Native element size ===
-  width: number = 0
-  height: number = 0
-
-
   // === Game mode ===
-  mode: "init" | "play" | "result" = "init"
+  mode: "init" | "preview" | "play" | "result" = "init"
 
   private _lapTimerSubscriber!: Subscription
 
@@ -160,22 +155,19 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
       isFinish: false,
       isTimeout: false,
       result: null,
-      time: 0,
+      time: null,
     })
 
     // Reset time meter
     this._time = 0
 
-    // Set native element size
-    const { width, height } = this._elRef.nativeElement.getBoundingClientRect()
-    this.width = width
-    this.height= height
-
     // Init trainer
     this.init()
 
-    // Start trainer
-    this.start()
+    // Auto start trainer
+    if (this.mode === "init") {
+      this.start()
+    }
   }
 
   ngOnChanges(sc: SimpleChanges ) {
@@ -200,17 +192,17 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
   init() {}
   destroy() {}
 
-  start() {
-    this.mode = "play"
-    this.setTimeout(this.config.timeLimit)
-    this.timeMeter()
+  preview(timeLimit: number = this.config.previewTimeLimit || 0) {
+    this.setTimeout(timeLimit)
+    this.startTimeMeter()
+    this.mode = "preview"
     this.markForCheck()
   }
 
-  result() {
-    this.setTimeout(0)
-    this.timeMeter()
-    this.mode = "result"
+  start(timeLimit: number = this.config.timeLimit) {
+    this.setTimeout(timeLimit)
+    this.startTimeMeter()
+    this.mode = "play"
     this.markForCheck()
   }
 
@@ -218,16 +210,22 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
     this._updateResult({ isTimeout: true })
   }
 
+  result() {
+    this.setTimeout(0)
+    this.finishTimeMeter()
+    this.mode = "result"
+    this.markForCheck()
+  }
+
   finish(result: number | null = null) {
     this.setTimeout(0)
-    this.timeMeter()
+    this.finishTimeMeter()
 
     this._updateResult({
       result: result === null ? null : result < 0 ? 0 : result > 100 ? 100 : Math.round(result),
       isFinish: true,
     })
   }
-
 }
 
 

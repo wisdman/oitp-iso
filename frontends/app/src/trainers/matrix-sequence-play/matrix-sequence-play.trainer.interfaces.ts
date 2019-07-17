@@ -8,5 +8,5 @@ export interface IMatrixSequencePlayTrainerConfig extends ITrainerConfig {
   ui: IMatrixSequencePlayTrainerUI
 
   matrix: Array<number>
-  showSucess?: boolean
+  showSuccess?: boolean
 }

@@ -63,6 +63,12 @@ export class ClassificationWordsTrainerComponent
   success!: number
 
   groups!: Array<ISelectorItem>
+
+  items!: Array<{
+    word: string
+    data: string
+  }>
+
   item!: Partial<{
     word: string
     data: string
@@ -77,14 +83,20 @@ export class ClassificationWordsTrainerComponent
     this.isError = this.isSuccess = false
     this.success = 0
 
-    this.groups = [...new Set(this.config.items.map(({data}) => data))]
+    this.groups = [...new Set(this.config.items.map(({group}) => group))]
                   .sort(() => Math.random() - 0.5)
                   .map(data => ({data}))
 
-    this.itemTimeLimit = Math.floor(this.config.timeLimit / this.config.items.length)
+    this.items = this.config.items
+                     .map(({group, words}) => words.map(word => ({word, data: group})))
+                     .flat()
+                     .sort(() => Math.random() - 0.5)
+                     .sort(() => Math.random() - 0.5)
+
+    this.itemTimeLimit = Math.floor(this.config.timeLimit / this.items.length)
 
     this._itemSubscription = zip(
-      from([...this.config.items.sort(() => Math.random() - 0.5), undefined]),
+      from([...this.items, undefined]),
       merge(
         this._stepSubject,
         this._itemTimeoutSubject.pipe(
@@ -112,12 +124,17 @@ export class ClassificationWordsTrainerComponent
   }
 
   start() {
-    this._stepSubject.next()
     super.start()
+    this._stepSubject.next()
+  }
+
+  timeout() {
+    super.timeout()
+    this.finish()
   }
 
   finish() {
-    super.finish(this.success / this.config.items.length * 100)
+    super.finish(this.success / this.items.length * 100)
   }
 
   onTouch(group: ISelectorItem) {

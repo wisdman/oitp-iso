@@ -174,7 +174,6 @@ export class InputMainDirective implements OnInit, OnDestroy, DoCheck {
   }
 
   ngDoCheck() {
-    console.dir(STYLE)
     Array.from(this._nativeElement.classList)
          .filter(value => !value.match(/^ng-/i))
          .filter(value => !FILTRED_STYLES.includes(value))

@@ -11,8 +11,20 @@
   (touch)="result()"
 ></trainer-selector>
 
-<button
-  class="button button--trainer"
+<p
+  class="text"
   [class.invisible]="mode !== 'result'"
+>{{ this.config.answer }}</p>
+
+<button
+  *ngIf="mode==='play'"
+  class="button button--trainer"
+  invisible disabled
+  (click)="result()"
+>Проверить</button>
+
+<button
+  *ngIf="mode==='result'"
+  class="button button--trainer"
   (click)="finish()"
 >Продолжить</button>

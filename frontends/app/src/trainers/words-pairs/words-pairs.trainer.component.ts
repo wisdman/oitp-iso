@@ -36,13 +36,13 @@ export class WordsPairsTrainerComponent
     this.fullscreenService.unlock()
     this.items = this.config.items.map(([A, B])=>[{data: A, userData: A}, {data: B, userData: B}])
     this.hidden = Math.round(Math.random())
+
+    this.preview()
   }
 
-  start() {}
-
-  startPlay() {
-    this.items.forEach(value => value[this.hidden].userData = "")
+  start() {
     super.start()
+    this.items.forEach(value => value[this.hidden].userData = "")
   }
 
   timeout() {
@@ -56,7 +56,6 @@ export class WordsPairsTrainerComponent
       value[this.hidden].isSuccess =
         this._prepareString(value[this.hidden].data) === this._prepareString(value[this.hidden].userData)
     )
-    this.markForCheck()
   }
 
   finish() {

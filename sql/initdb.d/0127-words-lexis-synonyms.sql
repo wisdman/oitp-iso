@@ -28,34 +28,43 @@ SET DEFAULT nextval('private.trainer__words_lexis_synonyms__data__id__seq'::regc
 CREATE UNIQUE INDEX trainer__words_lexis_synonyms__data__idx__unique__words
   ON private.trainer__words_lexis_synonyms__data USING btree ("wordA", "wordB");
 
+-- SELECT * FROM private.trainer__words_lexis_synonyms__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__words_lexis_synonyms__config() RETURNS SETOF RECORD AS $$
 DECLARE
-  _playTimeLimit smallint;
-  _minItems smallint;
-  _maxItems smallint;
+  _minQuantity smallint := 1;
+  _maxQuantity smallint := 3;
   _quantity smallint;
+
+  _minItems smallint := 4;
+  _maxItems smallint := 10;
+  _itemsCount smallint;
+
+  _timeLimit smallint;
+  _complexity smallint;
 BEGIN
   SELECT
-    ("complexity"->'playTimeLimit')::smallint,
-    ("complexity"->'minItems')::smallint,
-    ("complexity"->'maxItems')::smallint,
-    public.random(("complexity"->'minQuantity')::int, ("complexity"->'maxQuantity')::int)
+    "timeLimit",
+    "complexity"
   INTO
-    _playTimeLimit,
-    _minItems,
-    _maxItems,
-    _quantity
+    _timeLimit,
+    _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'words-lexis-synonyms';
+
+  _quantity := LEAST(_minQuantity + _complexity, _maxQuantity) - random()::smallint;
+  _itemsCount := LEAST(_minItems + _complexity, _maxItems) - random()::smallint;
 
   RETURN QUERY (
     SELECT
       jsonb_build_object(
         'id', 'words-lexis-synonyms',
         'ui', 'words-lexis',
-        'timeLimit', _playTimeLimit,
-        'items', (array_agg("item"))[1:public.random(_minItems, _maxItems)]
+
+        'timeLimit', _timeLimit  * _itemsCount,
+        'complexity', _complexity,
+
+        'items', array_agg("item")
       )
     FROM (
       SELECT
@@ -65,7 +74,7 @@ BEGIN
         SELECT ARRAY["wordA", "wordB"] AS "item"
         FROM private.trainer__words_lexis_synonyms__data
         ORDER BY random()
-        LIMIT _quantity * _maxItems
+        LIMIT _quantity * _itemsCount
       ) AS t
     ) AS t
     GROUP BY "grp"

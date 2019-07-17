@@ -12,4 +12,6 @@ export interface IMathWasteTrainerConfig extends ITrainerConfig {
     data: number
     correct: boolean
   }>
+
+  answer: string
 }

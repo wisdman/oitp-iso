@@ -35,36 +35,30 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig> {
   init() {
     this.fullscreenService.unlock()
     this.items = this.config.items.map(data => ({data, userData: data}))
-  }
 
-  start() {
-    this.setTimeout(this.config.previewTimeLimit)
-    this.markForCheck()
-  }
-
-  startPlay() {
-    this.items.forEach(value => value.userData = "")
-    super.start()
-  }
-
-  result() {
-    this.items.forEach(value =>
-      value.isSuccess = this._prepareString(value.data) === this._prepareString(value.userData)
-    )
-    super.result()
+    this.preview()
   }
 
   timeout() {
-    switch (this.mode) {
-      case "init":
-        this.start()
-        break;
-
-      case "play":
-        super.timeout()
-        this.result()
-        break;
+    if (this.mode === "preview") {
+      this.start()
+      return
     }
+
+    super.timeout()
+    this.result()
+  }
+
+  start() {
+    super.start()
+    this.items.forEach(value => value.userData = "")
+  }
+
+  result() {
+    super.result()
+    this.items.forEach(value =>
+      value.isSuccess = this._prepareString(value.data) === this._prepareString(value.userData)
+    )
   }
 
   finish() {

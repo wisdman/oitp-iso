@@ -13,10 +13,9 @@ export interface IImageCarpetsTrainerConfig extends ITrainerConfig {
 
   items: Array<{
     color: number
-    items: Array<string>
+    group: number
+    d: string
   }>
 
   colors: Array<string>
-
-  previewTimeLimit: number
 }

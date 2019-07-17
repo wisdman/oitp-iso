@@ -62,10 +62,11 @@ extends AbstractTrainerComponent<IImageCarpetsTrainerConfig> {
                     this.matrixHeight - svgPadding * 4,
                   ).path
 
-    this.items = this.config.items.map((group,i) => {
-      const fill = this.config.colors[group.color] || "#ffffff"
-      return group.items.map(path => ({path, fill, group: i, dx: 0, dy: 0, transform: ""}))
-    }).flat()
+    this.items = this.config.items.map(item => {
+      const fill = this.config.colors[item.color] || "#ffffff"
+      const group = item.group * 100 + item.color
+      return ({path: item.d, fill, group, dx: 0, dy: 0, transform: ""})
+    })
 
     if (this._pointerupSubscriber) this._pointerupSubscriber.unsubscribe()
     this._pointerupSubscriber = this.pointerService.pointerup.subscribe(event => this.onPointerUp(event))
@@ -73,7 +74,7 @@ extends AbstractTrainerComponent<IImageCarpetsTrainerConfig> {
     if (this._pointermoveSubscriber)  this._pointermoveSubscriber.unsubscribe()
     this._pointermoveSubscriber = this.pointerService.pointermove.subscribe(event => this.onpointermMove(event))
 
-    this.setTimeout(this.config.previewTimeLimit)
+    this.preview()
   }
 
   destroy() {
@@ -81,47 +82,19 @@ extends AbstractTrainerComponent<IImageCarpetsTrainerConfig> {
     this._pointermoveSubscriber.unsubscribe()
   }
 
-  start() {}
-
-  result() {
-    super.result()
-
-    const deltaX = this.matrixWidth * 0.1
-    const deltaY = this.matrixHeight * 0.1
-
-    this.errors = this.items
-                      .reduce((groups, item) => {
-                        const sumItem = groups[item.group] || { x:0, y:0, i:0 }
-                        sumItem.x += item.dx
-                        sumItem.y += item.dy
-                        sumItem.i++
-                        groups[item.group] = sumItem
-                        return groups
-                      }, new Array<{x: number, y: number, i: number}>())
-                      .reduce((sum, {x, y, i}) =>
-                        sum + Math.max(
-                                Math.min(Math.floor(Math.abs(x / i) / deltaX), i),
-                                Math.min(Math.floor(Math.abs(y / i) / deltaY), i),
-                              ),
-                         0
-                      )
-  }
-
-  finish() {
-    super.finish((this.items.length - this.errors) / this.items.length * 100)
-  }
-
   timeout() {
-    if (this.mode === "init") {
-      this.setTimeout(0)
-      this.moveItems()
+    if (this.mode === "preview") {
+      this.start()
       return
     }
+
     super.timeout()
     this.result()
   }
 
-  moveItems() {
+  start() {
+    this.setTimeout(0)
+
     const cx = this.matrixWidth / 2
     const cy = this.matrixHeight / 2
     const cmx = Math.min(this.matrixWidth, this.matrixHeight) / 2
@@ -155,6 +128,35 @@ extends AbstractTrainerComponent<IImageCarpetsTrainerConfig> {
         this.setCSSProperty("--move-duration", "0s")
       })
     }, moveDuration)
+  }
+
+  result() {
+    super.result()
+    this._currentItem = undefined
+
+    const deltaX = this.matrixWidth * 0.1
+    const deltaY = this.matrixHeight * 0.1
+
+    this.errors = this.items
+                      .reduce((groups, item) => {
+                        const sumItem = groups[item.group] || { x:0, y:0, i:0 }
+                        sumItem.x += item.dx
+                        sumItem.y += item.dy
+                        sumItem.i++
+                        groups[item.group] = sumItem
+                        return groups
+                      }, new Array<{x: number, y: number, i: number}>())
+                      .reduce((sum, {x, y, i}) =>
+                        sum + Math.max(
+                                Math.min(Math.floor(Math.abs(x / i) / deltaX), i),
+                                Math.min(Math.floor(Math.abs(y / i) / deltaY), i),
+                              ),
+                         0
+                      )
+  }
+
+  finish() {
+    super.finish((this.items.length - this.errors) / this.items.length * 100)
   }
 
   private _cursorPoint([mx,my]: [number, number]): [number, number] {

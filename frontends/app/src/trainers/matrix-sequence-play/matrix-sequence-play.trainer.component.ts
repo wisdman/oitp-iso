@@ -78,7 +78,7 @@ export class MatrixSequencePlayTrainerComponent
       this.current++
       this.success++
 
-      if (this.config.showSucess) {
+      if (this.config.showSuccess) {
         item.isSuccess = true
       } else {
         item.isActive = true
