@@ -38,6 +38,7 @@ export default {
     metrika: PATH("./src/scripts/metrika.ts"),
     scripts: [
       PATH("./src/scripts/anchor-link.ts"),
+      PATH("./src/scripts/budget.ts"),
       PATH("./src/scripts/overlay.ts"),
       PATH("./src/scripts/text-review.ts"),
       PATH("./src/scripts/video-review.ts"),

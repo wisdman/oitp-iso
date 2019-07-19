@@ -150,6 +150,7 @@
   position: relative;
   width: 100%;
   height: 100px;
+  margin-bottom: 64px;
 }
 
 .budget-range__labels {
@@ -318,3 +319,117 @@
 }
 
 
+.budget-inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  .budget-inputs {
+    flex-direction: row;
+  }
+}
+
+.budget-input__wrapper {
+  display: block;
+  position: relative;
+
+  margin: 0;
+  margin-top: var(--global-gap);
+  padding: 0;
+
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 48px;
+
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+
+  font: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+
+  color: inherit;
+
+
+  border: 1px solid rgba(0, 0, 0, 0.32);
+  border-radius: 8px;
+}
+
+@media (min-width: 600px) {
+  .budget-input__wrapper {
+    width: calc(100% / 2 - var(--global-gap));
+  }
+}
+
+.budget-input__wrapper:focus-within {
+  border-color: var(--color-extra);
+}
+
+.budget-input {
+  display: block;
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+  padding: 0;
+  padding: 0 .7em;
+
+  background-color: var(--color-white);
+  background-image: none;
+  border: 0 none;
+  border-radius: 8px;
+
+  color: var(--color-text);
+  font: inherit;
+  text-decoration: inherit;
+  text-transform: inherit;
+}
+
+.budget-input::placeholder {
+  color: transparent;
+  visibility: hidden;
+}
+.budget-input::outer-spin-button,
+.budget-input::inner-spin-button {
+  appearance: none;
+  display: none;
+  visibility: hidden;
+}
+
+.budget-input__label {
+  display: block;
+  position: absolute;
+  left: .5em;
+  top: 50%;
+
+  padding: 0 .2em;
+
+  transform: translate(0, calc(-50% - 24px)) scale(0.80);
+  transform-origin: left center;
+
+  transition-duration: 150ms;
+  transition-timing-function: linear;
+  transition-property: color;
+
+  white-space: nowrap;
+  font: inherit;
+
+  background-color: var(--color-background);
+  color: rgba(0, 0, 0, 0.64);
+  cursor: text;
+}
+
+.budget-input__wrapper:focus-within .budget-input__label {
+  color: var(--color-extra);
+}
+
+.budget-button {
+  margin: var(--global-gap) auto;
+}
