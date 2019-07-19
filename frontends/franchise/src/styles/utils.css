@@ -9,6 +9,8 @@
   white-space: nowrap;
 }
 
+.text-small { font-size: 80%; }
+
 .text-align-center { text-align: center; }
 .text-align-left { text-align: left; }
 .text-align-right { text-align: right; }

@@ -1,6 +1,7 @@
 *, *::before, *::after {
   touch-action: inherit;
   box-sizing: inherit;
+  outline: none;
 }
 
 html {
@@ -31,13 +32,18 @@ body {
   margin: 0;
   padding: 0;
 
+  background-color: var(--color-background);
+  color: var(--color-text-black);
+
+  /* font-family: Roboto, sans-serif; */
   font-family: "Open Sans", "Helvetica Neue", sans-serif;
   font-display: swap;
-  font-size: var(--font-size-0);
+
+  font-size: 16px;
   line-height: 1;
 
-  background-color: var(--color-background);
-  color: var(--color-text);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 
   overscroll-behavior: none;
 }

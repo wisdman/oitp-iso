@@ -1,55 +1,72 @@
-p, ul, li, h1, h2, h3, h4 {
-  display: block;
-  margin: 0;
+
+h1, h2, h3, h4, p {
+  margin: 0 auto;
   padding: 0;
 }
 
-li {
-  list-style: none;
+h1 + p, h2 + p, h3 + p, h4 + p, p + p {
+  margin-top: var(--global-gap);
 }
 
-p, li {
-  font-size: var(--font-size-0);
-  line-height: var(--line-height-0);
+h1, h2 {
+  margin-top: calc(var(--global-gap) * 3);
+
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.44;
+
+  color: var(--color-primar);
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.44;
+}
+
+h4 {
+  font-size: 14px;
   font-weight: 400;
-
-  text-align: left;
-  text-transform: none;
+  line-height: 1.44;
 }
 
-h4, .h4 {
-  font-size: var(--font-size-1);
-  line-height: var(--line-height-1);
+summary {
+  font-size: 16px;
   font-weight: 600;
+  line-height: 1.44;
+
+  color: var(--color-second);
 }
 
-h3, .h3 {
-  font-size: var(--font-size-2);
-  line-height: var(--line-height-2);
+p {
+  font-size: 16px;
   font-weight: 400;
-
-  text-align: center;
-  text-transform: none;
+  line-height: 1.44;
 }
 
-h2, .h2 {
-  font-size: var(--font-size-2);
-  line-height: var(--line-height-2);
-  font-weight: 600;
-
-  text-align: center;
-  text-transform: uppercase;
+small {
+  font-size: 75%;
+  font-weight: 400;
+  font-style: italic;
 }
 
-h1, .h1 {
-  font-size: var(--font-size-3);
-  line-height: var(--line-height-3);
-  font-weight: 600;
-
-  text-align: center;
-  text-transform: none;
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
 }
 
-p + p, h1 + p, h2 + p, h3 + p {
-  margin-top: var(--margin);
+sub {
+  bottom: -0.25em;
 }
+
+sup {
+  top: -0.5em;
+}
+
+a {
+  color: var(--color-second);
+  text-decoration: none;
+}
+

@@ -1,0 +1,45 @@
+.overlay {
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+
+  background-color: var(--color-backdrop);
+
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.overlay--show {
+  display: flex;
+}
+
+.overlay iframe {
+  margin: auto;
+}
+
+.overlay__box {
+  display: block;
+  max-width: 700px;
+
+  margin: 64px 16px 16px 16px;
+  padding: 16px;
+  border-radius: 8px;
+
+  background-color: var(--color-background);
+}
+
+.overlay__box .review-item__picture {
+  display: block;
+  position: static;
+  float: left;
+  width: 50px;
+  height: 50px;
+  margin-right: 16px;
+}

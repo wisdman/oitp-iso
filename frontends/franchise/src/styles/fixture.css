@@ -1,0 +1,12 @@
+summary {
+  list-style-image: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::-moz-list-bullet {
+  list-style-type: none;
+  display: none;
+}

@@ -1,0 +1,320 @@
+
+.budget-programm__input {
+  display: none;
+}
+
+.budget-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.budget-form h3 {
+  flex: 0 0 100%;
+  margin-top: calc(var(--global-gap) * 1.5);
+}
+
+.budget-programm h4,
+.budget-programm p {
+  padding: 0 var(--global-gap);
+}
+
+.budget-programm p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.44;
+}
+
+.budget-programm h4 {
+  margin: 0;
+  margin-top: var(--global-gap);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.44;
+}
+
+.budget-programm {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  flex: 0 0 calc(100% - var(--global-gap));
+  margin-top: calc(var(--global-gap) * 2);
+  padding-bottom: var(--global-gap);
+
+  border-radius: 8px;
+  box-shadow: 0px 1px 5px 0px rgba(80,80,80, 0.2),
+    0px 2px 2px 0px rgba(80,80,80, 0.14),
+    0px 3px 1px -2px rgba(80,80,80, 0.12);
+
+  cursor: pointer;
+
+  transition: transform 250ms, color 250ms;
+  transform: scale3d(1, 1, 1);
+  backface-visibility: hidden;
+}
+
+.budget-programm:hover {
+  transform: scale3d(1.01, 1.01, 1);
+}
+
+@media (min-width: 500px) {
+  .budget-programm {
+    flex: 0 0 calc(50% - var(--global-gap));
+  }
+}
+
+@media (min-width: 800px) {
+  .budget-programm {
+    flex: 0 0 calc(33.33% - var(--global-gap));
+  }
+}
+
+.budget-programm__input:checked + .budget-programm {
+  background-color: var(--color-extra);
+  color: var(--color-text-white);
+}
+
+
+.budget-programm picture {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+
+.budget-programm picture img {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 101%;
+  height: 100%;
+  border: 0 none;
+  border-radius: 8px 8px 0 0;
+  object-fit: cover;
+}
+
+.budget-programm__age {
+  display: block;
+  position: relative;
+  align-self: flex-start;
+
+  margin-top: -18px;
+  margin-left: -7px;
+  padding: calc(var(--global-gap) * 0.5) var(--global-gap);
+
+  background-color: #999;
+  color: var(--color-text-white);
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.44;
+
+  box-shadow: 1px 1px 1px -1px rgba(0,0,0,0.88);
+}
+
+.budget-programm__input:checked + .budget-programm .budget-programm__age {
+  background-color: var(--color-primar);
+}
+
+.budget-programm__age::after {
+  content: "";
+  display: block;
+  position: absolute;
+
+  left: 0;
+  top: 100%;
+  width: 0;
+  height: 0;
+  z-index: -1;
+
+  border-color: transparent #999;
+  border-style: solid;
+  border-width: 0px 7px 7px 0px;
+}
+
+.budget-programm__input:checked + .budget-programm .budget-programm__age::after {
+  border-color: transparent var(--color-primar);
+}
+
+
+.budget-range__wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100px;
+}
+
+.budget-range__labels {
+  display: grid;
+  grid-template-columns: repeat(7, calc(100%/7));
+  align-items: end;
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.budget-range__item {
+  display: block;
+  position: relative;
+  list-style: none;
+
+  margin: 0;
+  padding: 0;
+
+  font-size: 10px;
+  line-height: 1.14;
+}
+
+.budget-range__item span {
+  display: block;
+  text-align: left;
+  transform: rotate(90deg) translate(30px, 0);
+}
+
+@media (min-width: 370px) {
+  .budget-range__item span {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 400px) {
+  .budget-range__item span {
+    line-height: 1.44;
+  }
+}
+
+@media (min-width: 600px) {
+  .budget-range__item span {
+    text-align: center;
+    transform: translate(0, 8px);
+  }
+}
+
+.budget-range__labels::before {
+  content: "";
+  display: block;
+  position: absolute;
+
+  top: calc(50% - 6px);
+  left: 0;
+  width: 100%;
+  height: 8px;
+
+  background: var(--color-extra);
+  border-radius: 3px;
+}
+
+.budget-range__item::before {
+  content: "";
+  display: block;
+  position: absolute;
+
+  top: -46px;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+
+  background-color: var(--color-background);
+  border: 2px solid var(--color-primar);
+  border-radius: 6px;
+  transform: translate(-50%, 0);
+
+  box-shadow: 0 0 0 3px var(--color-background);
+}
+
+@media (min-width: 400px) {
+  .budget-range__item::before  {
+    top: -38px;
+  }
+}
+
+
+.budget-range {
+  -webkit-appearance: none;
+  display: block;
+  position: relative;
+  z-index: 666;
+
+  width: calc(100% - 100% / 7 + 28px);
+  height: 100px;
+
+  margin: 0 auto;
+
+  background: none transparent;
+}
+
+/* Special styling for WebKit/Blink */
+.budget-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 28px;
+  width: 28px;
+  border-radius: 3px;
+  background: var(--color-primar);
+  cursor: pointer;
+  margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+}
+
+/* All the same stuff for Firefox */
+.budget-range::-moz-range-thumb {
+  height: 28px;
+  width: 28px;
+  border-radius: 3px;
+  background: var(--color-primar);
+  cursor: pointer;
+}
+
+/* All the same stuff for IE */
+.budget-range::-ms-thumb {
+  height: 28px;
+  width: 28px;
+  border-radius: 3px;
+  background: var(--color-primar);
+  cursor: pointer;
+}
+
+.budget-range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: none transparent;
+  border: 0 none;
+}
+
+.budget-range::-moz-range-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: none transparent;
+  border: 0 none;
+}
+
+.budget-range::-ms-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: none transparent;
+  border: 0 none;
+  color: transparent;
+}
+.budget-range::-ms-fill-lower {
+  display: none;
+}
+.budget-range::-ms-fill-upper {
+  display: none;
+}
+
+

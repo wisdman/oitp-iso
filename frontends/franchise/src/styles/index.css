@@ -1,18 +1,25 @@
+@import "fixture.css";
+
 @import "theme.css";
 @import "typography.css";
 @import "forms.css";
 
 @import "page.css";
-
 @import "section.css";
-@import "records.css";
-@import "ipad.css";
+
 @import "top.css";
-@import "trainer.css";
-@import "vll.css";
-@import "price.css";
+@import "features.css";
+@import "bibos.css";
+@import "composition.css";
+@import "budget.css";
+@import "review.css";
+
+@import "request-form.css";
+@import "budget-form.css";
 
 @import "header.css";
 @import "footer.css";
+
+@import "overlay.css";
 
 @import "utils.css";

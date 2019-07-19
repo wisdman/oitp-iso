@@ -36,6 +36,12 @@ export default {
 
   entry: {
     metrika: PATH("./src/scripts/metrika.ts"),
+    scripts: [
+      PATH("./src/scripts/anchor-link.ts"),
+      PATH("./src/scripts/overlay.ts"),
+      PATH("./src/scripts/text-review.ts"),
+      PATH("./src/scripts/video-review.ts"),
+    ],
   },
 
   resolve: {
@@ -90,17 +96,6 @@ export default {
       test: /\.ts$/,
       use: [{
         loader: "ts-loader",
-      }],
-    },{
-      // === Custom files ===
-      test: /\.(png|jpg|webp|svg)$/,
-      use: [{
-        loader: "file-loader",
-        options: {
-          name: "[name].[ext]",
-          outputPath: "img",
-          publicPath: "/img",
-        },
       }],
     }],
   },
@@ -206,7 +201,7 @@ export default {
   devServer: {
     clientLogLevel: "warning",
     compress: isProduction,
-    contentBase: PATH("../../nginx/www"),
+    contentBase: PATH("./assets"),
     disableHostCheck: true,
     historyApiFallback: true,
     hot: !isProduction,

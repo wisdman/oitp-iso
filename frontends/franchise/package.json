@@ -33,7 +33,6 @@
     "webpack-dev-server": "^3.7.2"
   },
   "scripts": {
-    "postinstall": "find node_modules/{@types/**,terser,uglify-js}/node_modules -name 'source-map' -type d -exec rm -rf '{}' +",
     "clean": "rm -rf ./artifacts/*",
     "build": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack --config ./webpack.config.ts",
     "start": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack-dev-server --config ./webpack.config.ts",
