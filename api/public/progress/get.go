@@ -16,7 +16,7 @@ func (api *API) Get(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
 	if err := sql.QueryRow(
-		`SELECT jsonb_agg("progress") AS "items" FROM public.self_progress`,
+		`SELECT jsonb_agg("progress") AS "items" FROM self.progress`,
 	).Scan(&progress.Items); err != nil {
 		service.Fatal(w, err)
 		return

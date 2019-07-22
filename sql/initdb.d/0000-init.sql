@@ -12,9 +12,13 @@ REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 
 CREATE ROLE "api-admin" WITH NOINHERIT NOLOGIN PASSWORD NULL;
 ALTER ROLE "api-admin" SET search_path = "$user";
+GRANT USAGE ON SCHEMA "admin" TO "api-admin";
 
 CREATE ROLE "api-crone" WITH NOINHERIT NOLOGIN PASSWORD NULL;
 ALTER ROLE "api-crone" SET search_path = "$user";
 
 CREATE ROLE "api-public" WITH NOINHERIT NOLOGIN PASSWORD NULL;
 ALTER ROLE "api-public" SET search_path = "$user";
+GRANT USAGE ON SCHEMA "public", "self" TO "api-public";
+
+

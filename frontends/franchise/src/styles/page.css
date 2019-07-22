@@ -35,7 +35,6 @@ body {
   background-color: var(--color-background);
   color: var(--color-text-black);
 
-  /* font-family: Roboto, sans-serif; */
   font-family: "Open Sans", "Helvetica Neue", sans-serif;
   font-display: swap;
 

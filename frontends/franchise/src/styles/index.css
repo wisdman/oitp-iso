@@ -1,3 +1,5 @@
+@import "fonts.css";
+
 @import "fixture.css";
 
 @import "theme.css";
@@ -21,5 +23,6 @@
 @import "footer.css";
 
 @import "overlay.css";
+@import "loader.css";
 
 @import "utils.css";

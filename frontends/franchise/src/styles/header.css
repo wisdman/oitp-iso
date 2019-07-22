@@ -87,15 +87,14 @@
 .header__logo {
   display: block;
   width: 66px;
-  height: 32px;
   color: var(--color-primar);
   margin-right: auto;
 }
 
-.header__logo svg {
+.header__logo img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   color: inherit;
 }
 

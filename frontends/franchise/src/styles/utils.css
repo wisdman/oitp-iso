@@ -16,3 +16,6 @@
 .text-align-right { text-align: right; }
 
 .font-weight-bold { font-weight: 600; }
+
+.c-primar { color:  var(--color-primar); }
+.c-success { color:  var(--color-success); }

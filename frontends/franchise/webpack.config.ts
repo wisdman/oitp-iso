@@ -35,11 +35,16 @@ export default {
   context: PATH("./src"),
 
   entry: {
-    metrika: PATH("./src/scripts/metrika.ts"),
+    counters: [
+      PATH("./src/scripts/fb.ts"),
+      PATH("./src/scripts/metrika.ts"),
+      PATH("./src/scripts/vk.ts"),
+    ],
     scripts: [
       PATH("./src/scripts/anchor-link.ts"),
       PATH("./src/scripts/budget.ts"),
       PATH("./src/scripts/overlay.ts"),
+      PATH("./src/scripts/request-form.ts"),
       PATH("./src/scripts/text-review.ts"),
       PATH("./src/scripts/video-review.ts"),
     ],
@@ -204,7 +209,6 @@ export default {
     compress: isProduction,
     contentBase: PATH("./assets"),
     disableHostCheck: true,
-    historyApiFallback: true,
     hot: !isProduction,
     progress: true,
     stats: "minimal",

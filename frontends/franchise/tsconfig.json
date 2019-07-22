@@ -26,7 +26,7 @@
 
     "importHelpers": true,
     "skipLibCheck": true,
-    "lib": ["DOM", "ES2018", "ESNext"],
+    "lib": ["DOM", "DOM.ITERABLE", "ES2018", "ESNext"],
 
     "typeRoots": [ "node_modules/@types" ]
   }

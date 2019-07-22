@@ -15,6 +15,7 @@
   position: absolute;
 
   background-color: var(--color-gray-light);
+  border-bottom: 1px solid #ccc;
 
   left: 50%;
   top: 0;
