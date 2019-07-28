@@ -1,11 +1,11 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild,
 } from "@angular/core"
 
 @Component({
@@ -15,16 +15,22 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartCircularComponent implements OnChanges {
-  @ViewChild("circleNode", { static: true }) circleRef?: ElementRef<SVGPathElement>
+  constructor(
+    private _cdr: ChangeDetectorRef,
+    private _elRef:ElementRef<HTMLElement>,
+  ) {}
+
+  startAnimation: boolean = false
 
   @Input()
   value: number = 0
 
   private _valueOnChange() {
+    this.startAnimation = false
     window.requestAnimationFrame(()=>{
-      if (this.circleRef && this.circleRef.nativeElement) {
-        this.circleRef.nativeElement.style.setProperty("--value", `${this.value}`)
-      }
+      this._elRef.nativeElement.style.setProperty("--value", `${this.value}`)
+      this.startAnimation = true
+      this._cdr.markForCheck()
     })
   }
 
