@@ -125,7 +125,7 @@ export class ProfileMainComponent implements OnInit, OnDestroy {
     }
 
     this._userService.update(this.user).subscribe(() => {
-      console.log("RESP")
+      this._userService.reload()
     })
   }
 }
