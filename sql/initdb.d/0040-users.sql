@@ -22,7 +22,7 @@ CREATE TABLE private.users (
 
   "password" bytea DEFAULT NULL,
   "certificate" bytea DEFAULT NULL, -- необходим для доступа всем выше пользователя
-  "oauth"       jsonb NOT NULL DEFAULT '{}'::jsonb,
+  "oauth" jsonb NOT NULL DEFAULT '{}'::jsonb,
 
   "name"    text NOT NULL DEFAULT '', -- Имя Отчество
   "surname" text NOT NULL DEFAULT '', -- Фамилия

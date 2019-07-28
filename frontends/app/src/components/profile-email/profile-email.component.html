@@ -1,0 +1,28 @@
+<form
+  class="field"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit($event)"
+>
+  <input
+    type="email"
+    class="input input--main"
+    formControlName="email"
+    label="Текущий E-mail"
+  >
+
+  <input
+    type="email"
+    class="input input--main"
+    formControlName="newEmail"
+    label="Новый E-mail"
+  >
+
+  <input
+    type="password"
+    class="input input--main"
+    formControlName="password"
+    label="Ваш пароль"
+  >
+
+  <button type="submit" class="submit button--main" [disabled]="!form.valid">Сменить E-mail</button>
+</form>

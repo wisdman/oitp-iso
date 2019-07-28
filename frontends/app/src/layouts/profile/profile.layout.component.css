@@ -1,40 +1,14 @@
 :host {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  display: block;
 
   width: 100%;
   min-width: 100%;
   max-width: 100%;
   height: auto;
 
-  padding: 12px;
   user-select: none;
 }
 
-@media (max-width: 600px) {
-  :host {
-    padding: 4px;
-  }
-}
-
 .field {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-
-  width: 100%;
-  max-width: 960px;
-
-  border-radius: 9px;
-
-  background-color: var(--color-background);
-  box-shadow: var(--shadow-field);
-}
-
-.input {
-  max-width: 300px;
+  margin-top: 16px;
 }

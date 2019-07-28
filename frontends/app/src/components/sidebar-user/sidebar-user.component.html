@@ -2,7 +2,7 @@
   <picture class="avatar" [attr.data-letter]="user.name | slice:0:1" aria-hidden="true">
     <img *ngIf="user.avatar" class="avatar__img" [src]="user.avatar">
   </picture>
-  <figcaption *ngIf="user.name" class="caption">{{ user.name }}</figcaption>
+  <figcaption *ngIf="user.name" class="caption">{{ user.name }}<br>{{ user.surname }}</figcaption>
   <figcaption *ngIf="user.premium && user.premium > 0" class="premium">
     <svg class="display-none" width="0" height="0">
       <symbol id="star" viewBox="0 0 24 24">

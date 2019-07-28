@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core"
 
-import { UserService } from "../../services"
+import { ProgressService } from "../../services"
 
 @Component({
   selector: "indicator-speed",
@@ -9,6 +9,6 @@ import { UserService } from "../../services"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndicatorSpeedComponent {
-  constructor(private _userService: UserService) {}
-  public progress = this._userService.progress
+  constructor(private _progressService: ProgressService) {}
+  public progress = this._progressService.progress
 }

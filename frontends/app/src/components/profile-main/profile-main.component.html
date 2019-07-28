@@ -1,0 +1,98 @@
+<form
+  class="form"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit($event)"
+  autocomplete="off"
+>
+  <picture
+    class="avatar"
+    aria-hidden="true"
+    [attr.data-letter]="form.value.name | slice:0:1"
+  >
+    <img *ngIf="avatar" class="avatar-img" [src]="avatar">
+  </picture>
+
+  <input
+    type="text"
+    class="input name input--main"
+    formControlName="name"
+    label="Имя Отчество"
+    autocomplete="off"
+  >
+
+  <input
+    type="text"
+    class="input surname input--main"
+    formControlName="surname"
+    label="Фамилия"
+    autocomplete="off"
+  >
+
+  <select
+    class="input gender input--main"
+    formControlName="gender"
+    label="Пол"
+  >
+    <option
+      *ngFor="let gender of genders"
+      [ngValue]="gender"
+    >{{gender.symbol}} {{gender.name}}</option>
+  </select>
+
+  <div class="birthday" formGroupName="birthday">
+    <h4 class="birthday-h4"><span>Дата рождения</span></h4>
+    <select
+      class="input input--main"
+      formControlName="day"
+      label="День"
+    >
+      <option
+        *ngFor="let item of days"
+        [ngValue]="item"
+      >{{item}}</option>
+    </select>
+
+    <select
+      class="input input--main"
+      formControlName="month"
+      label="Месяц"
+    >
+      <option
+        *ngFor="let item of months"
+        [ngValue]="item"
+      >{{item.name}}</option>
+    </select>
+
+    <select
+      class="input input--main"
+      formControlName="year"
+      label="Год"
+    >
+      <option
+        *ngFor="let item of years"
+        [ngValue]="item"
+      >{{item}}</option>
+    </select>
+  </div>
+
+   <select
+    class="input country input--main"
+    formControlName="country"
+    label="Страна"
+  >
+    <option
+      *ngFor="let country of countries"
+      [ngValue]="country"
+    >{{country.flag}} {{country.name}}</option>
+  </select>
+
+  <input
+    type="text"
+    class="input location input--main"
+    formControlName="location"
+    label="Город / Населенный пункт"
+    autocomplete="off"
+  >
+
+  <button type="submit" class="submit button--main" [disabled]="!form.valid">Сохранить изменения</button>
+</form>

@@ -1,5 +1,6 @@
-export const COUNTRIES = [
-  {
+import { ICountry } from "./countries.interfaces"
+
+export const COUNTRIES: Array<ICountry> = [{
     name:"Австралия",
     flag:"🇦🇺",
   },{
@@ -596,5 +597,4 @@ export const COUNTRIES = [
   },{
     name:"Япония",
     flag:"🇯🇵",
-  },
-]
+  }]

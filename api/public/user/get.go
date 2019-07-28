@@ -10,40 +10,13 @@ import (
 func (api *API) GetUser(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
-	var user User
-	err := sql.QueryRow(`
-		SELECT
-			u."id",
-
-			u."email",
-			u."emailIsValid",
-
-			u."phone",
-    	u."phoneIsValid",
-
-    	u."name",
-	    u."surname",
-	    u."avatar"
-
-		FROM public.self AS u
-		LIMIT 1`,
-	).Scan(
-		&user.Id,
-
-		&user.Email,
-		&user.EmailIsValid,
-
-		&user.Phone,
-		&user.PhoneIsValid,
-
-		&user.Name,
-		&user.Surname,
-		&user.Avatar,
-	)
-	if err != nil {
+	var response []byte
+	if err := sql.QueryRow(`SELECT "user" FROM self.user`).Scan(&response); err != nil {
 		service.Fatal(w, err)
 		return
 	}
 
-	service.ResponseJSON(w, user)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(response)
 }

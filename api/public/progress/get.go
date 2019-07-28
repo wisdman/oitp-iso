@@ -10,7 +10,7 @@ import (
 func (api *API) Get(w http.ResponseWriter, r *http.Request) {
 	progress := &Progress{
 		Charge: 100,
-		Speed:  []uint16{50, 50, 50, 50, 50},
+		Speed:  []uint16{50, 60, 30, 0, 100, 70},
 	}
 
 	sql := middleware.GetDBTransaction(r)

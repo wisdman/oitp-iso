@@ -19,6 +19,7 @@ func main() {
 	)
 
 	srv.GET("/", api.GetUser)
+	srv.POST("/", api.SetUserData)
 
 	srv.ListenAndServe()
 }

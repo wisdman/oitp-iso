@@ -29,7 +29,7 @@
   height: 80px;
 
   background-color: var(--color-primar);
-  box-shadow: 0 2px 16px -4px var(--color-second);
+  /* box-shadow: 0 2px 16px -4px var(--color-second); */
   border-radius: 50%;
 
   overflow: hidden;
@@ -69,7 +69,7 @@
 
   font-size: 18px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.4;
 
   overflow: hidden;
   text-overflow: ellipsis;

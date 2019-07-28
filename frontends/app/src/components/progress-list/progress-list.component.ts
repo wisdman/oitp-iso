@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core"
 
 import {
-  UserService,
+  ProgressService,
   IProgressItem,
 } from "../../services"
 
@@ -12,8 +12,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProgressListComponent {
-  constructor(private _userService: UserService) {}
-  public progress = this._userService.progress
+  constructor(private _progressService: ProgressService) {}
+  public progress = this._progressService.progress
 
   getTrend(item: IProgressItem): "up" | "down" {
     return item.values[item.values.length - 1] >= item.average ? "up" : "down"

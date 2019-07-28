@@ -16,28 +16,24 @@ import {
   catchError,
   map,
   switchMap,
-  share,
+  shareReplay,
 } from "rxjs/operators"
 
 import {
   API_AUTH_INVITE,
   API_AUTH_LOGIN,
   API_AUTH_SMS,
-  API_LOG,
-  API_PROGRESS,
   API_USER,
   APP_FULL_NAME,
-} from "../app.config"
+} from "../../app.config"
 
 import {
-  ILog,
   INetworkInformation,
-  IProgress,
   IUser,
 } from "./user.interfaces"
 
-import { NotificationService } from "./notification.service"
-import { TokenService } from "./token.service"
+import { NotificationService } from "../notification.service"
+import { TokenService } from "../token.service"
 
 @Injectable({ providedIn: "root" })
 export class UserService {
@@ -127,23 +123,17 @@ export class UserService {
             })
   }
 
-  private _reloadUser: BehaviorSubject<void> = new BehaviorSubject<void>(undefined)
-  reloadUser() {
-    this._reloadUser.next()
+  private _reload: BehaviorSubject<void> = new BehaviorSubject<void>(undefined)
+  reload() {
+    this._reload.next()
   }
 
-  progress = this._reloadUser.pipe(
-    switchMap(() => this._httpClient.get<IProgress>(API_PROGRESS)),
-    share(),
-  )
-
-  user = this._reloadUser.pipe(
+  user = this._reload.pipe(
     switchMap(() => this._httpClient.get<IUser>(API_USER)),
-    share(),
+    shareReplay(1),
   )
 
-  log = this._reloadUser.pipe(
-    switchMap(() => this._httpClient.get<ILog>(API_LOG)),
-    share(),
-  )
+  update(user: Partial<IUser>) {
+    return this._httpClient.post(API_USER, user)
+  }
 }

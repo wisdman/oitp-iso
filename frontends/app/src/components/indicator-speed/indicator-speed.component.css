@@ -51,6 +51,9 @@
 
 .chart {
   color: var(--color-primar);
+
+  --stroke-width: 4;
+  --bottom-gap: 50;
 }
 
 .h3 {

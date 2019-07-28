@@ -8,7 +8,7 @@ import {
 // import { Subscription } from "rxjs"
 // import { map } from "rxjs/operators"
 
-import { UserService } from "../../services"
+import { ProgressService } from "../../services"
 
 @Component({
   selector: "indicator-brain",
@@ -19,8 +19,8 @@ import { UserService } from "../../services"
 export class IndicatorBrainComponent {
   @ViewChild("brainNode", { static: true }) brainRef?: ElementRef<HTMLDivElement>
 
-  constructor(private _userService: UserService) {}
-  public progress = this._userService.progress
+  constructor(private _progressService: ProgressService) {}
+  public progress = this._progressService.progress
 
 
   // private _userSubscription?: Subscription

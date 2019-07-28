@@ -1,6 +1,6 @@
 <div class="wrapper" *ngIf="progress | async as progress">
   <div class="chart-wrapper">
-    <chart-linear class="chart chart--fill" [value]="progress.speed" [min]="20"></chart-linear>
+    <chart-linear class="chart chart--fill" [value]="progress.speed"></chart-linear>
   </div>
 
   <p class="value">{{ progress.speed | slice:-1 }}%</p>

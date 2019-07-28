@@ -1,1 +1,0 @@
-export * from "./trainer-svg-wrapper.component"

@@ -128,6 +128,10 @@ export class InputMainDirective implements OnInit, OnDestroy, DoCheck {
   ngOnInit() {
     this._renderer.addClass(this._wrapperNode, STYLE.wrapper)
     this._renderer.addClass(this._wrapperNode, STYLE.main)
+    // if (this._nativeElement instanceof HTMLSelectElement) {
+    //   this._renderer.addClass(this._wrapperNode, STYLE["main--select"])
+    // }
+
     this._renderer.insertBefore(this._nativeElement.parentNode, this._wrapperNode, this._nativeElement)
 
     this._renderer.setAttribute(this._nativeElement, "id", this._id)
