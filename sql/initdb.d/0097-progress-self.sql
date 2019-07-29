@@ -31,6 +31,7 @@ CREATE VIEW self.progress AS
 
 GRANT SELECT ON self.progress TO "api-public";
 
+
 CREATE VIEW self.progress__speed AS
   SELECT
     jsonb_build_object(
