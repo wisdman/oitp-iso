@@ -1,6 +1,6 @@
 import { ITrainerConfig } from "../interfaces"
 
-export type IMatrixImagesQuestionTrainerID = "matrix-filling-pattern"
+export type IMatrixImagesQuestionTrainerID = "matrix-filling-question"
 export type IMatrixImagesQuestionTrainerUI = "matrix-images-question"
 
 export interface IMatrixImagesQuestionTrainerConfig extends ITrainerConfig {

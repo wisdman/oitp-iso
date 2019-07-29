@@ -1,8 +1,8 @@
-<div class="wrapper" *ngIf="progress | async as progress">
+<div class="wrapper" *ngFor="let item of progress | async | progressItemsFilter:'speed'">
   <div class="chart-wrapper">
-    <chart-linear class="chart chart--fill" [value]="progress.speed"></chart-linear>
+    <chart-linear class="chart chart--fill" [value]="item.values"></chart-linear>
   </div>
 
-  <p class="value">{{ progress.speed | slice:-1 }}%</p>
+  <p class="value">{{ item.average }}%</p>
   <h3 class="h3">Скорость мышления</h3>
 </div>

@@ -27,7 +27,7 @@ export const API_TRAINING_ONCE = `${API_TRAINING}/once`
 
 export const API_TRAINING_DEBUG = DEBUG ? `${API_TRAINING}/debug` : API_TRAINING_ONCE
 
-export const API_RESULT = `${API_BASE}/public/result`
+export const API_TRAINING_RESULT = `${API_TRAINING}`
 
 export const API_USER = `${API_BASE}/public/user`
 

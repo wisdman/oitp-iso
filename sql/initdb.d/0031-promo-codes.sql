@@ -19,4 +19,4 @@ CREATE TABLE private.promo_codes (
     FOREIGN KEY ("tariff")
     REFERENCES private.tariffs("id")
     ON UPDATE CASCADE ON DELETE CASCADE
-) WITH (OIDS = FALSE);
+);

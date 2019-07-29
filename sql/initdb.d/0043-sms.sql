@@ -13,7 +13,7 @@ CREATE TABLE private.sms (
     FOREIGN KEY ("owner")
     REFERENCES private.users("id")
     ON UPDATE CASCADE ON DELETE CASCADE
-) WITH (OIDS = FALSE);
+);
 
 CREATE OR REPLACE FUNCTION private.sms__unique_id() RETURNS trigger AS $$
 BEGIN

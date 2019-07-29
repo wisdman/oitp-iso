@@ -46,7 +46,7 @@ CREATE TABLE private.transactions (
     FOREIGN KEY ("tariff")
     REFERENCES private.tariffs("id")
     ON UPDATE CASCADE ON DELETE NO ACTION
-) WITH (OIDS = FALSE);
+);
 
 CREATE OR REPLACE FUNCTION private.transactions__lastUpdate() RETURNS trigger AS $$
 BEGIN

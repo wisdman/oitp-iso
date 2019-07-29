@@ -11,4 +11,5 @@ export interface IResultTrainerConfig extends ITrainerConfig {
   ui: IResultTrainerUI
 
   type: ITrainingType
+  training: string
 }

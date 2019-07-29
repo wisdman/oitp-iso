@@ -41,7 +41,6 @@ export class TextLettersTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

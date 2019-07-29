@@ -85,28 +85,6 @@ services:
     networks:
       default:
 
-  api-public-result:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=public/result
-    image: oitp-isov/api-public-result
-    secrets:
-      - secret-api-public
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-public-result
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
   api-public-training:
     restart: unless-stopped
     build:

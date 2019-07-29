@@ -9,7 +9,7 @@ CREATE TABLE private.trainer__classification_colors__data (
 
   CONSTRAINT trainer__classification_colors__data__idx__pkey PRIMARY KEY ("color"),
   CONSTRAINT trainer__classification_colors__data__check__color CHECK ("color" ~ '^#[0-9a-f]{6}$')
-) WITH (OIDS = FALSE);
+);
 
 -- SELECT * FROM private.trainer__classification_colors__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__classification_colors__config() RETURNS SETOF RECORD AS $$
@@ -18,14 +18,17 @@ DECLARE
   _maxItems smallint := 9;
   _itemsCount smallint;
 
-  _timeLimit smallint;
+  _previewTimeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
-    "timeLimit",
+    "previewTimeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
-    _timeLimit,
+    _previewTimeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -39,7 +42,8 @@ BEGIN
         'id', 'classification-colors',
         'ui', 'classification-colors',
 
-        'timeLimit', _timeLimit * _itemsCount,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit * _itemsCount,
         'complexity', _complexity,
 
         'items', jsonb_agg(to_jsonb(t))

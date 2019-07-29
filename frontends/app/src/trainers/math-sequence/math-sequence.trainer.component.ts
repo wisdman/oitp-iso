@@ -43,7 +43,6 @@ export class MathSequenceTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 
@@ -62,7 +61,7 @@ export class MathSequenceTrainerComponent
   }
 
   finish() {
-    super.finish(this.isSuccess ? 100 : 0)
+    super.finish(this.isSuccess)
   }
 
 }

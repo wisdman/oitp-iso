@@ -9,11 +9,11 @@
 </svg>
 
 <div
-  *ngIf="progress | async as progress"
+  *ngFor="let item of progress | async | progressItemsFilter:'charge'"
   #brainNode
   class="brain"
-  [class.brain--medium]="progress.charge >= 30"
-  [class.brain--good]="progress.charge >= 70"
+  [class.brain--medium]="item.average >= 30"
+  [class.brain--good]="item.average >= 70"
 >
-  <span class="brain__percent">{{ progress.charge }}</span>
+  <span class="brain__percent">{{ item.average }}</span>
 </div>

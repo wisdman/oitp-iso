@@ -82,7 +82,7 @@ export class ClassificationColorsTrainerComponent
                       .map( ({color: data}) => ({data}) )
                       .sort(() => Math.random() - 0.5)
 
-    this.itemTimeLimit = Math.floor(this.config.timeLimit / this.config.items.length)
+    this.itemTimeLimit = Math.floor(this.config.playTimeLimit / this.config.items.length)
 
     this._itemSubscription = zip(
       from([...this.config.items.sort(() => Math.random() - 0.5), undefined]),
@@ -118,7 +118,6 @@ export class ClassificationColorsTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 

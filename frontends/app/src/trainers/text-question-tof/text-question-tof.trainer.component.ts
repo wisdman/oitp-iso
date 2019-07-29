@@ -37,7 +37,6 @@ export class TextQuestionToFTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

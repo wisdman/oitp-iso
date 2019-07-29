@@ -24,7 +24,7 @@ func main() {
 	)
 
 	srv.POST("/:type", api.New)
-	srv.GET("/:id", api.Get)
+	srv.PUT("/:id", api.Finish)
 
 	srv.ListenAndServe()
 }

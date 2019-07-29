@@ -19,10 +19,7 @@ func (api *API) New(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
 	var response []byte
-	if err := sql.QueryRow(
-		`SELECT public.training__new($1)`,
-		trainingType,
-	).Scan(&response); err != nil {
+	if err := sql.QueryRow(`SELECT public.training__new($1)`, trainingType).Scan(&response); err != nil {
 		service.Fatal(w, err)
 		return
 	}

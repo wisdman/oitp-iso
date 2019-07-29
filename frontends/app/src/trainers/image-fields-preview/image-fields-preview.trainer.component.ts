@@ -48,10 +48,11 @@ export class ImageFieldsPreviewTrainerComponent
       const y = Math.round(cY + radius*Math.sin(delta))
       return { x, y, item }
     })
+
+    this.preview()
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 }

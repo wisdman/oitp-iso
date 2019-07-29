@@ -46,7 +46,6 @@ export class WordsPairsTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

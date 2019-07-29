@@ -25,7 +25,6 @@ export class SpaceQuestionWasteTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

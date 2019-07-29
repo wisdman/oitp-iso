@@ -10,8 +10,5 @@ export interface IProgressItem {
   average: number
 }
 
-export interface IProgress {
-  charge: number // Заряд мозга
-  speed: Array<number> // Скорость мышления
-  items: Array<IProgressItem>
-}
+export type IProgress = Array<IProgressItem>
+

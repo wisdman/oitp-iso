@@ -83,22 +83,29 @@ BEGIN
   );
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION public.training__add_result(_training uuid, _idx smallint, _result jsonb) RETURNS void AS $$
+CREATE OR REPLACE FUNCTION public.training__finish(_training uuid, _results jsonb) RETURNS smallint AS $$
 BEGIN
-  SELECT "id" INTO STRICT _training
-  FROM private.training
+  UPDATE private.training
+  SET "finish" = timezone('UTC', now())
   WHERE
     "id" = _training
     AND
-    "owner" = current_setting('app.sessionUser')::uuid;
+    "owner" = current_setting('app.sessionUser')::uuid
+  RETURNING "id" INTO STRICT _training;
 
   UPDATE private.training_trainers
-  SET
-    "result" = _result
+  SET "result" = t."value"
+  FROM jsonb_array_elements(_results) AS t
   WHERE
     "training" = _training
     AND
-    "index" = _idx;
+    "index" = (t."value"->'idx')::smallint;
+
+  RETURN (
+    SELECT ROUND(AVG(("result"->>'result')::smallint))
+    FROM private.training_trainers
+    WHERE "training" = _training
+  );
 
 EXCEPTION
   WHEN NO_DATA_FOUND THEN

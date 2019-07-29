@@ -20,7 +20,7 @@ CREATE TABLE private.tariffs (
   CONSTRAINT tariffs__check__title CHECK (char_length("title") > 0),
 
   CONSTRAINT tariffs__check__amount CHECK ("amount" > 0 OR ("amount" = 0 AND NOT "default"))
-) WITH (OIDS = FALSE);
+);
 
 CREATE UNIQUE INDEX tariffs__idx__unique_default ON private.tariffs USING btree ("default") WHERE "default" = TRUE;
 

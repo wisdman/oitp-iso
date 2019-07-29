@@ -15,16 +15,16 @@ DECLARE
   _quantity smallint;
 
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -43,7 +43,8 @@ BEGIN
         'id', 'matrix-filling-unique',
         'ui', 'matrix-images-preview',
 
-        'timeLimit', _previewTimeLimit,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'items', "items"[1:_matrixSize],
@@ -53,7 +54,8 @@ BEGIN
         'id', 'matrix-filling-unique',
         'ui', 'matrix-images-filling',
 
-        'timeLimit', _timeLimit,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'items', "items",

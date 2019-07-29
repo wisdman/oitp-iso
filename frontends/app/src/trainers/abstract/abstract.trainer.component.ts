@@ -21,10 +21,12 @@ import {
   KeypadService,
   PointerService,
   TimerService,
+  TrainingService,
 } from "../../services"
 
 import {
   ITrainerConfigs,
+  ITrainerMode,
   ITrainerResult,
 } from "../interfaces"
 
@@ -44,6 +46,7 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
     public keypadService: KeypadService,
     public pointerService: PointerService,
     public timerService: TimerService,
+    public trainingService: TrainingService,
   ){
     // Add global class
     this._elRef.nativeElement.classList.add("trainer")
@@ -65,9 +68,6 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
       ...result,
       training: this.config.training,
       idx: this.config.idx,
-    }
-    if (this._result.isFinish) {
-      this.resultValueChange.emit(this._result)
     }
   }
 
@@ -118,13 +118,24 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
 
   // === Time Meter ===
   private _time!: number
-  startTimeMeter() {
+  initTimeMeter() {
     this._time = Number(new Date())
   }
-  finishTimeMeter() {
-    if (this._time > 0) {
-      this._updateResult({ time: Number(new Date()) - this._time })
+  finishTimeMeter(type: ITrainerMode) {
+    if (this._time <= 0) {
+      return
     }
+
+    switch (type) {
+      case "play":
+        this._updateResult({ playTime: Number(new Date()) - this._time })
+        break
+
+      case "preview":
+        this._updateResult({ previewTime: Number(new Date()) - this._time })
+        break
+    }
+
     this._time = 0
   }
 
@@ -137,7 +148,7 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
 
 
   // === Game mode ===
-  mode: "init" | "preview" | "play" | "result" = "init"
+  mode: ITrainerMode = "init"
 
   private _lapTimerSubscriber!: Subscription
 
@@ -152,10 +163,9 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
 
     // Reset results
     this._updateResult({
-      isFinish: false,
-      isTimeout: false,
       result: null,
-      time: null,
+      playTime: 0,
+      previewTime: 0,
     })
 
     // Reset time meter
@@ -191,40 +201,45 @@ export class AbstractTrainerComponent<C extends ITrainerConfigs> implements OnIn
   // Default functions
   init() {}
   destroy() {}
+  timeout() {}
 
   preview(timeLimit: number = this.config.previewTimeLimit || 0) {
     this.setTimeout(timeLimit)
-    this.startTimeMeter()
+    this.finishTimeMeter(this.mode)
+    this.initTimeMeter()
     this.mode = "preview"
     this.markForCheck()
   }
 
-  start(timeLimit: number = this.config.timeLimit) {
+  start(timeLimit: number = this.config.playTimeLimit) {
     this.setTimeout(timeLimit)
-    this.startTimeMeter()
+    this.finishTimeMeter(this.mode)
+    this.initTimeMeter()
     this.mode = "play"
     this.markForCheck()
   }
 
-  timeout() {
-    this._updateResult({ isTimeout: true })
-  }
-
   result() {
     this.setTimeout(0)
-    this.finishTimeMeter()
+    this.finishTimeMeter(this.mode)
     this.mode = "result"
     this.markForCheck()
   }
 
-  finish(result: number | null = null) {
+  finish(result: number | boolean | null = null) {
     this.setTimeout(0)
-    this.finishTimeMeter()
+    this.finishTimeMeter(this.mode)
 
     this._updateResult({
-      result: result === null ? null : result < 0 ? 0 : result > 100 ? 100 : Math.round(result),
-      isFinish: true,
+      result: result === null ? null
+                              : result === false ? 0
+                                                 : result === true ? 100
+                                                                   : result < 0 ? 0
+                                                                                : result > 100 ? 100
+                                                                                               : Math.round(result)
     })
+
+    this.resultValueChange.emit(this._result)
   }
 }
 

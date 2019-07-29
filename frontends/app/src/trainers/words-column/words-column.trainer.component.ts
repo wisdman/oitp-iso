@@ -45,7 +45,6 @@ extends AbstractTrainerComponent<IWordsColumnTrainerConfig> {
       return
     }
 
-    super.timeout()
     this.result()
   }
 

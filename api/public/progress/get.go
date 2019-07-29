@@ -7,17 +7,26 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
 
-func (api *API) Get(w http.ResponseWriter, r *http.Request) {
-	progress := &Progress{
-		Charge: 100,
-		Speed:  []uint16{50, 50},
-	}
+type Item struct {
+	Id      string  `json:"id"`
+	Values  []int16 `json:"values"`
+	Average int     `json:"average"`
+}
 
+func (api *API) Get(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
-	if err := sql.QueryRow(
-		`SELECT jsonb_agg("progress") AS "items" FROM self.progress`,
-	).Scan(&progress.Items); err != nil {
+	var progress []*Item
+	if err := sql.QueryRow(`
+		SELECT jsonb_agg("progress") AS "items"
+		FROM (
+			SELECT "progress" FROM self.progress
+			UNION ALL
+			SELECT "progress" FROM self.progress__speed
+			UNION ALL
+			SELECT "progress" FROM self.progress__charge
+		) AS t
+	`).Scan(&progress); err != nil {
 		service.Fatal(w, err)
 		return
 	}

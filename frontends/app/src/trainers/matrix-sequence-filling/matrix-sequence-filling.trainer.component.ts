@@ -65,7 +65,6 @@ export class MatrixSequenceFillingTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 

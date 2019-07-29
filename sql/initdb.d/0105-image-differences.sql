@@ -15,7 +15,7 @@ CREATE TABLE private.trainer__image_differences__data (
 
   CONSTRAINT trainer__image_differences__data__check__differences
     CHECK (jsonb_typeof("differences") = 'array' AND jsonb_array_length("differences") > 0)
-) WITH (OIDS = FALSE);
+);
 
 -- SELECT * FROM private.trainer__image_differences__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__image_differences__config() RETURNS SETOF RECORD AS $$
@@ -25,16 +25,16 @@ DECLARE
   _quantity smallint;
 
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity

@@ -10,7 +10,7 @@ CREATE TABLE private.expressions (
   "author" text NOT NULL DEFAULT '',
 
   CONSTRAINT expressions__idx__pkey PRIMARY KEY ("id")
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.expressions__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1

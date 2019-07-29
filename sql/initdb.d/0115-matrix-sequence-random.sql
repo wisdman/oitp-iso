@@ -12,14 +12,17 @@ DECLARE
   _maxQuantity smallint := 10;
   _quantity smallint;
 
-  _timeLimit smallint;
+  _previewTimeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
-    "timeLimit",
+    "previewTimeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
-    _timeLimit,
+    _previewTimeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -33,7 +36,8 @@ BEGIN
         'id', 'matrix-sequence-random',
         'ui', 'matrix-sequence-play',
 
-        'timeLimit', _timeLimit,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'matrix', "data",

@@ -42,7 +42,6 @@ export class ImageExpressionsTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

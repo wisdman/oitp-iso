@@ -93,7 +93,7 @@ export class ClassificationWordsTrainerComponent
                      .sort(() => Math.random() - 0.5)
                      .sort(() => Math.random() - 0.5)
 
-    this.itemTimeLimit = Math.floor(this.config.timeLimit / this.items.length)
+    this.itemTimeLimit = Math.floor(this.config.playTimeLimit / this.items.length)
 
     this._itemSubscription = zip(
       from([...this.items, undefined]),
@@ -129,7 +129,6 @@ export class ClassificationWordsTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 

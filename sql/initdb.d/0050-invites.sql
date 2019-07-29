@@ -26,7 +26,7 @@ CREATE TABLE private.invites (
     FOREIGN KEY ("tariff")
     REFERENCES private.tariffs("id")
     ON UPDATE CASCADE ON DELETE NO ACTION
-) WITH (OIDS = FALSE);
+);
 
 CREATE OR REPLACE FUNCTION private.invites__unique_id() RETURNS trigger AS $$
 BEGIN

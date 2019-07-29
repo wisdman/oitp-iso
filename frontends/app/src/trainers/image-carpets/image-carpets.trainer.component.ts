@@ -88,12 +88,12 @@ extends AbstractTrainerComponent<IImageCarpetsTrainerConfig> {
       return
     }
 
-    super.timeout()
     this.result()
   }
 
   start() {
     this.setTimeout(0)
+    this.finishTimeMeter(this.mode)
 
     const cx = this.matrixWidth / 2
     const cy = this.matrixHeight / 2

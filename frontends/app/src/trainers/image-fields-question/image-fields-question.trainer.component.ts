@@ -35,7 +35,6 @@ export class ImageFieldsQuestionTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

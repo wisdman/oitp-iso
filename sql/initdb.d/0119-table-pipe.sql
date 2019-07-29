@@ -9,7 +9,7 @@ CREATE TABLE private.trainer__table_pipe__data (
 
   CONSTRAINT trainer__table_pipe__data__idx__pkey PRIMARY KEY ("id"),
   CONSTRAINT trainer__table_pipe__data__check__runes CHECK (array_length("runes", 1) > 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.trainer__table_pipe__data__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
@@ -28,14 +28,17 @@ DECLARE
   _maxQuantity smallint := 3;
   _quantity smallint;
 
-  _timeLimit smallint;
+  _previewTimeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
-    "timeLimit",
+    "previewTimeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
-    _timeLimit,
+    _previewTimeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -50,7 +53,8 @@ BEGIN
         'id', 'table-pipe',
         'ui', 'table-pipe',
 
-        'timeLimit', _timeLimit * _matrixSize,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'items', ARRAY[

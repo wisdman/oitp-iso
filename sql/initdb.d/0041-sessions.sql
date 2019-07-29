@@ -21,7 +21,7 @@ CREATE TABLE private.sessions (
     FOREIGN KEY ("owner")
     REFERENCES private.users("id")
     ON UPDATE CASCADE ON DELETE CASCADE
-) WITH (OIDS = FALSE);
+);
 
 CREATE OR REPLACE FUNCTION private.sessions__new() RETURNS trigger AS $$
 BEGIN

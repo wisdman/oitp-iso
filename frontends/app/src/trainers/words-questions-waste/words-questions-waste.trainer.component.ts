@@ -25,7 +25,6 @@ export class WordsQuestionsWasteTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

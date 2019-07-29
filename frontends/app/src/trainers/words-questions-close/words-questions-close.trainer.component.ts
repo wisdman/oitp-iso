@@ -25,7 +25,6 @@ export class WordsQuestionCloseTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

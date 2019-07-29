@@ -59,10 +59,11 @@ export class MatrixImagesPreviewTrainerComponent
         data: this.defs[data] !== undefined ? data : -1,
       }
     })
+
+    this.preview()
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 }

@@ -77,7 +77,6 @@ export class TablePipeTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 

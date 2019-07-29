@@ -13,14 +13,17 @@ DECLARE
   _maxItems smallint := 20;
   _itemsCount smallint;
 
-  _timeLimit smallint;
+  _previewTimeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
-    "timeLimit",
+    "previewTimeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
-    _timeLimit,
+    _previewTimeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -35,7 +38,8 @@ BEGIN
         'id', 'words-filling',
         'ui', 'words-filling',
 
-        'timeLimit', _timeLimit * _itemsCount,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'runes', array_agg("rune")

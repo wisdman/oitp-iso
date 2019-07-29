@@ -16,7 +16,7 @@ CREATE TABLE private.training_configs (
   CONSTRAINT training_configs__check__timeLimit CHECK ("timeLimit" >= 0),
   CONSTRAINT training_configs__check__trainers
     CHECK (jsonb_typeof("trainers") = 'array' AND jsonb_array_length("trainers") > 0)
-) WITH (OIDS = FALSE);
+);
 
 INSERT INTO private.training_configs("type", "timeLimit", "trainers") VALUES
   -- Ежедневные
@@ -32,4 +32,4 @@ INSERT INTO private.training_configs("type", "timeLimit", "trainers") VALUES
   ('once', 300, ('[["matrix-sequence-random"]]')::jsonb),
 
   -- Debug
-  ('debug', 999, ('[["classification-colors"]]')::jsonb);
+  ('debug', 999, ('[["table-pipe"]]')::jsonb);

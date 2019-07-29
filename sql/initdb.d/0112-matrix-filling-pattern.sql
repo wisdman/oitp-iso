@@ -16,7 +16,7 @@ CREATE TABLE private.trainer__matrix_filling_pattern__data (
 
   CONSTRAINT trainer__matrix_filling_pattern__data__check__matrixSize CHECK ("matrixSize" > 0),
   CONSTRAINT trainer__matrix_filling_pattern__data__check__itemsCount CHECK ("itemsCount" > 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.trainer__matrix_filling_pattern__data__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
@@ -66,20 +66,36 @@ DECLARE
   _answersCount smallint;
 
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
+
+  _questionPreviewTimeLimit smallint;
+  _questionPlayTimeLimit smallint;
+  _questionComplexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'matrix-filling-pattern';
+
+  SELECT
+    "previewTimeLimit",
+    "playTimeLimit",
+    "complexity"
+  INTO
+    _questionPreviewTimeLimit,
+    _questionPlayTimeLimit,
+    _questionComplexity
+  -- FROM private.complexity_defaults
+  FROM self.complexity
+  WHERE "trainer" = 'matrix-filling-question';
 
   _matrixSize := _matrixSizes[LEAST(_complexity, array_length(_matrixSizes, 1))];
 
@@ -87,7 +103,8 @@ BEGIN
   _itemsCount := (_maxItems * 2 / _columns + 1) * _columns;
 
   _quantity := LEAST(GREATEST(_complexity, _minQuantity) + random()::smallint, _maxQuantity);
-  _answersCount := LEAST((_maxItems * _complexity / _rowAnswersCount + 1) * _rowAnswersCount, _maxAnswersCount);
+
+  _answersCount := LEAST((_maxItems * _questionComplexity / _rowAnswersCount + 1) * _rowAnswersCount, _maxAnswersCount);
 
   RETURN QUERY (
     WITH patterns AS (
@@ -122,7 +139,8 @@ BEGIN
           'id', 'matrix-filling-pattern',
           'ui', 'matrix-images-preview',
 
-          'timeLimit', _previewTimeLimit,
+          'previewTimeLimit', _previewTimeLimit,
+          'playTimeLimit', _playTimeLimit,
           'complexity', _complexity,
 
           'items', "correct",
@@ -132,7 +150,8 @@ BEGIN
           'id', 'matrix-filling-pattern',
           'ui', 'matrix-images-filling',
 
-          'timeLimit', _timeLimit,
+          'previewTimeLimit', _previewTimeLimit,
+          'playTimeLimit', _playTimeLimit,
           'complexity', _complexity,
 
           'items', "correct" || "incorrect",
@@ -145,11 +164,12 @@ BEGIN
       SELECT
         2 AS "ord",
         jsonb_build_object(
-          'id', 'matrix-filling-pattern',
+          'id', 'matrix-filling-question',
           'ui', 'matrix-images-question',
 
-          'timeLimit', 0,
-          'complexity', _complexity,
+          'previewTimeLimit', _questionPreviewTimeLimit,
+          'playTimeLimit', _questionPlayTimeLimit,
+          'complexity', _questionComplexity,
 
           'items', array_agg("item")
         ) AS "config"

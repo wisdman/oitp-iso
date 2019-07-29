@@ -9,7 +9,7 @@ CREATE TABLE private.trainer__relax__data (
 
   CONSTRAINT trainer__relax__data__idx__pkey PRIMARY KEY ("id"),
   CONSTRAINT trainer__relax__data__check__data CHECK (char_length("data") >= 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.trainer__relax__data__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
@@ -20,14 +20,14 @@ SET DEFAULT nextval('private.trainer__relax__data__id__seq'::regclass);
 
 CREATE OR REPLACE FUNCTION private.trainer__relax__config(_quantity int) RETURNS SETOF RECORD AS $$
 DECLARE
-  _showTimeLimit smallint := 10;
+  _previewTimeLimit smallint := 10;
 BEGIN
   RETURN QUERY (
     SELECT
       jsonb_build_object(
         'id', 'relax',
         'ui', 'relax',
-        'timeLimit', _showTimeLimit,
+        'previewTimeLimit', _previewTimeLimit,
         'image', t1."image",
         'data', t2."data"
       )

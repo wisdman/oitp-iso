@@ -1,6 +1,6 @@
 <div class="charts" *ngIf="progress | async as progress">
   <div
-    *ngFor="let item of progress.items | progressItemsFilter:'memory,knowledge,intelligence'"
+    *ngFor="let item of progress | progressItemsFilter:'memory,knowledge,intelligence'"
     class="wrapper"
   >
     <chart-circular class="chart" [value]="item.average"></chart-circular>

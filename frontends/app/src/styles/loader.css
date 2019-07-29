@@ -2,13 +2,16 @@
   width: 100px;
   height: 100px;
   margin: 100px auto;
+
+  color: var(--color-background);
 }
 
 .loader-grid .loader-cube {
   width: 30%;
   height: 30%;
   margin: 1%;
-  background-color: var(--color-background);
+  color: inherit;
+  background-color: currentColor;
   float: left;
   animation: loader-animation 1.3s infinite ease-in-out;
 }

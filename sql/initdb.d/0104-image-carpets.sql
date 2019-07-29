@@ -21,7 +21,7 @@ CREATE TABLE private.trainer__image_carpets__data (
 
   CONSTRAINT trainer__image_carpets__data__check__items
     CHECK (jsonb_typeof("items") = 'array' AND jsonb_array_length("items") > 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.trainer__image_carpets__data__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
@@ -41,16 +41,16 @@ DECLARE
   _quantity smallint;
 
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -65,7 +65,7 @@ BEGIN
         'ui', 'image-carpets',
 
         'previewTimeLimit', _previewTimeLimit,
-        'timeLimit', _timeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'width', "width",

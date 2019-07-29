@@ -9,7 +9,7 @@ CREATE TABLE private.trainer__image_expressions__data (
 
   CONSTRAINT trainer__image_expressions__data__idx__pkey PRIMARY KEY ("id"),
   CONSTRAINT trainer__image_expressions__data__check__data CHECK (char_length("data") >= 0)
-) WITH (OIDS = FALSE);
+);
 
 -- SELECT * FROM private.trainer__image_expressions__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__image_expressions__config() RETURNS SETOF RECORD AS $$
@@ -19,16 +19,16 @@ DECLARE
   _quantity smallint;
 
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -43,7 +43,8 @@ BEGIN
           'id', 'image-expressions',
           'ui', 'image-expressions-preview',
 
-          'timeLimit', _previewTimeLimit,
+          'previewTimeLimit', _previewTimeLimit,
+          'playTimeLimit', _playTimeLimit,
           'complexity', _complexity,
 
           'image', "id",
@@ -53,7 +54,8 @@ BEGIN
           'id', 'image-expressions',
           'ui', 'image-expressions',
 
-          'timeLimit', _timeLimit,
+          'previewTimeLimit', _previewTimeLimit,
+          'playTimeLimit', _playTimeLimit,
           'complexity', _complexity,
 
           'image', "id",

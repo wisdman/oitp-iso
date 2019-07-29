@@ -32,10 +32,11 @@ export class RelaxTrainerComponent
       h1.style.transition = "none"
       h1.style.transform = "scale(0, 0)"
       window.requestAnimationFrame(() => {
-        h1.style.transition = `transform ${this.config.timeLimit}s`
+        h1.style.transition = `transform ${this.config.previewTimeLimit}s`
         h1.style.transform = "scale(1, 1)"
       })
     })
+    this.preview()
   }
 
   timeout() {

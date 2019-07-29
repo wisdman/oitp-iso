@@ -144,26 +144,28 @@ export type ITrainerConfigs = IClassificationColorsTrainerConfig
                             | IWordsQuestionsWasteTrainerConfig
 
 export interface ITrainerConfig {
+  training: string
+  idx: number
+
   id: ITrainerID
   ui: ITrainerUI
 
-  timeLimit: number
-  previewTimeLimit?: number
-
-  training: string
-  idx: number
+  complexity: number
+  playTimeLimit: number
+  previewTimeLimit: number
 }
 
 export interface ITrainerResult {
   training: string
   idx: number
 
-  isFinish?: boolean
-  isTimeout?: boolean
-
   result: number | null
-  time: number | null
+
+  playTime: number
+  previewTime: number
 }
+
+export type ITrainerMode = "init" | "preview" | "play" | "result"
 
 export type ITrainingType = "debug" | "everyday" | "once"
 

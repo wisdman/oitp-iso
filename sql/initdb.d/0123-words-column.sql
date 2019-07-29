@@ -12,7 +12,7 @@ CREATE TABLE private.trainer__words_column__data (
 
   CONSTRAINT trainer__words_column__data__check__word
     CHECK (char_length(trim("word")) > 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.trainer__words_column__data__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
@@ -36,16 +36,16 @@ DECLARE
   _itemsCount smallint;
 
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -60,8 +60,8 @@ BEGIN
         'id', 'words-column',
         'ui', 'words-column',
 
-        'previewTimeLimit', _previewTimeLimit * array_length("items", 1),
-        'timeLimit', _timeLimit * array_length("items", 1),
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'items', "items"

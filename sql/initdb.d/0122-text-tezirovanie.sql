@@ -12,7 +12,7 @@ CREATE TABLE private.trainer__text_tezirovanie__data (
 
   CONSTRAINT trainer__text_tezirovanie__data__check__data
     CHECK (char_length(trim("data")) > 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.trainer__text_tezirovanie__data__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
@@ -28,14 +28,17 @@ DECLARE
   _maxQuantity smallint := 5;
   _quantity smallint;
 
-  _timeLimit smallint;
+  _previewTimeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
-    "timeLimit",
+    "previewTimeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
-    _timeLimit,
+    _previewTimeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -49,7 +52,8 @@ BEGIN
         'id', 'text-tezirovanie',
         'ui', 'text-tezirovanie',
 
-        'timeLimit', _timeLimit,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'data', "data"

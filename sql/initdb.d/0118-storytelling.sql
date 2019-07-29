@@ -10,7 +10,7 @@ CREATE TABLE private.trainer__storytelling__data (
   CONSTRAINT trainer__storytelling__data__idx__pkey PRIMARY KEY ("id"),
   CONSTRAINT trainer__storytelling__data__check__questions
     CHECK (jsonb_typeof("questions") = 'array' AND jsonb_array_length("questions") > 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE TABLE private.trainer__storytelling__completed (
   "owner" uuid NOT NULL,
@@ -27,22 +27,22 @@ CREATE TABLE private.trainer__storytelling__completed (
     FOREIGN KEY ("id")
     REFERENCES private.trainer__storytelling__data("id")
     ON UPDATE CASCADE ON DELETE CASCADE
-) WITH (OIDS = FALSE);
+);
 
 -- SELECT * FROM private.trainer__storytelling__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__storytelling__config() RETURNS SETOF RECORD AS $$
 DECLARE
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -54,7 +54,8 @@ BEGIN
         'id', 'storytelling',
         'ui', 'storytelling',
 
-        'timeLimit', _previewTimeLimit,
+        'previewTimeLimit', 0,
+        'playTimeLimit', 0,
         'complexity', _complexity,
 
         'image', (SELECT id FROM private.relax_get(1) AS t(id int)),
@@ -65,8 +66,10 @@ BEGIN
             'id', 'storytelling',
             'ui', 'text-question-tof',
 
-            'timeLimit', _timeLimit,
+            'previewTimeLimit', _previewTimeLimit,
+            'playTimeLimit', _playTimeLimit,
             'complexity', _complexity
+
           ) || "question")
         FROM jsonb_array_elements("questions") AS "question"
       )

@@ -14,7 +14,7 @@ CREATE TABLE private.otr (
     FOREIGN KEY ("owner")
     REFERENCES private.users("id")
     ON UPDATE CASCADE ON DELETE CASCADE
-) WITH (OIDS = FALSE);
+);
 
 CREATE OR REPLACE FUNCTION private.otr__unique_id() RETURNS trigger AS $$
 BEGIN

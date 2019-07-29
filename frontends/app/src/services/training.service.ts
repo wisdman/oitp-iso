@@ -23,7 +23,7 @@ import {
   API_TRAINING_DEBUG,
   API_TRAINING_EVERYDAY,
   API_TRAINING_ONCE,
-  API_RESULT,
+  API_TRAINING_RESULT,
 } from "../app.config"
 
 import {
@@ -75,15 +75,25 @@ export class TrainingService {
     share(),
   )
 
+  private _resultsBuffer:  Array<ITrainerResult> = []
+
   results = this._trainingConfig.pipe(
     switchMap(() => this._results),
-    switchMap(result =>
-      !result.idx ? of(result)
-                  : this._httpClient.post(`${API_RESULT}/${result.training}`,result).pipe(
-                      map(() => result)
-                    )
-    ),
     tap(result => DEBUG && console.log("RESULT:", result)),
+    tap(result => {
+      if (this._resultsBuffer.length === 0) {
+        this._resultsBuffer = [result]
+        return
+      }
+
+      const trainingId = this._resultsBuffer[this._resultsBuffer.length - 1].training
+      if (trainingId !== result.training) {
+        this._resultsBuffer = [result]
+        return
+      }
+
+      this._resultsBuffer = [...this._resultsBuffer, result]
+    })
   )
 
   config = this._trainingConfig.pipe(
@@ -91,21 +101,28 @@ export class TrainingService {
       of({
         id: "greeting",
         ui: "greeting",
-        training: training.id,
         type: training.type,
-        timeLimit: 0,
+        playTimeLimit: 0,
+        previewTimeLimit: 0,
+        training: training.id,
       } as IGreetingTrainerConfig),
-      from(training.trainers).pipe(map(trainer => ({...trainer, training: training.id }) )),
+      from(training.trainers).pipe(map(config => ({...config, training: training.id}) )),
       of({
         id: "result",
         ui: "result",
-        training: training.id,
         type: training.type,
-        timeLimit: 0,
+        playTimeLimit: 0,
+        previewTimeLimit: 0,
+        training: training.id,
       } as IResultTrainerConfig),
     )),
     zip(concat(of(undefined), this.results), value => value),
     tap(config => DEBUG && console.log("CONFIG:", config)),
     share(),
   )
+
+  finish() {
+    const trainingId = this._resultsBuffer[this._resultsBuffer.length - 1].training
+    return this._httpClient.put<number>(`${API_TRAINING_RESULT}/${trainingId}`, this._resultsBuffer)
+  }
 }

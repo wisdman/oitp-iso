@@ -13,14 +13,17 @@ DECLARE
   _maxQuantity smallint := 5;
   _quantity smallint;
 
-  _timeLimit smallint;
+  _previewTimeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
-    "timeLimit",
+    "previewTimeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
-    _timeLimit,
+    _previewTimeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -105,7 +108,8 @@ BEGIN
         'id', 'space-waste-2d',
         'ui', 'space-question-waste',
 
-        'timeLimit', _timeLimit,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'items', array_agg("item" ORDER BY random())

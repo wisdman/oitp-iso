@@ -41,7 +41,6 @@ export class MathMiddleTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 
@@ -60,6 +59,6 @@ export class MathMiddleTrainerComponent
   }
 
   finish() {
-    super.finish(this.isSuccess ? 100 : 0)
+    super.finish(this.isSuccess)
   }
 }

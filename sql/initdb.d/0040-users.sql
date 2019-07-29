@@ -26,7 +26,8 @@ CREATE TABLE private.users (
 
   "name"    text NOT NULL DEFAULT '', -- Имя Отчество
   "surname" text NOT NULL DEFAULT '', -- Фамилия
-  "avatar"  oid  DEFAULT NULL,
+
+  "avatar"  bytea DEFAULT NULL,
 
   "profile" jsonb NOT NULL DEFAULT '{}'::jsonb, -- Профиль пользователя
   "tariff" uuid DEFAULT NULL,
@@ -45,16 +46,11 @@ CREATE TABLE private.users (
   CONSTRAINT users__check__oauth CHECK (jsonb_typeof("oauth") = 'object'),
   CONSTRAINT users__check__profile CHECK (jsonb_typeof("profile") = 'object'),
 
-  CONSTRAINT users__fkey__avatar
-    FOREIGN KEY ("avatar")
-    REFERENCES private.files("id")
-    ON UPDATE CASCADE ON DELETE SET NULL,
-
   CONSTRAINT users__fkey__tariff
     FOREIGN KEY ("tariff")
     REFERENCES private.tariffs("id")
     ON UPDATE CASCADE ON DELETE NO ACTION
-) WITH (OIDS = FALSE);
+);
 
 -- Check unique indexes
 CREATE UNIQUE INDEX users__idx__unique_email ON private.users USING btree ("email");

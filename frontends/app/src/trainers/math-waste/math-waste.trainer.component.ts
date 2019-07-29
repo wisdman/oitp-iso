@@ -31,7 +31,6 @@ export class MathWasteTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

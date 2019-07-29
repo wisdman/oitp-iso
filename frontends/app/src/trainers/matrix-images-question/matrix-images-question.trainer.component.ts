@@ -37,7 +37,6 @@ export class MatrixImagesQuestionTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

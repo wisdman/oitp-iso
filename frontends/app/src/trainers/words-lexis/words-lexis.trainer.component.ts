@@ -146,7 +146,6 @@ extends AbstractTrainerComponent<IWordsLexisTrainerConfig> {
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

@@ -12,7 +12,7 @@ CREATE TABLE private.trainer__words_questions_waste__data (
 
   CONSTRAINT trainer__words_questions_waste__data__check__items
     CHECK (array_length("items", 1) > 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.trainer__words_questions_waste__data__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
@@ -28,14 +28,17 @@ DECLARE
   _maxQuantity smallint := 6;
   _quantity smallint;
 
-  _timeLimit smallint;
+  _previewTimeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
-    "timeLimit",
+    "previewTimeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
-    _timeLimit,
+    _previewTimeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -49,7 +52,8 @@ BEGIN
         'id', 'words-questions-waste',
         'ui', 'words-questions-waste',
 
-        'timeLimit', _timeLimit,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'items', (SELECT array_agg(v ORDER BY random()) FROM unnest("items") AS v)

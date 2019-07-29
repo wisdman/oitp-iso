@@ -18,10 +18,10 @@ export class TextLettersPreviewTrainerComponent
 
   init() {
     this.fullscreenService.unlock()
+    this.preview()
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 }

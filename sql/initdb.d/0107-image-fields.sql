@@ -15,22 +15,24 @@ DECLARE
   _answersCount smallint;
 
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
   WHERE "trainer" = 'image-fields';
 
   _quantity := LEAST(_minQuantity + _complexity, _maxQuantity) - random()::smallint;
+  _maxItems := LEAST(_minItems + _complexity, _maxItems) - random()::smallint;
+
   _answersCount := LEAST((_maxItems * _complexity / _rowAnswersCount + 1) * _rowAnswersCount, _maxAnswersCount);
 
   RETURN QUERY (
@@ -67,7 +69,8 @@ BEGIN
           'id', 'image-fields',
           'ui', 'image-fields-preview',
 
-          'timeLimit', _previewTimeLimit,
+          'previewTimeLimit', _previewTimeLimit,
+          'playTimeLimit', _playTimeLimit,
           'complexity', _complexity,
 
           'items', "items"
@@ -82,7 +85,8 @@ BEGIN
           'id', 'image-fields',
           'ui', 'image-fields-question',
 
-          'timeLimit', _timeLimit * _answersCount,
+          'previewTimeLimit', _previewTimeLimit,
+          'playTimeLimit', _playTimeLimit,
           'complexity', _complexity,
 
           'items', array_agg("item")

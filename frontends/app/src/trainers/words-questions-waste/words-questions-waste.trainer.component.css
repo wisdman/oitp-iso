@@ -1,4 +1,18 @@
 .selector {
   margin: 0;
   margin-top: calc(var(--trainer-margin) * 4);
+
+  --max-columns: 5;
+}
+
+@media (max-width: 600px) {
+  .selector {
+    --max-columns: 4;
+  }
+}
+
+@media (max-width: 400px) {
+  .selector {
+    --max-columns: 3;
+  }
 }

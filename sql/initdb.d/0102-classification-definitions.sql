@@ -9,7 +9,7 @@ CREATE TABLE private.trainer__classification_definitions__data (
 
   CONSTRAINT trainer__classification_definitions__data__idx__pkey PRIMARY KEY ("word"),
   CONSTRAINT trainer__classification_definitions__data__check__definitions CHECK (array_length("definitions", 1) > 0)
-) WITH (OIDS = FALSE);
+);
 
 -- SELECT * FROM private.trainer__classification_definitions__config() AS t(config jsonb);
 CREATE OR REPLACE FUNCTION private.trainer__classification_definitions__config() RETURNS SETOF RECORD AS $$
@@ -18,14 +18,17 @@ DECLARE
   _maxItems smallint := 12;
   _itemsCount smallint;
 
-  _timeLimit smallint;
+  _previewTimeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
-    "timeLimit",
+    "previewTimeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
-    _timeLimit,
+    _previewTimeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -39,7 +42,8 @@ BEGIN
         'id', 'classification-definitions',
         'ui', 'classification-definitions',
 
-        'timeLimit', _timeLimit * _itemsCount,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit * _itemsCount,
         'complexity', _complexity,
 
         'items', jsonb_agg(jsonb_build_object(

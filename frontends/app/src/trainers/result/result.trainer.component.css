@@ -1,3 +1,9 @@
+.loader-grid {
+  margin-top: 0;
+  margin-bottom: auto;
+  color: var(--color-middle);
+}
+
 .wrapper {
   width: 300px;
 }

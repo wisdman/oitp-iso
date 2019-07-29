@@ -81,7 +81,6 @@ export class ClassificationDefinitionsTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 

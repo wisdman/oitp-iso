@@ -135,7 +135,6 @@ export class MatrixImagesFillingTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 

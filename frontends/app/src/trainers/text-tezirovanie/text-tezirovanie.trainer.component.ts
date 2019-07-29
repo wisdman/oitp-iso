@@ -29,7 +29,6 @@ export class TextTezirovanieTrainerComponent
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 }

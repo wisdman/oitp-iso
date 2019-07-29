@@ -337,10 +337,6 @@ export default {
         target: "http://localhost:8082",
         pathRewrite: { "^/api/public/training" : "" },
       },
-      "/api/public/result": {
-        target: "http://localhost:8083",
-        pathRewrite: { "^/api/public/result" : "" },
-      },
       "/api/public/progress": {
         target: "http://localhost:8084",
         pathRewrite: { "^/api/public/progress" : "" },

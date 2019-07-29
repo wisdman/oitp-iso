@@ -18,5 +18,6 @@ export class TextReadingTrainerComponent
 
   init() {
     this.fullscreenService.unlock()
+    this.preview()
   }
 }

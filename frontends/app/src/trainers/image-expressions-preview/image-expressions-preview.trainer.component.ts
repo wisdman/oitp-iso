@@ -24,10 +24,10 @@ extends AbstractTrainerComponent<IImageExpressionsPreviewTrainerConfig> {
 
   init() {
     this.fullscreenService.unlock()
+    this.preview()
   }
 
   timeout() {
-    super.timeout()
     this.finish()
   }
 }

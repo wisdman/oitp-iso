@@ -17,4 +17,4 @@ CREATE TABLE private.referals (
     FOREIGN KEY ("referal")
     REFERENCES private.users("id")
     ON UPDATE CASCADE ON DELETE CASCADE
-) WITH (OIDS = FALSE);
+);

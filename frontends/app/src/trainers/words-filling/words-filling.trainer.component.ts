@@ -52,14 +52,15 @@ extends AbstractTrainerComponent<IWordsFillingTrainerConfig> {
   }
 
   timeout() {
-    super.timeout()
     this.result()
   }
 
   result() {
     super.result()
-    this.items.forEach(value => {
-      value.isSuccess = this._prepareString(value.word)[0] === value.rune
+    this.items.forEach( (value, i, arr) => {
+      const word = this._prepareString(value.word)
+      const id = arr.findIndex(value => this._prepareString(value.word) === word)
+      value.isSuccess = word[0] === value.rune && id === i
     })
     this.markForCheck()
   }

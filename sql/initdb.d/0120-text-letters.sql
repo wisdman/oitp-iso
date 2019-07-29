@@ -12,7 +12,7 @@ CREATE TABLE private.trainer__text_letters__data (
 
   CONSTRAINT trainer__text_letters__data__idx__pkey PRIMARY KEY ("id"),
   CONSTRAINT trainer__text_letters__data__check__data CHECK (char_length(trim("data")) > 0)
-) WITH (OIDS = FALSE);
+);
 
 CREATE SEQUENCE private.trainer__text_letters__data__id__seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1
@@ -43,16 +43,16 @@ DECLARE
   _quantity smallint;
 
   _previewTimeLimit smallint;
-  _timeLimit smallint;
+  _playTimeLimit smallint;
   _complexity smallint;
 BEGIN
   SELECT
     "previewTimeLimit",
-    "timeLimit",
+    "playTimeLimit",
     "complexity"
   INTO
     _previewTimeLimit,
-    _timeLimit,
+    _playTimeLimit,
     _complexity
   -- FROM private.complexity_defaults
   FROM self.complexity
@@ -67,7 +67,8 @@ BEGIN
         'id', 'text-letters',
         'ui', 'text-letters-preview',
 
-        'timeLimit', _previewTimeLimit,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'data', "data"
@@ -76,7 +77,8 @@ BEGIN
         'id', 'text-letters',
         'ui', 'text-letters',
 
-        'timeLimit', _timeLimit,
+        'previewTimeLimit', _previewTimeLimit,
+        'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 
         'runes', "runes",

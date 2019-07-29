@@ -13,6 +13,7 @@ CREATE TYPE public.trainer__type AS ENUM (
   'math-sequence',              -- Арифметико-практическое мышление - последовательности
   'math-waste',                 -- Арифметико-практическое мышление - лишнее
   'matrix-filling-pattern',     -- Индуктивность - паттерны
+  'matrix-filling-question',    -- Индуктивность - вопросы к паттернам
   'matrix-filling-unique',      -- Мнемотехника - уникальные
   'matrix-sequence-pattern',    -- Индуктивность мышления - числовые паттерны
   'matrix-sequence-random',     -- Таблицы с произвольным рассположением чисел
@@ -132,6 +133,8 @@ INSERT INTO public.trainer_to_group("trainer", "group") VALUES
   ('matrix-filling-pattern','inductance'),
   ('matrix-filling-pattern','intelligence'),
   ('matrix-filling-pattern','memory'),
+  ('matrix-filling-question','memory'),
+  ('matrix-filling-question','visually-memory'),
   ('matrix-filling-unique','intelligence'),
   ('matrix-filling-unique','memory'),
   ('matrix-filling-unique','mnemonics'),

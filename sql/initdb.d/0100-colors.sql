@@ -8,7 +8,7 @@ CREATE TABLE private.colors (
 
   CONSTRAINT colors__idx__pkey PRIMARY KEY ("color"),
   CONSTRAINT colors__check__color CHECK ("color" ~ '^#[0-9a-f]{6}$')
-) WITH (OIDS = FALSE);
+);
 
 INSERT INTO private.colors("color") VALUES
   ('#0000ff'),
