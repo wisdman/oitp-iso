@@ -151,7 +151,6 @@ services:
       - api-auth
       - api-public-info
       - api-public-progress
-      - api-public-result
       - api-public-training
       - api-public-user
       - app
@@ -160,7 +159,6 @@ services:
       - api-auth
       - api-public-info
       - api-public-progress
-      - api-public-result
       - api-public-training
       - api-public-user
       - app
