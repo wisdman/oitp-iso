@@ -13,7 +13,7 @@ import {
 })
 export class ProgressListComponent {
   constructor(private _progressService: ProgressService) {}
-  public progress = this._progressService.progress
+  public progress = this._progressService.progressList
 
   getTrend(item: IProgressItem): "up" | "down" {
     return item.values[item.values.length - 1] >= item.average ? "up" : "down"

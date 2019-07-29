@@ -8,12 +8,13 @@
   </defs>
 </svg>
 
-<div
-  *ngFor="let item of progress | async | progressItemsFilter:'charge'"
-  #brainNode
-  class="brain"
-  [class.brain--medium]="item.average >= 30"
-  [class.brain--good]="item.average >= 70"
->
-  <span class="brain__percent">{{ item.average }}</span>
-</div>
+<ng-container *ngIf="progress | async as progress">
+  <div
+    #brainNode
+    class="brain"
+    [class.brain--medium]="progress.average >= 30"
+    [class.brain--good]="progress.average >= 70"
+  >
+    <span class="brain__percent">{{ progress.average }}</span>
+  </div>
+</ng-container>

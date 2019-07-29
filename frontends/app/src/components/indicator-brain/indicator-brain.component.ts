@@ -21,20 +21,15 @@ export class IndicatorBrainComponent implements OnInit, OnDestroy {
     private _elRef:ElementRef<HTMLElement>,
     private _progressService: ProgressService,
   ) { }
-  public progress = this._progressService.progress
+  public progress = this._progressService.progressCharge
 
   private _progressSubscription?: Subscription
 
   ngOnInit() {
     if (this._progressSubscription) this._progressSubscription.unsubscribe()
-    this._progressSubscription = this._progressService.progress.subscribe(value => {
-      const charge = value.find(({id})=> id === 'charge')
-      if (!charge) {
-        return
-      }
-
+    this._progressSubscription = this._progressService.progressCharge.subscribe(item => {
       window.requestAnimationFrame(()=>{
-        this._elRef.nativeElement.style.setProperty("--value", `${charge.average}`)
+        this._elRef.nativeElement.style.setProperty("--value", `${item.average}`)
       })
     })
   }

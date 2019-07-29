@@ -35,6 +35,10 @@ export class ChartLinearComponent {
   value: Array<number> = []
 
   get d(): string {
+    if (!this.value) {
+      return ""
+    }
+
     const values = this.value.length === 0 ? [0] : this.value
 
     let min = Math.min(...values)
