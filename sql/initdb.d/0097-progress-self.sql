@@ -4,7 +4,7 @@ CREATE VIEW self.progress AS
   SELECT
     jsonb_build_object(
       'id', "group",
-      'values', (array_agg(ROUND("progress") ORDER BY "finish" DESC))[1:7],
+      'values', (array_agg(ROUND("progress") ORDER BY "finish"))[1:7],
       'average', ROUND(AVG("progress"))
     ) AS "progress"
   FROM (
@@ -36,7 +36,7 @@ CREATE VIEW self.progress__speed AS
   SELECT
     jsonb_build_object(
       'id', 'speed',
-      'values', (array_agg(ROUND("speed") ORDER BY "finish" DESC))[1:10],
+      'values', (array_agg(ROUND("speed") ORDER BY "finish"))[1:10],
       'average', ROUND(AVG("speed"))
     ) AS "progress"
   FROM (

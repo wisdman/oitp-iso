@@ -16,6 +16,7 @@ import { Subscription } from "rxjs"
 import {
   FullscreenService,
   TrainingService,
+  ProgressService,
 } from "../../services"
 
 import {
@@ -33,10 +34,10 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private _cdr: ChangeDetectorRef,
+    private _progressService: ProgressService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _trainingService: TrainingService,
-
     public fullscreenService: FullscreenService,
   ) {}
 
@@ -44,6 +45,7 @@ export class TrainingLayoutComponent implements OnInit, OnDestroy {
 
   onResult(result: ITrainerResult) {
     if (this.config.ui === "result") {
+      this._progressService.reload()
       this._router.navigate(["/"])
       return
     }
