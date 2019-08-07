@@ -9,6 +9,7 @@ import {
 import {
   FormBuilder,
   Validators,
+  FormControl,
 } from "@angular/forms"
 
 import {
@@ -18,7 +19,10 @@ import {
 
 import { Subscription } from "rxjs"
 
-import { UserService } from "../../services"
+import {
+  UserService,
+  NotificationService,
+} from "../../services"
 
 type IMode = "login" | "invite" | "reset"
 
@@ -32,15 +36,19 @@ export class LoginLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private _cdr: ChangeDetectorRef,
     private _fb: FormBuilder,
+    private _NotificationService: NotificationService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _userService: UserService,
   ) {}
 
+  errorMessage = ""
+
   mode: IMode = "login"
+  result?: "invite" | "reset" = undefined
 
   loginForm = this._fb.group({
-    email: ['', Validators.required],
+    email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
     password: [''],
   })
 
@@ -75,7 +83,34 @@ export class LoginLayoutComponent implements OnInit, OnDestroy {
 
   onSubmit(event: Event) {
     event.preventDefault()
-    this._userService.login(this.loginForm.value)
-                     .subscribe(result => result && this._router.navigate(["/"]))
+
+    if (this.mode === "login") {
+      this._userService.login(this.loginForm.value)
+                       .subscribe(result => result && this._router.navigate(["/"]))
+      return
+    }
+
+    if (this.mode === "invite") {
+      this._userService.invite(this.loginForm.value)
+                       .subscribe(undefined, error => {
+                          if (error.status === 200) {
+                            this.result = "invite"
+                          } else if (error.status === 409) {
+                            this.errorMessage = "Данный E-mail уже зарегистрирован"
+                          } else {
+                            this._NotificationService.httpError(error.status)
+                          }
+                          this._cdr.markForCheck()
+                       })
+      return
+    }
+
+    if (this.mode === "reset") {
+      this._userService.resetPassword(this.loginForm.value)
+                       .subscribe(result => result && this._router.navigate(["/"]))
+      return
+    }
+
+
   }
 }

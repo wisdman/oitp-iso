@@ -41,6 +41,29 @@ services:
     networks:
       default:
 
+  api-invite:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_PATH=invite
+    image: oitp-isov/api-invite
+    secrets:
+      - secret-api-public
+    env_file:
+      - ./environment
+    environment:
+      - POSTGRES_APPNAME=api-invite
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
+      - SMTP_PASSWORD_FILE=/run/secrets/secret-smtp
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
   api-public-info:
     restart: unless-stopped
     build:
@@ -149,6 +172,7 @@ services:
     image: oitp-isov/nginx
     depends_on:
       - api-auth
+      - api-invite
       - api-public-info
       - api-public-progress
       - api-public-training
@@ -157,6 +181,7 @@ services:
       - portal
     links:
       - api-auth
+      - api-invite
       - api-public-info
       - api-public-progress
       - api-public-training
@@ -174,3 +199,5 @@ secrets:
     file: ./secret-sql-root.env
   secret-api-public:
     file: ./secret-api-public.env
+  secret-smtp:
+    file: ./secret-smtp.env

@@ -144,19 +144,37 @@
 
 p {
   margin: 0;
+  margin-top: 13px;
 
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.4;
+
 
   text-align: center;
+}
+
+p strong {
+  font-weight: 600;
+}
+
+.switch-message {
+  margin-top: 0;
   white-space: nowrap;
+  line-height: 1;
 }
 
 .reset-password {
-  margin-top: 16px;
+  margin-top: 0;
+  white-space: nowrap;
 }
 
 a {
   color: var(--color-primar);
+}
+
+.error-message {
+  color: var(--color-error);
+  font-size: 14px;
+  text-align: left;
 }

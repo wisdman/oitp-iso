@@ -20,9 +20,10 @@ import {
 } from "rxjs/operators"
 
 import {
-  API_AUTH_INVITE,
   API_AUTH_LOGIN,
+  API_AUTH_RESET,
   API_AUTH_SMS,
+  API_INVITE,
   API_USER,
   APP_FULL_NAME,
 } from "../../app.config"
@@ -102,7 +103,43 @@ export class UserService {
     email: string,
   }) {
     return this._independentHttpClient
-            .post(API_AUTH_INVITE, {
+            .post(API_INVITE, {
+              email: email.toLowerCase(),
+              fingerprint: this.fingerprint,
+            })
+  }
+
+  inviteLogin({id}:{id: string}) {
+    return this._independentHttpClient
+            .post<{id?: string}>(`${API_INVITE}/${id}`, {
+              fingerprint: this.fingerprint,
+            }).pipe(
+              catchError(err => {
+                if (err.status === 401) {
+                  return of(null)
+                }
+                this._notificationService.httpError(err.status)
+                return never()
+              }),
+              map(session => {
+                if (!session || !session.id) {
+                  this._tokenService.token = ""
+                  return false
+                }
+
+                this._tokenService.token = session.id
+                return true
+              }),
+            )
+  }
+
+  inviteReferal({
+    email
+  }:{
+    email: string,
+  }) {
+    return this._independentHttpClient
+            .put(API_INVITE, {
               email: email.toLowerCase(),
               fingerprint: this.fingerprint,
             })
@@ -119,6 +156,18 @@ export class UserService {
             .post(API_AUTH_SMS, {
               phone: phone.toLowerCase(),
               code: code,
+              fingerprint: this.fingerprint,
+            })
+  }
+
+  resetPassword({
+    email
+  }:{
+    email: string,
+  }) {
+    return this._independentHttpClient
+            .post(API_AUTH_RESET, {
+              email: email.toLowerCase(),
               fingerprint: this.fingerprint,
             })
   }

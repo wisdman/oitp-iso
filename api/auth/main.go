@@ -18,7 +18,13 @@ func main() {
 	)
 
 	srv.WITH(middleware.Auth).GET("/", api.Auth)
-	srv.POST("/", api.Login)
+
+	srv.PUT("/invite", api.NewInvite)
+
+	srv.POST("/email", api.LoginByEmail)
+	srv.POST("/invite", api.LoginByInvite)
+	srv.POST("/otr", api.LoginByOTR)
+
 	srv.WITH(middleware.Auth).DELETE("/", api.Logout)
 
 	srv.ListenAndServe()

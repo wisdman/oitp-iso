@@ -15,6 +15,7 @@ import {
 
 import {
   AuthGuard,
+  InviteGuard,
   LoginGuard,
   LogoutGuard,
   RootRoutingGuard,
@@ -70,6 +71,11 @@ export const ROUTES: Routes =
   data: { mode: "login" },
 },{
   path: "invite",
+  component: LoginLayoutComponent,
+  data: { mode: "invite" },
+},{
+  path: "invite/:id",
+  canActivate: [ InviteGuard ],
   component: LoginLayoutComponent,
   data: { mode: "invite" },
 },{

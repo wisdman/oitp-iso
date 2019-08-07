@@ -333,8 +333,12 @@ export default {
         target: "http://localhost:8081",
         pathRewrite: { "^/api/auth" : "" },
       },
-      "/api/public/training": {
+      "/api/invite": {
         target: "http://localhost:8082",
+        pathRewrite: { "^/api/invite" : "" },
+      },
+      "/api/public/training": {
+        target: "http://localhost:8083",
         pathRewrite: { "^/api/public/training" : "" },
       },
       "/api/public/progress": {

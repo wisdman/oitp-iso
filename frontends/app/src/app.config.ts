@@ -16,8 +16,10 @@ export const API_BASE = "/api"
 export const API_AUTH = `${API_BASE}/auth`
 export const API_AUTH_LOGIN = `${API_AUTH}`
 export const API_AUTH_LOGOUT = `${API_AUTH}`
-export const API_AUTH_INVITE = `${API_AUTH}/invite`
+export const API_AUTH_RESET = `${API_AUTH}/reset`
 export const API_AUTH_SMS = `${API_AUTH}/sms`
+
+export const API_INVITE = `${API_BASE}/invite`
 
 export const API_INFO = `${API_BASE}/public/info`
 

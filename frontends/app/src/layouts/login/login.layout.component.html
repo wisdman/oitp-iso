@@ -5,7 +5,7 @@
     </svg>
     <span class="visually-hidden">Международная школа Васильевой</span>
   </a>
-  <fieldset class="fieldset">
+  <fieldset *ngIf="!result" class="fieldset">
     <legend class="legend" *ngIf="mode==='login'">Вход в кабинет</legend>
     <legend class="legend" *ngIf="mode==='invite'">Регистрация</legend>
     <legend class="legend" *ngIf="mode==='reset'">Востановление пароля</legend>
@@ -25,6 +25,8 @@
       label="Пароль"
     >
 
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+
     <button type="submit" class="submit button--main" [disabled]="!loginForm.valid">
       <span *ngIf="mode==='login'">Войти</span>
       <span *ngIf="mode==='invite'">Зарегистрироваться</span>
@@ -34,8 +36,12 @@
     <p *ngIf="mode==='login'" class="reset-password"><a routerLink="/reset">Восстановить пароль</a></p>
     <p *ngIf="mode==='reset'" class="reset-password">Вспомнили пароль? <a routerLink="/login">Войдите</a></p>
   </fieldset>
+  <fieldset *ngIf="result === 'invite'" class="fieldset">
+    <legend class="legend">Регистрация</legend>
+    <p><strong>Мы отправили вам письмо.</strong><br>Для продолжение регистрации проверьте свой E-mail.<br>Будьте внимательны, иногда сообщения могут попасть в <i>"Спам"</i>.</p>
+  </fieldset>
 </form>
 <div class="switch">
-  <p *ngIf="mode==='login' || mode==='reset'">Ещё нет аккаунта? <a routerLink="/invite">Зарегистрируйтесь</a></p>
-  <p *ngIf="mode==='invite'">Уже зарегистрированы? <a routerLink="/login">Войдите</a></p>
+  <p class="switch-message" *ngIf="mode==='login' || mode==='reset'">Ещё нет аккаунта? <a routerLink="/invite">Зарегистрируйтесь</a></p>
+  <p class="switch-message" *ngIf="mode==='invite'">Уже зарегистрированы? <a routerLink="/login">Войдите</a></p>
 </div>

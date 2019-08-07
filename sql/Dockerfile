@@ -3,7 +3,6 @@ MAINTAINER Wisdman <wisdman@ajaw.it>
 
 ADD postgresql.conf /etc/postgresql.conf
 ADD initdb.d /docker-entrypoint-initdb.d
-ADD data /docker-entrypoint-initdb.d
 
 RUN apk add --update --no-cache tzdata \
  && ln -fs /usr/share/zoneinfo/UTC /etc/localtime

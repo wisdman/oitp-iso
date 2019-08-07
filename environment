@@ -3,3 +3,9 @@ POSTGRES_PORT=5432
 POSTGRES_DB=oitp
 POSTGRES_TIMEOUT=5
 POSTGRES_LOG_LEVEL=WARN
+
+SMTP_SERVER=smtp.elasticemail.com
+SMTP_PORT=2525
+SMTP_USER=wisdman@wisdman.io
+SMTP_NAME=VLLSchool
+SMTP_FROM=noreply@vllschool.com

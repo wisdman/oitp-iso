@@ -49,6 +49,7 @@ import {
 
 import {
   AuthGuard,
+  InviteGuard,
   LoginGuard,
   LogoutGuard,
   RootRoutingGuard,
@@ -241,6 +242,7 @@ import { ROUTES } from "./app.routing"
 
   providers: [
     AuthGuard,
+    InviteGuard,
     LoginGuard,
     LogoutGuard,
     RootRoutingGuard,
