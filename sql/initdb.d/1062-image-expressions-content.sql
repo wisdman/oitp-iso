@@ -1,4 +1,4 @@
-INSERT INTO trainer.image_expressions_data("image","data") VALUES
+INSERT INTO trainer.image_expressions_data("id","data") VALUES
   (0,'21 век. Странно видеть такие картины.'),
   (1,'6 утра. Передохну. И снова в путь.'),
   (2,'А мы с мамой на поезде едем к бабушке.'),

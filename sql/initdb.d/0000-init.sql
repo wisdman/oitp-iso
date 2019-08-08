@@ -27,7 +27,8 @@ GRANT USAGE ON SCHEMA "cron" TO "api-cron";
 CREATE ROLE "api-public" WITH NOINHERIT NOLOGIN PASSWORD NULL;
 ALTER ROLE "api-public" SET search_path = "$user";
 GRANT USAGE ON SCHEMA "public" TO "api-public";
+GRANT USAGE ON SCHEMA "self" TO "api-public";
 
 CREATE ROLE "api-self" WITH NOINHERIT NOLOGIN PASSWORD NULL;
 ALTER ROLE "api-self" SET search_path = "$user";
-GRANT USAGE ON SCHEMA "self" TO "api-public";
+GRANT USAGE ON SCHEMA "self" TO "api-self";

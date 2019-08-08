@@ -333,21 +333,43 @@ export default {
         target: "http://localhost:8081",
         pathRewrite: { "^/api/auth" : "" },
       },
-      "/api/invite": {
+
+      "/api/public/info": {
         target: "http://localhost:8082",
-        pathRewrite: { "^/api/invite" : "" },
+        pathRewrite: { "^/api/public/info" : "" },
       },
-      "/api/public/training": {
+      "/api/public/invite": {
         target: "http://localhost:8083",
-        pathRewrite: { "^/api/public/training" : "" },
+        pathRewrite: { "^/api/public/invite" : "" },
       },
-      "/api/public/progress": {
+      "/api/public/login": {
         target: "http://localhost:8084",
-        pathRewrite: { "^/api/public/progress" : "" },
+        pathRewrite: { "^/api/public/login" : "" },
       },
-      "/api/public/user": {
+      "/api/public/tariff": {
         target: "http://localhost:8085",
-        pathRewrite: { "^/api/public/user" : "" },
+        pathRewrite: { "^/api/public/tariff" : "" },
+      },
+
+      "/api/self/invite": {
+        target: "http://localhost:8091",
+        pathRewrite: { "^/api/public/invite" : "" },
+      },
+      "/api/self/logout": {
+        target: "http://localhost:8092",
+        pathRewrite: { "^/api/self/logout" : "" },
+      },
+      "/api/self/progress": {
+        target: "http://localhost:8093",
+        pathRewrite: { "^/api/self/progress" : "" },
+      },
+      "/api/self/training": {
+        target: "http://localhost:8094",
+        pathRewrite: { "^/api/self/training" : "" },
+      },
+      "/api/self/user": {
+        target: "http://localhost:8095",
+        pathRewrite: { "^/api/self/user" : "" },
       },
     }
   }

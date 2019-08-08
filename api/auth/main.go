@@ -15,17 +15,9 @@ func main() {
 	srv := service.New(
 		middleware.DB(db),
 		middleware.IP,
+		middleware.Auth,
 	)
 
-	srv.WITH(middleware.Auth).GET("/", api.Auth)
-
-	srv.PUT("/invite", api.NewInvite)
-
-	srv.POST("/email", api.LoginByEmail)
-	srv.POST("/invite", api.LoginByInvite)
-	srv.POST("/otr", api.LoginByOTR)
-
-	srv.WITH(middleware.Auth).DELETE("/", api.Logout)
-
+	srv.GET("/", api.Auth)
 	srv.ListenAndServe()
 }

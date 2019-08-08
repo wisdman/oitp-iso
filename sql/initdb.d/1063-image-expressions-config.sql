@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION trainer.image_expressions_config() RETURNS SETOF json
 DECLARE
   _trainer public.trainer_type := 'image-expressions';
   _trainerPreviewUI public.trainer_ui := 'image-expressions-preview';
-  _trainerUI public.trainer_ui := 'image-differences';
+  _trainerPlayUI public.trainer_ui := 'image-differences';
 
   _minQuantity smallint := 2;
   _maxQuantity smallint := 20;
@@ -30,25 +30,28 @@ BEGIN
           'playTimeLimit', 0,
           'complexity', _complexity,
 
-          'image', "image",
+          'image', "id",
           'data', "data"
         ) AS "preview",
         jsonb_build_object(
           'id', _trainer,
-          'ui', _trainerUI,
+          'ui', _trainerPlayUI,
 
           'previewTimeLimit', 0,
           'playTimeLimit', _playTimeLimit,
           'complexity', _complexity,
 
-          'image', "image",
+          'image', "id",
           'data', "data"
         ) AS "config"
-      FROM trainer.image_expressions_data
-      WHERE "deleted" IS NULL
-        AND "enabled"
-      ORDER BY random()
-      LIMIT _maxQuantity
+      FROM (
+        SELECT "id", "data"
+        FROM trainer.image_expressions_data
+        WHERE "deleted" IS NULL
+          AND "enabled"
+        ORDER BY random()
+        LIMIT _maxQuantity
+      ) AS t
     )
     SELECT "config"
     FROM (

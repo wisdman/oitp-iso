@@ -24,7 +24,7 @@ BEGIN
         'id', _trainer,
         'ui', _trainerUI,
 
-        'previewTimeLimit', _previewTimeLimit,
+        'previewTimeLimit', 0,
         'playTimeLimit', _playTimeLimit,
         'complexity', _complexity,
 

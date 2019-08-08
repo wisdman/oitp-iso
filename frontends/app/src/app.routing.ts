@@ -3,7 +3,10 @@ import { Routes } from "@angular/router"
 import {
   ClubLayoutComponent,
   DashboardLayoutComponent,
+  LoginEmailLayoutComponent,
+  LoginInviteLayoutComponent,
   LoginLayoutComponent,
+  LoginRestoreLayoutComponent,
   LogLayoutComponent,
   MainLayoutComponent,
   PaymentLayoutComponent,
@@ -15,7 +18,6 @@ import {
 
 import {
   AuthGuard,
-  InviteGuard,
   LoginGuard,
   LogoutGuard,
   RootRoutingGuard,
@@ -63,25 +65,22 @@ export const ROUTES: Routes =
   path: "login",
   canActivate: [ LoginGuard ],
   component: LoginLayoutComponent,
-  data: { mode: "login" },
+  children: [{
+    path: "",
+    component: LoginEmailLayoutComponent,
+    pathMatch: "full",
+  },{
+    path: "invite",
+    component: LoginInviteLayoutComponent,
+  },{
+    path: "restore",
+    component: LoginRestoreLayoutComponent,
+  }]
 },{
   path: "logout",
   canActivate: [ LogoutGuard ],
   component: LoginLayoutComponent,
   data: { mode: "login" },
-},{
-  path: "invite",
-  component: LoginLayoutComponent,
-  data: { mode: "invite" },
-},{
-  path: "invite/:id",
-  canActivate: [ InviteGuard ],
-  component: LoginLayoutComponent,
-  data: { mode: "invite" },
-},{
-  path: "reset",
-  component: LoginLayoutComponent,
-  data: { mode: "reset" },
 },{
   path: "training/:type",
   component: TrainingLayoutComponent,

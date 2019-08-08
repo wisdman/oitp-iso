@@ -1,0 +1,7 @@
+psql: warning: extra command-line argument "data" ignored
+psql: warning: extra command-line argument "FROM" ignored
+psql: warning: extra command-line argument "trainer.text_letters_data" ignored
+psql: warning: extra command-line argument "ORDER" ignored
+psql: warning: extra command-line argument "BY" ignored
+psql: warning: extra command-line argument "data" ignored
+psql: FATAL:  role "DISTINCT" does not exist

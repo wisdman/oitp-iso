@@ -26,9 +26,9 @@ CREATE OR REPLACE FUNCTION private.set_complexity(
   _previewTimeLimit int,
   _playTimeLimit int
 ) RETURNS table (
-  "complexity" smallint
+  "complexity" smallint,
   "previewTimeLimit" int,
-  "playTimeLimit" int,
+  "playTimeLimit" int
 ) AS $$
 BEGIN
   RETURN QUERY

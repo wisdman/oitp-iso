@@ -1,5 +1,4 @@
 .main {
-  margin-top: 16px;
   padding: 0 .7em;
 
   background-color: var(--color-white);
@@ -53,7 +52,7 @@
 .main.focus .label,
 .main.not-empty .label,
 .main.date .label {
-  transform: translate(0, calc(-50% - 24px)) scale(0.80);
+  transform: translate(0, calc(-50% - 24px)) scale(0.9);
 }
 
 .main.focus .label {

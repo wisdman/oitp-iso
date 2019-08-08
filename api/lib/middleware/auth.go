@@ -30,7 +30,7 @@ func Auth(handle http.HandlerFunc) http.HandlerFunc {
 		}
 
 		var result bool
-		err := sql.QueryRow("SELECT public.users__init_session($1, $2)", sessionKey, ip).Scan(&result)
+		err := sql.QueryRow("SELECT self.init_session($1, $2)", sessionKey, ip).Scan(&result)
 		if err != nil {
 			service.Fatal(w, http.StatusUnauthorized)
 			return

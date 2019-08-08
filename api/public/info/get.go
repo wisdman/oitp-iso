@@ -9,19 +9,14 @@ import (
 
 func (api *API) Get(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
-	info := newInfo(Text)
 
-	err := sql.QueryRow(`
-    SELECT
-       "data"
-     FROM public.expressions
-     ORDER BY random()
-     LIMIT 1`,
-	).Scan(&info.Data)
-	if err != nil {
+	var response []byte
+	if err := sql.QueryRow(`SELECT public.get_info_expression()`).Scan(&response); err != nil {
 		service.Fatal(w, err)
 		return
 	}
 
-	service.ResponseJSON(w, info)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(response)
 }
