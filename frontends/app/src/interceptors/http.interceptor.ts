@@ -16,7 +16,7 @@ import {
 
 import { catchError } from "rxjs/operators"
 
-import { AUTR_TOKEN_HEADER } from "../app.config"
+import { AUTH_TOKEN_HEADER } from "../app.config"
 
 import {
   NotificationService,
@@ -41,7 +41,7 @@ export class HTTPInterceptor implements HttpInterceptor {
 
     request = request.clone({
       setHeaders: {
-        [AUTR_TOKEN_HEADER]: token
+        [AUTH_TOKEN_HEADER]: token
       }
     })
 

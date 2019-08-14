@@ -9,36 +9,29 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
 
-type NewInvite struct {
+type SNewInvite struct {
 	Email string `json:"email"`
 }
 
 func (api *API) NewInvite(w http.ResponseWriter, r *http.Request) {
-	var invite NewInvite
-	err := service.DecodeJSONBody(r, &invite)
-	if err != nil || invite.Email == "" {
+	var body SNewInvite
+	if err := service.DecodeJSONBody(r, &body); err != nil || body.Email == "" {
 		service.Error(w, http.StatusBadRequest)
 		return
 	}
 
 	sql := middleware.GetDBTransaction(r)
 
-	var alreadyExists bool
-	err = sql.QueryRow(
+	var response []byte
+	if err := sql.QueryRow(
 		`SELECT public.new_invite($1)`,
-		invite.Email,
-	).Scan(&alreadyExists)
-
-	if err != nil && err != pgx.ErrNoRows {
+		body.Email,
+	).Scan(&response); err != nil {
 		service.Fatal(w, err)
 		return
 	}
 
-	if alreadyExists {
-		service.Error(w, http.StatusConflict)
-		return
-	}
-
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(response)
 }

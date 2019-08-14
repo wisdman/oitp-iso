@@ -1,28 +1,16 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <h1 class="h1">Регистрация</h1>
 
-  <input
-    type="email"
-    class="input input--main"
+  <input wFormInput
+    class="input"
+    aria-label="E-mail"
+    type="text"
     formControlName="email"
-    label="E-mail"
   >
 
-  <input
-    type="password"
-    class="input input--main"
-    formControlName="password1"
-    label="Пароль"
-  >
-
-  <input
-    type="password"
-    class="input input--main"
-    formControlName="password2"
-    label="Пароль еще раз"
-  >
-
-  <!-- <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p> -->
-
-  <button type="submit" class="submit button--main" [disabled]="!form.valid">Зарегистрироваться</button>
+  <button wFormButton
+    class="button"
+    type="submit"
+    [pending]="isPending"
+  >Зарегистрироваться</button>
 </form>

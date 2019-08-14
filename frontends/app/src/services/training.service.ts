@@ -19,11 +19,7 @@ import {
 
 import {
   DEBUG,
-
-  API_TRAINING_DEBUG,
-  API_TRAINING_EVERYDAY,
-  API_TRAINING_ONCE,
-  API_TRAINING_RESULT,
+  API_SELF_TRAINING,
 } from "../app.config"
 
 import {
@@ -54,18 +50,8 @@ export class TrainingService {
 
   private _training: Subject<string> = new Subject<string>()
   initTraining(type: ITrainingType) {
-    switch (type) {
-      case "debug":
-        this._training.next(API_TRAINING_DEBUG)
-        return
-      case "everyday":
-        this._training.next(API_TRAINING_EVERYDAY)
-        return
-      case "once":
-        this._training.next(API_TRAINING_ONCE)
-        return
-    }
-    throw TypeError("Incorrect training type")
+    this._training.next(`${API_SELF_TRAINING}/${type}`)
+    return
   }
 
   private _trainingConfig = this._training.pipe(
@@ -123,6 +109,6 @@ export class TrainingService {
 
   finish() {
     const trainingId = this._resultsBuffer[this._resultsBuffer.length - 1].training
-    return this._httpClient.put<number>(`${API_TRAINING_RESULT}/${trainingId}`, this._resultsBuffer)
+    return this._httpClient.put<number>(`${API_SELF_TRAINING}/${trainingId}`, this._resultsBuffer)
   }
 }

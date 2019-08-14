@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"net"
 	"net/http"
 
@@ -10,46 +11,38 @@ import (
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
 
-type Invite struct {
+type SLoginInvite struct {
 	ID          string      `json:"id"`
 	IP          net.IP      `json:"ip"`
 	Fingerprint interface{} `json:"fingerprint"`
 }
 
-func (api *API) Login(w http.ResponseWriter, r *http.Request) {
+func (api *API) LoginByInvite(w http.ResponseWriter, r *http.Request) {
+	var body SLoginInvite
+	if err := service.DecodeJSONBody(r, &body); err != nil || body.ID == "" {
+		service.Error(w, http.StatusBadRequest)
+		return
+	}
+
+	if body.IP = middleware.GetIP(r); body.IP == nil {
+		service.Fatal(w, errors.New("Incorrect IP address"))
+		return
+	}
+
 	sql := middleware.GetDBTransaction(r)
 
-	var invite Invite
-	err := service.DecodeJSONBody(r, &invite)
-	if err != nil || invite.ID == "" {
-		service.Error(w, http.StatusUnauthorized)
-		return
-	}
-
-	invite.IP = middleware.GetIP(r)
-	if invite.IP == nil {
-		service.Error(w, http.StatusUnauthorized)
-		return
-	}
-
-	var session Session
-	err = sql.QueryRow(
+	var response []byte
+	if err := sql.QueryRow(
 		`SELECT * FROM public.login_by_invite($1, $2, $3)`,
-		invite.ID,
-		invite.IP,
-		invite.Fingerprint,
-	).Scan(
-		&session.Id,
-		&session.Expires,
-	)
-
-	if err == pgx.ErrNoRows {
-		service.Error(w, http.StatusUnauthorized)
-		return
-	} else if err != nil {
+		body.ID,
+		body.IP,
+		body.Fingerprint,
+	).Scan(&response); err != nil {
 		service.Fatal(w, err)
 		return
 	}
 
-	service.ResponseJSON(w, session)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(response)
 }

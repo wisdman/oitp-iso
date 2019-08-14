@@ -22,14 +22,10 @@
   text-align: center;
 }
 
-.input {
+.input,
+.button {
   width: 100%;
-  margin-top: 24px;
-}
-
-.submit {
-  width: 100%;
-  margin-top: 24px;
+  margin-top: 32px;
 }
 
 .error-message {

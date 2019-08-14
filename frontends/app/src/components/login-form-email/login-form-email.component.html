@@ -1,21 +1,23 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <h1 class="h1">Вход в кабинет</h1>
 
-  <input
-    type="email"
-    class="input input--main"
+  <input wFormInput
+    class="input"
+    aria-label="E-mail"
+    type="text"
     formControlName="email"
-    label="E-mail"
   >
 
-  <input
+  <input wFormInput
+    class="input"
+    aria-label="Пароль"
     type="password"
-    class="input input--main"
     formControlName="password"
-    label="Пароль"
   >
 
-  <!-- <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p> -->
-
-  <button type="submit" class="submit button--main" [disabled]="!form.valid">Войти</button>
+  <button wFormButton
+    class="button"
+    type="submit"
+    [pending]="isPending"
+  >Войти</button>
 </form>

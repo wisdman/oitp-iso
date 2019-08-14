@@ -12,8 +12,8 @@ import {
 } from "rxjs/operators"
 
 import {
-  API_LOG,
-  API_PROGRESS,
+  API_SELF_LOG,
+  API_SELF_PROGRESS,
 } from "../../app.config"
 
 import {
@@ -35,7 +35,7 @@ export class ProgressService {
   }
 
   progress = this._reload.pipe(
-    switchMap(() => this._httpClient.get<IProgress>(API_PROGRESS)),
+    switchMap(() => this._httpClient.get<IProgress>(API_SELF_PROGRESS)),
     shareReplay(1),
   )
 
@@ -50,7 +50,7 @@ export class ProgressService {
   )
 
   log = this._reload.pipe(
-    switchMap(() => this._httpClient.get<ILog>(API_LOG)),
+    switchMap(() => this._httpClient.get<ILog>(API_SELF_LOG)),
     shareReplay(1),
   )
 }

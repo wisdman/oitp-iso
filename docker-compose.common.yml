@@ -8,14 +8,9 @@ services:
     image: oitp-isov/sql
     volumes:
       - data-volume:/var/lib/postgresql/data
-    secrets:
-      - secret-sql-root
-    env_file:
-      - ./environment
     environment:
       - LANG=ru_RU.utf8
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-sql-root
+      - PGDATABASE=oitp
     networks:
       default:
 
@@ -34,29 +29,6 @@ services:
       - POSTGRES_APPNAME=api-auth
       - POSTGRES_USER=api-public
       - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
-  api-invite:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=invite
-    image: oitp-isov/api-invite
-    secrets:
-      - secret-api-public
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-invite
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
-      - SMTP_PASSWORD_FILE=/run/secrets/secret-smtp
     depends_on:
       - sql
     links:
@@ -86,19 +58,19 @@ services:
     networks:
       default:
 
-  api-public-progress:
+  api-public-invite:
     restart: unless-stopped
     build:
       context: ./api
       args:
-        - APP_PATH=public/progress
-    image: oitp-isov/api-public-progress
+        - APP_PATH=public/invite
+    image: oitp-isov/api-public-invite
     secrets:
       - secret-api-public
     env_file:
       - ./environment
     environment:
-      - POSTGRES_APPNAME=api-public-progress
+      - POSTGRES_APPNAME=api-public-invite
       - POSTGRES_USER=api-public
       - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
@@ -108,19 +80,19 @@ services:
     networks:
       default:
 
-  api-public-training:
+  api-public-login:
     restart: unless-stopped
     build:
       context: ./api
       args:
-        - APP_PATH=public/training
-    image: oitp-isov/api-public-training
+        - APP_PATH=public/login
+    image: oitp-isov/api-public-login
     secrets:
       - secret-api-public
     env_file:
       - ./environment
     environment:
-      - POSTGRES_APPNAME=api-public-training
+      - POSTGRES_APPNAME=api-public-login
       - POSTGRES_USER=api-public
       - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
@@ -130,21 +102,109 @@ services:
     networks:
       default:
 
-  api-public-user:
+  api-self-invite:
     restart: unless-stopped
     build:
       context: ./api
       args:
-        - APP_PATH=public/user
-    image: oitp-isov/api-public-user
+        - APP_PATH=self/invite
+    image: oitp-isov/api-self-invite
     secrets:
-      - secret-api-public
+      - secret-api-self
     env_file:
       - ./environment
     environment:
-      - POSTGRES_APPNAME=api-public-user
+      - POSTGRES_APPNAME=api-self-invite
       - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-self
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
+  api-self-login:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_PATH=self/login
+    image: oitp-isov/api-self-login
+    secrets:
+      - secret-api-self
+    env_file:
+      - ./environment
+    environment:
+      - POSTGRES_APPNAME=api-self-login
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-self
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
+  api-self-progress:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_PATH=self/progress
+    image: oitp-isov/api-self-progress
+    secrets:
+      - secret-api-self
+    env_file:
+      - ./environment
+    environment:
+      - POSTGRES_APPNAME=api-self-progress
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-self
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
+  api-self-training:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_PATH=self/training
+    image: oitp-isov/api-self-training
+    secrets:
+      - secret-api-self
+    env_file:
+      - ./environment
+    environment:
+      - POSTGRES_APPNAME=api-self-training
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-self
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
+  api-self-user:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_PATH=self/user
+    image: oitp-isov/api-self-user
+    secrets:
+      - secret-api-self
+    env_file:
+      - ./environment
+    environment:
+      - POSTGRES_APPNAME=api-self-user
+      - POSTGRES_USER=api-public
+      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-self
     depends_on:
       - sql
     links:
@@ -172,20 +232,24 @@ services:
     image: oitp-isov/nginx
     depends_on:
       - api-auth
-      - api-invite
       - api-public-info
-      - api-public-progress
-      - api-public-training
-      - api-public-user
+      - api-public-invite
+      - api-public-login
+      - api-self-invite
+      - api-self-login
+      - api-self-progress
+      - api-self-user
       - app
       - portal
     links:
       - api-auth
-      - api-invite
       - api-public-info
-      - api-public-progress
-      - api-public-training
-      - api-public-user
+      - api-public-invite
+      - api-public-login
+      - api-self-invite
+      - api-self-login
+      - api-self-progress
+      - api-self-user
       - app
       - portal
     networks:
@@ -195,9 +259,9 @@ volumes:
   data-volume:
 
 secrets:
-  secret-sql-root:
-    file: ./secret-sql-root.env
   secret-api-public:
     file: ./secret-api-public.env
+  secret-api-self:
+    file: ./secret-api-self.env
   secret-smtp:
     file: ./secret-smtp.env

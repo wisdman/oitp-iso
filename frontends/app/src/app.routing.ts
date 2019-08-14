@@ -79,8 +79,7 @@ export const ROUTES: Routes =
 },{
   path: "logout",
   canActivate: [ LogoutGuard ],
-  component: LoginLayoutComponent,
-  data: { mode: "login" },
+  redirectTo: "/login",
 },{
   path: "training/:type",
   component: TrainingLayoutComponent,

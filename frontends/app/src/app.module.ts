@@ -33,6 +33,10 @@ import {
   TimerGlobalComponent,
   TimerLapComponent,
   TrainerSelectorComponent,
+
+  PaymentCardComponent,
+  PaymentLogComponent,
+  PaymentTariffComponent,
 } from "./components"
 
 import {
@@ -52,7 +56,6 @@ import {
 
 import {
   AuthGuard,
-  InviteGuard,
   LoginGuard,
   LogoutGuard,
   RootRoutingGuard,
@@ -79,6 +82,10 @@ import {
 } from "./layouts"
 
 import {
+  WFormsModule,
+} from "./modules"
+
+import {
   DaysPipe,
   ProgressItemsFilterPipe,
   SafeStylePipe,
@@ -99,6 +106,7 @@ import {
   TokenService,
   TrainingService,
   UserService,
+  LoginService,
 } from "./services"
 
 import {
@@ -170,6 +178,9 @@ import { ROUTES } from "./app.routing"
     TimerGlobalComponent,
     TimerLapComponent,
     TrainerSelectorComponent,
+    PaymentCardComponent,
+    PaymentLogComponent,
+    PaymentTariffComponent,
 
     AutofocusDirective,
 
@@ -197,6 +208,7 @@ import { ROUTES } from "./app.routing"
     PublicationsLayoutComponent,
     SupportLayoutComponent,
     TrainingLayoutComponent,
+
 
     DaysPipe,
     ProgressItemsFilterPipe,
@@ -250,11 +262,12 @@ import { ROUTES } from "./app.routing"
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+
+    WFormsModule,
   ],
 
   providers: [
     AuthGuard,
-    InviteGuard,
     LoginGuard,
     LogoutGuard,
     RootRoutingGuard,
@@ -266,6 +279,7 @@ import { ROUTES } from "./app.routing"
     TokenService,
     TrainingService,
     UserService,
+    LoginService,
 
     FullscreenService,
     {

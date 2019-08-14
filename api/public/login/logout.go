@@ -10,7 +10,7 @@ import (
 func (api *API) Logout(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
-	_, err := sql.Exec("SELECT public.logout()")
+	_, err := sql.Exec("SELECT self.logout()")
 	if err != nil {
 		service.Fatal(w, err)
 		return

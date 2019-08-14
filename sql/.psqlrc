@@ -1,0 +1,15 @@
+\set QUIET 1
+\set COMP_KEYWORD_CASE upper
+\set HISTCONTROL ignoredups
+\set HISTSIZE 2000
+\set PROMPT1 '%M %n@%/%R%#%x '
+\set PROMPT2 '[more] %n@%/ %R %# '
+\set VERBOSITY verbose
+\pset border 2
+\pset footer on
+\pset linestyle unicode
+\pset null 'Ø'
+\pset pager_min_lines 0
+\timing on
+\set QUIET 0
+\setenv PAGER 'pspg -bXF --no-mouse --no-sound --force-uniborder --no-commandbar --ignore-case -s 6'

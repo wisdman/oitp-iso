@@ -1,3 +1,13 @@
-<ng-container *ngIf="info | async as info">
+<!-- <ng-container *ngIf="info | async as info">
   <p *ngIf="info.type === 'text'">{{ info.data }}</p>
-</ng-container>
+</ng-container> -->
+
+<div class="video-wrapper">
+  <iframe
+    class="video"
+    src="https://www.youtube.com/embed/yttwjrDnAxI?modestbranding=1&autohide=1&showinfo=0"
+    frameborder="0"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
+</div>

@@ -17,15 +17,15 @@ func main() {
 		middleware.IP,
 	)
 
-	srv.WITH(middleware.Auth).GET("/", api.Auth)
-
-	srv.PUT("/invite", api.NewInvite)
+	srv.POST("/email/exists", api.EmailExists)
 
 	srv.POST("/email", api.LoginByEmail)
-	srv.POST("/invite", api.LoginByInvite)
+	srv.POST("/invite/:id", api.LoginByInvite)
 	srv.POST("/otr", api.LoginByOTR)
 
-	srv.WITH(middleware.Auth).DELETE("/", api.Logout)
+	srv.DELETE("/", api.Logout)
+
+	srv.POST("/invite", api.NewInvite)
 
 	srv.ListenAndServe()
 }

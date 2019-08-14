@@ -11,12 +11,6 @@ var xAuthorization = http.CanonicalHeaderKey("X-Authorization")
 
 func Auth(handle http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		sql := GetDBTransaction(r)
-		if sql == nil {
-			service.Fatal(w, errors.New("Сall Auth outside DB transaction"))
-			return
-		}
-
 		sessionKey := r.Header.Get(xAuthorization)
 		if sessionKey == "" {
 			service.Error(w, http.StatusUnauthorized)
@@ -25,14 +19,19 @@ func Auth(handle http.HandlerFunc) http.HandlerFunc {
 
 		ip := GetIP(r)
 		if ip == nil {
-			service.Error(w, http.StatusUnauthorized)
+			service.Fatal(w, errors.New("Incorrect IP address"))
+			return
+		}
+
+		sql := GetDBTransaction(r)
+		if sql == nil {
+			service.Fatal(w, errors.New("Сall Auth outside DB transaction"))
 			return
 		}
 
 		var result bool
-		err := sql.QueryRow("SELECT self.init_session($1, $2)", sessionKey, ip).Scan(&result)
-		if err != nil {
-			service.Fatal(w, http.StatusUnauthorized)
+		if err := sql.QueryRow("SELECT self.init_session($1, $2)", sessionKey, ip).Scan(&result); err != nil {
+			service.Fatal(w, err)
 			return
 		}
 

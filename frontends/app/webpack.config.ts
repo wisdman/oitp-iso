@@ -84,9 +84,10 @@ export default {
       // === Components styles ===
       test: /\.css$/i,
       exclude: [
-        PATH("./src/styles"),
-        PATH("./src/directives"),
         PATH("./node_modules"),
+        PATH("./src/directives"),
+        PATH("./src/modules/w-forms/directives"),
+        PATH("./src/styles"),
       ],
       use: [{
         loader: "raw-loader",
@@ -102,6 +103,7 @@ export default {
       test: /\.css$/i,
       include: [
         PATH("./src/directives"),
+        PATH("./src/modules/w-forms/directives"),
       ],
       use: [{
         loader: "style-loader",
@@ -316,7 +318,7 @@ export default {
   profile: false,
   devtool: isProduction ? false : "cheap-eval-source-map",
 
-  stats: "minimal",
+  stats: "errors-warnings",
 
   devServer: {
     clientLogLevel: "warning",
@@ -338,16 +340,12 @@ export default {
         target: "http://localhost:8082",
         pathRewrite: { "^/api/public/info" : "" },
       },
-      "/api/public/invite": {
-        target: "http://localhost:8083",
-        pathRewrite: { "^/api/public/invite" : "" },
-      },
       "/api/public/login": {
-        target: "http://localhost:8084",
+        target: "http://localhost:8083",
         pathRewrite: { "^/api/public/login" : "" },
       },
       "/api/public/tariff": {
-        target: "http://localhost:8085",
+        target: "http://localhost:8084",
         pathRewrite: { "^/api/public/tariff" : "" },
       },
 

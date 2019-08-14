@@ -8,34 +8,36 @@ export const APP_NAME = DEFINE_APP_NAME
 export const APP_VERSION = DEFINE_APP_VERSION
 export const APP_FULL_NAME = `${APP_NAME} v${APP_VERSION} ${DEBUG ? "DEBUG MODE" : ""}`
 
-export const AUTR_TOKEN_KEY = "token"
-export const AUTR_TOKEN_HEADER = "X-Authorization"
+export const AUTH_TOKEN_KEY = "token"
+export const AUTH_TOKEN_HEADER = "X-Authorization"
 
 export const API_BASE = "/api"
 
 export const API_AUTH = `${API_BASE}/auth`
-export const API_AUTH_LOGIN = `${API_AUTH}`
-export const API_AUTH_LOGOUT = `${API_AUTH}`
-export const API_AUTH_RESET = `${API_AUTH}/reset`
-export const API_AUTH_SMS = `${API_AUTH}/sms`
 
-export const API_INVITE = `${API_BASE}/invite`
+export const API_PUBLIC = `${API_BASE}/public`
 
-export const API_INFO = `${API_BASE}/public/info`
+export const API_PUBLIC_INFO = `${API_PUBLIC}/info`
 
-export const API_TRAINING = `${API_BASE}/public/training`
-export const API_TRAINING_EVERYDAY = `${API_TRAINING}/everyday`
-export const API_TRAINING_ONCE = `${API_TRAINING}/once`
+export const API_PUBLIC_LOGIN = `${API_PUBLIC}/login`
 
-export const API_TRAINING_DEBUG = DEBUG ? `${API_TRAINING}/debug` : API_TRAINING_ONCE
+export const API_PUBLIC_LOGIN_EMAIL_EXISTS = `${API_PUBLIC_LOGIN}/email/exists`
+export const API_PUBLIC_LOGIN_BY_EMAIL     = `${API_PUBLIC_LOGIN}/email`
+export const API_PUBLIC_LOGIN_BY_INVITE    = `${API_PUBLIC_LOGIN}/invite`
+export const API_PUBLIC_LOGIN_BY_OTR       = `${API_PUBLIC_LOGIN}/otr`
+export const API_PUBLIC_LOGIN_BY_SMS       = `${API_PUBLIC_LOGIN}/sms`
 
-export const API_TRAINING_RESULT = `${API_TRAINING}`
+export const API_PUBLIC_TARIFF = `${API_PUBLIC}/tariff`
 
-export const API_USER = `${API_BASE}/public/user`
+export const API_SELF = `${API_BASE}/self`
 
-export const API_PROGRESS = `${API_BASE}/public/progress`
-
-export const API_LOG = `${API_BASE}/public/log`
+export const API_SELF_INVITE   = `${API_SELF}/invite`
+export const API_SELF_LOG      = `${API_SELF}/log`
+export const API_SELF_LOGOUT   = `${API_SELF}/logout`
+export const API_SELF_PAYMENT  = `${API_SELF}/payment`
+export const API_SELF_PROGRESS = `${API_SELF}/progress`
+export const API_SELF_TRAINING = `${API_SELF}/training`
+export const API_SELF_USER     = `${API_SELF}/user`
 
 export const ASSETS = "/assets"
 export const ASSETS_CARPETS = `${ASSETS}/carpets`

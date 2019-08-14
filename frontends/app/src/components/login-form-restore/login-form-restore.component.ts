@@ -5,9 +5,10 @@ import {
 
 import {
   FormBuilder,
-  Validators,
   FormControl,
 } from "@angular/forms"
+
+import { Validators } from "../../modules/w-forms"
 
 @Component({
   selector: "login-form-restore",
@@ -21,10 +22,11 @@ export class LoginFormRestoreComponent {
   ) {}
 
   form = this._fb.group({
-    email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
+    email: new FormControl('', Validators.Email("Некорректный E-mail")),
   })
 
   onSubmit(event: Event) {
+    this.form.markAsTouched()
     event.preventDefault()
   }
 }
