@@ -71,7 +71,6 @@ export default {
     path: PATH("./artifacts"),
     publicPath: "/",
     filename: `js/[name]-${isES5 ? "es5" : "es2015"}.[hash:10].js`,
-    chunkFilename: `js/[id]-${isES5 ? "es5" : "es2015"}.[hash:10].js`,
     crossOriginLoading: false,
     futureEmitAssets: true,
   },
