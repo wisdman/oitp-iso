@@ -4,4 +4,16 @@
   </svg>
   <span>Результаты</span>
 </h2>
-<!-- <progress-list></progress-list> -->
+
+<h3 class="h3">
+  <div class="col-1">Наименование</div>
+  <div class="col-2">Среднее значениие</div>
+  <div class="col-3">Последнее занятие</div>
+  <div class="col-4">Тенденция</div>
+</h3>
+
+<div class="items" *ngIf="progressService.progress | async as progress">
+  <ng-container *ngFor="let item of progress">
+    <card-progress-item *ngIf="allowItem(item)" [item]="item"></card-progress-item>
+  </ng-container>
+</div>

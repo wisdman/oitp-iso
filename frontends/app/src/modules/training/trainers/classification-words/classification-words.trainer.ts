@@ -10,8 +10,8 @@ import { IClassificationWordsConfig } from "./classification-words.interfaces"
 
 @Component({
   selector: "trainer-classification-words",
-  templateUrl: "./classification-words.trainer.component.html",
-  styleUrls: [ "./classification-words.trainer.component.css" ],
+  templateUrl: "./classification-words.trainer.html",
+  styleUrls: [ "./classification-words.trainer.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassificationWordsTrainer extends AbstractTrainer<IClassificationWordsConfig> {
@@ -74,7 +74,7 @@ export class ClassificationWordsTrainer extends AbstractTrainer<IClassificationW
                      .sort(() => Math.random() - 0.5)
                      .sort(() => Math.random() - 0.5)
 
-    this.itemTimeLimit = Math.floor(this.config.playTimeLimit / this.items.length)
+    this.itemTimeLimit = Math.floor(this.config.playTimeLimit / this.items.length / 1000)
 
     this._itemSubscription = zip(
       from([...this.items, undefined]),

@@ -31,14 +31,18 @@ INSERT INTO private.training_configs("description", "type", "timeLimit", "traine
     "matrix-sequence-random"
   ]] $$::jsonb),
 
-  ('Разовая', 'everyday', 300, $$ [[
+  ('Разовая', 'once', 300, $$ [[
     "matrix-filling-pattern"
   ]] $$::jsonb),
 
-  ('Разовая', 'everyday', 300, $$ [[
+  ('Разовая', 'once', 300, $$ [[
     "matrix-sequence-pattern"
   ]] $$::jsonb),
 
-  ('Разовая', 'everyday', 300, $$ [[
+  ('Разовая', 'once', 300, $$ [[
+    "matrix-sequence-random"
+  ]] $$::jsonb),
+
+  ('Отладочная', 'debug', 300, $$ [[
     "matrix-sequence-random"
   ]] $$::jsonb);

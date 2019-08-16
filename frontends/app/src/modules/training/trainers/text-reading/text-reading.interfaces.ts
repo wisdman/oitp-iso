@@ -7,5 +7,5 @@ export interface ITextReadingConfig extends ITrainerConfig {
   id: ITextReadingID
   ui: ITextReadingUI
 
-  data: string
+  text: string
 }

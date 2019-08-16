@@ -7,8 +7,8 @@ const ASSETS_RELAX = "/assets/relax"
 
 @Component({
   selector: "trainer-relax",
-  templateUrl: "./relax.trainer.component.html",
-  styleUrls: [ "./relax.trainer.component.css" ],
+  templateUrl: "./relax.trainer.html",
+  styleUrls: [ "./relax.trainer.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RelaxTrainer extends AbstractTrainer<IRelaxConfig> {

@@ -6,8 +6,8 @@ import { IWordsQuestionsWasteConfig } from "./words-questions-waste.interfaces"
 
 @Component({
   selector: "trainer-words-questions-waste",
-  templateUrl: "./words-questions-waste.trainer.component.html",
-  styleUrls: [ "./words-questions-waste.trainer.component.css" ],
+  templateUrl: "./words-questions-waste.trainer.html",
+  styleUrls: [ "./words-questions-waste.trainer.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WordsQuestionsWasteTrainer extends AbstractTrainer<IWordsQuestionsWasteConfig> {

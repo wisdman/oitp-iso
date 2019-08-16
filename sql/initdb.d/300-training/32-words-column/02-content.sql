@@ -1,4 +1,4 @@
-INSERT INTO trainer.text_words_column_data("word") VALUES
+INSERT INTO trainer.words_column_data("word") VALUES
   ('Эра'),
   ('Пирамида'),
   ('Язык'),

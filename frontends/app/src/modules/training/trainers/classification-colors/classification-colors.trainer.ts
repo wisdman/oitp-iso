@@ -46,7 +46,7 @@ export class ClassificationColorsTrainer extends AbstractTrainer<IClassification
   groups!: Array<ISelectorItem>
   item!: Partial<{
     color: string
-    data: string
+    title: string
   }>
 
   private _stepSubject: Subject<undefined> = new Subject<undefined>()
@@ -63,7 +63,7 @@ export class ClassificationColorsTrainer extends AbstractTrainer<IClassification
                       .map( ({color: data}) => ({data}) )
                       .sort(() => Math.random() - 0.5)
 
-    this.itemTimeLimit = Math.floor(this.config.playTimeLimit / this.config.items.length)
+    this.itemTimeLimit = Math.floor(this.config.playTimeLimit / this.config.items.length / 1000)
 
     this._itemSubscription = zip(
       from([...this.config.items.sort(() => Math.random() - 0.5), undefined]),

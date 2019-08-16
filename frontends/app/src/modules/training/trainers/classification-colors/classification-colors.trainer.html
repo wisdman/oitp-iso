@@ -15,7 +15,7 @@
   <span
     #textNode
     class="item-text animate"
-  >{{ item && item.data || "" }}</span>
+  >{{ item && item.title || "" }}</span>
 </h2>
 
 <trainer-selector class="selector" type="color" [items]="groups" (touch)="onTouch($event)"></trainer-selector>

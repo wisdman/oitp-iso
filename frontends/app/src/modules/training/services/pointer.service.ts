@@ -14,7 +14,9 @@ export class PointerService {
 
   constructor(
     private _fullscreenService: FullscreenService
-  ) {}
+  ) {
+    this._initMoveLocker()
+  }
 
   pointerdown   = initPointerDown(document).pipe(share())
   pointermove   = initPointerMove(document).pipe(share())
@@ -53,13 +55,4 @@ export class PointerService {
       }
     })
   }
-
-  load(): Promise<void> {
-    this._initMoveLocker()
-    return Promise.resolve()
-  }
-}
-
-export function PointerServiceFactory(pointerService: PointerService): Function {
-  return () => pointerService.load()
 }

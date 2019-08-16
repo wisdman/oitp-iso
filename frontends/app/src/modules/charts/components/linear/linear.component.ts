@@ -43,7 +43,11 @@ export class LinearComponent {
 
     let min = Math.min(...values)
     let max = Math.max(...values)
-    if (max === min) {
+
+    if (min === 0 && max === 0) {
+      max = 10
+      min = -10
+    } else if (max === min) {
       max = Math.abs(min) * 2
       min = 0
     }

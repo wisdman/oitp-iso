@@ -10,6 +10,6 @@ export interface IClassificationColorsConfig extends ITrainerConfig {
 
   items: Array<{
     color: string
-    data: string
+    title: string
   }>
 }

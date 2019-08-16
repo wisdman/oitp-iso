@@ -87,35 +87,17 @@
 
 /* === Close button === */
 
-.close {
+.close-botton {
   position: absolute;
   right: -8px;
   top: -8px;
-
-  width: 40px;
-  height: 40px;
-
-  padding: 0;
-  border-radius: 50%;
-
-  background-color: var(--color-background);
-  box-shadow: 0 2px 32px -8px rgba(0,0,0,.87);
+  font-size: 20px;
 }
 
 @media (max-width: 600px) {
-  .close {
+  .close-botton {
     right: -3px;
     top: -3px;
     padding: 4px;
   }
-}
-
-.close-icon {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* === Keypad === */
-.keypad {
-  margin-top: auto;
 }

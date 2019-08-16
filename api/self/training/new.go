@@ -9,9 +9,7 @@ import (
 
 func (api *API) New(w http.ResponseWriter, r *http.Request) {
 	trainingType := service.GetParam(r, "type")
-	if trainingType != "debug" &&
-		trainingType != "everyday" &&
-		trainingType != "once" {
+	if trainingType != "debug" && trainingType != "everyday" && trainingType != "once" {
 		service.Error(w, http.StatusBadRequest)
 		return
 	}
@@ -19,7 +17,7 @@ func (api *API) New(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
 	var response []byte
-	if err := sql.QueryRow(`SELECT public.training__new($1)`, trainingType).Scan(&response); err != nil {
+	if err := sql.QueryRow(`SELECT self.new_training($1)`, trainingType).Scan(&response); err != nil {
 		service.Fatal(w, err)
 		return
 	}

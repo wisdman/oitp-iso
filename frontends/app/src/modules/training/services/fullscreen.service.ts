@@ -28,7 +28,7 @@ export class FullscreenService {
   private _isLocked: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
   locked = this._isLocked.pipe(share())
 
-  private _initResizeSubscribe() {
+  constructor() {
     this.locked.pipe(
       withLatestFrom(
         merge(of(undefined), fromEvent(window, "resize"), fromEvent(window, "deviceorientation")),
@@ -55,10 +55,5 @@ export class FullscreenService {
 
   unlock() {
     this._isLocked.next(false)
-  }
-
-  load() {
-    this._initResizeSubscribe()
-    return Promise.resolve()
   }
 }

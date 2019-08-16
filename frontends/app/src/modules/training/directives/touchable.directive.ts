@@ -3,7 +3,7 @@ import { Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output }
 import { Subscription } from "rxjs"
 
 import { share, switchMap, take, tap } from "rxjs/operators"
-import { initPointerDown, initPointerUp, IPointerEvent } from "../../libs/pointer-events"
+import { initPointerDown, initPointerUp, IPointerEvent } from "../libs/pointer-events"
 
 @Directive({
   selector: "[touchable]"

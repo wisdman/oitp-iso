@@ -7,5 +7,5 @@ export interface ITextTezirovanieConfig extends ITrainerConfig {
   id: ITextTezirovanieID
   ui: ITextTezirovanieUI
 
-  data: string
+  text: string
 }

@@ -25,8 +25,8 @@ interface IItem extends SVGShape {
 
 @Component({
   selector: "trainer-words-lexis",
-  templateUrl: "./words-lexis.trainer.component.html",
-  styleUrls: [ "./words-lexis.trainer.component.css" ],
+  templateUrl: "./words-lexis.trainer.html",
+  styleUrls: [ "./words-lexis.trainer.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WordsLexisTrainer extends AbstractTrainer<IWordsLexisConfig> {

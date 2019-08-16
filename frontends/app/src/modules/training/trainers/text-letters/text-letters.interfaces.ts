@@ -7,6 +7,6 @@ export interface ITextLettersConfig extends ITrainerConfig {
   id: ITextLettersID
   ui: ITextLettersUI
 
-  data: string
+  expression: string
   runes: Array<string>
 }

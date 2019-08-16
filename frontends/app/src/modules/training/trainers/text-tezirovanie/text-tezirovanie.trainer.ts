@@ -15,7 +15,7 @@ export class TextTezirovanieTrainer extends AbstractTrainer<ITextTezirovanieConf
 
   init() {
     this.fullscreenService.unlock()
-    this.value = this.config.data
+    this.value = this.config.text
     this.markForCheck()
   }
 

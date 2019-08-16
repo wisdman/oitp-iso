@@ -1,6 +1,6 @@
 SET search_path = "$user";
 
-CREATE OR REPLACE FUNCTION trainer.text_words_column_config() RETURNS SETOF jsonb AS $$
+CREATE OR REPLACE FUNCTION trainer.words_column_config() RETURNS SETOF jsonb AS $$
 DECLARE
   _trainer public.trainer_type := 'words-column';
   _trainerUI public.trainer_ui := 'words-column';
@@ -42,7 +42,7 @@ BEGIN
           "word"
         FROM (
           SELECT "word"
-          FROM ONLY trainer.text_words_column_data
+          FROM ONLY trainer.words_column_data
           WHERE enabled
           ORDER BY random()
           LIMIT _maxQuantity * _maxItems

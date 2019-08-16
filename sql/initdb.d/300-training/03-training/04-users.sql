@@ -33,3 +33,35 @@ CREATE INDEX users_trainings__idx__start_finish ON private.users_trainings USING
 
 CREATE INDEX users_trainings__idx__configs ON private.users_trainings USING GIN ("configs" jsonb_path_ops);
 CREATE INDEX users_trainings__idx__results ON private.users_trainings USING GIN ("results" jsonb_path_ops);
+CREATE INDEX users_trainings__idx__progress ON private.users_trainings USING GIN ("progress" jsonb_path_ops);
+
+CREATE OR REPLACE FUNCTION private.users_trainings__trigger__progress() RETURNS trigger AS $$
+DECLARE
+  results jsonb;
+BEGIN
+  SELECT jsonb_agg(t) INTO STRICT results
+  FROM (
+    SELECT "group" AS "id", ROUND(AVG("result")) AS "result"
+    FROM (
+      SELECT
+        (c->>'id')::public.trainer_type AS "id",
+        (r->'result')::smallint AS "result"
+      FROM
+        jsonb_array_elements(NEW."results") AS r,
+        jsonb_array_elements(NEW."configs") AS c
+      WHERE (r->'idx')::smallint = (c->'idx')::smallint
+        AND (r->>'result') IS NOT NULL
+    ) AS r
+    LEFT JOIN public.trainers_by_groups AS g ON (g."trainer" = r."id")
+    WHERE g."group" IS NOT NULL
+    GROUP BY "group"
+  ) AS t;
+
+  NEW."progress" = jsonb_build_object(
+    'results', results,
+    'result',  (SELECT ROUND(AVG((r->'result')::smallint)) FROM jsonb_array_elements(results) AS r)
+  );
+  RETURN NEW;
+END; $$ LANGUAGE plpgsql;
+CREATE TRIGGER progress BEFORE INSERT OR UPDATE ON private.users_trainings FOR EACH ROW
+  EXECUTE PROCEDURE private.users_trainings__trigger__progress();

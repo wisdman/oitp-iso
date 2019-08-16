@@ -7,5 +7,5 @@ export interface ITextLettersPreviewConfig extends ITrainerConfig {
   id: ITextLettersPreviewID
   ui: ITextLettersPreviewUI
 
-  data: string
+  expression: string
 }

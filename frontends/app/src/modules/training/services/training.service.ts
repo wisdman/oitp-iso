@@ -44,6 +44,8 @@ export class TrainingService {
     switchMap(() => this._results),
     tap(result => this._configService.DebugMode && console.log("RESULT:", result)),
     tap(result => {
+      if (!result.idx) return
+
       if (this._resultsBuffer.length === 0) {
         this._resultsBuffer = [result]
         return
@@ -54,6 +56,8 @@ export class TrainingService {
         this._resultsBuffer = [result]
         return
       }
+
+
 
       this._resultsBuffer = [...this._resultsBuffer, result]
     })
@@ -86,6 +90,6 @@ export class TrainingService {
 
   finish() {
     const trainingId = this._resultsBuffer[this._resultsBuffer.length - 1].training
-    return this._httpClient.put<number>(`${API}/${trainingId}`, this._resultsBuffer)
+    return this._httpClient.put<{result: number}>(`${API}/${trainingId}`, this._resultsBuffer)
   }
 }

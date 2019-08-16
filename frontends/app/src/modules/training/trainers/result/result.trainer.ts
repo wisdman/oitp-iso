@@ -21,7 +21,7 @@ export class ResultTrainer extends AbstractTrainer<IResultConfig> {
     this.r = 0
 
     if (this._resultsSubscriber) this._resultsSubscriber.unsubscribe()
-    this._resultsSubscriber = this.trainingService.finish().subscribe(result => {
+    this._resultsSubscriber = this.trainingService.finish().subscribe(({result}) => {
       this.result()
       this.r = result
     })

@@ -1,14 +1,16 @@
-<div class="charts">
-  <div class="wrapper">
-    <chart-circular class="chart chart--color-1" [value]="50"></chart-circular>
-    <h3 class="h3">Память</h3>
-  </div>
-  <div class="wrapper">
-    <chart-circular class="chart chart--color-2" [value]="50"></chart-circular>
-    <h3 class="h3">Эрудиция</h3>
-  </div>
-  <div class="wrapper">
-    <chart-circular class="chart chart--color-3" [value]="50"></chart-circular>
-    <h3 class="h3">Мышление</h3>
-  </div>
+<div *ngIf="progressService.progress | async as progress" class="charts">
+  <ng-container *ngFor="let item of progress">
+    <div *ngIf="item.id === 'memory'" class="wrapper">
+      <chart-circular class="chart chart--color-1" [value]="item.average"></chart-circular>
+      <h3 class="h3">Память</h3>
+    </div>
+    <div *ngIf="item.id === 'knowledge'" class="wrapper">
+      <chart-circular class="chart chart--color-2" [value]="item.average"></chart-circular>
+      <h3 class="h3">Эрудиция</h3>
+    </div>
+    <div *ngIf="item.id === 'intelligence'" class="wrapper">
+      <chart-circular class="chart chart--color-3" [value]="item.average"></chart-circular>
+      <h3 class="h3">Мышление</h3>
+    </div>
+  </ng-container>
 </div>

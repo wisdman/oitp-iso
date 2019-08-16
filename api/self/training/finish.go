@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/wisdman/oitp-isov/api/lib/middleware"
@@ -11,14 +10,13 @@ import (
 type Result struct {
 	Idx uint16 `json:"idx"`
 
-	Time        uint32 `json:"playTime"`
+	PlayTime    uint32 `json:"playTime"`
 	PreviewTime uint32 `json:"previewTime"`
 
 	Result *uint16 `json:"result"`
 }
 
 func (api *API) Finish(w http.ResponseWriter, r *http.Request) {
-
 	id := service.GetParam(r, "id")
 	if id == "" {
 		service.Error(w, http.StatusBadRequest)
@@ -34,13 +32,13 @@ func (api *API) Finish(w http.ResponseWriter, r *http.Request) {
 
 	sql := middleware.GetDBTransaction(r)
 
-	var trainingResult string
-	if err := sql.QueryRow(`SELECT public.training__finish($1, $2)::text`, id, results).Scan(&trainingResult); err != nil {
+	var response []byte
+	if err := sql.QueryRow(`SELECT self.finish_training($1, $2)`, id, results).Scan(&response); err != nil {
 		service.Fatal(w, err)
 		return
 	}
 
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, trainingResult)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(response)
 }

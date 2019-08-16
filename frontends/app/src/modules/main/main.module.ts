@@ -6,12 +6,13 @@ import { ChartsModule } from "../charts"
 import { WFormsModule } from "../w-forms"
 
 import {
+  CardBlackboardComponent,
   CardBrainComponent,
   CardChargerComponent,
   CardChartsComponent,
   CardEverydayComponent,
-  CardBlackboardComponent,
   CardProgressComponent,
+  CardProgressItemComponent,
   CardSpeedComponent,
   HeaderComponent,
   SidebarComponent,
@@ -36,12 +37,13 @@ import { ROUTES } from "./main.routing"
 
 @NgModule({
   declarations: [
+    CardBlackboardComponent,
     CardBrainComponent,
     CardChargerComponent,
     CardChartsComponent,
     CardEverydayComponent,
-    CardBlackboardComponent,
     CardProgressComponent,
+    CardProgressItemComponent,
     CardSpeedComponent,
     HeaderComponent,
     SidebarComponent,

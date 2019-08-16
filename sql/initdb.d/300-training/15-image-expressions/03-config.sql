@@ -1,12 +1,10 @@
-SET search_path = "$user";
-
 CREATE OR REPLACE FUNCTION trainer.image_expressions_config() RETURNS SETOF jsonb AS $$
 DECLARE
   _trainer public.trainer_type := 'image-expressions';
   _trainerPreviewUI public.trainer_ui := 'image-expressions-preview';
-  _trainerPlayUI public.trainer_ui := 'image-differences';
+  _trainerPlayUI public.trainer_ui := 'image-expressions';
 
-  _minQuantity smallint := 2;
+  _minQuantity smallint := 3;
   _maxQuantity smallint := 20;
 
   _previewTimeLimit int;

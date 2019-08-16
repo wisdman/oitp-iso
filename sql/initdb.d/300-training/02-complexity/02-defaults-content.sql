@@ -1,7 +1,7 @@
 INSERT INTO private.complexity_defaults("trainer", "complexity", "previewTimeLimit", "playTimeLimit") VALUES
-  ('classification-colors'      , 1,     0,  10000), -- Активизация лексиклна - цвета
-  ('classification-definitions' , 1,     0,  10000), -- Активизация лексиклна - дифиниции
-  ('classification-words'       , 1,     0,  10000), -- Активизация лексиклна - слова по группам
+  ('classification-colors'      , 1,     0,  20000), -- Активизация лексиклна - цвета
+  ('classification-definitions' , 1,     0,  20000), -- Активизация лексиклна - дифиниции
+  ('classification-words'       , 1,     0,  60000), -- Активизация лексиклна - слова по группам
   ('image-carpets'              , 1,  5000,  30000), -- Наглядно-образная память - коврики
   ('image-differences'          , 1, 10000,  30000), -- Наглядно-образная память - поиск отличий
   ('image-expressions'          , 1,  5000, 120000), -- Гармонизация работы полушарий - картинка с текстом

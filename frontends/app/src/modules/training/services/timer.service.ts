@@ -35,7 +35,7 @@ export class TimerService {
   private _lapTimerSubject = new Subject<number>()
   setLapTimeout(value: number) {
     this._lapTimerSubject.next(0)
-    this._lapTimerSubject.next(value)
+    this._lapTimerSubject.next(value / 1000) // TODO
   }
 
   lapTimer = this._lapTimerSubject

@@ -60,3 +60,18 @@
 .button {
   white-space: nowrap;
 }
+
+
+.h6 {
+  grid-column-start: 1;
+  grid-column-end: -1;
+
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+}

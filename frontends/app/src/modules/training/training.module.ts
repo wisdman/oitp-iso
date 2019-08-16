@@ -1,8 +1,10 @@
 import { NgModule } from "@angular/core"
 import { CommonModule } from "@angular/common"
+import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { RouterModule } from "@angular/router"
 
 import { AppCommonModule } from "../common"
+import { ChartsModule } from "../charts"
 import { WFormsModule } from "../w-forms"
 
 import {
@@ -15,6 +17,7 @@ import {
   ButtonDirective,
   InputDirective,
   TezirovanieDirective,
+  TouchableDirective,
 } from "./directives"
 
 import {
@@ -81,6 +84,8 @@ import { ROUTES } from "./training.routing"
     TimerLapComponent,
     TrainerSelectorComponent,
 
+    ButtonDirective,
+    InputDirective,
     TezirovanieDirective,
     TouchableDirective,
 
@@ -128,9 +133,12 @@ import { ROUTES } from "./training.routing"
 
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild(ROUTES),
 
     AppCommonModule,
+    ChartsModule,
     WFormsModule,
   ],
 

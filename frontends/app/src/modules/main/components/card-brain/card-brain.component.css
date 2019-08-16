@@ -15,7 +15,7 @@
 
   user-select: none;
 
-  --value: 0;
+  --value: 99;
 }
 
 @media (max-width: 700px) {

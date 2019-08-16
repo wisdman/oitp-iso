@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core"
 
-// import { ProgressService } from "../../services"
+import { ProgressService } from "../../services"
 
 @Component({
   selector: "card-charts",
@@ -9,6 +9,5 @@ import { Component, ChangeDetectionStrategy } from "@angular/core"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardChartsComponent {
-  // constructor(private _progressService: ProgressService) {}
-  // public progress = this._progressService.progress
+  constructor(public progressService: ProgressService) {}
 }

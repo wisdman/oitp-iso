@@ -29,6 +29,7 @@ const rxPaths = require(isES5 ? "rxjs/_esm5/path-mapping.js" : "rxjs/_esm2015/pa
 
 const PATH = (...p: Array<string>) => resolve(__dirname, ...p)
 const PKG = require("./package.json")
+const ASSETS_URL = "/assets"
 const API_URL = "/api"
 const API_AUTH_HEADER = "X-Authorization"
 
@@ -87,9 +88,9 @@ export default {
       test: /\.css$/i,
       exclude: [
         PATH("./node_modules"),
-        PATH("./src/directives"),
-        PATH("./src/modules/w-forms/directives"),
         PATH("./src/modules/main/directives"),
+        PATH("./src/modules/training/directives"),
+        PATH("./src/modules/w-forms/directives"),
         PATH("./src/styles"),
       ],
       use: [{
@@ -105,9 +106,9 @@ export default {
       // === Directives styles ===
       test: /\.css$/i,
       include: [
-        PATH("./src/directives"),
-        PATH("./src/modules/w-forms/directives"),
         PATH("./src/modules/main/directives"),
+        PATH("./src/modules/training/directives"),
+        PATH("./src/modules/w-forms/directives"),
       ],
       use: [{
         loader: "style-loader",
@@ -182,6 +183,7 @@ export default {
       DEFINE_APP_NAME: JSON.stringify(PKG.name.trim()),
       DEFINE_APP_VERSION: JSON.stringify(PKG.version.trim()),
       DEFINE_DEBUG: JSON.stringify(!isProduction),
+      DEFINE_ASSETS: JSON.stringify(ASSETS_URL.trim()),
       DEFINE_API_URL: JSON.stringify(API_URL.trim()),
       DEFINE_API_AUTH_HEADER: JSON.stringify(API_AUTH_HEADER.trim()),
     }),

@@ -1,6 +1,6 @@
 SET search_path = "$user";
 
-CREATE OR REPLACE FUNCTION trainer.image_carpets__config() RETURNS SETOF jsonb AS $$
+CREATE OR REPLACE FUNCTION trainer.image_carpets_config() RETURNS SETOF jsonb AS $$
 DECLARE
   _trainer public.trainer_type := 'image-carpets';
   _trainerUI public.trainer_ui := 'image-carpets';
