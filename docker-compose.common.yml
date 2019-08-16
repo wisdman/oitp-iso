@@ -93,7 +93,7 @@ services:
       - ./environment
     environment:
       - POSTGRES_APPNAME=api-self-progress
-      - POSTGRES_USER=api-public
+      - POSTGRES_USER=api-self
       - POSTGRES_PASSWORD=SELF-P@Ssw0rd
     depends_on:
       - sql
@@ -115,7 +115,7 @@ services:
       - ./environment
     environment:
       - POSTGRES_APPNAME=api-self-training
-      - POSTGRES_USER=api-public
+      - POSTGRES_USER=api-self
       - POSTGRES_PASSWORD=SELF-P@Ssw0rd
     depends_on:
       - sql
