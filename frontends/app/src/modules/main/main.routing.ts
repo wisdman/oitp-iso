@@ -5,6 +5,8 @@ import {
   MainLayout,
 } from "./layouts"
 
+import { ProgressResolveService } from "./services"
+
 export const ROUTES: Routes =
 [{
   path: "",
@@ -17,6 +19,7 @@ export const ROUTES: Routes =
     path: "dashboard",
     component: DashboardLayout,
     data: { title: "Личный кабинет" },
+    resolve: { hasProgress: ProgressResolveService },
   },{
     path: "payment",
     loadChildren: "../payment/payment.module#PaymentModule",

@@ -46,3 +46,5 @@ INSERT INTO private.training_configs("description", "type", "timeLimit", "traine
   ('Отладочная', 'debug', 300, $$ [[
     "matrix-sequence-random"
   ]] $$::jsonb);
+
+-- UPDATE private.training_configs SET WHERE $$ [["text-letters"]] $$::jsonb"type" = 'debug';

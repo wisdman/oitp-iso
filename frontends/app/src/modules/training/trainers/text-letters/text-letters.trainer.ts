@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core"
+import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, AfterViewChecked } from "@angular/core"
 
 import { AbstractTrainer } from "../abstract"
 import { ITextLettersConfig } from "./text-letters.interfaces"
@@ -9,7 +9,9 @@ import { ITextLettersConfig } from "./text-letters.interfaces"
   styleUrls: [ "./text-letters.trainer.css" ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TextLettersTrainer extends AbstractTrainer<ITextLettersConfig> {
+export class TextLettersTrainer extends AbstractTrainer<ITextLettersConfig> implements AfterViewChecked {
+
+  @ViewChild("input", {read: ElementRef, static: true }) inputRef!: ElementRef<HTMLInputElement>
 
   runes!: Array<{
     data: string
@@ -42,5 +44,11 @@ export class TextLettersTrainer extends AbstractTrainer<ITextLettersConfig> {
   finish() {
     const success = this.runes.reduce((acc, {data, userData}) => data === userData ? ++acc : acc, 0)
     super.finish(success / this.runes.length * 100)
+  }
+
+  ngAfterViewChecked() {
+    if (this.mode === "play" && this.inputRef.nativeElement !== document.activeElement) {
+      this.inputRef.nativeElement.focus()
+    }
   }
 }

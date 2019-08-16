@@ -10,6 +10,7 @@
 <div
   *ngIf="mode === 'play' || mode === 'result'"
   class="runes"
+  (click)="ngAfterViewChecked()"
 >
   <span
     *ngFor="let item of runes"
@@ -20,11 +21,12 @@
 </div>
 
 <input
-  type="text"
+  #input
   class="hidden"
+  type="text"
   [disabled]="mode !== 'play'"
   [(ngModel)]="userData"
-  autoFocus
+  (blur)="ngAfterViewChecked()"
 >
 
 <button *ngIf="mode === 'play'" trainerButton invisible (click)="result()">Проверить</button>

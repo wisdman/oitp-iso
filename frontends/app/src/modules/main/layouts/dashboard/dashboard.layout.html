@@ -6,8 +6,9 @@
 
 <section class="indicators">
   <card-brain></card-brain>
-  <card-charts class="card-charts"></card-charts>
-  <card-speed></card-speed>
+  <card-charts *ngIf="hasProgress" class="card-charts"></card-charts>
+  <card-speed *ngIf="hasProgress"></card-speed>
+  <card-empty-progress *ngIf="!hasProgress" class="empty-progress"></card-empty-progress>
 </section>
 
-<card-progress></card-progress>
+<card-progress *ngIf="hasProgress"></card-progress>

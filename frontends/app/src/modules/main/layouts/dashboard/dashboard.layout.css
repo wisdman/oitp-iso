@@ -70,10 +70,19 @@
   grid-column-end: span 2;
 }
 
+.empty-progress {
+   grid-column-end: span 3;
+}
+
 @media (max-width: 700px) {
   .indicators {
     --columns: 2;
   }
+
+  .empty-progress {
+    grid-column-end: span 1;
+  }
+
 }
 
 @media (max-width: 370px) {

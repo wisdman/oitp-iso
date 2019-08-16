@@ -13,7 +13,7 @@ export class FingerprintService {
     language: navigator.language,
     languages: navigator.languages,
     location: window.location.href,
-    notificationPermission: (<any>window).Notification.permission,
+    notificationPermission: (<any>window).Notification && (<any>window).Notification.permission || null,
     userAgent: navigator.userAgent,
   }
 

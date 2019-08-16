@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-card);
+
+  padding: 24px;
+  border-radius: 8px;
+  user-select: none;
+}
+
+p {
+  display: block;
+  margin: 0;
+  padding: 0;
+
+  font-size: 16px;
+  line-height: 1.309;
+  text-align: center;
+}

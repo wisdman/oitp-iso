@@ -18,19 +18,21 @@ export class NotificationService {
   private _allowNotification: boolean = false
 
   init() {
-    switch ((<any>window).Notification.permission) {
-      case "granted":
-        this._allowNotification = true
-        return
+    if ((<any>window).Notification) {
+      switch ((<any>window).Notification.permission) {
+        case "granted":
+          this._allowNotification = true
+          return
 
-      case "denied":
-        this._allowNotification = false
-        return
+        case "denied":
+          this._allowNotification = false
+          return
 
-      default:
-        Notification.requestPermission( permission => {
-          this._allowNotification = permission === "granted"
-        })
+        default:
+          Notification.requestPermission( permission => {
+            this._allowNotification = permission === "granted"
+          })
+      }
     }
   }
 

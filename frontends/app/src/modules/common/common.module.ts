@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core"
 
 import {
-  AutofocusDirective,
   IfRouterLinkDirective,
   OnCreateDirective,
 } from "./directives"
@@ -14,7 +13,6 @@ import {
 
 @NgModule({
   declarations: [
-    AutofocusDirective,
     IfRouterLinkDirective,
     OnCreateDirective,
 

@@ -10,6 +10,7 @@ import {
   CardBrainComponent,
   CardChargerComponent,
   CardChartsComponent,
+  CardEmptyProgressComponent,
   CardEverydayComponent,
   CardProgressComponent,
   CardProgressItemComponent,
@@ -30,6 +31,7 @@ import {
 import {
   BlackboardService,
   ProgressService,
+  ProgressResolveService,
   SideBarService,
 } from "./services"
 
@@ -41,6 +43,7 @@ import { ROUTES } from "./main.routing"
     CardBrainComponent,
     CardChargerComponent,
     CardChartsComponent,
+    CardEmptyProgressComponent,
     CardEverydayComponent,
     CardProgressComponent,
     CardProgressItemComponent,
@@ -66,6 +69,7 @@ import { ROUTES } from "./main.routing"
     BlackboardService,
     ProgressService,
     SideBarService,
+    ProgressResolveService,
   ],
 })
 export class MainModule {}
