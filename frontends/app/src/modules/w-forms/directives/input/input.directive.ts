@@ -17,7 +17,7 @@ import STYLE from "./input.directive.css"
 @Directive({
   selector: "input[wFormInput], select[wFormInput]"
 })
-export class InputDirective implements OnInit, OnDestroy {
+export class WInputDirective implements OnInit, OnDestroy {
   static RandomID = (function *() {
     let counter = Number.MIN_SAFE_INTEGER
     while (true) {
@@ -25,7 +25,7 @@ export class InputDirective implements OnInit, OnDestroy {
     }
   })()
 
-  private _id = InputDirective.RandomID.next().value
+  private _id = WInputDirective.RandomID.next().value
 
   private readonly _wrapperNode: HTMLDivElement = this._renderer.createElement("div")
   private readonly _labelNode: HTMLLabelElement = this._renderer.createElement("label")

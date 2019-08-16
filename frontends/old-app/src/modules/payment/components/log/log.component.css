@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  background-color: var(--color-background);
+  box-shadow: var(--shadow-card);
+
+  padding: 24px;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  border-radius: 8px;
+
+  user-select: none;
+}
+
+@media (max-width: 700px) {
+  :host {
+    padding: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}

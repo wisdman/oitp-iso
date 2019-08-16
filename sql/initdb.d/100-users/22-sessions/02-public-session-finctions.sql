@@ -12,5 +12,5 @@ BEGIN
   ) INTO STRICT _session;
   EXCEPTION
     WHEN no_data_found THEN
-      _session := jsonb_build_object('error', 1404, 'message', 'Incorrect email or password');
+      RAISE 'Incorrect email or password' USING ERRCODE = 'A0406';
 END; $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

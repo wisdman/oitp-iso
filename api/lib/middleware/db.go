@@ -48,15 +48,15 @@ func DB(pool *db.DB) func(fn http.HandlerFunc) http.HandlerFunc {
 					return
 				}
 
-				if sw.status >= 500 {
+				if sw.status >= 400 {
 					if err := sql.Rollback(); err != nil {
-						log.Printf("FATAL 1: %+v\n", err)
+						log.Printf("FATAL ROLLBACK: %+v\n", err)
 					}
 					return
 				}
 
 				if err := sql.Commit(); err != nil {
-					log.Printf("FATAL 2: %+v\n", err)
+					log.Printf("FATAL COMMIT: %+v\n", err)
 				}
 			}()
 
@@ -78,4 +78,8 @@ func GetDBTransactionFromContext(ctx context.Context) *db.Transaction {
 
 func GetDBTransaction(r *http.Request) *db.Transaction {
 	return GetDBTransactionFromContext(r.Context())
+}
+
+func GetDBErrorCode(err error) string {
+	return err.(pgx.PgError).Code
 }

@@ -5,17 +5,21 @@ import { HttpClient } from  "@angular/common/http"
 import { of }  from "rxjs"
 import { catchError, map } from "rxjs/operators"
 
-import { API_SELF_LOGOUT } from "../app.config"
+import { TokenService } from "../services"
+
+const API_LOGOUT = "$API/self/logout"
 
 @Injectable()
 export class LogoutGuard implements CanActivate {
   constructor(
+    private _tokenService: TokenService,
     private _httpClient:HttpClient,
     private _router: Router,
   ) {}
 
   canActivate() {
-    return this._httpClient.get<void>(API_SELF_LOGOUT).pipe(
+    this._tokenService.token = ""
+    return this._httpClient.get<void>(API_LOGOUT).pipe(
       catchError(() => of(undefined)),
       map(() => this._router.createUrlTree(["/login"]))
     )

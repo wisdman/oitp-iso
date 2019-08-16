@@ -1,0 +1,88 @@
+:host {
+  --gap: 24px;
+
+  display: block;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (max-width: 700px) {
+  :host {
+    --gap: 16px;
+  }
+}
+
+/* ======= Main section ======= */
+
+.cards {
+  display: grid;
+
+  width: 100%;
+  margin-top: var(--gap);
+
+  --columns: 3;
+
+  grid-template-columns: repeat(var(--columns), 1fr);
+  grid-template-rows: auto;
+  grid-auto-flow: row dense;
+  gap: var(--gap);
+}
+
+.card-blackboard {
+  grid-column-end: span 2;
+  grid-row-end: span 2;
+}
+
+@media (max-width: 700px) {
+  .cards {
+    --columns: 2;
+  }
+}
+
+@media (max-width: 370px) {
+  .cards {
+    --columns: 1;
+  }
+
+  .card-blackboard {
+    grid-column-end: span 1;
+    order: 1;
+  }
+}
+
+/* ======= Indicators section ======= */
+
+.indicators {
+  display: grid;
+
+  width: 100%;
+  margin-top: var(--gap);
+
+  --columns: 4;
+
+  grid-template-columns: repeat(var(--columns), 1fr);
+  grid-template-rows: auto;
+  grid-auto-flow: row dense;
+  gap: var(--gap);
+}
+
+.card-charts {
+  grid-column-end: span 2;
+}
+
+@media (max-width: 700px) {
+  .indicators {
+    --columns: 2;
+  }
+}
+
+@media (max-width: 370px) {
+  .indicators {
+    --columns: 1;
+  }
+
+  .card-charts {
+    grid-column-end: span 1;
+    order: 1;
+  }
+}

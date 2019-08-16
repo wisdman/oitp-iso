@@ -1,1 +1,0 @@
-export * from "./indicator-charts.component"

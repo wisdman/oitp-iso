@@ -36,19 +36,19 @@ services:
     networks:
       default:
 
-  api-public-info:
+  api-public-blackboard:
     restart: unless-stopped
     build:
       context: ./api
       args:
-        - APP_PATH=public/info
-    image: oitp-isov/api-public-info
+        - APP_PATH=public/blackboard
+    image: oitp-isov/api-public-blackboard
     secrets:
       - secret-api-public
     env_file:
       - ./environment
     environment:
-      - POSTGRES_APPNAME=api-public-info
+      - POSTGRES_APPNAME=api-public-blackboard
       - POSTGRES_USER=api-public
       - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
     depends_on:
@@ -232,7 +232,7 @@ services:
     image: oitp-isov/nginx
     depends_on:
       - api-auth
-      - api-public-info
+      - api-public-blackboard
       - api-public-invite
       - api-public-login
       - api-self-invite
@@ -243,7 +243,7 @@ services:
       - portal
     links:
       - api-auth
-      - api-public-info
+      - api-public-blackboard
       - api-public-invite
       - api-public-login
       - api-self-invite

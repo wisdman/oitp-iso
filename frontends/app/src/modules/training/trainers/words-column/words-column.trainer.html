@@ -1,0 +1,19 @@
+<!-- Мнемотехника. Столбики -->
+<h1 *ngIf="mode==='preview'" class="trainer-h1">Запомните&nbsp;слова,<br>соединив&nbsp;их&nbsp;нелепой&nbsp;связью</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите&nbsp;слова,<br>по&nbsp;памяти</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<div *ngFor="let item of items" class="item">
+  <input
+    trainerInput
+    type="text"
+    class="input"
+    [disabled]="mode !== 'play'"
+    [result]="mode === 'result' && (item.isSuccess && 'success' || 'error')"
+    [(ngModel)]="item.userData"
+  >
+</div>
+
+<button *ngIf="mode==='preview'" trainerButton (click)="start()" autoFocus>Продолжить</button>
+<button *ngIf="mode==='play'" trainerButton (click)="result()">Проверить</button>
+<button *ngIf="mode === 'result'" trainerButton (click)="finish()">Продолжить</button>

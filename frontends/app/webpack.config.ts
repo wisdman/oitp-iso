@@ -14,7 +14,6 @@ import {
 import { AngularCompilerPlugin, PLATFORM } from "@ngtools/webpack"
 import { SuppressExtractedTextChunksWebpackPlugin } from "@angular-devkit/build-angular/src/angular-cli-files/plugins/suppress-entry-chunks-webpack-plugin"
 
-import * as CircularDependencyPlugin from "circular-dependency-plugin"
 import * as CompressionWebpackPlugin from "compression-webpack-plugin"
 import * as HtmlWebpackPlugin from "html-webpack-plugin"
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin"
@@ -30,6 +29,8 @@ const rxPaths = require(isES5 ? "rxjs/_esm5/path-mapping.js" : "rxjs/_esm2015/pa
 
 const PATH = (...p: Array<string>) => resolve(__dirname, ...p)
 const PKG = require("./package.json")
+const API_URL = "/api"
+const API_AUTH_HEADER = "X-Authorization"
 
 const postCSSPlugins = [
   require("postcss-import")(),
@@ -69,6 +70,7 @@ export default {
     path: PATH("./artifacts"),
     publicPath: "/",
     filename: `js/[name]-${isES5 ? "es5" : "es2015"}.[hash:10].js`,
+    chunkFilename: `js/[id]-${isES5 ? "es5" : "es2015"}.[hash:10].js`,
     crossOriginLoading: false,
     futureEmitAssets: true,
   },
@@ -87,6 +89,7 @@ export default {
         PATH("./node_modules"),
         PATH("./src/directives"),
         PATH("./src/modules/w-forms/directives"),
+        PATH("./src/modules/main/directives"),
         PATH("./src/styles"),
       ],
       use: [{
@@ -104,6 +107,7 @@ export default {
       include: [
         PATH("./src/directives"),
         PATH("./src/modules/w-forms/directives"),
+        PATH("./src/modules/main/directives"),
       ],
       use: [{
         loader: "style-loader",
@@ -175,13 +179,11 @@ export default {
     }),
 
     new DefinePlugin({
-      DEFINE_APP_NAME: JSON.stringify(PKG.name),
-      DEFINE_APP_VERSION: JSON.stringify(PKG.version),
+      DEFINE_APP_NAME: JSON.stringify(PKG.name.trim()),
+      DEFINE_APP_VERSION: JSON.stringify(PKG.version.trim()),
       DEFINE_DEBUG: JSON.stringify(!isProduction),
-    }),
-
-    new CircularDependencyPlugin({
-      exclude: /([\\\/]node_modules[\\\/])|(ngfactory\.js$)/,
+      DEFINE_API_URL: JSON.stringify(API_URL.trim()),
+      DEFINE_API_AUTH_HEADER: JSON.stringify(API_AUTH_HEADER.trim()),
     }),
 
     new AngularCompilerPlugin({
@@ -336,9 +338,9 @@ export default {
         pathRewrite: { "^/api/auth" : "" },
       },
 
-      "/api/public/info": {
+      "/api/public/blackboard": {
         target: "http://localhost:8082",
-        pathRewrite: { "^/api/public/info" : "" },
+        pathRewrite: { "^/api/public/blackboard" : "" },
       },
       "/api/public/login": {
         target: "http://localhost:8083",

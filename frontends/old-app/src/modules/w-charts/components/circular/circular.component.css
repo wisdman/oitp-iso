@@ -1,0 +1,61 @@
+:host {
+  display: block;
+  --value: 0;
+}
+
+.circular-chart {
+  display: block;
+  margin: 10px auto;
+  max-width: 250px;
+  max-height: 250px;
+
+  color: inherit;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: var(--color-disabled-light);
+  stroke-width: 2.8;
+}
+
+.circle {
+  fill: none;
+
+  stroke: var(--color, var(--color-primar, #f00));
+  stroke-width: 2.8;
+  stroke-linecap: round;
+
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+  animation-name: none;
+  animation-timing-function: ease-out;
+
+  stroke-dasharray: var(--value, 0), 100;
+}
+
+.circle--animate {
+  animation-name: circular-chart-progress;
+}
+
+
+@keyframes circular-chart-progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+  100% {
+    stroke-dasharray: var(--value, 0), 100;
+  }
+}
+
+.percentage {
+  color: inherit;
+  fill: currentColor;
+  font-family: inherit;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+
+.percentage__symbol {
+  opacity: 0.666;
+}

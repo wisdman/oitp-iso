@@ -1,0 +1,14 @@
+<!-- Пространство и логика -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Определите<br>лишнюю&nbsp;фигуру</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<trainer-selector
+  class="selector"
+  type="icon"
+  [readonly]="mode==='result'"
+  [items]="items"
+  (touch)="result()"
+></trainer-selector>
+
+<button *ngIf="mode==='play'" trainerButton invisible (click)="result()">Проверить</button>
+<button *ngIf="mode==='result'" trainerButton (click)="finish()">Продолжить</button>

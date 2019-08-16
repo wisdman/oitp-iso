@@ -1,0 +1,42 @@
+.hamburger {
+  display: block;
+  position: relative;
+
+  flex-shrink: 0;
+  width: 20px;
+  height: 12px;
+
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 2px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hamburger::before,
+.hamburger::after {
+  content: "";
+  display: block;
+
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+
+  background-color: currentColor;
+  transition: transform 250ms;
+}
+
+.hamburger::before {
+  top: 0;
+}
+
+.hamburger::after {
+  bottom: 0;
+}
+
+.arrow::before {
+  transform: translate(-4px,1px) rotate(-34deg) scaleX(.7);
+}
+.arrow::after {
+  transform: translate(-4px,-1px) rotate(34deg) scaleX(.7);
+}

@@ -1,9 +1,8 @@
 .button {
-  --color-disabled: rgba(0, 0, 0, 0.16);
-  --color-hover: rgba(0, 0, 0, 0.07);
-  --color-left: rgb(3, 169, 244);
-  --color-right: rgb(33,125,213);
-  --color-text: rgb(255, 255, 255);
+  --button-color-disabled: rgba(0, 0, 0, 0.16);
+  --button-color-hover: rgba(0, 0, 0, 0.07);
+  --button-color-left: rgba(255, 255, 255, 0);
+  --button-color-right: rgba(255, 255, 255, 0);
 
   --height: 46px;
 
@@ -26,10 +25,10 @@
   margin: 0;
   padding: 0 1em;
 
-  background-color: var(--color-right);
+  background-color: var(--button-color-right);
   background-image:
-    linear-gradient(var(--color-hover), var(--color-hover)),
-    linear-gradient(135deg, var(--color-left), var(--color-right));
+    linear-gradient(var(--button-color-hover), var(--button-color-hover)),
+    linear-gradient(135deg, var(--button-color-left), var(--button-color-right));
   background-size: 0% 0%, 100%;
   background-position: center;
   background-repeat: no-repeat;
@@ -38,7 +37,7 @@
   transition-timing-function: ease;
   transition-property: background-size;
 
-  color: var(--color-text);
+  color: var(--button-color-text, inherit);
 
   border: 0 none;
   border-radius: 4px;
@@ -61,7 +60,7 @@
 }
 
 .button[disabled] {
-  background-color: var(--color-disabled);
+  background-color: var(--button-color-disabled);
   background-image: none;
   cursor: default;
 }
@@ -88,10 +87,52 @@
   height: calc(var(--height) / 2);
 
   border-radius: 50%;
-  border-top: 2px solid var(--color-text);
+  border-top: 2px solid var(--button-color-text);
   border-right: 2px solid transparent;
 
   transform: translate(-50%, -50%);
 
   animation: w-forms-button-spinner .6s linear infinite;
+}
+
+.round {
+  width: var(--height);
+  max-width: var(--height);
+  padding: 0;
+  border-radius: 50%;
+  --font-size: 24px;
+}
+
+.white {
+  --button-color-left: rgb(255,255,255);
+  --button-color-right: rgb(255,255,255);
+  --button-color-text: rgba(0, 0, 0, 0.87);
+}
+
+.main {
+  --button-color-left: rgb(3, 169, 244);
+  --button-color-right: rgb(33,125,213);
+  --button-color-text: rgb(255, 255, 255);
+}
+
+.success {
+  --button-color-left: rgb(45, 169, 79);
+  --button-color-right: rgb(45, 169, 79);
+  --button-color-text: rgb(255, 255, 255);
+}
+
+.warning {
+  --button-color-left: rgb(255, 136, 0);
+  --button-color-right: rgb(255, 136, 0);
+  --button-color-text: rgb(255, 255, 255);
+}
+
+.error {
+  --button-color-left: rgb(237, 63, 44);
+  --button-color-right: rgb(237, 63, 44);
+  --button-color-text: rgb(255, 255, 255);
+}
+
+.shadow {
+  box-shadow: 0 2px 32px -8px rgba(0,0,0,.87);
 }

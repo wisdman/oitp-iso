@@ -3,8 +3,6 @@ package main
 import (
 	"net/http"
 
-	"github.com/jackc/pgx"
-
 	"github.com/wisdman/oitp-isov/api/lib/middleware"
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )

@@ -7,9 +7,8 @@ import localeRu from "@angular/common/locales/ru"
 
 import { AppModule } from "./app.module"
 
-import { DEBUG } from "./app.config"
-
-if (!DEBUG) enableProdMode()
+declare const DEFINE_DEBUG: boolean
+if (!DEFINE_DEBUG) enableProdMode()
 
 registerLocaleData(localeRu)
 

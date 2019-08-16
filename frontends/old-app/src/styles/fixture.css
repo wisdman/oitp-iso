@@ -1,0 +1,40 @@
+*, *::before, *::after {
+  touch-action: inherit;
+  box-sizing: inherit;
+  outline: none;
+}
+
+router-outlet {
+  display: none;
+}
+
+template {
+  display: none;
+}
+
+[hidden] {
+  display: none;
+}
+
+[invisible] {
+  opacity: 0;
+  visibility: hidden;
+}
+
+input[type=number] {
+  appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  display: none;
+  margin: 0;
+}
+
+input[type=number]::-moz-inner-spin-button,
+input[type=number]::-moz-outer-spin-button {
+  -moz-appearance: none;
+  display: none;
+  margin: 0;
+}

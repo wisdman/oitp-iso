@@ -2,63 +2,23 @@ import { APP_INITIALIZER, LOCALE_ID, NgModule } from "@angular/core"
 import { APP_BASE_HREF } from "@angular/common"
 import { BrowserModule } from "@angular/platform-browser"
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http"
-import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { RouterModule } from "@angular/router"
 
 import {
-  RootLayoutComponent,
-} from "./app.root"
+  WFormsModule,
+} from "./modules/w-forms"
+
+import { RootLayoutComponent } from "./app.root"
 
 import {
-  CardChargerComponent,
-  CardDebugComponent,
-  CardEverydayComponent,
-  CardInfoComponent,
-  ChartCircularComponent,
-  ChartLinearComponent,
-  HeaderNotificationsComponent,
-  HeaderUserComponent,
-  IndicatorBrainComponent,
-  IndicatorChartsComponent,
-  IndicatorSpeedComponent,
-  LoginFormEmailComponent,
-  LoginFormInviteComponent,
-  LoginFormRestoreComponent,
-  ProfileEmailComponent,
-  ProfileMainComponent,
-  ProfilePasswordComponent,
-  ProgressListComponent,
-  SidebarUserComponent,
-  SocialBbuttonsComponent,
-  TimerGlobalComponent,
-  TimerLapComponent,
-  TrainerSelectorComponent,
-
-  PaymentCardComponent,
-  PaymentLogComponent,
-  PaymentTariffComponent,
+  NotificationMessagesComponent,
 } from "./components"
-
-import {
-  AutofocusDirective,
-
-  ButtonMainDirective,
-  ButtonRoundDirective,
-  ButtonTrainerDirective,
-  InputMainDirective,
-  InputTrainerDirective,
-
-  KeyFilterDirective,
-  OnCreateDirective,
-  TezirovanieDirective,
-  TouchableDirective,
-} from "./directives"
 
 import {
   AuthGuard,
   LoginGuard,
   LogoutGuard,
-  RootRoutingGuard,
+  RootGuard,
 } from "./guards"
 
 import {
@@ -66,87 +26,14 @@ import {
 } from "./interceptors"
 
 import {
-  ClubLayoutComponent,
-  DashboardLayoutComponent,
-  LoginEmailLayoutComponent,
-  LoginInviteLayoutComponent,
-  LoginLayoutComponent,
-  LoginRestoreLayoutComponent,
-  LogLayoutComponent,
-  MainLayoutComponent,
-  PaymentLayoutComponent,
-  ProfileLayoutComponent,
-  PublicationsLayoutComponent,
-  SupportLayoutComponent,
-  TrainingLayoutComponent,
-} from "./layouts"
-
-import {
-  WFormsModule,
-} from "./modules"
-
-import {
-  DaysPipe,
-  ProgressItemsFilterPipe,
-  SafeStylePipe,
-  TimerPipe,
-} from "./pipes"
-
-import {
-  FullscreenService,
-  FullscreenServiceFactory,
-  InfoService,
-  KeypadService,
+  ConfigService,
+  ConfigServiceFactory,
+  FingerprintService,
+  ModalService,
   NotificationService,
   NotificationServiceFactory,
-  PointerService,
-  PointerServiceFactory,
-  ProgressService,
-  TimerService,
   TokenService,
-  TrainingService,
-  UserService,
-  LoginService,
 } from "./services"
-
-import {
-  AbstractTrainerComponent,
-  ClassificationColorsTrainerComponent,
-  ClassificationDefinitionsTrainerComponent,
-  ClassificationWordsTrainerComponent,
-  GreetingTrainerComponent,
-  ImageCarpetsTrainerComponent,
-  ImageDifferencesTrainerComponent,
-  ImageExpressionsPreviewTrainerComponent,
-  ImageExpressionsTrainerComponent,
-  ImageFieldsPreviewTrainerComponent,
-  ImageFieldsQuestionTrainerComponent,
-  MathEquationTrainerComponent,
-  MathMiddleTrainerComponent,
-  MathSequenceTrainerComponent,
-  MathWasteTrainerComponent,
-  MatrixImagesFillingTrainerComponent,
-  MatrixImagesPreviewTrainerComponent,
-  MatrixImagesQuestionTrainerComponent,
-  MatrixSequenceFillingTrainerComponent,
-  MatrixSequencePlayTrainerComponent,
-  RelaxTrainerComponent,
-  ResultTrainerComponent,
-  SpaceQuestionWasteTrainerComponent,
-  StorytellingTrainerComponent,
-  TablePipeTrainerComponent,
-  TextLettersPreviewTrainerComponent,
-  TextLettersTrainerComponent,
-  TextQuestionToFTrainerComponent,
-  TextReadingTrainerComponent,
-  TextTezirovanieTrainerComponent,
-  WordsColumnTrainerComponent,
-  WordsFillingTrainerComponent,
-  WordsLexisTrainerComponent,
-  WordsPairsTrainerComponent,
-  WordsQuestionCloseTrainerComponent,
-  WordsQuestionsWasteTrainerComponent,
-} from "./trainers"
 
 import { ROUTES } from "./app.routing"
 
@@ -155,113 +42,17 @@ import { ROUTES } from "./app.routing"
   declarations: [
     RootLayoutComponent,
 
-    CardChargerComponent,
-    CardDebugComponent,
-    CardEverydayComponent,
-    CardInfoComponent,
-    ChartCircularComponent,
-    ChartLinearComponent,
-    HeaderNotificationsComponent,
-    HeaderUserComponent,
-    IndicatorBrainComponent,
-    IndicatorChartsComponent,
-    IndicatorSpeedComponent,
-    LoginFormEmailComponent,
-    LoginFormInviteComponent,
-    LoginFormRestoreComponent,
-    ProfileEmailComponent,
-    ProfileMainComponent,
-    ProfilePasswordComponent,
-    ProgressListComponent,
-    SidebarUserComponent,
-    SocialBbuttonsComponent,
-    TimerGlobalComponent,
-    TimerLapComponent,
-    TrainerSelectorComponent,
-    PaymentCardComponent,
-    PaymentLogComponent,
-    PaymentTariffComponent,
-
-    AutofocusDirective,
-
-    ButtonMainDirective,
-    ButtonRoundDirective,
-    ButtonTrainerDirective,
-    InputMainDirective,
-    InputTrainerDirective,
-
-    KeyFilterDirective,
-    OnCreateDirective,
-    TezirovanieDirective,
-    TouchableDirective,
-
-    ClubLayoutComponent,
-    DashboardLayoutComponent,
-    LoginEmailLayoutComponent,
-    LoginInviteLayoutComponent,
-    LoginLayoutComponent,
-    LoginRestoreLayoutComponent,
-    LogLayoutComponent,
-    MainLayoutComponent,
-    PaymentLayoutComponent,
-    ProfileLayoutComponent,
-    PublicationsLayoutComponent,
-    SupportLayoutComponent,
-    TrainingLayoutComponent,
-
-
-    DaysPipe,
-    ProgressItemsFilterPipe,
-    SafeStylePipe,
-    TimerPipe,
-
-    AbstractTrainerComponent,
-    ClassificationColorsTrainerComponent,
-    ClassificationDefinitionsTrainerComponent,
-    ClassificationWordsTrainerComponent,
-    GreetingTrainerComponent,
-    ImageCarpetsTrainerComponent,
-    ImageDifferencesTrainerComponent,
-    ImageExpressionsPreviewTrainerComponent,
-    ImageExpressionsTrainerComponent,
-    ImageFieldsPreviewTrainerComponent,
-    ImageFieldsQuestionTrainerComponent,
-    MathEquationTrainerComponent,
-    MathMiddleTrainerComponent,
-    MathSequenceTrainerComponent,
-    MathWasteTrainerComponent,
-    MatrixImagesFillingTrainerComponent,
-    MatrixImagesPreviewTrainerComponent,
-    MatrixImagesQuestionTrainerComponent,
-    MatrixSequenceFillingTrainerComponent,
-    MatrixSequencePlayTrainerComponent,
-    RelaxTrainerComponent,
-    ResultTrainerComponent,
-    SpaceQuestionWasteTrainerComponent,
-    StorytellingTrainerComponent,
-    TablePipeTrainerComponent,
-    TextLettersPreviewTrainerComponent,
-    TextLettersTrainerComponent,
-    TextQuestionToFTrainerComponent,
-    TextReadingTrainerComponent,
-    TextTezirovanieTrainerComponent,
-    WordsColumnTrainerComponent,
-    WordsFillingTrainerComponent,
-    WordsLexisTrainerComponent,
-    WordsPairsTrainerComponent,
-    WordsQuestionCloseTrainerComponent,
-    WordsQuestionsWasteTrainerComponent,
+    NotificationMessagesComponent,
   ],
 
-  entryComponents: [],
+  entryComponents: [
+    NotificationMessagesComponent
+  ],
 
   imports: [
     BrowserModule,
-    RouterModule.forRoot(ROUTES),
-
-    FormsModule,
     HttpClientModule,
-    ReactiveFormsModule,
+    RouterModule.forRoot(ROUTES),
 
     WFormsModule,
   ],
@@ -270,22 +61,18 @@ import { ROUTES } from "./app.routing"
     AuthGuard,
     LoginGuard,
     LogoutGuard,
-    RootRoutingGuard,
+    RootGuard,
 
-    InfoService,
-    KeypadService,
-    ProgressService,
-    TimerService,
+    FingerprintService,
+    ModalService,
+    NotificationService,
     TokenService,
-    TrainingService,
-    UserService,
-    LoginService,
 
-    FullscreenService,
+    ConfigService,
     {
       provide: APP_INITIALIZER,
-      useFactory: FullscreenServiceFactory,
-      deps: [ FullscreenService ],
+      useFactory: ConfigServiceFactory,
+      deps: [ ConfigService ],
       multi: true
     },
 
@@ -294,14 +81,6 @@ import { ROUTES } from "./app.routing"
       provide: APP_INITIALIZER,
       useFactory: NotificationServiceFactory,
       deps: [ NotificationService ],
-      multi: true
-    },
-
-    PointerService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: PointerServiceFactory,
-      deps: [ PointerService ],
       multi: true
     },
 

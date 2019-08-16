@@ -1,0 +1,11 @@
+<!-- Тезирование -->
+<h1 class="trainer-h1">Выделите&nbsp;тезис,<br>касаясь&nbsp;слов.</h1>
+
+<div
+  class="text"
+  [tezirovanie]="value"
+  [mode]="mode"
+></div>
+
+<button *ngIf="mode === 'play'" trainerButton (click)="result()">Проверить</button>
+<button *ngIf="mode === 'result'" trainerButton (click)="finish()">Продолжить</button>

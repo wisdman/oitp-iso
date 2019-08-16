@@ -1,0 +1,32 @@
+.loader-grid {
+  width: 100px;
+  height: 100px;
+  margin: 100px auto;
+
+  color: var(--color-background);
+}
+
+.loader-grid .loader-cube {
+  width: 30%;
+  height: 30%;
+  margin: 1%;
+  color: inherit;
+  background-color: currentColor;
+  float: left;
+  animation: loader-animation 1.3s infinite ease-in-out;
+}
+
+.loader-grid .loader-cube1 { animation-delay: 0.2s; }
+.loader-grid .loader-cube2 { animation-delay: 0.3s; }
+.loader-grid .loader-cube3 { animation-delay: 0.4s; }
+.loader-grid .loader-cube4 { animation-delay: 0.1s; }
+.loader-grid .loader-cube5 { animation-delay: 0.2s; }
+.loader-grid .loader-cube6 { animation-delay: 0.3s; }
+.loader-grid .loader-cube7 { animation-delay: 0s; }
+.loader-grid .loader-cube8 { animation-delay: 0.1s; }
+.loader-grid .loader-cube9 { animation-delay: 0.2s; }
+
+@keyframes loader-animation {
+  0%, 70%, 100% { transform: scale3D(1, 1, 1); }
+  35% { transform: scale3D(0, 0, 1); }
+}

@@ -1,0 +1,15 @@
+<!-- Гармонизация работы полушарий -->
+<h1 class="trainer-h1">Запомните&nbsp;название<br>&nbsp;</h1>
+
+<picture
+  *ngIf="this.config.image >= 0"
+  class="image"
+>
+  <source [srcset]="getSrcset(this.config.image, 'jpg')">
+  <source [srcset]="getSrcset(this.config.image, 'webp')">
+  <img [src]="getSrcset(this.config.image, 'jpg')">
+</picture>
+
+<h2 class="trainer-h2 text">{{this.config && this.config.data || ''}}</h2>
+
+<button trainerButton (click)="finish()">Продолжить</button>

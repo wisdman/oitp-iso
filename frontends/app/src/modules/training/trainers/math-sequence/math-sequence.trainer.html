@@ -1,0 +1,40 @@
+<!-- Арифметико-практическое мышление -->
+<!-- Ритм мысли -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Найдите&nbsp;закономерность,<br>продолжите&nbsp;числовой&nbsp;ряд</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<div class="wrapper">
+  <ng-container
+    *ngFor="let item of items"
+  >
+    <div class="item-answer-top" [class.invisible]="!isAnswerShown">{{ item.rune }}</div>
+    <div class="item-data">{{ item.data }},</div>
+    <div class="item-answer-bottom" [class.invisible]="!isAnswerShown">{{ item.act }}</div>
+  </ng-container>
+  <div class="item-answer-top" [class.invisible]="!isAnswerShown">
+    <div class="item-answer-correct">{{ item.data }}</div>
+  </div>
+  <div class="item-data item-data--input">
+    <input
+      trainerInput
+      type="number"
+      min="0" max="99999"
+      class="input"
+      [disabled]="mode === 'result'"
+      [result]="mode === 'result' && (isSuccess && 'success' || 'error')"
+      [(ngModel)]="userData"
+      (enter)="mode === 'result' && finish() || result()"
+    >
+  </div>
+  <div class="item-answer-bottom" [class.invisible]="!isAnswerShown">{{ item.act }}</div>
+</div>
+
+<button
+  trainerButton
+  class="button--answer"
+  [class.invisible]="mode !== 'result' || isSuccess || isAnswerShown"
+  (click)="showAnswer()"
+>Показать решение</button>
+
+<button *ngIf="mode === 'play'" trainerButton (click)="result()">Проверить</button>
+<button *ngIf="mode === 'result'" trainerButton (click)="finish()">Продолжить</button>

@@ -1,0 +1,91 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0;
+  margin-top: calc(var(--trainer-margin) * 4);
+  margin-bottom: auto;
+
+  padding: 0;
+
+  flex-shrink: 0;
+  flex-grow: 0;
+
+  width: auto;
+  min-width: 48px;
+
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+
+  color: var(--trainer-text-color);
+  border: 0 none;
+
+  background-color: transparent;
+  background-image: none;
+
+  font: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+
+  transition: color .25s;
+}
+
+.button:hover {
+  color: var(--trainer-selected-color);
+}
+
+.svg {
+  display: block;
+
+  width: auto;
+  min-width: 50px;
+  max-width: 100%;
+
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+
+  font: inherit;
+  text-transform: inherit;
+  text-decoration: inherit;
+
+  color: inherit;
+}
+
+.path {
+  stroke: var(--trainer-border-color);
+  stroke-width: 1;
+  fill: none;
+
+  transition: stroke .25s;
+}
+
+.trainer:focus .path {
+  stroke: var(--trainer-selected-color);
+  stroke-width: 2;
+}
+
+.fill-path {
+  stroke: none;
+  stroke-width: 0;
+  fill: var(--trainer-background-color);
+}
+
+.text {
+  font: inherit;
+  line-height: 1;
+  color: inherit;
+  fill: currentColor;
+}
+
+
+

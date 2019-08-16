@@ -1,0 +1,189 @@
+.wrapper {
+  --color-background: rgb(255, 255, 255);
+  --color-error: rgb(237, 63, 44);
+  --color-focus: rgb(63, 81, 181);
+  --color-label: rgba(0, 0, 0, 0.64);
+  --color-text: rgba(0, 0, 0, 0.87);
+
+  --min-height: 46px;
+  --input-padding: 12px;
+  --label-padding: 2px;
+
+  --font-size: 16px;
+
+  --border-radius: 8px;
+
+  --transition-duration: 150ms;
+
+  display: block;
+  overflow: visible;
+  box-sizing: border-box;
+  position: relative;
+  overflow: visible;
+
+  min-width: var(--min-height);
+  min-height: var(--min-height);
+
+  font-family: inherit;
+  font-size: var(--font-size);
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+}
+
+@keyframes w-forms-input-spinner {
+  to {transform: rotate(360deg);}
+}
+
+.pending::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+
+  position: absolute;
+  right: var(--input-padding);
+  top: calc(var(--min-height) / 4);
+
+  width: calc(var(--min-height) / 2);
+  height: calc(var(--min-height) / 2);
+
+  border-radius: 50%;
+  border-top: 2px solid var(--color-focus);
+  border-right: 2px solid transparent;
+  animation: w-forms-input-spinner .6s linear infinite;
+}
+
+.input {
+  display: block;
+  box-sizing: border-box;
+
+  width: 100%;
+
+  height: var(--min-height);
+  min-height: var(--min-height);
+  max-height: var(--min-height);
+
+  margin: 0;
+  padding: 0 var(--input-padding);
+
+  background-color: var(--color-white);
+  background-image: none;
+  border: 1px solid rgba(0, 0, 0, 0.32);
+  border-radius: var(--border-radius);
+
+  outline: none;
+
+  color: var(--color-text);
+
+  font: inherit;
+  line-height: 1;
+
+  text-decoration: none;
+  text-transform: none;
+
+  transition-duration: var(--transition-duration);
+  transition-timing-function: linear;
+  transition-property: border-color;
+}
+
+.pending .input {
+  padding-right: calc(var(--min-height) / 2 + var(--input-padding) * 2);
+}
+
+.input:focus {
+  border-color: var(--color-focus);
+}
+
+.invalid, .invalid:focus {
+  border-color: var(--color-error);
+}
+
+.label {
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+
+  left: calc(var(--input-padding) - var(--label-padding));
+  top: calc(var(--min-height) / 2 - 1px);
+
+  margin: 0;
+  padding: 0 var(--label-padding);
+
+  transform: translate(0, -50%) scale(1);
+  transform-origin: left center;
+
+  background-color: transparent;
+  background-image: linear-gradient(
+                      to bottom,
+                      rgba(255,255,255,0) 0%,
+                      rgba(255,255,255,0) 50%,
+                      var(--color-background) 50%,
+                      var(--color-background) 100%
+                    );
+  background-size: 100%;
+
+  color: var(--color-label);
+
+  font: inherit;
+  font-size: 0.875em;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  cursor: text;
+
+  transition-duration: var(--transition-duration);
+  transition-timing-function: linear;
+  transition-property: transform color;
+}
+
+.input:focus ~ .label,
+.input:not(:placeholder-shown) ~ .label,
+.invalid ~ .label {
+  transform: translate(0, calc(-50% - var(--min-height) / 2)) scale(0.857);
+}
+
+.input:focus ~ .label {
+  color: var(--color-focus);
+}
+
+.input.invalid ~ .label {
+  color: var(--color-error);
+}
+
+/* === Error message === */
+
+.errorOverlay {
+  display: block;
+  overflow: visible;
+  max-height: 0;
+}
+
+.errorWrapper {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.errorMessage {
+  display: block;
+
+  margin: 0;
+  padding: 0 var(--input-padding);
+
+  font: inherit;
+  font-size: 0.75em;
+  line-height: 1.309;
+
+  color: var(--color-error);
+
+  transform: translate(0, -100%);
+
+  transition-duration: var(--transition-duration);
+  transition-timing-function: linear;
+  transition-property: transform;
+}
+
+.invalid ~ .errorOverlay .errorMessage {
+  transform: translate(0, 0);
+}

@@ -1,0 +1,52 @@
+<!-- Арифметико-практическое мышление -->
+<!-- Умение мыслить по аналогии -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Найдите&nbsp;ответ<br>по&nbsp;аналогии&nbsp;с&nbsp;примерами</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<div class="wrapper">
+  <ng-container
+    *ngFor="let item of items"
+  >
+    <div class="item-box">{{ item.data[0] }}</div>
+    <div class="item-box">(</div>
+    <div class="item-box text-align-center">{{ item.data[1] }}</div>
+    <div class="item-box">)</div>
+    <div class="item-box">{{ item.data[2] }}</div>
+    <div
+      class="item-answer"
+      [class.invisible]="mode !== 'result' || !isAnswerShown"
+    >{{ item.answer }}</div>
+  </ng-container>
+  <div class="item-box">{{ item.data[0] }}</div>
+  <div class="item-box">(</div>
+  <div
+    class="item-box"
+  >
+    <input
+      type="number"
+      min="0" max="99999"
+      trainerInput
+      class="input"
+      [disabled]="mode === 'result'"
+      [result]="mode === 'result' && (isSuccess && 'success' || 'error')"
+      [(ngModel)]="userData"
+      (enter)="mode === 'result' && finish() || result()"
+    >
+  </div>
+  <div class="item-box">)</div>
+  <div class="item-box">{{ item.data[2] }}</div>
+  <div
+      class="item-answer"
+      [class.invisible]="mode !== 'result' || !isAnswerShown"
+    >{{ item.answer }}</div>
+</div>
+
+<button
+  trainerButton
+  class="button--answer"
+  [class.invisible]="mode !== 'result' || isSuccess || isAnswerShown"
+  (click)="showAnswer()"
+>Показать решение</button>
+
+<button *ngIf="mode === 'play'" trainerButton (click)="result()">Проверить</button>
+<button *ngIf="mode === 'result'" trainerButton (click)="finish()">Продолжить</button>

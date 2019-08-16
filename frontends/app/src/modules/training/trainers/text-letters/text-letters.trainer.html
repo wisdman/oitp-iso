@@ -1,0 +1,31 @@
+<!-- Точность восприятия - афоризмы -->
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>первую&nbsp;букву&nbsp;каждого&nbsp;слова</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<h2
+  class="trainer-h2"
+  [class.invisible]="mode === 'play'"
+>{{ this.config.data }}</h2>
+
+<div
+  *ngIf="mode === 'play' || mode === 'result'"
+  class="runes"
+>
+  <span
+    *ngFor="let item of runes"
+    class="rune"
+    [class.rune-error] = "mode === 'result' && item.data !== item.userData"
+    [class.rune-success] = "mode === 'result' && item.data === item.userData"
+  >{{ item.userData }}</span>
+</div>
+
+<input
+  type="text"
+  class="hidden"
+  [disabled]="mode !== 'play'"
+  [(ngModel)]="userData"
+  autoFocus
+>
+
+<button *ngIf="mode === 'play'" trainerButton invisible (click)="result()">Проверить</button>
+<button *ngIf="mode === 'result'" trainerButton (click)="finish()">Продолжить</button>

@@ -1,0 +1,30 @@
+<!-- Точность восприятия. Столбики -->
+<h1 *ngIf="mode==='preview'" class="trainer-h1">Запомните&nbsp;<br>пары&nbsp;слов</h1>
+<h1 *ngIf="mode==='play'" class="trainer-h1">Восстановите<br>пары&nbsp;слов&nbsp;по&nbsp;памяти</h1>
+<h1 *ngIf="mode==='result'" class="trainer-h1">Ваш&nbsp;результат<br>&nbsp;</h1>
+
+<div
+  *ngFor="let item of items"
+  class="item"
+>
+  <input
+    trainerInput
+    type="text"
+    class="input"
+    [disabled]="mode !== 'play' || hidden === 1"
+    [result]="mode === 'result' && hidden === 0 && (item[0].isSuccess && 'success' || 'error')"
+    [(ngModel)]="item[0].userData"
+  >
+  <input
+    trainerInput
+    type="text"
+    class="input"
+    [disabled]="mode !== 'play' || hidden === 0"
+    [result]="mode === 'result' && hidden === 1 && (item[1].isSuccess && 'success' || 'error')"
+    [(ngModel)]="item[1].userData"
+  >
+</div>
+
+<button *ngIf="mode==='preview'" trainerButton (click)="start()">Продолжить</button>
+<button *ngIf="mode==='play'" trainerButton (click)="result()">Проверить</button>
+<button *ngIf="mode==='result'" trainerButton (click)="finish()">Продолжить</button>

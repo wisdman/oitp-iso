@@ -5,8 +5,6 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/jackc/pgx"
-
 	"github.com/wisdman/oitp-isov/api/lib/middleware"
 	"github.com/wisdman/oitp-isov/api/lib/service"
 )
@@ -40,6 +38,10 @@ func (api *API) LoginByEmail(w http.ResponseWriter, r *http.Request) {
 		body.IP,
 		body.Fingerprint,
 	).Scan(&response); err != nil {
+		if errCode := middleware.GetDBErrorCode(err); errCode == "A0406" {
+			service.Error(w, http.StatusNotAcceptable)
+			return
+		}
 		service.Fatal(w, err)
 		return
 	}
