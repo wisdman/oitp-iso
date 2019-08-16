@@ -22,6 +22,6 @@ BEGIN
       ) AS _
       WHERE "result"->>'result' IS NOT NULL
     ) AS _
-    GROUP BY "finish", "id"
+    GROUP BY "id"
   ) AS _;
 END $$ LANGUAGE plpgsql VOLATILE SECURITY DEFINER;

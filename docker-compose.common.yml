@@ -58,28 +58,6 @@ services:
     networks:
       default:
 
-  api-public-invite:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=public/invite
-    image: oitp-isov/api-public-invite
-    secrets:
-      - secret-api-public
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-public-invite
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
   api-public-login:
     restart: unless-stopped
     build:
@@ -95,50 +73,6 @@ services:
       - POSTGRES_APPNAME=api-public-login
       - POSTGRES_USER=api-public
       - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-public
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
-  api-self-invite:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=self/invite
-    image: oitp-isov/api-self-invite
-    secrets:
-      - secret-api-self
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-self-invite
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-self
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
-  api-self-login:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=self/login
-    image: oitp-isov/api-self-login
-    secrets:
-      - secret-api-self
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-self-login
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-self
     depends_on:
       - sql
     links:
@@ -190,28 +124,6 @@ services:
     networks:
       default:
 
-  api-self-user:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=self/user
-    image: oitp-isov/api-self-user
-    secrets:
-      - secret-api-self
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-self-user
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD_FILE=/run/secrets/secret-api-self
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
   app:
     restart: unless-stopped
     build: ./frontends/app
@@ -233,23 +145,17 @@ services:
     depends_on:
       - api-auth
       - api-public-blackboard
-      - api-public-invite
       - api-public-login
-      - api-self-invite
-      - api-self-login
       - api-self-progress
-      - api-self-user
+      - api-self-training
       - app
       - portal
     links:
       - api-auth
       - api-public-blackboard
-      - api-public-invite
       - api-public-login
-      - api-self-invite
-      - api-self-login
       - api-self-progress
-      - api-self-user
+      - api-self-training
       - app
       - portal
     networks:
