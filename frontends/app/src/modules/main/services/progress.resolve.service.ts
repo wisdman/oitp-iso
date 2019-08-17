@@ -15,6 +15,6 @@ export class ProgressResolveService implements Resolve<boolean> {
 
   resolve(__: ActivatedRouteSnapshot, _: RouterStateSnapshot): Observable<boolean>  {
     this._progressService.reload()
-    return this._progressService.progress.pipe(map(progress=> progress.length > 0), take(1))
+    return this._progressService.progress.pipe(map(progress=> progress && progress.length > 0), take(1))
   }
 }

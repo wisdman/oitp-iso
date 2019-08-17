@@ -41,6 +41,11 @@ export class WordsPairsTrainer extends AbstractTrainer<IWordsPairsConfig> {
   }
 
   timeout() {
+    if (this.mode === "preview") {
+      this.start()
+      return
+    }
+
     this.result()
   }
 

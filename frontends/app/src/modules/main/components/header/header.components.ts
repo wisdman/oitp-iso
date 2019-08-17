@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private _cdr: ChangeDetectorRef,
-    private _sideBarService: SideBarService
+    private _sideBarService: SideBarService,
   ){}
 
   @HostBinding("class.shadow")
