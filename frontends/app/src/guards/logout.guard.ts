@@ -18,6 +18,7 @@ export class LogoutGuard implements CanActivate {
   ) {}
 
   canActivate() {
+    console.log("LOGOUT")
     this._tokenService.token = ""
     return this._httpClient.get<void>(API_LOGOUT).pipe(
       catchError(() => of(undefined)),

@@ -80,6 +80,28 @@ services:
     networks:
       default:
 
+  api-self-logout:
+    restart: unless-stopped
+    build:
+      context: ./api
+      args:
+        - APP_PATH=self/logout
+    image: oitp-isov/api-self-logout
+    secrets:
+      - secret-api-self
+    env_file:
+      - ./environment
+    environment:
+      - POSTGRES_APPNAME=api-self-logout
+      - POSTGRES_USER=api-self
+      - POSTGRES_PASSWORD=SELF-P@Ssw0rd
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
   api-self-progress:
     restart: unless-stopped
     build:
@@ -146,6 +168,7 @@ services:
       - api-auth
       - api-public-blackboard
       - api-public-login
+      - api-self-logout
       - api-self-progress
       - api-self-training
       - app
@@ -154,6 +177,7 @@ services:
       - api-auth
       - api-public-blackboard
       - api-public-login
+      - api-self-logout
       - api-self-progress
       - api-self-training
       - app

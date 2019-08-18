@@ -18,7 +18,7 @@ export const ROUTES: Routes =
 },{
   path: "logout",
   canActivate: [ LogoutGuard ],
-  redirectTo: "/login",
+  loadChildren: "./modules/login/login.module#LoginModule",
 },{
   path: "training",
   canActivate: [ RootGuard ],

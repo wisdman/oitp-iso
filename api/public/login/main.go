@@ -22,9 +22,6 @@ func main() {
 	srv.POST("/email", api.LoginByEmail)
 	srv.POST("/invite/:id", api.LoginByInvite)
 	srv.POST("/otr", api.LoginByOTR)
-
-	srv.DELETE("/", api.Logout)
-
 	srv.POST("/invite", api.NewInvite)
 
 	srv.ListenAndServe()
