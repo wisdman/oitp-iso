@@ -26,7 +26,7 @@ export class StorytellingTrainer extends AbstractTrainer<IStorytellingConfig> {
     this.audio.addEventListener("ended", () => this.finish())
     this.audio.addEventListener("canplaythrough", () => {
       this.audio.play()
-      super.start(Math.ceil(this.audio.duration))
+      super.start(Math.ceil(this.audio.duration * 1000))
     })
 
     this.preview()
