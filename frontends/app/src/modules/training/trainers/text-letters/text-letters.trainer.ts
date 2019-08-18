@@ -31,7 +31,7 @@ export class TextLettersTrainer extends AbstractTrainer<ITextLettersConfig> impl
   }
 
   init() {
-    this.fullscreenService.unlock()
+    // this.fullscreenService.unlock()
 
     this._userData = ""
     this.runes = this.config.runes.map(data =>({data, userData: ""}))

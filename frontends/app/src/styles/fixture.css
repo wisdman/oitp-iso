@@ -26,6 +26,10 @@ input[type=number]::-moz-outer-spin-button {
   margin: 0;
 }
 
+input[disabled] {
+  opacity: 1;
+}
+
 a {
   color: var(--color-primar);
   text-decoration: underline;

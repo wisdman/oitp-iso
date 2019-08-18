@@ -28,6 +28,10 @@ export class AbstractTrainer<C extends ITrainerConfigs> implements OnInit, OnDes
     this._elRef.nativeElement.classList.add("trainer")
   }
 
+  // === Forse fullscreen ===
+  forseRedraw() {
+    this.fullscreenService.forseRedraw()
+  }
 
   // === Config and results ===
   @Input("config")

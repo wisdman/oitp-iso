@@ -18,7 +18,7 @@ export class ImageExpressionsPreviewTrainer extends AbstractTrainer<IImageExpres
   }
 
   init() {
-    this.fullscreenService.unlock()
+    // this.fullscreenService.unlock()
     this.preview()
   }
 

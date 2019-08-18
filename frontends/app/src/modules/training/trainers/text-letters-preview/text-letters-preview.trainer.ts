@@ -12,7 +12,7 @@ import { ITextLettersPreviewConfig } from "./text-letters-preview.interfaces"
 export class TextLettersPreviewTrainer extends AbstractTrainer<ITextLettersPreviewConfig> {
 
   init() {
-    this.fullscreenService.unlock()
+    // this.fullscreenService.unlock()
     this.preview()
   }
 

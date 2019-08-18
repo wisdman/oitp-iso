@@ -47,4 +47,4 @@ INSERT INTO private.training_configs("description", "type", "timeLimit", "traine
     "matrix-sequence-random"
   ]] $$::jsonb);
 
--- UPDATE private.training_configs SET WHERE $$ [["text-letters"]] $$::jsonb"type" = 'debug';
+-- UPDATE private.training_configs SET trainers=$$[["words-questions-close"]]$$::jsonb WHERE "type" = 'debug';

@@ -19,7 +19,7 @@
   text-decoration: inherit;
   text-transform: inherit;
 
-  color: inherit;
+  color: rgba(0, 0, 0, 0.97);
 }
 
 .input {

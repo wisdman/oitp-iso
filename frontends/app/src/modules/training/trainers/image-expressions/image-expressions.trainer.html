@@ -24,7 +24,6 @@
   [result]="mode === 'result' && (isSuccess && 'success' || 'error')"
   [(ngModel)]="userData"
   (enter)="mode === 'result' && finish() || result()"
-  autofocus
 >
 
 <button *ngIf="mode === 'play'" trainerButton (click)="result()">Проверить</button>

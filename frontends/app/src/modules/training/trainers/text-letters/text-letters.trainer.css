@@ -52,3 +52,10 @@
   opacity: 0;
   visibility: hidden;
 }
+
+@media (max-width: 600px) {
+  .trainer-h1 {
+    margin-bottom: 0;
+  }
+}
+

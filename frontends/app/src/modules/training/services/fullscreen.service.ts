@@ -56,4 +56,11 @@ export class FullscreenService {
   unlock() {
     this._isLocked.next(false)
   }
+
+  forseRedraw() {
+    requestAnimationFrame(() => {
+      this._setCSSPropertyes()
+     this._resetScroll()
+    })
+  }
 }
