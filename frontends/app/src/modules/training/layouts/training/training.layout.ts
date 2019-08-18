@@ -35,6 +35,14 @@ export class TrainingLayout implements OnInit, OnDestroy {
   private _routeParamsSubscriber!: Subscription
   private _trainingSubscriber!: Subscription
 
+  private _enterFullScreen() {
+    document.documentElement && document.documentElement.requestFullscreen && document.documentElement.requestFullscreen()
+  }
+
+  private _exitFullScreen() {
+    document.exitFullscreen && document.exitFullscreen()
+  }
+
   ngOnInit() {
     this._trainingSubscriber = this._trainingService.config.subscribe(config => {
       this.config = config
@@ -42,9 +50,11 @@ export class TrainingLayout implements OnInit, OnDestroy {
     })
 
     this._routeParamsSubscriber = this._route.params.subscribe(params => this._trainingService.initTraining(params.type))
+    this._enterFullScreen()
   }
 
   ngOnDestroy() {
+    this._exitFullScreen()
     this._routeParamsSubscriber.unsubscribe()
     this._trainingSubscriber.unsubscribe()
   }
