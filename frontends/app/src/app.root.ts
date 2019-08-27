@@ -12,9 +12,9 @@ export class RootLayoutComponent implements OnInit {
     private _notificationService: NotificationService,
   ){}
 
-  @ViewChild("notification", { read: ViewContainerRef, static: true }) _viewContainerRef!: ViewContainerRef
+  @ViewChild("notification", { read: ViewContainerRef, static: true }) _notificationRef!: ViewContainerRef
 
   ngOnInit() {
-    this._notificationService.injectContainer(this._viewContainerRef)
+    this._notificationService.injectContainer(this._notificationRef)
   }
 }

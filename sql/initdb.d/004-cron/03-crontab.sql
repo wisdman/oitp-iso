@@ -4,10 +4,11 @@ CREATE TABLE private.crontab (
   "enabled" boolean NOT NULL DEFAULT TRUE,
 
   "proname" name NOT NULL,
-  "moment"  time without time zone NOT NULL,
+  "moment"  varchar(13) NOT NULL,
 
-  CONSTRAINT crontab__pkey PRIMARY KEY ("id"),
-  CONSTRAINT crontab__check__proname CHECK (private.is_cron_function("proname"))
+  CONSTRAINT private__crontab__pkey PRIMARY KEY ("id"),
+  CONSTRAINT private__crontab__check__proname CHECK (public.is_cron_function("proname")),
+  CONSTRAINT private__crontab__check__moment CHECK (public.check_crontab_moment("moment"))
 );
 
-CREATE INDEX crontab__idx__enabled ON private.crontab USING btree ("enabled");
+CREATE INDEX private__crontab__idx__enabled ON private.crontab USING btree ("enabled");

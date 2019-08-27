@@ -1,5 +1,3 @@
-SET search_path = "$user";
-
 CREATE OR REPLACE FUNCTION trainer.words_lexis_synonyms_config() RETURNS SETOF jsonb AS $$
 DECLARE
   _trainer public.trainer_type := 'words-lexis-synonyms';

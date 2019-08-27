@@ -15,24 +15,24 @@ CREATE TABLE private.transactions (
 
   "acquiring" jsonb NOT NULL DEFAULT '[]'::jsonb, -- Операции банковского эквайдинга
 
-  CONSTRAINT transactions__pkey PRIMARY KEY ("id"),
+  CONSTRAINT private__transactions__pkey PRIMARY KEY ("id"),
 
-  CONSTRAINT transactions__check__fingerprint CHECK (jsonb_typeof("fingerprint") = 'object'),
-  CONSTRAINT transactions__check__acquiring CHECK (jsonb_typeof("acquiring") = 'array'),
+  CONSTRAINT private__transactions__check__fingerprint CHECK (jsonb_typeof("fingerprint") = 'object'),
+  CONSTRAINT private__transactions__check__acquiring CHECK (jsonb_typeof("acquiring") = 'array'),
 
-  CONSTRAINT transactions__fkey__owner FOREIGN KEY ("owner")
+  CONSTRAINT private__transactions__fkey__owner FOREIGN KEY ("owner")
     REFERENCES private.users("id")
     ON UPDATE CASCADE ON DELETE CASCADE,
 
-  CONSTRAINT transactions__fkey__tariff FOREIGN KEY ("tariff")
+  CONSTRAINT private__transactions__fkey__tariff FOREIGN KEY ("tariff")
     REFERENCES private.tariffs("id")
     ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TABLE trash.transactions() INHERITS (private.transactions, private.trash);
+SELECT private.init_trash_scope('private.transactions');
 
-CREATE INDEX transactions__idx__status ON private.transactions USING btree ("status");
-CREATE INDEX transactions__idx__lastUpdate ON private.transactions USING btree ("lastUpdate");
+CREATE INDEX private__transactions__idx__status ON private.transactions USING btree ("status");
+CREATE INDEX private__transactions__idx__lastUpdate ON private.transactions USING btree ("lastUpdate");
 
 CREATE OR REPLACE FUNCTION private.transactions__trigger__last_update() RETURNS trigger AS $$
 BEGIN
@@ -47,12 +47,8 @@ DECLARE
   _tariffAmount numeric(10);
   _tariffInterval interval;
 BEGIN
-  SELECT "amount", "interval"
-  INTO STRICT _tariffAmount, _tariffInterval
-  FROM private.tariffs
-  WHERE "id" = NEW."tariff";
-  NEW."amount" = _tariffAmount;
-  NEW."interval" = _tariffInterval;
+  SELECT "amount", "interval" INTO STRICT NEW."amount", NEW."interval"
+  FROM private.tariffs WHERE "id" = NEW."tariff";
   RETURN NEW;
 END; $$ LANGUAGE plpgsql;
 CREATE TRIGGER amount_and_interval_from_tariff BEFORE INSERT ON private.transactions FOR EACH ROW

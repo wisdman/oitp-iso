@@ -6,13 +6,13 @@ CREATE TABLE trainer.words_questions_waste_data (
 
   "enabled" boolean NOT NULL DEFAULT TRUE,
 
-  CONSTRAINT words_questions_waste_data__pkey PRIMARY KEY ("id"),
-  CONSTRAINT words_questions_waste_data__check__id CHECK ("id" >= 0),
+  CONSTRAINT trainer__words_questions_waste_data__pkey PRIMARY KEY ("id"),
+  CONSTRAINT trainer__words_questions_waste_data__check__id CHECK ("id" >= 0),
 
-  CONSTRAINT words_questions_waste_data__check__items CHECK (array_length("items", 1) > 0)
+  CONSTRAINT trainer__words_questions_waste_data__check__items CHECK (array_length("items", 1) > 0)
 );
 
-CREATE TABLE trash.words_questions_waste_data() INHERITS (trainer.words_questions_waste_data, private.trash);
+SELECT private.init_trash_scope('trainer.words_questions_waste_data');
 
 -- DROP SEQUENCE trainer.words_questions_waste_data_id CASCADE;
 CREATE SEQUENCE trainer.words_questions_waste_data_id AS integer
@@ -22,5 +22,5 @@ CREATE SEQUENCE trainer.words_questions_waste_data_id AS integer
 ALTER TABLE ONLY trainer.words_questions_waste_data
   ALTER COLUMN id SET DEFAULT nextval('trainer.words_questions_waste_data_id'::regclass);
 
-CREATE INDEX words_questions_waste_data__idx__enabled
+CREATE INDEX trainer__words_questions_waste_data__idx__enabled
   ON trainer.words_questions_waste_data USING btree ("enabled");

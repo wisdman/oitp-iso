@@ -6,11 +6,11 @@ CREATE OR REPLACE FUNCTION private.msg_email(
 DECLARE
   _id uuid;
 BEGIN
-  INSERT INTO private.msg_email("to", "toName", "template", "version", "data")
+  INSERT INTO msg.email("to", "toName", "template", "version", "data")
     SELECT _email, coalesce(_data->>'name', ''), "template", "version", _data
     FROM private.get_msg_template(_template) AS t("template", "version")
   RETURNING "id" INTO STRICT _id;
 
-  NOTIFY msg_new, 'email';
+  NOTIFY MSG_EMAIL, 'NEW';
   RETURN _id;
 END; $$ LANGUAGE plpgsql VOLATILE;

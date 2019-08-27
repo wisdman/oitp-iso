@@ -1,9 +1,0 @@
-<figure class="user" *ngIf="user | async as user">
-  <picture class="avatar" [attr.data-letter]="user.name | slice:0:1" aria-hidden="true">
-    <img *ngIf="user.avatar" class="avatar__img" [src]="user.avatar">
-  </picture>
-  <figcaption class="caption">
-    <div class="title">{{ user.name || 'Новый пользователь' }}</div>
-    <div *ngIf="user.name" class="title">{{ user.surname }}</div>
-  </figcaption>
-</figure>

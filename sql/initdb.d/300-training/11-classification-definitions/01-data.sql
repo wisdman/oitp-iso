@@ -7,15 +7,14 @@ CREATE TABLE trainer.classification_definitions_data (
 
   "enabled" boolean NOT NULL DEFAULT TRUE,
 
-  CONSTRAINT classification_definitions_data__pkey PRIMARY KEY ("id"),
-  CONSTRAINT classification_definitions_data__check__id CHECK ("id" >= 0),
+  CONSTRAINT trainer__classification_definitions_data__pkey PRIMARY KEY ("id"),
+  CONSTRAINT trainer__classification_definitions_data__check__id CHECK ("id" >= 0),
 
-  CONSTRAINT classification_definitions_data__check__word CHECK (char_length("word") > 0),
-  CONSTRAINT classification_definitions_data__check__definitions
-    CHECK (array_length("definitions", 1) > 0)
+  CONSTRAINT trainer__classification_definitions_data__check__word CHECK (char_length("word") > 0),
+  CONSTRAINT trainer__classification_definitions_data__check__definitions CHECK (array_length("definitions", 1) > 0)
 );
 
-CREATE TABLE trash.classification_definitions_data() INHERITS (trainer.classification_definitions_data, private.trash);
+SELECT private.init_trash_scope('trainer.classification_definitions_data');
 
 -- DROP SEQUENCE trainer.classification_definitions_data_id CASCADE;
 CREATE SEQUENCE trainer.classification_definitions_data_id AS integer
@@ -25,8 +24,8 @@ CREATE SEQUENCE trainer.classification_definitions_data_id AS integer
 ALTER TABLE ONLY trainer.classification_definitions_data
   ALTER COLUMN id SET DEFAULT nextval('trainer.classification_definitions_data_id'::regclass);
 
-CREATE UNIQUE INDEX classification_definitions_data__unique_idx__word
+CREATE UNIQUE INDEX trainer__classification_definitions_data__unique_idx__word
   ON trainer.classification_definitions_data USING btree ("word");
 
-CREATE INDEX classification_definitions_data__idx__enabled
+CREATE INDEX trainer__classification_definitions_data__idx__enabled
   ON trainer.classification_definitions_data USING btree ("enabled");

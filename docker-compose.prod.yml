@@ -2,6 +2,10 @@ version: '3.7'
 
 services:
 
+  sql:
+    environment:
+      - SHARED_BUFFERS=8GB
+
   nginx:
     ports:
       - 80:80

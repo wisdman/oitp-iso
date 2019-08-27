@@ -7,7 +7,7 @@ BEGIN
   WHERE "archive" IS NULL
     AND "enabled"
     AND "default"
-    AND "issue" <= timezone('UTC', now())
+    AND "ts" <= timezone('UTC', now())
     AND "expires" > timezone('UTC', now());
 END;
 $$ LANGUAGE plpgsql VOLATILE STRICT;
@@ -19,10 +19,10 @@ BEGIN
   LEFT JOIN private.tariffs AS t ON (t."id" = c."tariff")
   WHERE t."archive" IS NULL
     AND t."enabled"
-    AND t."issue" <= timezone('UTC', now())
+    AND t."ts" <= timezone('UTC', now())
     AND t."expires" > timezone('UTC', now())
     AND c."enabled"
-    AND c."issue" <= timezone('UTC', now())
+    AND c."ts" <= timezone('UTC', now())
     AND c."expires" > timezone('UTC', now());
 END;
 $$ LANGUAGE plpgsql VOLATILE STRICT;

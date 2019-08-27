@@ -6,11 +6,11 @@ CREATE OR REPLACE FUNCTION private.msg_sms(
 DECLARE
   _id uuid;
 BEGIN
-  INSERT INTO private.msg_sms("to", "template", "version", "data")
+  INSERT INTO msg.sms("to", "template", "version", "data")
     SELECT _phone, "template", "version", _data
     FROM private.get_msg_template(_template) AS t("template", "version")
   RETURNING "id" INTO STRICT _id;
 
-  NOTIFY msg_new, 'sms';
+  NOTIFY MSG_SMS, 'NEW';
   RETURN _id;
 END; $$ LANGUAGE plpgsql VOLATILE;

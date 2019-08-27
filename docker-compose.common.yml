@@ -11,24 +11,87 @@ services:
     environment:
       - LANG=ru_RU.utf8
       - PGDATABASE=oitp
+    secrets:
+      - daemon-tinkoff
+      - api-admin
+      - api-public
+      - api-self
+      - api-tinkoff
+      - daemon-cron
+      - daemon-msg
+    networks:
+      default:
+
+  daemon-sql-cron:
+    restart: unless-stopped
+    build:
+      context: ./backends
+      args:
+        - APP_PATH=daemons/sql-cron
+    image: oitp-isov/daemon-sql-cron
+    secrets:
+      - daemon-cron
+    environment:
+      - PGAPPNAME=daemon-sql-cron
+      - PGHOST=sql
+      - PGDATABASE=oitp
+      - PGUSER=daemon-cron
+      - PGPASSWORD_FILE=/run/secrets/daemon-cron
+      - PGPOOL_SIZE=3
+      - PGLOG_LEVEL=WARN
+    depends_on:
+      - sql
+    links:
+      - sql
+    networks:
+      default:
+
+  daemon-msg-email:
+    restart: unless-stopped
+    build:
+      context: ./backends
+      args:
+        - APP_PATH=daemons/msg-email
+    image: oitp-isov/daemon-msg-email
+    secrets:
+      - daemon-msg
+    environment:
+      - PGAPPNAME=daemon-msg-email
+      - PGHOST=sql
+      - PGDATABASE=oitp
+      - PGUSER=daemon-msg
+      - PGPASSWORD_FILE=/run/secrets/daemon-msg
+      - PGPOOL_SIZE=3
+      - PGLOG_LEVEL=WARN
+      - SMTP_SERVER=smtp.elasticemail.com
+      - SMTP_PORT=2525
+      - SMTP_USER=wisdman@wisdman.io
+      - SMTP_NAME=VLLSchool
+      - SMTP_FROM=noreply@vllschool.com
+    depends_on:
+      - sql
+    links:
+      - sql
     networks:
       default:
 
   api-auth:
     restart: unless-stopped
     build:
-      context: ./api
+      context: ./backends
       args:
-        - APP_PATH=auth
+        - APP_PATH=api/auth
     image: oitp-isov/api-auth
     secrets:
-      - secret-api-public
-    env_file:
-      - ./environment
+      - api-self
     environment:
-      - POSTGRES_APPNAME=api-auth
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD=PUBLIC-P@Ssw0rd
+      - PGAPPNAME=api-auth
+      - PGHOST=sql
+      - PGDATABASE=oitp
+      - PGUSER=api-self
+      - PGPASSWORD_FILE=/run/secrets/api-self
+      - PGPOOL_SIZE=10
+      - PGLOG_LEVEL=WARN
     depends_on:
       - sql
     links:
@@ -36,21 +99,23 @@ services:
     networks:
       default:
 
-  api-public-blackboard:
+  api-public:
     restart: unless-stopped
     build:
-      context: ./api
+      context: ./backends
       args:
-        - APP_PATH=public/blackboard
-    image: oitp-isov/api-public-blackboard
+        - APP_PATH=api/public
+    image: oitp-isov/api-public
     secrets:
-      - secret-api-public
-    env_file:
-      - ./environment
+      - api-public
     environment:
-      - POSTGRES_APPNAME=api-public-blackboard
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD=PUBLIC-P@Ssw0rd
+      - PGAPPNAME=api-public
+      - PGHOST=sql
+      - PGDATABASE=oitp
+      - PGUSER=api-public
+      - PGPASSWORD_FILE=/run/secrets/api-public
+      - PGPOOL_SIZE=10
+      - PGLOG_LEVEL=WARN
     depends_on:
       - sql
     links:
@@ -58,87 +123,23 @@ services:
     networks:
       default:
 
-  api-public-login:
+  api-self:
     restart: unless-stopped
     build:
-      context: ./api
+      context: ./backends
       args:
-        - APP_PATH=public/login
-    image: oitp-isov/api-public-login
+        - APP_PATH=api/self
+    image: oitp-isov/api-self
     secrets:
-      - secret-api-public
-    env_file:
-      - ./environment
+      - api-self
     environment:
-      - POSTGRES_APPNAME=api-public-login
-      - POSTGRES_USER=api-public
-      - POSTGRES_PASSWORD=PUBLIC-P@Ssw0rd
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
-  api-self-logout:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=self/logout
-    image: oitp-isov/api-self-logout
-    secrets:
-      - secret-api-self
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-self-logout
-      - POSTGRES_USER=api-self
-      - POSTGRES_PASSWORD=SELF-P@Ssw0rd
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
-  api-self-progress:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=self/progress
-    image: oitp-isov/api-self-progress
-    secrets:
-      - secret-api-self
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-self-progress
-      - POSTGRES_USER=api-self
-      - POSTGRES_PASSWORD=SELF-P@Ssw0rd
-    depends_on:
-      - sql
-    links:
-      - sql
-    networks:
-      default:
-
-  api-self-training:
-    restart: unless-stopped
-    build:
-      context: ./api
-      args:
-        - APP_PATH=self/training
-    image: oitp-isov/api-self-training
-    secrets:
-      - secret-api-self
-    env_file:
-      - ./environment
-    environment:
-      - POSTGRES_APPNAME=api-self-training
-      - POSTGRES_USER=api-self
-      - POSTGRES_PASSWORD=SELF-P@Ssw0rd
+      - PGAPPNAME=api-self
+      - PGHOST=sql
+      - PGDATABASE=oitp
+      - PGUSER=api-self
+      - PGPASSWORD_FILE=/run/secrets/api-self
+      - PGPOOL_SIZE=10
+      - PGLOG_LEVEL=WARN
     depends_on:
       - sql
     links:
@@ -166,20 +167,14 @@ services:
     image: oitp-isov/nginx
     depends_on:
       - api-auth
-      - api-public-blackboard
-      - api-public-login
-      - api-self-logout
-      - api-self-progress
-      - api-self-training
+      - api-public
+      - api-self
       - app
       - portal
     links:
       - api-auth
-      - api-public-blackboard
-      - api-public-login
-      - api-self-logout
-      - api-self-progress
-      - api-self-training
+      - api-public
+      - api-self
       - app
       - portal
     networks:
@@ -189,9 +184,17 @@ volumes:
   data-volume:
 
 secrets:
-  secret-api-public:
+  daemon-tinkoff:
+    file: ./secret-daemon-tinkoff.env
+  api-admin:
+    file: ./secret-api-admin.env
+  api-public:
     file: ./secret-api-public.env
-  secret-api-self:
+  api-self:
     file: ./secret-api-self.env
-  secret-smtp:
-    file: ./secret-smtp.env
+  api-tinkoff:
+    file: ./secret-api-tinkoff.env
+  daemon-cron:
+    file: ./secret-daemon-cron.env
+  daemon-msg:
+    file: ./secret-daemon-msg.env

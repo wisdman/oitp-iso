@@ -72,7 +72,6 @@ END $$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION trainer.math_waste_complexity_2_2(_length int) RETURNS jsonb AS $$
 DECLARE
-   -- 3 - 16
   X int := floor(random() * 14 + 3);
 BEGIN
   RETURN (

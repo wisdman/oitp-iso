@@ -1,4 +1,4 @@
-INSERT INTO trainer.words_questions_waste_data("items") VALUES
+INSERT INTO trainer.words_questions_waste_data("items") VALUES -- TODO: Добавить пояснение
   (ARRAY['{"data": "Полонез", "correct": false}'::jsonb, '{"data": "Краковяк", "correct": false}'::jsonb, '{"data": "Татарча", "correct": true}'::jsonb, '{"data": "Мазурка", "correct": false}'::jsonb, '{"data": "Полька", "correct": false}'::jsonb]),
   (ARRAY['{"data": "Сиртаки", "correct": false}'::jsonb, '{"data": "Вальс", "correct": false}'::jsonb, '{"data": "Венгерка", "correct": false}'::jsonb, '{"data": "Батильоны", "correct": true}'::jsonb, '{"data": "Кадриль", "correct": false}'::jsonb]),
   (ARRAY['{"data": "Бейсбол", "correct": false}'::jsonb, '{"data": "Айкидо", "correct": true}'::jsonb, '{"data": "Бадминтон", "correct": false}'::jsonb, '{"data": "Баскетбол", "correct": false}'::jsonb, '{"data": "Бокс", "correct": false}'::jsonb]),

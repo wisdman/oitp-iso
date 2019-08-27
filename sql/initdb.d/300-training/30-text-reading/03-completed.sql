@@ -3,13 +3,13 @@ CREATE TABLE trainer.text_reading_users_completed (
   "id" int NOT NULL,
   "owner" uuid NOT NULL,
 
-  CONSTRAINT text_reading_users_completed__pkey PRIMARY KEY ("id", "owner"),
+  CONSTRAINT trainer__text_reading_users_completed__pkey PRIMARY KEY ("id", "owner"),
 
-  CONSTRAINT text_reading_users_completed__fkey__id FOREIGN KEY ("id")
+  CONSTRAINT trainer__text_reading_users_completed__fkey__id FOREIGN KEY ("id")
     REFERENCES trainer.text_reading_data("id")
     ON UPDATE CASCADE ON DELETE CASCADE,
 
-  CONSTRAINT text_reading_users_completed__fkey__owner FOREIGN KEY ("owner")
+  CONSTRAINT trainer__text_reading_users_completed__fkey__owner FOREIGN KEY ("owner")
     REFERENCES private.users("id")
     ON UPDATE CASCADE ON DELETE CASCADE
 );

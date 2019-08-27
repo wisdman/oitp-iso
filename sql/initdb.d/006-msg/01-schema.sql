@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS msg;
-REVOKE CREATE ON SCHEMA msg FROM PUBLIC;
+REVOKE ALL PRIVILEGES ON SCHEMA msg FROM PUBLIC;
 
-CREATE ROLE "api-msg" WITH NOINHERIT NOLOGIN PASSWORD NULL;
-ALTER ROLE "api-msg" SET search_path = "$user";
-GRANT USAGE ON SCHEMA "msg" TO "api-msg";
+SELECT private.init_db_user('daemon-msg', '/run/secrets/daemon-msg');
+ALTER ROLE "daemon-msg" SET search_path = "$user";
+GRANT USAGE ON SCHEMA "msg" TO "daemon-msg";

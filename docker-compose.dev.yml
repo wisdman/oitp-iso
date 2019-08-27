@@ -3,8 +3,22 @@ version: "3.7"
 services:
 
   sql:
+    environment:
+      - SHARED_BUFFERS=128MB
     ports:
       - 5432:5432
+
+  api-auth:
+    ports:
+      - 8081:80
+
+  api-public:
+    ports:
+      - 8082:80
+
+  api-self:
+    ports:
+      - 8083:80
 
   nginx:
     ports:

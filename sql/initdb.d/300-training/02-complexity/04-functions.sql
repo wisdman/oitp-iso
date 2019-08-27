@@ -13,7 +13,7 @@ BEGIN
     FROM private.complexity_defaults AS d
     LEFT JOIN private.users_complexity AS c ON (c."trainer" = d."trainer" AND c."owner" = _owner)
     WHERE d."trainer" = _trainer
-    ORDER BY c."issue" DESC
+    ORDER BY c."ts" DESC
     LIMIT 1;
 END; $$ LANGUAGE plpgsql VOLATILE;
 

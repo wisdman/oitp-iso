@@ -59,6 +59,8 @@ if [ "$1" = 'postgres' ]; then
     exit 1
   fi
 
+  sed -i "s/\s*shared_buffers.*/shared_buffers = $SHARED_BUFFERS/" "$PGDATA/postgresql.conf"
+
   echo $PG_VERSION
   exec su-exec postgres "$@"
 

@@ -91,9 +91,9 @@ COPY --from=pgsql-builder /usr/local /usr/local
 
 ENV LANG en_US.utf8
 
-ENV WALG_VERSION 0.2.10a
-ENV WALG_SHA256 267de92c57e5f22691defcc1657f911dfd084ab9cada7509b011a8cfcca998af
-ENV WALG_REVISION 55cc5d1
+ENV WALG_VERSION 0.2.11
+ENV WALG_SHA256 8c9db56e21d6d2661232a4a6e8c3f7b0cd9341d6609d36a41fc78a2372f079b6
+ENV WALG_REVISION 0a8cb00
 
 RUN set -ex \
 ###
@@ -105,6 +105,7 @@ RUN set -ex \
       cmake \
       gcc \
       git \
+      lzo-dev \
       make \
       musl-dev \
 ###
@@ -116,14 +117,15 @@ RUN set -ex \
  && rm wal-g.tar.gz \
  && cd $GOPATH/src/github.com/wal-g/wal-g \
  && git clone  https://github.com/google/brotli.git submodules/brotli \
-###
- && : "------- Building and Install WAL-G -------" \
  && go get -u github.com/golang/dep/cmd/dep \
  && go get -u golang.org/x/lint/golint \
+###
+ && : "------- Building and Install WAL-G -------" \
  && dep ensure \
+ && sed -i 's|\(#cgo LDFLAGS:\) .*|\1 -Wl,-Bstatic -llzo2 -Wl,-Bdynamic|' vendor/github.com/cyberdelia/lzo/lzo.go \
  && ./link_brotli.sh \
  && cd main/pg \
- && go build -o wal-g -ldflags "-s -w -X github.com/wal-g/wal-g/cmd/pg.BuildDate=`date -u +%Y.%m.%d_%H:%M:%S` -X github.com/wal-g/wal-g/cmd/pg.GitRevision=$WALG_REVISION -X github.com/wal-g/wal-g/cmd/pg.WalgVersion=v$WALG_VERSION" \
+ && go build -o wal-g -tags "brotli lzo" -ldflags "-s -w -X github.com/wal-g/wal-g/cmd/pg.BuildDate=`date -u +%Y.%m.%d_%H:%M:%S` -X github.com/wal-g/wal-g/cmd/pg.GitRevision=$WALG_REVISION -X github.com/wal-g/wal-g/cmd/pg.WalgVersion=v$WALG_VERSION" \
  && mv wal-g /usr/local/bin/wal-g \
 ###
  && : "------- Unnnstall build dependencies -------" \
@@ -144,15 +146,19 @@ ENV PGDATA /var/lib/postgresql/data
 ENV PGUSER root
 ENV PGDATABASE postgres
 
+ENV SHARED_BUFFERS 128MB
+
 RUN set -ex \
 ###
  && : "------- Install runtime dependencies -------" \
  && apk add --no-cache \
+      brotli \
       icu-libs \
       libcrypto1.1 \
       libedit \
       libssl1.1 \
       libuuid \
+      lzo \
       musl \
       pspg \
       su-exec \

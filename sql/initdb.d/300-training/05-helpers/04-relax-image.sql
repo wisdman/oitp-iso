@@ -1,5 +1,3 @@
-SET search_path = "$user";
-
 CREATE OR REPLACE FUNCTION trainer.get_relax_image(_quantity int) RETURNS SETOF int AS $$
 DECLARE
   _relaxSeriesMin int := 0;

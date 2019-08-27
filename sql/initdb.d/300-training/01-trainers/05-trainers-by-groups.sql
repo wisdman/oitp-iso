@@ -5,7 +5,7 @@ CREATE TABLE public.trainers_by_groups (
 
   "enabled" boolean NOT NULL DEFAULT TRUE,
 
-  CONSTRAINT trainers_by_groups__pkey PRIMARY KEY ("trainer", "group")
+  CONSTRAINT public__trainers_by_groups__pkey PRIMARY KEY ("trainer", "group")
 );
 
-CREATE INDEX trainers_by_groups__idx__enabled ON public.trainers_by_groups USING btree ("enabled");
+CREATE INDEX public__trainers_by_groups__idx__enabled ON public.trainers_by_groups USING btree ("enabled");

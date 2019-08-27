@@ -9,18 +9,18 @@ CREATE TABLE trainer.image_carpets_data (
 
   "maxColor" smallint NOT NULL,
 
-  CONSTRAINT image_carpets_data__pkey PRIMARY KEY ("id"),
+  CONSTRAINT trainer__image_carpets_data__pkey PRIMARY KEY ("id"),
 
-  CONSTRAINT image_carpets_data__check__complexity CHECK ("complexity" > 0),
+  CONSTRAINT trainer__image_carpets_data__check__complexity CHECK ("complexity" > 0),
 
-  CONSTRAINT image_carpets_data__check__value CHECK (jsonb_typeof("value") = 'object'),
-  CONSTRAINT image_carpets_data__check__value_width CHECK (("value"->'width')::int > 0),
-  CONSTRAINT image_carpets_data__check__value_height CHECK (("value"->'height')::int > 0),
-  CONSTRAINT image_carpets_data__check__value_items
+  CONSTRAINT trainer__image_carpets_data__check__value CHECK (jsonb_typeof("value") = 'object'),
+  CONSTRAINT trainer__image_carpets_data__check__value_width CHECK (("value"->'width')::int > 0),
+  CONSTRAINT trainer__image_carpets_data__check__value_height CHECK (("value"->'height')::int > 0),
+  CONSTRAINT trainer__image_carpets_data__check__value_items
     CHECK (jsonb_typeof("value"->'items') = 'array' AND jsonb_array_length("value"->'items') > 0)
 );
 
-CREATE TABLE trash.image_carpets_data() INHERITS (trainer.image_carpets_data, private.trash);
+SELECT private.init_trash_scope('trainer.image_carpets_data');
 
 -- DROP SEQUENCE trainer.image_carpets_data_id CASCADE;
 CREATE SEQUENCE trainer.image_carpets_data_id AS integer
@@ -30,10 +30,10 @@ CREATE SEQUENCE trainer.image_carpets_data_id AS integer
 ALTER TABLE ONLY trainer.image_carpets_data
   ALTER COLUMN id SET DEFAULT nextval('trainer.image_carpets_data_id'::regclass);
 
-CREATE INDEX image_carpets_data__idx__enabled
+CREATE INDEX trainer__image_carpets_data__idx__enabled
   ON trainer.image_carpets_data USING btree ("enabled");
 
-CREATE INDEX image_carpets_data__idx__complexity
+CREATE INDEX trainer__image_carpets_data__idx__complexity
   ON trainer.image_carpets_data USING btree ("complexity");
 
 CREATE OR REPLACE FUNCTION trainer.image_carpets_data__trigger__max_color() RETURNS trigger AS $$

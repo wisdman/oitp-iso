@@ -7,7 +7,7 @@ CREATE TABLE private.tariffs (
   "enabled" boolean NOT NULL DEFAULT TRUE,
   "public" boolean NOT NULL DEFAULT FALSE,
 
-  "issue" timestamp without time zone NOT NULL DEFAULT timezone('UTC', now()),
+  "ts" timestamp without time zone NOT NULL DEFAULT timezone('UTC', now()),
   "expires" timestamp without time zone NOT NULL,
 
   "title"       varchar(64) NOT NULL,
@@ -16,44 +16,26 @@ CREATE TABLE private.tariffs (
   "amount" numeric(10) NOT NULL,
   "interval" interval NOT NULL DEFAULT '1 mon'::interval,
 
-  CONSTRAINT tariffs__pkey PRIMARY KEY ("id"),
+  CONSTRAINT private__tariffs__pkey PRIMARY KEY ("id"),
 
-  CONSTRAINT tariffs__check__default CHECK (NOT "default" OR ("default" AND "public")),
-  CONSTRAINT tariffs__check__title CHECK (char_length("title") > 0),
-  CONSTRAINT tariffs__check__amount CHECK ("amount" > 0 OR ("amount" = 0 AND NOT "default"))
+  CONSTRAINT private__tariffs__check__default CHECK (NOT "default" OR ("default" AND "public")),
+  CONSTRAINT private__tariffs__check__title CHECK (char_length("title") > 0),
+  CONSTRAINT private__tariffs__check__amount CHECK ("amount" > 0 OR ("amount" = 0 AND NOT "default"))
 );
 
-CREATE TABLE trash.tariffs() INHERITS (private.tariffs, private.trash);
+SELECT private.init_trash_scope('private.tariffs');
 
-CREATE INDEX tariffs__idx__archive_enabled ON private.tariffs USING btree ("archive", "enabled");
-CREATE INDEX tariffs__idx__issue_expires ON private.tariffs USING btree ("issue", "expires");
-CREATE INDEX tariffs__idx__public ON private.tariffs USING btree ("public");
+CREATE INDEX private__tariffs__idx__archive_enabled ON private.tariffs USING btree ("archive", "enabled");
+CREATE INDEX private__tariffs__idx__ts_expires ON private.tariffs USING btree ("ts", "expires");
+CREATE INDEX private__tariffs__idx__public ON private.tariffs USING btree ("public");
 
-CREATE UNIQUE INDEX tariffs__unique_idx__default ON private.tariffs USING btree ("default")
+CREATE UNIQUE INDEX private__tariffs__unique_idx__default ON private.tariffs USING btree ("default")
   WHERE "default" AND "archive" IS NULL;
 
 CREATE OR REPLACE FUNCTION private.tariffs__trigger__expires() RETURNS trigger AS $$
 BEGIN
-  NEW."expires" = coalesce(NEW."expires", NEW."issue" + private.get_config_as_text('tariffDefaultLifetime')::interval);
+  NEW."expires" = coalesce(NEW."expires", NEW."ts" + private.get_config_as_text('tariffDefaultLifetime')::interval);
   RETURN NEW;
 END; $$ LANGUAGE plpgsql;
 CREATE TRIGGER expires BEFORE INSERT OR UPDATE ON private.tariffs FOR EACH ROW
   EXECUTE PROCEDURE private.tariffs__trigger__expires();
-
-CREATE OR REPLACE FUNCTION private.tariffs__trigger__check_default() RETURNS trigger AS $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1
-    FROM private.tariffs
-    WHERE "archive" IS NULL
-      AND "enabled"
-      AND "issue" <= timezone('UTC', now())
-      AND "expires" > timezone('UTC', now())
-      AND "default"
-  ) THEN
-    RAISE integrity_constraint_violation USING MESSAGE = 'Incorrect default tariff';
-  END IF;
-  RETURN OLD;
-END; $$ LANGUAGE plpgsql;
-CREATE TRIGGER check_default AFTER UPDATE OR DELETE ON private.tariffs FOR EACH ROW
-  EXECUTE PROCEDURE private.tariffs__trigger__check_default();

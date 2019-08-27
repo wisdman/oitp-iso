@@ -60,7 +60,7 @@ export class FullscreenService {
   forseRedraw() {
     requestAnimationFrame(() => {
       this._setCSSPropertyes()
-     this._resetScroll()
+      this._resetScroll()
     })
   }
 }

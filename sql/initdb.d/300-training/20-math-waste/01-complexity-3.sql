@@ -85,7 +85,6 @@ END $$ LANGUAGE plpgsql VOLATILE;
 -- Выкинуть чет нечет
 CREATE OR REPLACE FUNCTION trainer.math_waste_complexity_3_2(_length int) RETURNS jsonb AS $$
 DECLARE
-   -- 1 - 26
   X int := floor(random() * 26 + 1);
 BEGIN
   RETURN (

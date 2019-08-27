@@ -1,19 +1,19 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <h1 class="h1">Регистрация</h1>
 
-  <p>Временно недоступна</p>
-
-  <!-- <input wFormInput
+  <input *ngIf="!isComplite" wFormInput
     class="input"
     aria-label="E-mail"
     type="text"
     formControlName="email"
   >
 
-  <button
+  <button *ngIf="!isComplite"
     wFormButton="main"
     class="button"
     type="submit"
     [pending]="isPending"
-  >Зарегистрироваться</button> -->
+  >Зарегистрироваться</button>
+
+  <p *ngIf="isComplite" class="message">Для продолжения регистрации, мы отправиль вам письмо с инструкцией.<br><strong>Проверьт почту!</strong></p>
 </form>

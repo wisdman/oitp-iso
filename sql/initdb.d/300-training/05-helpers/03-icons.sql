@@ -1,5 +1,3 @@
-SET search_path = "$user";
-
 CREATE OR REPLACE FUNCTION trainer.get_icons(_quantity int) RETURNS SETOF int AS $$
 DECLARE
   _iconsSeriesMin int := 0;

@@ -6,12 +6,12 @@
     <span visually-hidden>Международная школа Васильевой</span>
   </a>
   <router-outlet></router-outlet>
-  <p *ifRouterLink="'/login'" class="message"><a routerLink="/login/restore">Восстановить пароль</a></p>
-  <p *ifRouterLink="'/login/restore'" class="message">Вспомнили пароль? <a routerLink="/login">Войдите</a></p>
+  <p *ifRouterLink="'/login'" class="message"><a routerLink="/login/restore">Восстановить&nbsp;пароль</a></p>
+  <p *ifRouterLink="'/login/restore'" class="message">Вспомнили&nbsp;пароль?&nbsp;<a routerLink="/login">Войдите</a></p>
 </div>
 <div *ifRouterLink="'/login/invite'" class="field" >
-  <p class="message">Уже зарегистрированы? <a routerLink="/login">Войдите</a></p>
+  <p class="message">Уже&nbsp;зарегистрированы?&nbsp;<a routerLink="/login">Войдите</a></p>
 </div>
 <div *ifRouterLink="['/login', '/login/restore']" class="field">
-  <p class="message">Ещё нет аккаунта? <a routerLink="/login/invite">Регистрируйтесь</a></p>
+  <p class="message">Ещё&nbsp;нет&nbsp;аккаунта?&nbsp;<a routerLink="/login/invite">Регистрируйтесь</a></p>
 </div>

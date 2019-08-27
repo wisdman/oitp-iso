@@ -7,14 +7,14 @@ CREATE TABLE trainer.classification_colors_data (
 
   "enabled" boolean NOT NULL DEFAULT TRUE,
 
-  CONSTRAINT classification_colors_data__pkey PRIMARY KEY ("id"),
-  CONSTRAINT classification_colors_data__check__id CHECK ("id" >= 0),
+  CONSTRAINT trainer__classification_colors_data__pkey PRIMARY KEY ("id"),
+  CONSTRAINT trainer__classification_colors_data__check__id CHECK ("id" >= 0),
 
-  CONSTRAINT classification_colors_data__check__color CHECK (public.check_color("color")),
-  CONSTRAINT classification_colors_data__check__title CHECK (char_length("title") > 0)
+  CONSTRAINT trainer__classification_colors_data__check__color CHECK (public.check_color("color")),
+  CONSTRAINT trainer__classification_colors_data__check__title CHECK (char_length("title") > 0)
 );
 
-CREATE TABLE trash.classification_colors_data() INHERITS (trainer.classification_colors_data, private.trash);
+SELECT private.init_trash_scope('trainer.classification_colors_data');
 
 -- DROP SEQUENCE trainer.classification_colors_data_id CASCADE;
 CREATE SEQUENCE trainer.classification_colors_data_id AS integer
@@ -24,9 +24,9 @@ CREATE SEQUENCE trainer.classification_colors_data_id AS integer
 ALTER TABLE ONLY trainer.classification_colors_data
   ALTER COLUMN id SET DEFAULT nextval('trainer.classification_colors_data_id'::regclass);
 
-CREATE UNIQUE INDEX classification_colors_data__unique_idx__color
+CREATE UNIQUE INDEX trainer__classification_colors_data__unique_idx__color
   ON trainer.classification_colors_data USING btree ("color");
 
-CREATE INDEX classification_colors_data__idx__enabled
+CREATE INDEX trainer__classification_colors_data__idx__enabled
   ON trainer.classification_colors_data USING btree ("enabled");
 

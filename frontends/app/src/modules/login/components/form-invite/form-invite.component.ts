@@ -27,6 +27,7 @@ export class FormInviteComponent implements OnInit, OnDestroy {
   }, { })
 
   isPending: boolean = false
+  isComplite: boolean = false
 
   private _submitSubject: Subject<void> = new Subject<void>()
   private _submitSubscription!: Subscription
@@ -38,7 +39,6 @@ export class FormInviteComponent implements OnInit, OnDestroy {
       tap(() => {
         this.isPending = true
         this._cdr.markForCheck()
-
         this.form.markAllAsTouched()
         for (const key in this.form.controls) this.form.controls[key].updateValueAndValidity({ emitEvent: true })
       }),
@@ -47,19 +47,13 @@ export class FormInviteComponent implements OnInit, OnDestroy {
         filter(status => status !== "PENDING"),
         take(1),
       )),
-      switchMap(status => {
-        if (status === "VALID") {
-          return of(this.form.value)
-        }
-        return of(null)
-      }),
-      tap(() => {
-        this.isPending = false
-        this._cdr.markForCheck()
-      })
+      switchMap(status => status === "VALID" ? this._loginService.selfInvite(this.form.value) : of(false)),
     ).subscribe(value => {
-      console.log("value", value)
-    }, () => console.log('COMPLITE 1'), () => console.log('COMPLITE 2'))
+      console.log(value)
+      this.isPending = false
+      this.isComplite = value
+      this._cdr.markForCheck()
+    })
   }
 
   ngOnDestroy() {

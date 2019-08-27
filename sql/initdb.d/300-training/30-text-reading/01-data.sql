@@ -9,17 +9,17 @@ CREATE TABLE trainer.text_reading_data (
 
   "enabled" boolean NOT NULL DEFAULT TRUE,
 
-  CONSTRAINT text_reading_data__pkey PRIMARY KEY ("id"),
-  CONSTRAINT text_reading_data__check__id CHECK ("id" >= 0),
+  CONSTRAINT trainer__text_reading_data__pkey PRIMARY KEY ("id"),
+  CONSTRAINT trainer__text_reading_data__check__id CHECK ("id" >= 0),
 
-  CONSTRAINT text_reading_data__check__text CHECK (char_length("text") > 0),
-  CONSTRAINT text_reading_data__check__questions
+  CONSTRAINT trainer__text_reading_data__check__text CHECK (char_length("text") > 0),
+  CONSTRAINT trainer__text_reading_data__check__questions
     CHECK (jsonb_typeof("questions") = 'array' AND jsonb_array_length("questions") > 0),
 
-  CONSTRAINT text_reading_data__check__length CHECK ("length" > 0)
+  CONSTRAINT trainer__text_reading_data__check__length CHECK ("length" > 0)
 );
 
-CREATE TABLE trash.text_reading_data() INHERITS (trainer.text_reading_data, private.trash);
+SELECT private.init_trash_scope('trainer.text_reading_data');
 
 -- DROP SEQUENCE trainer.text_reading_data_id CASCADE;
 CREATE SEQUENCE trainer.text_reading_data_id AS integer
@@ -29,8 +29,7 @@ CREATE SEQUENCE trainer.text_reading_data_id AS integer
 ALTER TABLE ONLY trainer.text_reading_data
   ALTER COLUMN id SET DEFAULT nextval('trainer.text_reading_data_id'::regclass);
 
-CREATE INDEX text_reading_data__idx__enabled
-  ON trainer.text_reading_data USING btree ("enabled");
+CREATE INDEX trainer__text_reading_data__idx__enabled ON trainer.text_reading_data USING btree ("enabled");
 
 CREATE OR REPLACE FUNCTION trainer.text_reading_data__trigger__length() RETURNS trigger AS $$
 BEGIN

@@ -21,7 +21,7 @@ export class ImageExpressionsTrainer extends AbstractTrainer<IImageExpressionsCo
     return value.toUpperCase()
                 .replace("Й", "И")
                 .replace("Ё", "Е")
-                .replace(/[^0-9A-ZА-Я\s]+/ig,"")
+                .replace(/[^0-9A-ZА-Я\s]+/ig," ")
                 .replace(/\s+/ig, " ")
                 .trim()
   }

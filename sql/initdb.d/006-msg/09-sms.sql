@@ -1,7 +1,8 @@
--- DROP TABLE private.msg_sms CASCADE;
-CREATE TABLE private.msg_sms (
+-- DROP TABLE msg.sms CASCADE;
+CREATE TABLE msg.sms (
   "id" uuid NOT NULL DEFAULT uuid_generate_v1mc(),
   "status" public.msg_message_status NOT NULL DEFAULT 'new'::public.msg_message_status,
+  "ts" timestamp without time zone NOT NULL DEFAULT timezone('UTC', now()),
 
   "to" varchar(15) NOT NULL,
 
@@ -10,15 +11,14 @@ CREATE TABLE private.msg_sms (
 
   "data" jsonb NOT NULL DEFAULT '{}'::jsonb,
 
-  CONSTRAINT msg_sms__pkey PRIMARY KEY ("id"),
+  CONSTRAINT msg__sms__pkey PRIMARY KEY ("id"),
 
-  CONSTRAINT msg_sms__check__id CHECK (NOT starts_with("id"::text, 'sms-')),
-  CONSTRAINT msg_sms__check__to CHECK (public.check_phone("to")),
-  CONSTRAINT msg_sms__check__data CHECK (jsonb_typeof("data") = 'object'),
+  CONSTRAINT msg__sms__check__to CHECK (public.check_phone("to")),
+  CONSTRAINT msg__sms__check__data CHECK (jsonb_typeof("data") = 'object'),
 
-  CONSTRAINT msg_sms__fkey__template FOREIGN KEY ("template", "version")
+  CONSTRAINT msg__sms__fkey__template FOREIGN KEY ("template", "version")
     REFERENCES private.msg_templates("id", "version")
     ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE INDEX msg_sms__idx__status ON private.msg_sms USING btree ("status");
+CREATE INDEX msg__sms__idx__status ON msg.sms USING btree ("status");

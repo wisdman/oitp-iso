@@ -1,7 +1,8 @@
--- DROP TABLE private.msg_email CASCADE;
-CREATE TABLE private.msg_email (
+-- DROP TABLE msg.email CASCADE;
+CREATE TABLE msg.email (
   "id" uuid NOT NULL DEFAULT uuid_generate_v1mc(),
   "status" public.msg_message_status NOT NULL DEFAULT 'new'::public.msg_message_status,
+  "ts" timestamp without time zone NOT NULL DEFAULT timezone('UTC', now()),
 
   "to" varchar(256) NOT NULL,
   "toName" varchar(128) NOT NULL DEFAULT '',
@@ -11,15 +12,14 @@ CREATE TABLE private.msg_email (
 
   "data" jsonb NOT NULL DEFAULT '{}'::jsonb,
 
-  CONSTRAINT msg_email__pkey PRIMARY KEY ("id"),
+  CONSTRAINT msg__email__pkey PRIMARY KEY ("id"),
 
-  CONSTRAINT msg_email__check__id CHECK (NOT starts_with("id"::text, 'email-')),
-  CONSTRAINT msg_email__check__to CHECK (public.check_email("to")),
-  CONSTRAINT msg_email__check__data CHECK (jsonb_typeof("data") = 'object'),
+  CONSTRAINT msg__email__check__to CHECK (public.check_email("to")),
+  CONSTRAINT msg__email__check__data CHECK (jsonb_typeof("data") = 'object'),
 
-  CONSTRAINT msg_email__fkey__template FOREIGN KEY ("template", "version")
+  CONSTRAINT msg__email__fkey__template FOREIGN KEY ("template", "version")
     REFERENCES private.msg_templates("id", "version")
     ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE INDEX msg_email__idx__status ON private.msg_email USING btree ("status");
+CREATE INDEX msg__email__idx__status ON msg.email USING btree ("status");

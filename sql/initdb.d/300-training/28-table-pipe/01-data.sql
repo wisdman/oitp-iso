@@ -5,13 +5,13 @@ CREATE TABLE trainer.table_pipe_data (
 
   "enabled" boolean NOT NULL DEFAULT TRUE,
 
-  CONSTRAINT table_pipe_data__pkey PRIMARY KEY ("id"),
-  CONSTRAINT table_pipe_data__check__id CHECK ("id" >= 0),
+  CONSTRAINT trainer__table_pipe_data__pkey PRIMARY KEY ("id"),
+  CONSTRAINT trainer__table_pipe_data__check__id CHECK ("id" >= 0),
 
-  CONSTRAINT table_pipe_data__check__runes CHECK (array_length("runes", 1) > 0)
+  CONSTRAINT trainer__table_pipe_data__check__runes CHECK (array_length("runes", 1) > 0)
 );
 
-CREATE TABLE trash.table_pipe_data() INHERITS (trainer.table_pipe_data, private.trash);
+SELECT private.init_trash_scope('trainer.table_pipe_data');
 
 -- DROP SEQUENCE trainer.table_pipe_data_id CASCADE;
 CREATE SEQUENCE trainer.table_pipe_data_id AS integer
@@ -21,5 +21,4 @@ CREATE SEQUENCE trainer.table_pipe_data_id AS integer
 ALTER TABLE ONLY trainer.table_pipe_data
   ALTER COLUMN id SET DEFAULT nextval('trainer.table_pipe_data_id'::regclass);
 
-CREATE INDEX table_pipe_data__idx__enabled
-  ON trainer.table_pipe_data USING btree ("enabled");
+CREATE INDEX trainer__table_pipe_data__idx__enabled ON trainer.table_pipe_data USING btree ("enabled");

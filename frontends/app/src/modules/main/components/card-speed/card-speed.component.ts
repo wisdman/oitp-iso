@@ -9,7 +9,7 @@ import { Component, ChangeDetectionStrategy } from "@angular/core"
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardSpeedComponent {
-  values = [50,50,50,50]
+  values = [50,76,82,66]
 
   // constructor(private _progressService: ProgressService) {}
   // public progress = this._progressService.progress

@@ -1,5 +1,3 @@
-SET search_path = "$user";
-
 -- DROP TABLE trainer.classification_words_data CASCADE;
 CREATE TABLE trainer.classification_words_data (
   "id" integer NOT NULL,
@@ -9,15 +7,14 @@ CREATE TABLE trainer.classification_words_data (
 
   "enabled" boolean NOT NULL DEFAULT TRUE,
 
-  CONSTRAINT classification_words_data__pkey PRIMARY KEY ("id"),
-  CONSTRAINT classification_words_data__check__id CHECK ("id" >= 0),
+  CONSTRAINT trainer__classification_words_data__pkey PRIMARY KEY ("id"),
+  CONSTRAINT trainer__classification_words_data__check__id CHECK ("id" >= 0),
 
-  CONSTRAINT classification_words_data__check__group CHECK (char_length("group") > 0),
-  CONSTRAINT classification_words_data__check__words
-    CHECK (array_length("words", 1) > 0)
+  CONSTRAINT trainer__classification_words_data__check__group CHECK (char_length("group") > 0),
+  CONSTRAINT trainer__classification_words_data__check__words CHECK (array_length("words", 1) > 0)
 );
 
-CREATE TABLE trash.classification_words_data() INHERITS (trainer.classification_words_data, private.trash);
+SELECT private.init_trash_scope('trainer.classification_words_data');
 
 -- DROP SEQUENCE trainer.classification_words_data_id CASCADE;
 CREATE SEQUENCE trainer.classification_words_data_id AS integer
@@ -27,8 +24,8 @@ CREATE SEQUENCE trainer.classification_words_data_id AS integer
 ALTER TABLE ONLY trainer.classification_words_data
   ALTER COLUMN id SET DEFAULT nextval('trainer.classification_words_data_id'::regclass);
 
-CREATE UNIQUE INDEX classification_words_data__unique_idx__group
+CREATE UNIQUE INDEX trainer__classification_words_data__unique_idx__group
   ON trainer.classification_words_data USING btree ("group");
 
-CREATE INDEX classification_words_data__idx__enabled
+CREATE INDEX trainer__classification_words_data__idx__enabled
   ON trainer.classification_words_data USING btree ("enabled");

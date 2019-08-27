@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS cron;
-REVOKE CREATE ON SCHEMA cron FROM PUBLIC;
+REVOKE ALL PRIVILEGES ON SCHEMA cron FROM PUBLIC;
 
-CREATE ROLE "api-cron" WITH NOINHERIT NOLOGIN PASSWORD NULL;
-ALTER ROLE "api-cron" SET search_path = "$user";
-GRANT USAGE ON SCHEMA "cron" TO "api-cron";
+SELECT private.init_db_user('daemon-cron', '/run/secrets/daemon-cron');
+ALTER ROLE "daemon-cron" SET search_path = "$user";
+GRANT USAGE ON SCHEMA "cron" TO "daemon-cron";

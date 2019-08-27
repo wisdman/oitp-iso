@@ -1,5 +1,3 @@
-SET search_path = "$user";
-
 CREATE OR REPLACE FUNCTION trainer.storytelling_config() RETURNS SETOF jsonb AS $$
 DECLARE
   _trainer public.trainer_type := 'storytelling';

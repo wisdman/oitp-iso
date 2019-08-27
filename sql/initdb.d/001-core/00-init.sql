@@ -1,0 +1,2 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA pg_catalog;
+CREATE EXTENSION IF NOT EXISTS "pgcrypto"  WITH SCHEMA pg_catalog;

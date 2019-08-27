@@ -4,9 +4,10 @@ import { HttpClient } from  "@angular/common/http"
 import { AbstractControl, ValidationErrors, AsyncValidatorFn } from "@angular/forms"
 
 import { of, Observable, timer } from "rxjs"
-import { switchMap, map, catchError } from "rxjs/operators"
+import { switchMap, map, catchError, mapTo } from "rxjs/operators"
 
-const API_EMAIL_EXISTS = "$API/public/login/email/exists"
+const API_EMAIL_EXISTS = "$API/public/email-exists"
+const API_SELF_INVITE = "$API/public/invite"
 const API_LOGIN_BY_EMAIL = "$API/public/login/email"
 
 const DEBOUNCE_TIME = 500 //ms
@@ -23,6 +24,19 @@ export class LoginService {
     private _router: Router,
     private _tokenService: TokenService,
   ) {}
+
+  selfInvite({ email }:{ email: string }): Observable<boolean> {
+    return this._httpClient
+                .post<void>(API_SELF_INVITE, { email: email.toLowerCase() })
+                .pipe(
+                  mapTo(true),
+                  catchError(err => {
+                    if (err.status === 409) this._notificationService.error("Данный E-mail уже зарегистрирован")
+                    else this._notificationService.httpError(err.status)
+                    return of(false)
+                  })
+                )
+  }
 
   loginByEmail({ email, password }:{ email: string, password: string }): Observable<void> {
     return this._httpClient

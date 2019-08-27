@@ -8,13 +8,13 @@ CREATE TABLE private.msg_templates (
   "subject" text NOT NULL,
   "body" text NOT NULL,
 
-  CONSTRAINT msg_templates__pkey PRIMARY KEY ("id", "version"),
-  CONSTRAINT msg_templates__check__version CHECK ("version" >= 0),
-  CONSTRAINT msg_templates__check__subject CHECK (char_length("subject") > 0),
-  CONSTRAINT msg_templates__check__body CHECK (char_length("body") > 0)
+  CONSTRAINT private__msg_templates__pkey PRIMARY KEY ("id", "version"),
+  CONSTRAINT private__msg_templates__check__version CHECK ("version" >= 0),
+  CONSTRAINT private__msg_templates__check__subject CHECK (char_length("subject") > 0),
+  CONSTRAINT private__msg_templates__check__body CHECK (char_length("body") > 0)
 );
 
-CREATE INDEX msg_templates__idx__enabled ON private.msg_templates USING btree ("enabled");
+CREATE INDEX private__msg_templates__idx__enabled ON private.msg_templates USING btree ("enabled");
 
 CREATE OR REPLACE FUNCTION private.msg_templates__trigger__prevent_delete_last_template_of_id() RETURNS trigger AS $$
 BEGIN

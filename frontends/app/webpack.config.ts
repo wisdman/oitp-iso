@@ -338,39 +338,17 @@ export default {
         target: "http://localhost:8081",
         pathRewrite: { "^/api/auth" : "" },
       },
-
-      "/api/public/blackboard": {
+      "/api/payment": {
         target: "http://localhost:8082",
-        pathRewrite: { "^/api/public/blackboard" : "" },
+        pathRewrite: { "^/api/payment" : "" },
       },
-      "/api/public/login": {
+      "/api/public": {
         target: "http://localhost:8083",
-        pathRewrite: { "^/api/public/login" : "" },
+        pathRewrite: { "^/api/public" : "" },
       },
-      "/api/public/tariff": {
+      "/api/self": {
         target: "http://localhost:8084",
-        pathRewrite: { "^/api/public/tariff" : "" },
-      },
-
-      "/api/self/invite": {
-        target: "http://localhost:8091",
-        pathRewrite: { "^/api/public/invite" : "" },
-      },
-      "/api/self/logout": {
-        target: "http://localhost:8092",
-        pathRewrite: { "^/api/self/logout" : "" },
-      },
-      "/api/self/progress": {
-        target: "http://localhost:8093",
-        pathRewrite: { "^/api/self/progress" : "" },
-      },
-      "/api/self/training": {
-        target: "http://localhost:8094",
-        pathRewrite: { "^/api/self/training" : "" },
-      },
-      "/api/self/user": {
-        target: "http://localhost:8095",
-        pathRewrite: { "^/api/self/user" : "" },
+        pathRewrite: { "^/api/self" : "" },
       },
     }
   }

@@ -14,26 +14,24 @@ CREATE TABLE private.users (
   "certificate" bytea DEFAULT NULL,
 
   "oauth"    jsonb NOT NULL DEFAULT '{}'::jsonb,
-  "validity" jsonb NOT NULL DEFAULT '{}'::jsonb,
   "profile"  jsonb NOT NULL DEFAULT '{}'::jsonb,
 
-  "issue" timestamp without time zone NOT NULL DEFAULT timezone('UTC', now()), -- Момент создания
+  "ts" timestamp without time zone NOT NULL DEFAULT timezone('UTC', now()), -- Момент создания
 
-  CONSTRAINT users__pkey PRIMARY KEY ("id"),
+  CONSTRAINT private__users__pkey PRIMARY KEY ("id"),
 
-  CONSTRAINT users__check__roles CHECK ("roles" @> '{user}'::public.user_role[]),
-  CONSTRAINT users__check__email CHECK (public.check_email("email")),
-  CONSTRAINT users__check__phone CHECK (public.check_phone("phone")),
-  CONSTRAINT users__check__password CHECK (octet_length("password") = 64),
-  CONSTRAINT users__check__2fa CHECK (octet_length("2fa") = 32),
-  CONSTRAINT users__check__oauth CHECK (jsonb_typeof("oauth") = 'object'),
-  CONSTRAINT users__check__validity CHECK (jsonb_typeof("validity") = 'object'),
-  CONSTRAINT users__check__profile CHECK (jsonb_typeof("profile") = 'object')
+  CONSTRAINT private__users__check__roles CHECK ("roles" @> '{user}'::public.user_role[]),
+  CONSTRAINT private__users__check__email CHECK (public.check_email("email")),
+  CONSTRAINT private__users__check__phone CHECK (public.check_phone("phone")),
+  CONSTRAINT private__users__check__password CHECK (octet_length("password") = 64),
+  CONSTRAINT private__users__check__2fa CHECK (octet_length("2fa") = 32),
+  CONSTRAINT private__users__check__oauth CHECK (jsonb_typeof("oauth") = 'object'),
+  CONSTRAINT private__users__check__profile CHECK (jsonb_typeof("profile") = 'object')
 );
 
-CREATE TABLE trash.users() INHERITS (private.users, private.trash);
+SELECT private.init_trash_scope('private.users');
 
-CREATE UNIQUE INDEX users__unique_idx__email ON private.users USING btree ("email");
-CREATE UNIQUE INDEX users__unique_idx__phone ON private.users USING btree ("phone");
+CREATE UNIQUE INDEX private__users__unique_idx__email ON private.users USING btree ("email");
+CREATE UNIQUE INDEX private__users__unique_idx__phone ON private.users USING btree ("phone");
 
-CREATE INDEX users__idx__enabled ON private.users USING btree ("enabled");
+CREATE INDEX private__users__idx__enabled ON private.users USING btree ("enabled");
