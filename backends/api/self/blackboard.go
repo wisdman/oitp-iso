@@ -11,7 +11,7 @@ func (api *API) GetBlackboard(w http.ResponseWriter, r *http.Request) {
 	sql := middleware.GetDBTransaction(r)
 
 	var response []byte
-	if err := sql.QueryRow(`SELECT public.get_blackboard_expression()`).Scan(&response); err != nil {
+	if err := sql.QueryRow(`SELECT self.get_blackboard_expression()`).Scan(&response); err != nil {
 		service.Fatal(w, err)
 		return
 	}

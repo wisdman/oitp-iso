@@ -9,15 +9,14 @@ import (
 	"github.com/wisdman/oitp-isov/backends/lib/service"
 )
 
-type SLoginEmail struct {
-	Email       string      `json:"email"`
-	Password    string      `json:"password"`
-	IP          net.IP      `json:"ip"`
-	Fingerprint interface{} `json:"fingerprint"`
-}
-
 func (api *API) LoginByEmail(w http.ResponseWriter, r *http.Request) {
-	var body SLoginEmail
+	var body struct {
+		Email       string      `json:"email"`
+		Password    string      `json:"password"`
+		IP          net.IP      `json:"ip"`
+		Fingerprint interface{} `json:"fingerprint"`
+	}
+
 	if err := service.DecodeJSONBody(r, &body); err != nil || body.Email == "" || body.Password == "" {
 		service.Error(w, http.StatusBadRequest)
 		return

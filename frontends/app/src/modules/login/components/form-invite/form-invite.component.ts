@@ -49,7 +49,6 @@ export class FormInviteComponent implements OnInit, OnDestroy {
       )),
       switchMap(status => status === "VALID" ? this._loginService.selfInvite(this.form.value) : of(false)),
     ).subscribe(value => {
-      console.log(value)
       this.isPending = false
       this.isComplite = value
       this._cdr.markForCheck()

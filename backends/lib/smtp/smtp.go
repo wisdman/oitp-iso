@@ -3,29 +3,36 @@ package smtp
 import (
 	"bytes"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/mail"
 	"net/smtp"
+	"path/filepath"
+	"regexp"
 	"strconv"
+	"strings"
 )
+
+var subjRx = regexp.MustCompile(`<title>([^<]+)`)
 
 type SMTP struct {
 	Auth       smtp.Auth
 	TLS        *tls.Config
 	Servername string
 	From       mail.Address
-	Template   *template.Template
+	Templates  map[string]*template.Template
 }
 
-func New(tpl string) *SMTP {
+func New() *SMTP {
 	config, err := parseEnv()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	return &SMTP{
+	mailer := &SMTP{
 		Auth: smtp.PlainAuth("", config.User, config.Password, config.Server),
 		TLS: &tls.Config{
 			InsecureSkipVerify: true,
@@ -33,25 +40,63 @@ func New(tpl string) *SMTP {
 		},
 		Servername: config.Server + ":" + strconv.Itoa(int(config.Port)),
 		From:       mail.Address{config.Name, config.From},
-		Template:   template.Must(template.New("Template").Parse(tpl)),
+		Templates:  make(map[string]*template.Template),
 	}
+
+	templatePath, err := filepath.Abs(config.TemplatesDir)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	files, err := ioutil.ReadDir(templatePath)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	for _, f := range files {
+		if f.IsDir() || filepath.Ext(f.Name()) != ".html" {
+			continue
+		}
+		filePath := filepath.Join(templatePath, f.Name())
+		templateName := strings.TrimSuffix(f.Name(), filepath.Ext(f.Name()))
+		mailer.Templates[templateName] = template.Must(template.ParseFiles(filePath))
+	}
+
+	return mailer
 }
 
-func (s *SMTP) Send(to string, subj string, data interface{}) error {
+func (s *SMTP) AddTemplate(templateName string, tpl string) {
+	s.Templates[templateName] = template.Must(template.New(templateName).Parse(tpl))
+}
 
-	xTo := mail.Address{"", to}
+func (s *SMTP) Send(templateName string, to string, toName string, subj string, data interface{}) error {
 
-	// Setup headers
+	xTo := mail.Address{toName, to}
+
 	headers := make(map[string]string)
 	headers["From"] = s.From.String()
 	headers["To"] = xTo.String()
-	headers["Subject"] = subj
 	headers["MIME-version"] = "1.0;"
 	headers["Content-Type"] = "text/html; charset=\"UTF-8\";"
 
+	tpl, ok := s.Templates[templateName]
+	if ok != true {
+		return errors.New("Incorrect template name")
+	}
+
 	var body bytes.Buffer
-	if err := s.Template.Execute(&body, data); err != nil {
+	if err := tpl.Execute(&body, data); err != nil {
 		return err
+	}
+
+	if subj != "" {
+		headers["Subject"] = subj
+	} else {
+		strs := subjRx.FindStringSubmatch(body.String())
+		if len(strs) == 0 {
+			return errors.New("Incorrect Subject")
+		}
+		headers["Subject"] = strs[1]
 	}
 
 	message := ""
@@ -80,7 +125,6 @@ func (s *SMTP) Send(to string, subj string, data interface{}) error {
 		return err
 	}
 
-	// Data
 	w, err := c.Data()
 	if err != nil {
 		return err

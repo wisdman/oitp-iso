@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from "@angular/core"
 import { FormGroup, FormControl } from "@angular/forms"
+import { Router } from "@angular/router"
 
 import { Subscription, Subject, of } from "rxjs"
 import { tap, switchMap, startWith, filter, take, takeWhile } from "rxjs/operators"
@@ -17,6 +18,7 @@ export class FormLoginComponent implements OnInit, OnDestroy {
   constructor(
     private _cdr: ChangeDetectorRef,
     private _loginService: LoginService,
+    private _router: Router,
   ){}
 
   form = new FormGroup({
@@ -44,8 +46,12 @@ export class FormLoginComponent implements OnInit, OnDestroy {
         filter(status => status !== "PENDING"),
         take(1),
       )),
-      switchMap(status => status === "VALID" ? this._loginService.loginByEmail(this.form.value) : of(undefined)),
-    ).subscribe(() => {
+      switchMap(status => status === "VALID" ? this._loginService.loginByEmail(this.form.value) : of(false)),
+    ).subscribe(status => {
+      if (status) {
+        this._router.navigateByUrl("/")
+        return
+      }
       this.isPending = false
       this._cdr.markForCheck()
     })

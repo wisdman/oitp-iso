@@ -8,6 +8,7 @@ CREATE UNLOGGED TABLE private.users_sessions (
     DEFAULT timezone('UTC', now() + private.get_config_as_text('sessionInterval')::interval),
 
   "fingerprint" jsonb NOT NULL DEFAULT '{}'::jsonb, -- System fingerprinting
+  "options"     jsonb NOT NULL DEFAULT '{}'::jsonb, -- Session options
 
   CONSTRAINT private__users_sessions__pkey PRIMARY KEY ("id"),
 

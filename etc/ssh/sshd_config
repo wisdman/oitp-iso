@@ -1,0 +1,52 @@
+Protocol 2
+Port 1022
+AddressFamily any
+ListenAddress 0.0.0.0
+ListenAddress ::
+
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512
+
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+PermitRootLogin no
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+HostbasedAuthentication no
+KerberosAuthentication no
+GSSAPIAuthentication no
+UsePAM no
+
+AuthenticationMethods publickey
+PubkeyAuthentication yes
+AuthorizedKeysFile %h/.ssh/authorized_keys
+AllowGroups wheel
+
+IgnoreRhosts yes
+IgnoreUserKnownHosts yes
+
+StrictModes yes
+
+ClientAliveInterval 3600
+ClientAliveCountMax 3
+LoginGraceTime 60
+MaxStartups 2:50:10
+
+AllowTcpForwarding yes
+AllowStreamLocalForwarding no
+GatewayPorts no
+PermitTunnel no
+X11Forwarding no
+
+Banner none
+PrintMotd yes
+PrintLastLog yes
+
+AcceptEnv LANG LC_*
+Subsystem sftp /usr/libexec/sftp-server
+
+SyslogFacility AUTH
+LogLevel ERROR

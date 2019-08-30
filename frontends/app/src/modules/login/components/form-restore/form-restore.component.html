@@ -1,12 +1,20 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <h1 class="h1">Востановление пароля</h1>
 
-  <input wFormInput
+  <input *ngIf="!isComplite"
+    wFormInput
     class="input"
     aria-label="E-mail"
     type="text"
     formControlName="email"
   >
 
-  <button wFormButton="main" type="submit" class="button">Сбросить пароль</button>
+  <button *ngIf="!isComplite"
+    wFormButton="main"
+    class="button"
+    type="submit"
+    [pending]="isPending"
+  >Сбросить пароль</button>
+
+  <p *ngIf="isComplite" class="message">Мы отправиль вам письмо с инструкцией.<br><strong>Проверьте почту!</strong></p>
 </form>

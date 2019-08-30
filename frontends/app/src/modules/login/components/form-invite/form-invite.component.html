@@ -1,7 +1,8 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <h1 class="h1">Регистрация</h1>
 
-  <input *ngIf="!isComplite" wFormInput
+  <input *ngIf="!isComplite"
+    wFormInput
     class="input"
     aria-label="E-mail"
     type="text"
@@ -15,5 +16,5 @@
     [pending]="isPending"
   >Зарегистрироваться</button>
 
-  <p *ngIf="isComplite" class="message">Для продолжения регистрации, мы отправиль вам письмо с инструкцией.<br><strong>Проверьт почту!</strong></p>
+  <p *ngIf="isComplite" class="message">Для продолжения регистрации, мы отправиль вам письмо с инструкцией.<br><strong>Проверьте почту!</strong></p>
 </form>

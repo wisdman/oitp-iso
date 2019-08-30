@@ -3,19 +3,22 @@ package main
 import (
 	"context"
 	"log"
-
-	"github.com/jackc/pgx"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, shutdown := context.WithCancel(context.Background())
+
 	go func() {
-		oscall := <-c
-		log.Printf("System call:%+v", oscall)
-		cancel()
+		oscall := <-stop
+		log.Printf("System call: %+v", oscall)
+		shutdown()
+		log.Println("Daemon stopped")
 	}()
 
 	if err := Daemon(ctx); err != nil {

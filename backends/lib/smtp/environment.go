@@ -16,6 +16,8 @@ type Config struct {
 
 	Name string
 	From string
+
+	TemplatesDir string
 }
 
 func parseEnv() (*Config, error) {
@@ -54,6 +56,8 @@ func parseEnv() (*Config, error) {
 	if config.From = os.Getenv("SMTP_FROM"); config.From == "" {
 		return nil, errors.New("SMTP_FROM isn't set")
 	}
+
+	config.TemplatesDir = os.Getenv("SMTP_TEMPLATES_DIR")
 
 	config.Name = os.Getenv("SMTP_NAME")
 

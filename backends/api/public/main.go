@@ -20,10 +20,12 @@ func main() {
 	srv.POST("/email-exists", api.EmailExists)
 
 	srv.POST("/login/email", api.LoginByEmail)
+
+	srv.PUT("/login/otr", api.LoginNewOTR)
 	srv.POST("/login/otr", api.LoginByOTR)
 
-	srv.POST("/invite", api.NewSelfInvite)
-	srv.POST("/invite/:id", api.LoginByInvite)
+	srv.PUT("/login/invite", api.LoginNewInvite)
+	srv.POST("/login/invite", api.LoginByInvite)
 
 	srv.ListenAndServe()
 }

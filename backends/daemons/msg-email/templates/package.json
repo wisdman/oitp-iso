@@ -1,0 +1,36 @@
+{
+  "name": "oitp-isov-portal",
+  "version": "0.1.0",
+  "description": "International School of Vasilieva",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@types/autoprefixer": "^9.5.0",
+    "@types/html-webpack-plugin": "^3.2.0",
+    "@types/mini-css-extract-plugin": "^0.8.0",
+    "@types/node": "^12.6.1",
+    "@types/webpack": "^4.4.34",
+    "autoprefixer": "^9.6.1",
+    "css-loader": "^3.0.0",
+    "cssnano": "^4.1.10",
+    "html-loader": "^0.5.5",
+    "html-webpack-exclude-assets-plugin": "0.0.7",
+    "html-webpack-inline-source-plugin": "0.0.10",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "postcss-gap-properties": "^2.0.0",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "scripts": {
+    "clean": "rm -rf ./tpl/*",
+    "build": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack --config ./webpack.config.ts",
+    "start": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack-dev-server --config ./webpack.config.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

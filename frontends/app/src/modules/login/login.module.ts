@@ -12,8 +12,12 @@ import {
   FormRestoreComponent,
 } from "./components"
 
+import { InviteGuard } from "./guards"
+
 import { LoginLayout } from "./layouts"
-import { LoginService } from "./services"
+import {
+  LoginService,
+} from "./services"
 
 import { ROUTES } from "./login.routing"
 
@@ -35,6 +39,10 @@ import { ROUTES } from "./login.routing"
     WFormsModule,
   ],
 
-  providers: [ LoginService ],
+  providers: [
+    InviteGuard,
+
+    LoginService,
+  ],
 })
 export class LoginModule {}

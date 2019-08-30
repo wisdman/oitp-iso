@@ -1,0 +1,11 @@
+[Unit]
+Description=Docker mount
+
+[Mount]
+What=/dev/disk/by-uuid/82359269-c020-419d-9a38-302ff40feb47
+Where=/var/lib/docker
+Type=xfs
+Options=defaults
+
+[Install]
+WantedBy=multi-user.target

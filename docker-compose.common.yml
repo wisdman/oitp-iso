@@ -12,13 +12,13 @@ services:
       - LANG=ru_RU.utf8
       - PGDATABASE=oitp
     secrets:
-      - daemon-tinkoff
       - api-admin
+      - api-payment
       - api-public
       - api-self
-      - api-tinkoff
       - daemon-cron
       - daemon-msg
+      - daemon-payment
     networks:
       default:
 
@@ -68,6 +68,7 @@ services:
       - SMTP_USER=wisdman@wisdman.io
       - SMTP_NAME=VLLSchool
       - SMTP_FROM=noreply@vllschool.com
+      - SMTP_TPL_DIR=/templates
     depends_on:
       - sql
     links:
@@ -184,17 +185,17 @@ volumes:
   data-volume:
 
 secrets:
-  daemon-tinkoff:
-    file: ./secret-daemon-tinkoff.env
   api-admin:
     file: ./secret-api-admin.env
+  api-payment:
+    file: ./secret-api-payment.env
   api-public:
     file: ./secret-api-public.env
   api-self:
     file: ./secret-api-self.env
-  api-tinkoff:
-    file: ./secret-api-tinkoff.env
   daemon-cron:
     file: ./secret-daemon-cron.env
   daemon-msg:
     file: ./secret-daemon-msg.env
+  daemon-payment:
+    file: ./secret-daemon-payment.env

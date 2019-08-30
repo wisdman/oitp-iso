@@ -9,14 +9,13 @@ import (
 	"github.com/wisdman/oitp-isov/backends/lib/service"
 )
 
-type SLoginOtr struct {
-	ID          string      `json:"id"`
-	IP          net.IP      `json:"ip"`
-	Fingerprint interface{} `json:"fingerprint"`
-}
-
 func (api *API) LoginByOTR(w http.ResponseWriter, r *http.Request) {
-	var body SLoginOtr
+	var body struct {
+		ID          string      `json:"id"`
+		IP          net.IP      `json:"ip"`
+		Fingerprint interface{} `json:"fingerprint"`
+	}
+
 	if err := service.DecodeJSONBody(r, &body); err != nil || body.ID == "" {
 		service.Error(w, http.StatusBadRequest)
 		return

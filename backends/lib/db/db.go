@@ -7,6 +7,8 @@ import (
 	"github.com/jackc/pgx"
 )
 
+var ErrNoRows = pgx.ErrNoRows
+
 type DB struct {
 	*pgx.ConnPool
 }
